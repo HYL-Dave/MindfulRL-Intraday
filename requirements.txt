@@ -1,0 +1,14 @@
+openai
+pandas
+numpy
+gymnasium
+torch
+scipy
+datasets
+mpi4py
+spinup
+matplotlib
+stable-baselines3
+# Optional, for training wrappers
+torch
+requests
