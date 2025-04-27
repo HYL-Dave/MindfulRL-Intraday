@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Wrapper script to train RL agents on OpenAI-enhanced dataset
-# Usage: scripts/train_openai.sh <merged_dataset.csv> <algorithm> <mode>
+# Usage: train_openai.sh <merged_dataset.csv> <algorithm> <mode>
 #   algorithm: ppo or cppo
 #   mode: sentiment or risk
 

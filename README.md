@@ -8,10 +8,7 @@ This folder contains a self-contained toolkit to:
 4. Backtest trained agents.
 
 ## Setup
-1. Navigate to this directory:
-   ```bash
-   cd scripts
-   ```
+1. Ensure you are in this directory (project root).
 2. Install dependencies:
    ```bash
    pip install -r requirements.txt
@@ -26,19 +23,19 @@ This folder contains a self-contained toolkit to:
 ### 1. Score News Headlines
 - Sentiment:
   ```bash
-  python score_sentiment_openai.py --input ../data/headlines.csv \
+  python score_sentiment_openai.py --input data/headlines.csv \
     --output sentiment_scored.csv --model o4-mini
   ```
 - Risk:
   ```bash
-  python score_risk_openai.py --input ../data/headlines.csv \
+  python score_risk_openai.py --input data/headlines.csv \
     --output risk_scored.csv --model o4-mini
   ```
 
 ### 2. Prepare Dataset
 ```bash
 python prepare_dataset_openai.py \
-  --price-data ../data/intraday.csv \
+  --price-data data/intraday.csv \
   --sentiment sentiment_scored.csv \
   --risk risk_scored.csv \
   --output merged_dataset.csv

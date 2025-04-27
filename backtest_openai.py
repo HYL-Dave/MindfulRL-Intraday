@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from finrl.config import INDICATORS
-from train_ppo import MLPActorCritic
+from train_ppo_llm import MLPActorCritic
 
 def main():
     parser = argparse.ArgumentParser(
