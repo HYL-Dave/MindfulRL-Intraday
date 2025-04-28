@@ -1,5 +1,9 @@
 # OpenAI-Enhanced RL Trading Toolkit
-> Derived from the FinRL_DeepSeek open-source project. Goal: Extends the original with OpenAI LLM integration (sentiment & risk), intraday support, and streamlined scripts. Future extensions and improvements are planned.
+> Derived from the FinRL open-source project. Goal: Extends the original with OpenAI LLM integration (sentiment & risk), intraday support, and streamlined scripts. Future extensions and improvements are planned.
+
+## Background & Upstream Roadmap
+
+The upstream FINRL project has recently consolidated the DeepSeek workflow into its core repository and published a comprehensive Developer Roadmap outlining planned enhancements and best practices. This toolkit will draws from those official updates—leveraging FINRL's unified data pipelines and environment abstractions—while adding OpenAI-powered sentiment and risk scoring and exploring additional feature improvements inspired by the roadmap.
 
 This folder contains a self-contained toolkit to:
 1. Score financial news headlines for sentiment and risk using OpenAI LLMs.
