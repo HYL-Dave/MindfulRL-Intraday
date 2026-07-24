@@ -213,7 +213,14 @@ describe("Research Evidence drawer", () => {
   it("preserves source trace evidence and context bytes", async () => {
     await i18n.changeLanguage("en");
     stubEvidenceFetch();
-    const sourceMessage = message();
+    const sourceSkills = ["SOURCE_SKILL_ONE", "SOURCE_SKILL_TWO"];
+    const sourceTools = ["SOURCE_TOOL_ONE", "SOURCE_TOOL_TWO"];
+    const sourceSkillsSnapshot = [...sourceSkills];
+    const sourceToolsSnapshot = [...sourceTools];
+    const sourceMessage = message({
+      tools_used: sourceTools,
+      personalization: { ...PERSONALIZATION, applied_skills: sourceSkills },
+    });
     await mountEvidence({ message: sourceMessage });
     const input = document.querySelector(".research-evidence-input")!;
     const preview = document.querySelector(".research-evidence-preview")!;
@@ -222,6 +229,14 @@ describe("Research Evidence drawer", () => {
     expect(input.textContent).toBe(JSON.stringify(sourceMessage.tool_calls[0].input, null, 2));
     expect(preview.textContent).toBe("SOURCE_RESULT_BYTES::<verbatim>");
     expect(context.textContent).toBe(PERSONALIZATION.context_snapshot);
+    expect(detailRow("Applied skills")?.querySelector("dd")?.textContent).toBe(
+      "SOURCE_SKILL_ONE, SOURCE_SKILL_TWO",
+    );
+    expect(detailRow("Tools")?.querySelector("dd")?.textContent).toBe(
+      "SOURCE_TOOL_ONE, SOURCE_TOOL_TWO",
+    );
+    expect(sourceMessage.personalization?.applied_skills).toEqual(sourceSkillsSnapshot);
+    expect(sourceMessage.tools_used).toEqual(sourceToolsSnapshot);
 
     await act(async () => { await i18n.changeLanguage("zh-Hant"); });
     await flush();
@@ -231,12 +246,21 @@ describe("Research Evidence drawer", () => {
     expect(preview.textContent).toBe("SOURCE_RESULT_BYTES::<verbatim>");
     expect(document.querySelector(".research-personalization-context-source")).toBe(context);
     expect(context.textContent).toBe(PERSONALIZATION.context_snapshot);
+    expect(detailRow("套用技能")?.querySelector("dd")?.textContent).toBe(
+      "SOURCE_SKILL_ONE、SOURCE_SKILL_TWO",
+    );
+    expect(detailRow("工具")?.querySelector("dd")?.textContent).toBe(
+      "SOURCE_TOOL_ONE、SOURCE_TOOL_TWO",
+    );
+    expect(sourceMessage.personalization?.applied_skills).toEqual(sourceSkillsSnapshot);
+    expect(sourceMessage.tools_used).toEqual(sourceToolsSnapshot);
   });
 
   it("preserves disclosure scroll and focus across locale changes", async () => {
     await i18n.changeLanguage("zh-Hant");
-    stubEvidenceFetch();
+    const fetchMock = stubEvidenceFetch();
     await mountEvidence();
+    await vi.waitFor(() => expect(detailRow("建立")).toBeDefined());
     const drawer = document.querySelector("[role='dialog']")!;
     const body = drawer.querySelector(".ui-drawer-body") as HTMLElement;
     const disclosure = drawer.querySelector(".research-personalization-context details")!;
@@ -244,6 +268,8 @@ describe("Research Evidence drawer", () => {
     (disclosure as HTMLDetailsElement).open = true;
     body.scrollTop = 137;
     summary.focus();
+    const requestCountBeforeLocaleSwitch = fetchMock.mock.calls.length;
+    expect(requestCountBeforeLocaleSwitch).toBe(1);
 
     await act(async () => { await i18n.changeLanguage("en"); });
     await flush();
@@ -257,6 +283,7 @@ describe("Research Evidence drawer", () => {
     expect(summary.textContent).toBe("Personalization context for this run");
     expect(document.activeElement).toBe(summary);
     expect(drawer.textContent).toContain("Evidence and Run Details");
+    expect(fetchMock).toHaveBeenCalledTimes(requestCountBeforeLocaleSwitch);
   });
 
   it("retains the existing Developer diagnostic boundary", async () => {

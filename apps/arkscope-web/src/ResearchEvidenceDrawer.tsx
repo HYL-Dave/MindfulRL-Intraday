@@ -13,6 +13,7 @@ import { stanceLabel } from "./personalizationDisplay";
 import { ResearchPersonalizationContext } from "./ResearchPersonalizationContext";
 import { sanitizeResearchDiagnostic } from "./researchErrors";
 import type { Message, ToolTraceRow, TraceRow } from "./researchReducer";
+import { quotaKindForAuthMode } from "./researchSelection";
 import { formatSystemTimestamp } from "./timeDisplay";
 import { Drawer, InlineAlert, StatusBadge } from "./ui";
 
@@ -98,6 +99,7 @@ export function ResearchEvidenceDrawer({
   const { t: researchT, i18n: researchI18n } = useTranslation("research");
   const { t: commonT } = useTranslation("common");
   const researchLocale = researchI18n.resolvedLanguage;
+  const sourceListDelimiter = researchLocale === "en" ? ", " : "、";
   const evidence = useMemo(
     () => researchEvidenceRows(message, activeTrace),
     [activeTrace, message],
@@ -191,14 +193,10 @@ export function ResearchEvidenceDrawer({
   }, [details, message, researchLocale, researchT]);
   const auth = useMemo(() => {
     if (!details?.auth_mode) return null;
-    const quotaKind = details.auth_mode === "chatgpt_oauth"
-      || details.auth_mode === "claude_code_oauth"
-      ? "subscription"
-      : "api";
     return presentResearchSelection({
       provenance: null,
       authMode: details.auth_mode,
-      quotaKind,
+      quotaKind: quotaKindForAuthMode(details.auth_mode),
       reasonCode: null,
     }, researchT, commonT);
   }, [commonT, details?.auth_mode, researchLocale, researchT]);
@@ -295,10 +293,10 @@ export function ResearchEvidenceDrawer({
                 <div><dt>{researchT(($) => $.evidence.stance)}</dt><dd>{stanceLabel(personalization.assistant_stance, commonT)}</dd></div>
               ) : null}
               {personalization?.applied_skills?.length ? (
-                <div><dt>{researchT(($) => $.evidence.appliedSkills)}</dt><dd>{personalization.applied_skills.join(", ")}</dd></div>
+                <div><dt>{researchT(($) => $.evidence.appliedSkills)}</dt><dd>{personalization.applied_skills.join(sourceListDelimiter)}</dd></div>
               ) : null}
               {(message?.tools_used?.length ?? 0) > 0 ? (
-                <div><dt>{researchT(($) => $.evidence.tools)}</dt><dd>{message!.tools_used.join(", ")}</dd></div>
+                <div><dt>{researchT(($) => $.evidence.tools)}</dt><dd>{message!.tools_used.join(sourceListDelimiter)}</dd></div>
               ) : null}
               {tokenRows.map((row) => (
                 <div key={row.key}><dt>{row.label}</dt><dd>{row.value.toLocaleString()}</dd></div>

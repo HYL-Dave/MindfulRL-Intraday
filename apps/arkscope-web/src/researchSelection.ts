@@ -57,6 +57,15 @@ export type ResearchSelectionResult = SelectionPresentation & (
 
 export const RESEARCH_SELECTION_STORAGE_KEY = "arkscope.aiResearch.explicitSelection.v1";
 
+export function quotaKindForAuthMode(
+  authMode: string | null,
+): "subscription" | "api" | null {
+  if (!authMode) return null;
+  return authMode === "chatgpt_oauth" || authMode === "claude_code_oauth"
+    ? "subscription"
+    : "api";
+}
+
 const isProvider = (value: unknown): value is ModelProvider =>
   value === "openai" || value === "anthropic";
 
@@ -110,12 +119,12 @@ function presentation(authMode: CredentialAuthType | null): SelectionPresentatio
   if (!authMode) {
     return { authMode: null, quotaKind: null, authLabel: null, billingCopy: null };
   }
-  const subscription = authMode === "chatgpt_oauth" || authMode === "claude_code_oauth";
+  const quotaKind = quotaKindForAuthMode(authMode);
   return {
     authMode,
-    quotaKind: subscription ? "subscription" : "api",
+    quotaKind,
     authLabel: MODEL_UX_LABELS.authModes[authMode] ?? authMode,
-    billingCopy: subscription
+    billingCopy: quotaKind === "subscription"
       ? "使用訂閱額度，非 API 帳單"
       : "使用 API 額度，會計入 API 帳單",
   };

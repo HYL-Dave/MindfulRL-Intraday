@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import type { ModelCatalog, ModelProvider, TaskRoute } from "./api";
 import {
+  quotaKindForAuthMode,
   RESEARCH_SELECTION_STORAGE_KEY,
   readExplicitResearchSelection,
   resolveResearchSelection,
@@ -207,6 +208,12 @@ describe("research selection precedence and validation", () => {
   });
 
   it("distinguishes subscription quota from API-key billing", () => {
+    expect(quotaKindForAuthMode("chatgpt_oauth")).toBe("subscription");
+    expect(quotaKindForAuthMode("claude_code_oauth")).toBe("subscription");
+    expect(quotaKindForAuthMode("api_key")).toBe("api");
+    expect(quotaKindForAuthMode("future_auth_mode")).toBe("api");
+    expect(quotaKindForAuthMode(null)).toBeNull();
+
     const subscription = resolveResearchSelection({
       catalog: catalog(), hasActiveThread: false, threadSelection: null, preferenceStorage: new MemoryStorage(),
     });
