@@ -85,8 +85,9 @@ change:
    sidecar loading/error/retry copy. Task 10's runtime matrix remains an
    independent visual gate, not the sole coverage for those leaves.
 
-The reviewed frontend ledger remains A `+44/-2`, B `+60/-0`; resource, scanner,
-focused-suite, and file-boundary accounting are unchanged.
+The initial reviewed frontend ledger was A `+44/-2`, B `+60/-0`. The measured
+Research-title overflow deviation below revises A to `+45/-2` while leaving B,
+resource, scanner, and A focused-suite accounting unchanged.
 
 ### Implementation grounding correction
 
@@ -97,6 +98,38 @@ leaves moved to Common consist of 22 leaves under `settings.models` plus
 `702 -> 679`, Common still moves `32 -> 56`, and all node/scanner ledgers remain
 unchanged, but the `settings.models` subtree truth is `91 -> 69`, not `91 -> 68`.
 No unrelated model leaf may be deleted merely to satisfy the former typo.
+
+### Runtime-reviewed deviation 1: Research title source-content visibility
+
+The Tranche A worst-composition gate found one real stop condition after all
+planned Research tests and scanner gates were green. The existing
+`.research-conversation-title` rule in `styles.css` combines
+`overflow: hidden`, `text-overflow: ellipsis`, and `white-space: nowrap`.
+With the reviewed long source title, the EN `1440x900` case measured
+`clientWidth=559` and `scrollWidth=606`; both locales also clipped at
+`960x768` and `390x844`. Request/replay counts, node identity, draft/focus,
+Drawer state, source hashes, horizontal overflow, and overlap were otherwise
+green.
+
+This deviation reopens exactly one existing CSS owner and one existing test
+file:
+
+1. `styles.css` may change only the `.research-conversation-title` block by
+   removing the three truncation declarations and adding intrinsic wrapping
+   (`white-space: normal` and `overflow-wrap: anywhere`). No breakpoint,
+   width, font-size, or source-value change is allowed.
+2. `shell/ShellCss.test.ts` gains exactly one RED-first node named
+   `lets Research conversation titles wrap without truncating source content`.
+   It must reject hidden/ellipsis/nowrap and require the two wrapping
+   declarations.
+3. The raw A ledger becomes `+45/-2`; full frontend becomes
+   `93 files / 987 nodes`. A focused remains `24/305`; the CSS node is verified
+   separately in the now `9/9` Shell CSS suite and in the full run.
+4. The same six-case `zh-Hant`/`en` matrix at `1440x900`, `960x768`, and
+   `390x844` must rerun with zero clipping while preserving all previously
+   green geometry, identity, request, and source-byte checks.
+5. The other three CSS owners remain byte-identical. The `styles.css` gate is
+   replaced only by the exact reviewed title hunk.
 
 ---
 
@@ -431,7 +464,7 @@ growth:
 
 ## Exact Test-Node Ledger
 
-### Base to `TRANCHE_A_TIP`: raw `+44/-2`
+### Base to `TRANCHE_A_TIP`: raw `+45/-2`
 
 | Test file | Add | Remove | Contract |
 | --- | ---: | ---: | --- |
@@ -443,7 +476,8 @@ growth:
 | `ResearchHistoryDrawer.test.tsx` | `6` | `0` | filters, mutations, in-flight and source title behavior |
 | `ResearchEvidenceDrawer.test.tsx` | `7` | `0` | new Evidence mounted suite |
 | `ResearchRunProgress.test.tsx` | `5` | `0` | new progress mounted suite |
-| **A** | **`44`** | **`2`** | net `+42` |
+| `shell/ShellCss.test.ts` | `1` | `0` | reviewed title-wrapping runtime deviation |
+| **A** | **`45`** | **`2`** | net `+43` |
 
 The two removed nodes are exactly:
 
@@ -456,8 +490,8 @@ They are replaced by generic reviewed namespace and Settings-origin inventory
 nodes. The latter requires current pre-Slice-5 Settings leaves `589`, model
 subtree `69`, and the exact 23 leaves moved to Common to reconcile to the
 historical `612`; it does not leave a stale count in a test ID. No semantic
-coverage disappears. Full frontend closes at `93 files / 986 nodes`; A focused
-closes at `24 files / 305 nodes`.
+coverage disappears. Full frontend closes at `93 files / 987 nodes`; A focused
+closes at `24 files / 305 nodes`, with the separate Shell CSS suite at `9/9`.
 
 Required new A node IDs:
 
@@ -488,6 +522,7 @@ Research workspace > renders late stream outcomes in the current locale without 
 Research workspace > uses structured thread not-found facts instead of parsing Error.message
 Research workspace > keeps active progress and error chrome localized in one mounted workspace
 Research workspace > keeps model selection metadata and no decorated-label reverse parsing
+responsive application shell CSS > lets Research conversation titles wrap without truncating source content
 Research history drawer > localizes filters statuses and actions in both locales
 Research history drawer > renders structured 404 and 409 outcomes without parsing messages
 Research history drawer > preserves search draft focus and selected thread across locale changes
@@ -526,8 +561,8 @@ Research run progress > keeps the completion destination contract unchanged
 | `i18n/foundationBoundaries.test.ts` | `1` | `0` | global scope and exact final arithmetic |
 | **B** | **`60`** | **`0`** | net `+60` |
 
-Full final frontend is `94 files / 1046 nodes`; B focused is
-`15 files / 232 nodes`. Base-to-final raw accounting is `+104/-2`, net `+102`.
+Full final frontend is `94 files / 1047 nodes`; B focused is
+`15 files / 232 nodes`. Base-to-final raw accounting is `+105/-2`, net `+103`.
 
 Required B node IDs:
 
@@ -617,6 +652,7 @@ may evolve only where this plan explicitly changes the contract.
 - `apps/arkscope-web/src/settings/ModelRoutingSection.tsx`
 - `apps/arkscope-web/src/settings/ProviderSection.tsx`
 - `apps/arkscope-web/src/settings/settingsBackendCopy.ts`
+- `apps/arkscope-web/src/styles.css`, only the exact runtime-reviewed deviation 1 hunk
 - `apps/arkscope-web/src/i18n/resources.ts`
 - `apps/arkscope-web/src/i18n/resources/en/common.ts`
 - `apps/arkscope-web/src/i18n/resources/en/settings.ts`
@@ -641,6 +677,7 @@ may evolve only where this plan explicitly changes the contract.
 - `apps/arkscope-web/src/i18n/resources.test.ts`
 - `apps/arkscope-web/src/modelRoutingUx.test.ts`
 - `apps/arkscope-web/src/modelPicker.test.ts`
+- `apps/arkscope-web/src/shell/ShellCss.test.ts`, only the one deviation node
 - every existing A focused test only as its owning contract requires
 - `apps/arkscope-web/scripts/i18n/visible-literal-scanner.mjs`
 - `apps/arkscope-web/scripts/i18n/visible-literal-debt.json`
@@ -708,9 +745,10 @@ Compare all protected paths to product base `93cda668`, not the docs tip.
 3. `apps/arkscope-desktop/` and `extensions/` are byte-identical.
 4. Root and app `package.json`, `package-lock.json`, and desktop package files
    are byte-identical.
-5. `styles.css`, `shell/shell.css`, `ui/primitives.css`, and
-   `settings/settings.css` are byte-identical unless a reviewed overflow
-   deviation explicitly replaces this gate for one file.
+5. `shell/shell.css`, `ui/primitives.css`, and `settings/settings.css` are
+   byte-identical. Runtime-reviewed deviation 1 replaces the `styles.css`
+   byte gate only with its exact `.research-conversation-title` wrapping hunk;
+   no other `styles.css` byte may change.
 6. `api.ts` differs only by the exact five AppRecords export removals.
 7. Tranche B may not change any frozen Tranche A product owner.
 8. The public selector remains absent and production `ui_locale` remains
@@ -934,7 +972,7 @@ and this plan ledger.
 
 - [ ] **Step 5: Run A focused/full/static gates**
 
-  Require A focused `24/305`, full frontend `93/986`, typecheck/build, resource
+  Require A focused `24/305`, Shell CSS `9/9`, full frontend `93/987`, typecheck/build, resource
   target `56/37/679/207/401`, and scanner exactly:
 
   ```text
@@ -1319,13 +1357,13 @@ required. Freeze product before requesting review.
   nodes for base, `TRANCHE_A_TIP`, and final product tip. Require:
 
   ```text
-  base -> A       +44/-2    90/944 -> 93/986
-  A -> final      +60/-0    93/986 -> 94/1046
-  base -> final  +104/-2    net +102
+  base -> A       +45/-2    90/944 -> 93/987
+  A -> final      +60/-0    93/987 -> 94/1047
+  base -> final  +105/-2    net +103
   ```
 
-  The sole removal is the named resource-count node. Hash each full/add/remove
-  list. Any other removal/rename is a stop condition.
+  The only removals are the two named resource-count nodes. Hash each
+  full/add/remove list. Any other removal/rename is a stop condition.
 
 - [ ] **Step 2: Run exact focused suites**
 
@@ -1347,7 +1385,7 @@ required. Freeze product before requesting review.
   git diff --check
   ```
 
-  Require final `94/1046`, scanner `36/20/0/20`, `src/**`, no-PG
+  Require final `94/1047`, scanner `36/20/0/20`, `src/**`, no-PG
   `ok:true`/`pg_attempts:[]`, and only the existing build warning.
 
 - [ ] **Step 4: Prove protected bytes and exact exceptions**
@@ -1414,8 +1452,9 @@ Stop and return to design/plan review if any of the following occurs:
 
 1. baseline debt does not reconcile to `230+374+30+3`, source is not
    `636/667`, or scanner hardening discovers other than the exact 22 labels;
-2. test collection differs from base `90/944`, A `93/986`, final `94/1046`,
-   raw `+44/-2` then `+60/-0`, or either focused ledger;
+2. test collection differs from base `90/944`, A `93/987`, final `94/1047`,
+   raw `+45/-2` then `+60/-0`, the separate A Shell CSS `9/9`, or either
+   focused ledger;
 3. resource counts cannot close at A `56/37/679/207/401` and final
    `61/37/679/207/401/373/20`;
 4. A scanner cannot close at `483/448/429/20` with 448 debt occurrences and 48
@@ -1450,7 +1489,7 @@ explicit user approval:
 
 1. restore any protected main-worktree draft exactly;
 2. fast-forward merge `codex/i18n-4-5-remaining-surfaces` only;
-3. rerun merged-tree A focused `24/305`, B focused `15/232`, full `94/1046`,
+3. rerun merged-tree A focused `24/305`, B focused `15/232`, full `94/1047`,
    typecheck, build, scanner `36/20/0/20`, no-PG, resource counts, protected
    bytes, exact `api.ts` exception, and `git diff --check`;
 4. restart the normal desktop in zh-Hant and smoke Research, Holdings,
