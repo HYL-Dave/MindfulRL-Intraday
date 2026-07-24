@@ -1,7 +1,6 @@
 # ArkScope I18N-6 Release Design
 
-> **Status: INDEPENDENT SPEC REVIEW GREEN — IMPLEMENTATION PLAN WRITTEN;
-> INDEPENDENT PLAN REVIEW PENDING**
+> **Status: INDEPENDENT PLAN REVIEW GREEN — IMPLEMENTATION CLEARED**
 >
 > Written against merged `master` at `cf7050ed` on 2026-07-25. This document
 > is the product and verification authority for the final app-wide i18n
