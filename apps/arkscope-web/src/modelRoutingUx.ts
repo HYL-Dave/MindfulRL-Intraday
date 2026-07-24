@@ -8,7 +8,6 @@ import type {
   ProviderCredential,
   TaskRoute,
 } from "./api";
-import zhHantCommon from "./i18n/resources/zh-Hant/common";
 
 export type ModelCommonT = TFunction<"common">;
 
@@ -82,46 +81,6 @@ export function modelEntryLabel(
     case null: return baseLabel;
   }
 }
-
-// Research presentation migrates in the next tranche steps. Until then, its
-// existing zh-Hant projection references the Common resource owner directly.
-export const MODEL_UX_LABELS: {
-  groups: readonly string[];
-  reasons: Record<string, string>;
-  authModes: Record<string, string>;
-  thinking: Record<string, string>;
-} = {
-  groups: [
-    zhHantCommon.models.groups.available,
-    zhHantCommon.models.groups.visibleDisabled,
-    zhHantCommon.models.groups.advanced,
-    zhHantCommon.models.groups.current,
-  ],
-  reasons: {
-    missing_active_credential: zhHantCommon.models.reasons.missingActiveCredential,
-    task_auth_mode_unsupported: zhHantCommon.models.reasons.taskAuthModeUnsupported,
-    task_test_unsupported: zhHantCommon.models.reasons.taskTestUnsupported,
-    task_capability_missing: zhHantCommon.models.reasons.taskCapabilityMissing,
-    model_not_visible: zhHantCommon.models.reasons.modelNotVisible,
-    model_not_in_registry: zhHantCommon.models.reasons.modelNotInRegistry,
-    discovery_unavailable: zhHantCommon.models.reasons.discoveryUnavailable,
-    provider_call_failed: zhHantCommon.models.reasons.providerCallFailed,
-    reauth_required: zhHantCommon.models.reasons.reauthRequired,
-  },
-  authModes: {
-    api_key: zhHantCommon.models.authModes.apiKey,
-    api_key_pool: zhHantCommon.models.authModes.apiKeyPool,
-    chatgpt_oauth: zhHantCommon.models.authModes.chatgptOauth,
-    claude_code_oauth: zhHantCommon.models.authModes.claudeCodeOauth,
-  },
-  thinking: {
-    none: zhHantCommon.models.thinkingModes.none,
-    manual_budget: zhHantCommon.models.thinkingModes.manualBudget,
-    adaptive_opt_in: zhHantCommon.models.thinkingModes.adaptiveOptIn,
-    adaptive_default_on: zhHantCommon.models.thinkingModes.adaptiveDefaultOn,
-    adaptive_always_on: zhHantCommon.models.thinkingModes.adaptiveAlwaysOn,
-  },
-};
 
 export interface DraftRouteValue {
   provider: ModelProvider;

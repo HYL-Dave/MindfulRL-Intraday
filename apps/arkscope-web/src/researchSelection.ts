@@ -4,7 +4,6 @@ import type {
   ModelProvider,
 } from "./api";
 import { modelProviderReason, optionReason } from "./modelPicker";
-import { MODEL_UX_LABELS } from "./modelRoutingUx";
 import { effortOptionsForModel } from "./researchModels";
 
 export interface ResearchTuple {
@@ -24,34 +23,29 @@ interface StorageWriter extends StorageReader {
   removeItem(key: string): void;
 }
 
-interface SelectionPresentation {
+interface SelectionSemantics {
   authMode: CredentialAuthType | null;
   quotaKind: "subscription" | "api" | null;
-  authLabel: string | null;
-  billingCopy: string | null;
 }
 
-export type ResearchSelectionResult = SelectionPresentation & (
+export type ResearchSelectionResult = SelectionSemantics & (
   | {
       state: "ready";
       tuple: ResearchTuple;
       provenance: ResearchSelectionProvenance;
       reasonCode: null;
-      reasonLabel: null;
     }
   | {
       state: "blocked";
       tuple: ResearchTuple;
       provenance: ResearchSelectionProvenance;
       reasonCode: string;
-      reasonLabel: string;
     }
   | {
       state: "needs_selection";
       tuple: null;
       provenance: null;
       reasonCode: null;
-      reasonLabel: null;
     }
 );
 
@@ -121,25 +115,11 @@ export function writeExplicitResearchSelection(
   }
 }
 
-function presentation(authMode: CredentialAuthType | null): SelectionPresentation {
-  if (!authMode) {
-    return { authMode: null, quotaKind: null, authLabel: null, billingCopy: null };
-  }
-  const quotaKind = quotaKindForAuthMode(authMode);
+function selectionSemantics(authMode: CredentialAuthType | null): SelectionSemantics {
   return {
     authMode,
-    quotaKind,
-    authLabel: MODEL_UX_LABELS.authModes[authMode] ?? authMode,
-    billingCopy: quotaKind === "subscription"
-      ? "使用訂閱額度，非 API 帳單"
-      : quotaKind === "api" ? "使用 API 額度，會計入 API 帳單" : null,
+    quotaKind: quotaKindForAuthMode(authMode),
   };
-}
-
-function reasonLabel(reasonCode: string): string {
-  if (reasonCode === "effort_not_supported") return "此模型不支援已選 effort";
-  if (reasonCode === "runtime_unavailable") return "此 provider 的執行環境目前不可用";
-  return MODEL_UX_LABELS.reasons[reasonCode] ?? reasonCode;
 }
 
 function blocked(
@@ -153,8 +133,7 @@ function blocked(
     tuple,
     provenance,
     reasonCode,
-    reasonLabel: reasonLabel(reasonCode),
-    ...presentation(authMode),
+    ...selectionSemantics(authMode),
   };
 }
 
@@ -182,11 +161,8 @@ export function resolveResearchSelection({
       tuple: null,
       provenance: null,
       reasonCode: null,
-      reasonLabel: null,
       authMode: null,
       quotaKind: null,
-      authLabel: null,
-      billingCopy: null,
     };
   }
   if (!tuple && hasActiveThread && threadSelection) {
@@ -212,11 +188,8 @@ export function resolveResearchSelection({
       tuple: null,
       provenance: null,
       reasonCode: null,
-      reasonLabel: null,
       authMode: null,
       quotaKind: null,
-      authLabel: null,
-      billingCopy: null,
     };
   }
 
@@ -251,8 +224,7 @@ export function resolveResearchSelection({
     tuple,
     provenance,
     reasonCode: null,
-    reasonLabel: null,
-    ...presentation(authMode),
+    ...selectionSemantics(authMode),
   };
 }
 

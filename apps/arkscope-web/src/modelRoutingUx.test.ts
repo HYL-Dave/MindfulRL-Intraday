@@ -7,7 +7,6 @@ import * as modelRoutingUx from "./modelRoutingUx";
 import {
   blockedRouteSaves,
   isTaskTestSnapshotCurrent,
-  MODEL_UX_LABELS,
   providerContexts,
   routesSemanticallyEqual,
   type DraftRouteValue,
@@ -17,12 +16,21 @@ import {
 
 describe("Models terminology", () => {
   it("keeps status, auth, thinking, and group copy in one canonical table", () => {
-    expect(MODEL_UX_LABELS.groups).toEqual([
-      "可供此任務使用", "此登入可見", "進階／未驗證", "目前路由",
+    expect(modelRoutingUx).not.toHaveProperty("MODEL_UX_LABELS");
+    const instance = createInstance();
+    initializeI18n(instance, "zh-Hant");
+    const t = instance.getFixedT("zh-Hant", "common");
+    expect([
+      modelRoutingUx.modelGroupLabel("available", t),
+      modelRoutingUx.modelReasonLabel("reauth_required", t),
+      modelRoutingUx.modelAuthModeLabel("chatgpt_oauth", t),
+      modelRoutingUx.modelThinkingModeLabel("adaptive_default_on", t),
+    ]).toEqual([
+      "可供此任務使用",
+      "登入已失效，請重新登入",
+      "ChatGPT 訂閱登入",
+      "預設開啟 adaptive thinking",
     ]);
-    expect(MODEL_UX_LABELS.reasons.reauth_required).toBe("登入已失效，請重新登入");
-    expect(MODEL_UX_LABELS.authModes.chatgpt_oauth).toBe("ChatGPT 訂閱登入");
-    expect(MODEL_UX_LABELS.thinking.adaptive_default_on).toBe("預設開啟 adaptive thinking");
   });
 
   it("resolves every shared model group reason auth mode thinking mode and compatibility context in both locales", () => {

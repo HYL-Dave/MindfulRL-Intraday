@@ -224,15 +224,16 @@ describe("research selection precedence and validation", () => {
     expect(subscription).toMatchObject({
       authMode: "chatgpt_oauth",
       quotaKind: "subscription",
-      authLabel: "ChatGPT 訂閱登入",
     });
-    expect(subscription.billingCopy).toContain("訂閱額度");
     expect(apiKey).toMatchObject({
       authMode: "api_key",
       quotaKind: "api",
-      authLabel: "API key",
     });
-    expect(apiKey.billingCopy).toContain("API 帳單");
+    for (const result of [subscription, apiKey]) {
+      expect(result).not.toHaveProperty("authLabel");
+      expect(result).not.toHaveProperty("billingCopy");
+      expect(result).not.toHaveProperty("reasonLabel");
+    }
   });
 
   it("fails closed for absent effective truth and applies SDK veto only afterward", () => {

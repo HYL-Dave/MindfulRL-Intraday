@@ -160,6 +160,7 @@ const isMissingResearchThreadError = (error: unknown): boolean => (
   error instanceof ApiError
   && error.status === 404
   && THREAD_ROUTE_PATH.test(error.path)
+  && (error.code === null || error.code === "thread_missing")
 );
 
 function researchRunFailure(error: unknown): { code: string; detail: string | null } {
@@ -1290,7 +1291,17 @@ function Bubble({
     <div className={cls} data-state={error?.state}>
       {m.role === "assistant" && (m.model || m.maxTurns) && (
         <div className="research-bubble-meta muted tiny">
-          {m.model && <span className="research-model">{m.provider}/{m.model}{m.effort && m.effort !== "default" ? ` · ${m.effort}` : ""}</span>}
+          {m.model && (
+            <span className="research-model">
+              {m.provider}/{m.model}
+              {m.effort && m.effort !== "default" ? (
+                <>
+                  {" "}
+                  {researchT(($) => $.workspace.effortSummary, { effort: m.effort })}
+                </>
+              ) : null}
+            </span>
+          )}
           {m.maxTurns && (
             <span className="research-maxturns">
               {" "}{researchT(($) => $.workspace.toolLimitReached)}

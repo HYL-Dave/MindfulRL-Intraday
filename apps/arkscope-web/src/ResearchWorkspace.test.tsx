@@ -16,6 +16,7 @@ import type {
   RuntimeConfig,
   TaskRoute,
 } from "./api";
+import { ApiError } from "./api";
 import { ResearchView } from "./Research";
 import { RESEARCH_SELECTION_STORAGE_KEY } from "./researchSelection";
 import type { NavigationTarget } from "./shell/navigation";
@@ -553,46 +554,59 @@ describe("Research workspace contracts", () => {
 
   it("preserves transcript tool model effort and generated answer bytes", async () => {
     await i18n.changeLanguage("en");
-    const generatedAnswer = "GENERATED_SOURCE_BYTES::<alpha>&研究[]{}";
-    const toolInput = { query: "SOURCE_QUERY::<do-not-localize>", count: 7 };
-    const toolResult = "SOURCE_RESULT::<verbatim>";
-    vi.stubGlobal("fetch", stubFetch({
-      threads: [thread("thread-bytes", "SOURCE_TITLE::<verbatim>")],
-      messages: {
-        "thread-bytes": [message(generatedAnswer, {
-          provider: "future-provider",
-          model: "model/source-v1",
-          effort: "source-effort",
-          tool_calls: [{ name: "source_tool_id", input: toolInput, result_preview: toolResult }],
-        })],
-      },
-    }));
-    window.sessionStorage.setItem("arkscope.aiResearch.activeThreadId", "thread-bytes");
-    await mountResearch();
-    await vi.waitFor(() => expect(host!.textContent).toContain(generatedAnswer));
+    const originalEffortSummary = i18n.getResource(
+      "en",
+      "research",
+      "workspace.effortSummary",
+    ) as string;
+    i18n.addResource("en", "research", "workspace.effortSummary", "::effort={{effort}}::");
+    try {
+      const generatedAnswer = "GENERATED_SOURCE_BYTES::<alpha>&研究[]{}";
+      const toolInput = { query: "SOURCE_QUERY::<do-not-localize>", count: 7 };
+      const toolResult = "SOURCE_RESULT::<verbatim>";
+      const sourceEffort = "source-effort::<>&{{raw}}";
+      vi.stubGlobal("fetch", stubFetch({
+        threads: [thread("thread-bytes", "SOURCE_TITLE::<verbatim>")],
+        messages: {
+          "thread-bytes": [message(generatedAnswer, {
+            provider: "future-provider",
+            model: "model/source-v1",
+            effort: sourceEffort,
+            tool_calls: [{ name: "source_tool_id", input: toolInput, result_preview: toolResult }],
+          })],
+        },
+      }));
+      window.sessionStorage.setItem("arkscope.aiResearch.activeThreadId", "thread-bytes");
+      await mountResearch();
+      await vi.waitFor(() => expect(host!.textContent).toContain(generatedAnswer));
 
-    const answerBubble = host!.querySelector(".research-bubble.assistant")!;
-    const model = answerBubble.querySelector(".research-model")!;
-    expect(model.textContent).toBe("future-provider/model/source-v1 · source-effort");
-    await click(answerBubble.querySelector(".research-bubble-actions button")!);
-    expect(document.querySelector("[role='dialog']")?.textContent).toContain(
-      "Evidence and Run Details",
-    );
-    const input = document.querySelector(".research-evidence-input")!;
-    const preview = document.querySelector(".research-evidence-preview")!;
-    expect(input.textContent).toBe(JSON.stringify(toolInput, null, 2));
-    expect(preview.textContent).toBe(toolResult);
+      const answerBubble = host!.querySelector(".research-bubble.assistant")!;
+      const model = answerBubble.querySelector(".research-model")!;
+      expect(model.textContent).toBe(
+        `future-provider/model/source-v1 ::effort=${sourceEffort}::`,
+      );
+      await click(answerBubble.querySelector(".research-bubble-actions button")!);
+      expect(document.querySelector("[role='dialog']")?.textContent).toContain(
+        "Evidence and Run Details",
+      );
+      const input = document.querySelector(".research-evidence-input")!;
+      const preview = document.querySelector(".research-evidence-preview")!;
+      expect(input.textContent).toBe(JSON.stringify(toolInput, null, 2));
+      expect(preview.textContent).toBe(toolResult);
 
-    await act(async () => { await i18n.changeLanguage("zh-Hant"); });
-    await flush();
-    expect(host!.querySelector(".research-bubble.assistant")).toBe(answerBubble);
-    expect(answerBubble.textContent).toContain(generatedAnswer);
-    expect(answerBubble.querySelector(".research-model")).toBe(model);
-    expect(model.textContent).toBe("future-provider/model/source-v1 · source-effort");
-    expect(document.querySelector(".research-evidence-input")).toBe(input);
-    expect(input.textContent).toBe(JSON.stringify(toolInput, null, 2));
-    expect(document.querySelector(".research-evidence-preview")).toBe(preview);
-    expect(preview.textContent).toBe(toolResult);
+      await act(async () => { await i18n.changeLanguage("zh-Hant"); });
+      await flush();
+      expect(host!.querySelector(".research-bubble.assistant")).toBe(answerBubble);
+      expect(answerBubble.textContent).toContain(generatedAnswer);
+      expect(answerBubble.querySelector(".research-model")).toBe(model);
+      expect(model.textContent).toBe(`future-provider/model/source-v1 · ${sourceEffort}`);
+      expect(document.querySelector(".research-evidence-input")).toBe(input);
+      expect(input.textContent).toBe(JSON.stringify(toolInput, null, 2));
+      expect(document.querySelector(".research-evidence-preview")).toBe(preview);
+      expect(preview.textContent).toBe(toolResult);
+    } finally {
+      i18n.addResource("en", "research", "workspace.effortSummary", originalEffortSummary);
+    }
   });
 
   it("renders late stream outcomes in the current locale without replaying the request", async () => {
@@ -628,38 +642,67 @@ describe("Research workspace contracts", () => {
 
   it("uses structured thread not-found facts instead of parsing Error.message", async () => {
     await i18n.changeLanguage("en");
-    const baseFetch = stubFetch();
-    let statusReads = 0;
-    const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
-      const url = new URL(typeof input === "string" ? input : input instanceof URL ? input.href : input.url);
-      if (url.pathname === "/research/threads/missing-thread") {
-        return {
-          ok: false,
-          get status() {
-            statusReads += 1;
-            return statusReads === 1 ? 500 : 404;
-          },
-          json: async () => ({
-            detail: {
-              code: "thread_missing",
-              message: "PLANTED_MESSAGE_NOT_AUTHORITY",
-            },
-          }),
-        } as unknown as Response;
-      }
-      return await baseFetch(input, init);
-    });
-    vi.stubGlobal("fetch", fetchMock);
-    window.sessionStorage.setItem("arkscope.aiResearch.activeThreadId", "missing-thread");
-    await mountResearch();
-    await vi.waitFor(() => expect(host!.textContent).toContain(
-      "The requested Research conversation was not found and may have been deleted.",
-    ));
-    expect(host!.textContent).not.toContain("PLANTED_MESSAGE");
-    expect(fetchMock.mock.calls.filter(([input]) => (
-      new URL(String(input)).pathname === "/research/threads/missing-thread"
-    ))).toHaveLength(1);
-    expect(statusReads).toBeGreaterThanOrEqual(2);
+    const missingCopy = "The requested Research conversation was not found and may have been deleted.";
+    const genericCopy = "The requested Research conversation could not be loaded. Try again later.";
+    const cases = [
+      { id: "missing-null", code: null, expected: missingCopy },
+      { id: "missing-code", code: "thread_missing", expected: missingCopy },
+      { id: "unknown-code", code: "future_missing_code", expected: genericCopy },
+      {
+        id: "wrong-child",
+        code: "thread_missing",
+        errorPath: "/research/threads/wrong-child/events",
+        expected: genericCopy,
+      },
+      {
+        id: "wrong-query",
+        code: null,
+        errorPath: "/research/threads/wrong-query?force=true",
+        expected: genericCopy,
+      },
+    ] as const;
+
+    for (const scenario of cases) {
+      unmount();
+      window.sessionStorage.clear();
+      const baseFetch = stubFetch();
+      const requestedPath = `/research/threads/${scenario.id}`;
+      const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+        const url = new URL(
+          typeof input === "string" ? input : input instanceof URL ? input.href : input.url,
+        );
+        if (url.pathname === requestedPath) {
+          if ("errorPath" in scenario) {
+            throw new ApiError(
+              "PLANTED_MESSAGE_NOT_AUTHORITY",
+              scenario.errorPath,
+              404,
+              scenario.code,
+              "RAW_DIAGNOSTIC_NOT_NORMAL_UI",
+            );
+          }
+          return json({
+            detail: scenario.code === null
+              ? "PLANTED_MESSAGE_NOT_AUTHORITY"
+              : {
+                  code: scenario.code,
+                  message: "PLANTED_MESSAGE_NOT_AUTHORITY",
+                },
+          }, 404);
+        }
+        return await baseFetch(input, init);
+      });
+      vi.stubGlobal("fetch", fetchMock);
+      window.sessionStorage.setItem("arkscope.aiResearch.activeThreadId", scenario.id);
+
+      await mountResearch();
+      await vi.waitFor(() => expect(host!.textContent).toContain(scenario.expected));
+      expect(host!.textContent).not.toContain("PLANTED_MESSAGE");
+      expect(host!.textContent).not.toContain("RAW_DIAGNOSTIC");
+      expect(fetchMock.mock.calls.filter(([input]) => (
+        new URL(String(input)).pathname === requestedPath
+      ))).toHaveLength(1);
+    }
   });
 
   it("keeps active progress and error chrome localized in one mounted workspace", async () => {
