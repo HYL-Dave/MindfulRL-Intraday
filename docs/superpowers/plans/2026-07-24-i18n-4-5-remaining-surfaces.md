@@ -165,6 +165,22 @@ copy, not a wording correction. Task 6 may change this one resource value
 outside its six component/test owners. Resource keys/counts, scanner counts,
 runtime behavior, and all other zh-Hant bytes remain unchanged.
 
+### Implementation grounding correction: ownership proof after debt closure
+
+Task 9's RED empty-debt transition exposed one omitted test dependency. The
+existing `contains the reviewed remaining-surface namespace inventory in both
+locales` node used the debt manifest as a temporary source-list witness for the
+Portfolio ownership fixture. Once the reviewed final state empties that
+manifest, the old comparison necessarily fails even though the fixture remains
+the durable migration audit.
+
+The same node therefore evolves in place with zero accounting change. It now
+requires the final debt manifest to be empty, pins the fixture at `372` unique
+source claims / `391` occurrences across the exact five Portfolio source
+files, and retains its exhaustive claim-to-resource/path checks. Task 9 adds
+`src/i18n/resources.test.ts` to its test-only file list. No resource, product,
+scanner-policy, or test-node change is authorized by this correction.
+
 ---
 
 ## Task 0 Evidence
@@ -1363,8 +1379,8 @@ close the named docs backlog.
 
 ## Task 9: Close Scanner Debt and Record Formatter Inventory
 
-**Files:** scanner tool/tests/manifests, foundation boundary, formatter inventory
-doc, and this plan evidence ledger.
+**Files:** scanner tool/tests/manifests, foundation and resource boundaries,
+formatter inventory doc, and this plan evidence ledger.
 
 - [ ] **Step 1: Adjudicate the three API records**
 
@@ -1425,6 +1441,7 @@ doc, and this plan evidence ledger.
   ```bash
   git add apps/arkscope-web/scripts/i18n \
     apps/arkscope-web/src/i18n/foundationBoundaries.test.ts \
+    apps/arkscope-web/src/i18n/resources.test.ts \
     apps/arkscope-web/src/i18n/visibleLiteralScanner.test.ts \
     docs/design/I18N_FORMATTER_INVENTORY.md
   git commit -m "test: close application localization debt"
