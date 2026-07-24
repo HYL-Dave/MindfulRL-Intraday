@@ -697,8 +697,12 @@ describe("Research workspace contracts", () => {
   it("keeps model selection metadata and no decorated-label reverse parsing", async () => {
     await i18n.changeLanguage("en");
     const sourceCatalog = catalog("chatgpt_oauth");
-    const selected = sourceCatalog.effective!.tasks.ai_research!.providers.openai!
-      .models.find((entry) => entry.id === "gpt-5.6-luna")!;
+    const openAi = sourceCatalog.effective?.tasks.ai_research?.providers?.openai;
+    expect(openAi).toBeDefined();
+    if (!openAi) throw new Error("Research catalog fixture must include OpenAI");
+    const selected = openAi.models.find((entry) => entry.id === "gpt-5.6-luna");
+    expect(selected).toBeDefined();
+    if (!selected) throw new Error("Research catalog fixture must include gpt-5.6-luna");
     selected.label = "Luna display · SOURCE / decorated";
     const fetchMock = stubFetch({ catalog: sourceCatalog });
     vi.stubGlobal("fetch", fetchMock);
