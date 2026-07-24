@@ -192,6 +192,12 @@ function json(value: unknown, status = 200): Response {
   });
 }
 
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((done) => { resolve = done; });
+  return { promise, resolve };
+}
+
 type FetchOptions = {
   catalog?: ModelCatalog;
   profile?: InvestorProfileResponse;
@@ -402,6 +408,18 @@ async function setTextarea(value: string) {
   });
 }
 
+async function setInput(element: HTMLInputElement, value: string) {
+  const setter = Object.getOwnPropertyDescriptor(
+    HTMLInputElement.prototype, "value",
+  )?.set;
+  await act(async () => {
+    setter?.call(element, value);
+    element.dispatchEvent(new Event("input", { bubbles: true }));
+    await Promise.resolve();
+  });
+  await flush();
+}
+
 async function setSelect(element: HTMLSelectElement, value: string) {
   const setter = Object.getOwnPropertyDescriptor(
     HTMLSelectElement.prototype, "value",
@@ -424,6 +442,295 @@ afterEach(async () => {
 });
 
 describe("Research workspace contracts", () => {
+  it("renders the complete English Research workspace around original source content", async () => {
+    await i18n.changeLanguage("en");
+    const sourceTitle = "SOURCE::MU / Research 原始標題";
+    const sourceQuestion = "SOURCE_QUESTION::<keep exactly>";
+    const generatedAnswer = "GENERATED_BYTES_ß_研究_[]{}";
+    vi.stubGlobal("fetch", stubFetch({
+      threads: [thread("thread-english", sourceTitle)],
+      messages: {
+        "thread-english": [
+          message(sourceQuestion, { role: "user" }),
+          message(generatedAnswer),
+        ],
+      },
+    }));
+    window.sessionStorage.setItem(
+      "arkscope.aiResearch.activeThreadId",
+      "thread-english",
+    );
+
+    await mountResearch();
+    await vi.waitFor(() => expect(host!.textContent).toContain(generatedAnswer));
+
+    expect(host!.querySelector("h1")?.textContent).toBe("AI Research");
+    expect(button("History")).toBeDefined();
+    expect(button("Evidence")).toBeDefined();
+    expect(button("New Research")).toBeDefined();
+    expect(host!.querySelector("textarea")?.getAttribute("placeholder")).toBe(
+      "Ask a question... (Enter to send, Shift+Enter for a new line)",
+    );
+    expect(host!.querySelector(".research-conversation-title")?.textContent).toBe(sourceTitle);
+    expect(host!.textContent).toContain(sourceQuestion);
+    expect(host!.textContent).toContain(generatedAnswer);
+  });
+
+  it("switches locale without remounting the workspace or resetting thread draft focus or drawers", async () => {
+    await i18n.changeLanguage("zh-Hant");
+    const fetchMock = stubFetch({
+      threads: [thread("thread-stable", "SOURCE_THREAD_TITLE")],
+      messages: {
+        "thread-stable": [message("SOURCE_ANSWER", {
+          tool_calls: [{
+            name: "source_tool",
+            input: { source: "SOURCE_INPUT" },
+            result_preview: "SOURCE_RESULT",
+          }],
+        })],
+      },
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    window.sessionStorage.setItem("arkscope.aiResearch.activeThreadId", "thread-stable");
+    await mountResearch();
+    await vi.waitFor(() => expect(button("查看證據")).toBeDefined());
+    await setTextarea("SOURCE_DRAFT_NOT_TRANSLATED");
+    await click(button("查看證據")!);
+    await click(document.querySelector("[aria-label='釘選']")!);
+    await click(button("歷史")!);
+
+    const workspace = host!.querySelector(".research-workspace")!;
+    const textarea = host!.querySelector("textarea") as HTMLTextAreaElement;
+    const evidenceDrawer = host!.querySelector(".ui-drawer-inline")!;
+    const historyDrawer = document.querySelector("[role='dialog']")!;
+    const search = document.querySelector("[aria-label='搜尋歷史']") as HTMLInputElement;
+    await setInput(search, "SOURCE_SEARCH_DRAFT");
+    search.focus();
+    const researchRequests = fetchMock.mock.calls.filter(([input]) => (
+      new URL(String(input)).pathname.startsWith("/research/")
+    )).length;
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    await flush();
+
+    expect(host!.querySelector(".research-workspace")).toBe(workspace);
+    expect(host!.querySelector("textarea")).toBe(textarea);
+    expect(textarea.value).toBe("SOURCE_DRAFT_NOT_TRANSLATED");
+    expect(host!.querySelector(".ui-drawer-inline")).toBe(evidenceDrawer);
+    expect(document.querySelector("[role='dialog']")).toBe(historyDrawer);
+    expect(document.querySelector("[aria-label='Search history']")).toBe(search);
+    expect(search.value).toBe("SOURCE_SEARCH_DRAFT");
+    expect(document.activeElement).toBe(search);
+    expect(historyDrawer.textContent).toContain("Research History");
+    expect(evidenceDrawer.textContent).toContain("Evidence and Run Details");
+    expect(fetchMock.mock.calls.filter(([input]) => (
+      new URL(String(input)).pathname.startsWith("/research/")
+    ))).toHaveLength(researchRequests);
+  });
+
+  it("localizes unselected suggestions and freezes the selected draft across locale changes", async () => {
+    await i18n.changeLanguage("zh-Hant");
+    vi.stubGlobal("fetch", stubFetch());
+    await mountResearch();
+
+    const suggestion = buttonContaining("最近 SA 對 SMCI")!;
+    expect(suggestion.textContent).toContain("最近 SA 對 SMCI 有什麼新文章");
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    await flush();
+    expect(buttonContaining("What new Seeking Alpha articles")).toBe(suggestion);
+
+    await click(suggestion);
+    const textarea = host!.querySelector("textarea") as HTMLTextAreaElement;
+    const selectedDraft = "What new Seeking Alpha articles and comment themes are there for SMCI?";
+    expect(textarea.value).toBe(selectedDraft);
+
+    await act(async () => { await i18n.changeLanguage("zh-Hant"); });
+    await flush();
+    expect(textarea.value).toBe(selectedDraft);
+    expect(buttonContaining("最近 SA 對 SMCI")).toBe(suggestion);
+  });
+
+  it("preserves transcript tool model effort and generated answer bytes", async () => {
+    await i18n.changeLanguage("en");
+    const generatedAnswer = "GENERATED_SOURCE_BYTES::<alpha>&研究[]{}";
+    const toolInput = { query: "SOURCE_QUERY::<do-not-localize>", count: 7 };
+    const toolResult = "SOURCE_RESULT::<verbatim>";
+    vi.stubGlobal("fetch", stubFetch({
+      threads: [thread("thread-bytes", "SOURCE_TITLE::<verbatim>")],
+      messages: {
+        "thread-bytes": [message(generatedAnswer, {
+          provider: "future-provider",
+          model: "model/source-v1",
+          effort: "source-effort",
+          tool_calls: [{ name: "source_tool_id", input: toolInput, result_preview: toolResult }],
+        })],
+      },
+    }));
+    window.sessionStorage.setItem("arkscope.aiResearch.activeThreadId", "thread-bytes");
+    await mountResearch();
+    await vi.waitFor(() => expect(host!.textContent).toContain(generatedAnswer));
+
+    const answerBubble = host!.querySelector(".research-bubble.assistant")!;
+    const model = answerBubble.querySelector(".research-model")!;
+    expect(model.textContent).toBe("future-provider/model/source-v1 · source-effort");
+    await click(answerBubble.querySelector(".research-bubble-actions button")!);
+    expect(document.querySelector("[role='dialog']")?.textContent).toContain(
+      "Evidence and Run Details",
+    );
+    const input = document.querySelector(".research-evidence-input")!;
+    const preview = document.querySelector(".research-evidence-preview")!;
+    expect(input.textContent).toBe(JSON.stringify(toolInput, null, 2));
+    expect(preview.textContent).toBe(toolResult);
+
+    await act(async () => { await i18n.changeLanguage("zh-Hant"); });
+    await flush();
+    expect(host!.querySelector(".research-bubble.assistant")).toBe(answerBubble);
+    expect(answerBubble.textContent).toContain(generatedAnswer);
+    expect(answerBubble.querySelector(".research-model")).toBe(model);
+    expect(model.textContent).toBe("future-provider/model/source-v1 · source-effort");
+    expect(document.querySelector(".research-evidence-input")).toBe(input);
+    expect(input.textContent).toBe(JSON.stringify(toolInput, null, 2));
+    expect(document.querySelector(".research-evidence-preview")).toBe(preview);
+    expect(preview.textContent).toBe(toolResult);
+  });
+
+  it("renders late stream outcomes in the current locale without replaying the request", async () => {
+    await i18n.changeLanguage("zh-Hant");
+    const createResult = deferred<Response>();
+    const fetchMock = stubFetch({ createResponder: () => createResult.promise });
+    vi.stubGlobal("fetch", fetchMock);
+    await mountResearch();
+    const prompt = "SOURCE_LATE_PROMPT::<verbatim>";
+    await setTextarea(prompt);
+    await click(button("送出")!);
+    await vi.waitFor(() => expect(fetchMock.mock.calls.filter(([, init]) => (
+      init?.method === "POST"
+    ))).toHaveLength(1));
+
+    await act(async () => {
+      await i18n.changeLanguage("en");
+      createResult.resolve(json({
+        detail: { code: "provider_call_failed", message: "RAW_LATE_DIAGNOSTIC" },
+      }, 503));
+      await Promise.resolve();
+    });
+    await flush();
+    await vi.waitFor(() => expect(host!.textContent).toContain("Provider call failed"));
+
+    expect(host!.textContent).toContain(prompt);
+    expect(host!.textContent).toContain(
+      "The Provider could not complete this Research call. Try again later.",
+    );
+    expect(host!.textContent).not.toContain("RAW_LATE_DIAGNOSTIC");
+    expect(fetchMock.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(1);
+  });
+
+  it("uses structured thread not-found facts instead of parsing Error.message", async () => {
+    await i18n.changeLanguage("en");
+    const baseFetch = stubFetch();
+    let statusReads = 0;
+    const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+      const url = new URL(typeof input === "string" ? input : input instanceof URL ? input.href : input.url);
+      if (url.pathname === "/research/threads/missing-thread") {
+        return {
+          ok: false,
+          get status() {
+            statusReads += 1;
+            return statusReads === 1 ? 500 : 404;
+          },
+          json: async () => ({
+            detail: {
+              code: "thread_missing",
+              message: "PLANTED_MESSAGE_NOT_AUTHORITY",
+            },
+          }),
+        } as unknown as Response;
+      }
+      return await baseFetch(input, init);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    window.sessionStorage.setItem("arkscope.aiResearch.activeThreadId", "missing-thread");
+    await mountResearch();
+    await vi.waitFor(() => expect(host!.textContent).toContain(
+      "The requested Research conversation was not found and may have been deleted.",
+    ));
+    expect(host!.textContent).not.toContain("PLANTED_MESSAGE");
+    expect(fetchMock.mock.calls.filter(([input]) => (
+      new URL(String(input)).pathname === "/research/threads/missing-thread"
+    ))).toHaveLength(1);
+    expect(statusReads).toBeGreaterThanOrEqual(2);
+  });
+
+  it("keeps active progress and error chrome localized in one mounted workspace", async () => {
+    await i18n.changeLanguage("zh-Hant");
+    const active = run("run-active", "thread-active", "running", {
+      error_code: null,
+    });
+    const activeEvents = deferred<Response>();
+    vi.stubGlobal("fetch", stubFetch({
+      threads: [thread("thread-active", "SOURCE_ACTIVE_THREAD", active)],
+      messages: {
+        "thread-active": [message("RAW_ERROR_DETAIL", {
+          is_error: true,
+          error_code: "model_timeout",
+          error: "RAW_ERROR_DETAIL",
+        })],
+      },
+      events: { "run-active": activeEvents.promise },
+    }));
+    window.sessionStorage.setItem("arkscope.aiResearch.activeThreadId", "thread-active");
+    await mountResearch();
+    await vi.waitFor(() => expect(host!.querySelector("[data-stage='running']")).not.toBeNull());
+    const progress = host!.querySelector("[data-stage='running']")!;
+    const errorBubble = host!.querySelector(".research-bubble.assistant.failed")!;
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    await flush();
+    expect(host!.querySelector("[data-stage='running']")).toBe(progress);
+    expect(progress.textContent).toContain("Running model and tools");
+    expect(host!.querySelector(".research-bubble.assistant.failed")).toBe(errorBubble);
+    expect(errorBubble.textContent).toContain("Model run timed out");
+    expect(errorBubble.textContent).not.toContain("RAW_ERROR_DETAIL");
+  });
+
+  it("keeps model selection metadata and no decorated-label reverse parsing", async () => {
+    await i18n.changeLanguage("en");
+    const sourceCatalog = catalog("chatgpt_oauth");
+    const selected = sourceCatalog.effective!.tasks.ai_research!.providers.openai!
+      .models.find((entry) => entry.id === "gpt-5.6-luna")!;
+    selected.label = "Luna display · SOURCE / decorated";
+    const fetchMock = stubFetch({ catalog: sourceCatalog });
+    vi.stubGlobal("fetch", fetchMock);
+    await mountResearch();
+    await vi.waitFor(() => expect(host!.querySelector(
+      ".research-pickerbar .research-pick select",
+    )).not.toBeNull());
+    const modelSelect = host!.querySelector<HTMLSelectElement>(
+      ".research-pickerbar .research-pick select",
+    )!;
+    expect(modelSelect.selectedOptions[0]?.textContent).toContain(
+      "Luna display · SOURCE / decorated",
+    );
+
+    expect(host!.textContent).toContain("Settings route");
+    expect(host!.textContent).toContain("ChatGPT subscription sign-in");
+    expect(host!.textContent).toContain("Uses subscription quota, not API billing");
+    await setTextarea("SOURCE_MODEL_SELECTION_PROMPT");
+    await click(button("Send")!);
+    await vi.waitFor(() => expect(fetchMock.mock.calls.some(([, init]) => (
+      init?.method === "POST"
+    ))).toBe(true));
+    const createCall = fetchMock.mock.calls.find(([, init]) => init?.method === "POST")!;
+    const body = JSON.parse(String(createCall[1]?.body)) as Record<string, unknown>;
+    expect(body).toMatchObject({
+      provider: "openai",
+      model: "gpt-5.6-luna",
+      effort: "high",
+    });
+    expect(String(body.model)).not.toContain("Luna display");
+  });
+
   it("reactively localizes shared stance and trace without remounting Research", async () => {
     await i18n.changeLanguage("zh-Hant");
     const enabledProfile: InvestorProfileResponse = {

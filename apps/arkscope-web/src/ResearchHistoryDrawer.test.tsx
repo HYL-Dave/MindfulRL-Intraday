@@ -2,6 +2,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
+import i18n from "i18next";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type {
@@ -377,6 +378,20 @@ async function flush() {
   });
 }
 
+async function resolveInAct<T>(
+  request: { promise: Promise<T>; resolve: (value: T) => void },
+  value: T,
+) {
+  await act(async () => {
+    request.resolve(value);
+    await request.promise;
+    for (let index = 0; index < 12; index += 1) await Promise.resolve();
+    await new Promise<void>((resolve) => window.setTimeout(resolve, 0));
+    for (let index = 0; index < 4; index += 1) await Promise.resolve();
+  });
+  await flush();
+}
+
 const ACTIVE_THREAD_SESSION_KEY = "arkscope.aiResearch.activeThreadId";
 
 function ResearchHistoryHarness({
@@ -520,6 +535,7 @@ async function click(element: Element) {
     element.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     await Promise.resolve();
   });
+  await flush();
 }
 
 async function pressKey(element: Element, key: string) {
@@ -527,6 +543,7 @@ async function pressKey(element: Element, key: string) {
     element.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true }));
     await Promise.resolve();
   });
+  await flush();
 }
 
 async function setInput(element: HTMLInputElement | HTMLTextAreaElement, value: string) {
@@ -539,6 +556,7 @@ async function setInput(element: HTMLInputElement | HTMLTextAreaElement, value: 
     element.dispatchEvent(new Event("input", { bubbles: true }));
     await Promise.resolve();
   });
+  await flush();
 }
 
 async function setSelect(element: HTMLSelectElement, value: string) {
@@ -548,6 +566,7 @@ async function setSelect(element: HTMLSelectElement, value: string) {
     element.dispatchEvent(new Event("change", { bubbles: true }));
     await Promise.resolve();
   });
+  await flush();
 }
 
 function requestUrls(fetchMock: ReturnType<typeof vi.fn>, pathname: string): URL[] {
@@ -568,6 +587,188 @@ afterEach(() => {
 });
 
 describe("Research history drawer", () => {
+  it("localizes filters statuses and actions in both locales", async () => {
+    await i18n.changeLanguage("zh-Hant");
+    const backend = createResearchFetch({
+      current: [
+        thread("queued", "SOURCE_QUEUED", { latestRunStatus: "queued" }),
+        thread("running", "SOURCE_RUNNING", { latestRunStatus: "running" }),
+        thread("succeeded", "SOURCE_SUCCEEDED", { latestRunStatus: "succeeded" }),
+        thread("failed", "SOURCE_FAILED", { latestRunStatus: "failed" }),
+        thread("cancelled", "SOURCE_CANCELLED", { latestRunStatus: "cancelled" }),
+        thread("interrupted", "SOURCE_INTERRUPTED", { latestRunStatus: "interrupted" }),
+      ],
+    });
+    await mountResearch({ backend });
+    await click(buttonByText("歷史", host!));
+    const drawer = document.querySelector("[role='dialog']")!;
+    const firstRow = document.querySelector("[data-research-history-row='queued']")!;
+    const search = controlByLabel<HTMLInputElement>("搜尋歷史");
+    expect(drawer.textContent).toContain("研究歷史");
+    expect(drawer.textContent).toContain("排程中");
+    expect(drawer.textContent).toContain("已完成");
+    expect(document.querySelector("[aria-label='重新命名 SOURCE_QUEUED']")).not.toBeNull();
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    await flush();
+
+    expect(document.querySelector("[role='dialog']")).toBe(drawer);
+    expect(document.querySelector("[data-research-history-row='queued']")).toBe(firstRow);
+    expect(document.querySelector("[aria-label='Search history']")).toBe(search);
+    expect(drawer.textContent).toContain("Research History");
+    expect(drawer.textContent).toContain("Queued");
+    expect(drawer.textContent).toContain("Completed");
+    expect(drawer.textContent).toContain("Failed");
+    expect(drawer.textContent).toContain("Cancelled");
+    expect(drawer.textContent).toContain("Interrupted");
+    expect(document.querySelector("[aria-label='Rename SOURCE_QUEUED']")).not.toBeNull();
+    expect(document.querySelector("[aria-label='Archive SOURCE_QUEUED']")).not.toBeNull();
+    expect(document.querySelector("[aria-label='Permanently delete SOURCE_QUEUED']")).not.toBeNull();
+  });
+
+  it("renders structured 404 and 409 outcomes without parsing messages", async () => {
+    await i18n.changeLanguage("en");
+    const source = thread("thread-errors", "SOURCE_ERROR_THREAD");
+    const backend = createResearchFetch({
+      current: [source],
+      patchResponses: {
+        "thread-errors": [
+          json({
+            detail: {
+              code: "thread_missing",
+              message: "PLANTED returned 409 MESSAGE IS NOT STATUS",
+            },
+          }, 404),
+          json({
+            detail: {
+              code: "active_run_conflict",
+              message: "PLANTED returned 404 MESSAGE IS NOT STATUS",
+            },
+          }, 409),
+        ],
+      },
+    });
+    await mountResearch({ backend });
+    await click(buttonByText("歷史", host!));
+    const row = document.querySelector("[data-research-history-row='thread-errors']")!;
+    const archive = row.querySelectorAll(".research-history-actions button")[1];
+
+    await click(archive);
+    await flush();
+    expect(document.querySelector("[role='alert']")?.textContent).toContain(
+      "Research history could not be updated. Try again later.",
+    );
+    expect(document.body.textContent).not.toContain("PLANTED returned 409");
+
+    await click(archive);
+    await flush();
+    expect(document.querySelector("[role='alert']")?.textContent).toContain(
+      "A Research run is still active, so this conversation cannot be archived or permanently deleted.",
+    );
+    expect(document.body.textContent).not.toContain("PLANTED returned 404");
+  });
+
+  it("preserves search draft focus and selected thread across locale changes", async () => {
+    await i18n.changeLanguage("zh-Hant");
+    const backend = createResearchFetch({
+      current: [
+        thread("thread-a", "SOURCE_THREAD_A"),
+        thread("thread-b", "SOURCE_THREAD_B"),
+      ],
+      messages: { "thread-b": [message("SOURCE_TRANSCRIPT_B")] },
+    });
+    await mountResearch({ backend });
+    await click(buttonByText("歷史", host!));
+    await click(document.querySelector("[aria-label='開啟對話 SOURCE_THREAD_B']")!);
+    await flush();
+    const search = controlByLabel<HTMLInputElement>("搜尋歷史");
+    await setInput(search, "SOURCE_SEARCH_DRAFT");
+    await flush();
+    search.focus();
+    const activeRow = document.querySelector("[data-research-history-row='thread-b']")!;
+    const requestCount = requestUrls(backend.fetchMock, "/research/threads").length;
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    await flush();
+
+    expect(document.querySelector("[aria-label='Search history']")).toBe(search);
+    expect(search.value).toBe("SOURCE_SEARCH_DRAFT");
+    expect(document.activeElement).toBe(search);
+    expect(document.querySelector("[data-research-history-row='thread-b']")).toBe(activeRow);
+    expect(activeRow.classList.contains("active")).toBe(true);
+    expect(host!.querySelector(".research-conversation-title")?.textContent).toBe("SOURCE_THREAD_B");
+    expect(requestUrls(backend.fetchMock, "/research/threads")).toHaveLength(requestCount);
+  });
+
+  it("renders an in-flight rename result in the current locale", async () => {
+    await i18n.changeLanguage("zh-Hant");
+    const patchResult = deferred<Response>();
+    const source = thread("thread-rename-late", "SOURCE_BEFORE_RENAME");
+    const updated = { ...source, title: "SOURCE_AFTER_RENAME" };
+    const backend = createResearchFetch({
+      current: [source],
+      patchResponses: { "thread-rename-late": [patchResult.promise] },
+    });
+    await mountResearch({ backend });
+    await click(buttonByText("歷史", host!));
+    await click(document.querySelector("[aria-label='重新命名 SOURCE_BEFORE_RENAME']")!);
+    const draft = controlByLabel<HTMLInputElement>("對話名稱");
+    await setInput(draft, "SOURCE_AFTER_RENAME");
+    await click(buttonByText("儲存名稱"));
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    await resolveInAct(patchResult, json({ thread: updated }));
+    await flush();
+    await vi.waitFor(() => expect(document.querySelector(
+      "[aria-label='Rename SOURCE_AFTER_RENAME']",
+    )).not.toBeNull());
+
+    expect(document.querySelector(".research-history-title")?.textContent).toBe(
+      "SOURCE_AFTER_RENAME",
+    );
+    expect(backend.fetchMock.mock.calls.filter(([, init]) => init?.method === "PATCH")).toHaveLength(1);
+  });
+
+  it("preserves source thread titles exactly", async () => {
+    await i18n.changeLanguage("en");
+    const sourceTitle = "errors.providerCallFailedTitle / 原始「Title」::<>&";
+    const backend = createResearchFetch({
+      current: [thread("thread-source-title", sourceTitle)],
+    });
+    await mountResearch({ backend });
+    await click(buttonByText("歷史", host!));
+    const row = document.querySelector("[data-research-history-row='thread-source-title']")!;
+    expect(row.querySelector(".research-history-title")?.textContent).toBe(sourceTitle);
+    await click(row.querySelectorAll(".research-history-actions button")[2]);
+    const dialog = document.querySelector("[role='alertdialog']") ?? document.querySelector(".ui-confirm-dialog");
+    expect(dialog?.textContent).toContain("Permanently delete conversation");
+    expect(dialog?.textContent).toContain(sourceTitle);
+  });
+
+  it("omits arbitrary diagnostics in normal mode", async () => {
+    await i18n.changeLanguage("en");
+    const backend = createResearchFetch({
+      override: (url, init) => {
+        if (url.pathname === "/research/threads" && (init?.method ?? "GET") === "GET") {
+          return json({
+            detail: {
+              code: "backend_failed",
+              message: "RAW_HISTORY_DIAGNOSTIC credential_id=local:987",
+            },
+          }, 503);
+        }
+        return undefined;
+      },
+    });
+    await mountResearch({ backend });
+    await click(buttonByText("歷史", host!));
+    await vi.waitFor(() => expect(document.querySelector("[role='alert']")?.textContent).toContain(
+      "Could not load Research history",
+    ));
+    expect(document.body.textContent).not.toContain("RAW_HISTORY_DIAGNOSTIC");
+    expect(document.body.textContent).not.toContain("local:987");
+  });
+
   it("renders conversation as the only permanent workspace region", async () => {
     const backend = createResearchFetch({
       current: [thread("thread-a", "Thread A")],
@@ -835,8 +1036,10 @@ describe("Research history drawer", () => {
     ).toBeNull());
     currentTitle = "Outside filter";
     holdRename = false;
-    delayedRename.resolve(json({ thread: thread("thread-a", currentTitle) }));
-    await flush();
+    await resolveInAct(
+      delayedRename,
+      json({ thread: thread("thread-a", currentTitle) }),
+    );
     await vi.waitFor(() => expect(
       document.querySelector("[data-research-history-row='thread-a']")?.textContent,
     ).toContain("Outside filter"));
@@ -1005,13 +1208,12 @@ describe("Research history drawer", () => {
     expect(host!.textContent).toContain("問一個開放式問題");
     expect(document.body.textContent).toContain("Fresh delete result");
 
-    staleRefresh.resolve(json({
+    await resolveInAct(staleRefresh, json({
       threads: [thread("thread-a", "Thread A"), thread("thread-b", "Thread B")],
       total: 2,
       limit: 50,
       offset: 0,
     }));
-    await flush();
     expect(document.querySelector("[data-research-history-row='thread-a']")).toBeNull();
     expect(document.body.textContent).toContain("Fresh delete result");
   });
