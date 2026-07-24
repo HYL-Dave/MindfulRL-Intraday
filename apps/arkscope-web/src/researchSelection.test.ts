@@ -213,9 +213,17 @@ describe("research selection precedence and validation", () => {
     const apiKey = resolveResearchSelection({
       catalog: catalog(), hasActiveThread: true, threadSelection: threadTuple, preferenceStorage: new MemoryStorage(),
     });
-    expect(subscription).toMatchObject({ authLabel: "ChatGPT 訂閱登入" });
+    expect(subscription).toMatchObject({
+      authMode: "chatgpt_oauth",
+      quotaKind: "subscription",
+      authLabel: "ChatGPT 訂閱登入",
+    });
     expect(subscription.billingCopy).toContain("訂閱額度");
-    expect(apiKey).toMatchObject({ authLabel: "API key" });
+    expect(apiKey).toMatchObject({
+      authMode: "api_key",
+      quotaKind: "api",
+      authLabel: "API key",
+    });
     expect(apiKey.billingCopy).toContain("API 帳單");
   });
 

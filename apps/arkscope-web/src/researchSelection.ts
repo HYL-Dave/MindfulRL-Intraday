@@ -26,6 +26,7 @@ interface StorageWriter extends StorageReader {
 
 interface SelectionPresentation {
   authMode: CredentialAuthType | null;
+  quotaKind: "subscription" | "api" | null;
   authLabel: string | null;
   billingCopy: string | null;
 }
@@ -106,10 +107,13 @@ export function writeExplicitResearchSelection(
 }
 
 function presentation(authMode: CredentialAuthType | null): SelectionPresentation {
-  if (!authMode) return { authMode: null, authLabel: null, billingCopy: null };
+  if (!authMode) {
+    return { authMode: null, quotaKind: null, authLabel: null, billingCopy: null };
+  }
   const subscription = authMode === "chatgpt_oauth" || authMode === "claude_code_oauth";
   return {
     authMode,
+    quotaKind: subscription ? "subscription" : "api",
     authLabel: MODEL_UX_LABELS.authModes[authMode] ?? authMode,
     billingCopy: subscription
       ? "使用訂閱額度，非 API 帳單"
@@ -165,6 +169,7 @@ export function resolveResearchSelection({
       reasonCode: null,
       reasonLabel: null,
       authMode: null,
+      quotaKind: null,
       authLabel: null,
       billingCopy: null,
     };
@@ -194,6 +199,7 @@ export function resolveResearchSelection({
       reasonCode: null,
       reasonLabel: null,
       authMode: null,
+      quotaKind: null,
       authLabel: null,
       billingCopy: null,
     };

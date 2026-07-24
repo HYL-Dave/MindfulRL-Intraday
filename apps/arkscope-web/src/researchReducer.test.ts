@@ -377,7 +377,15 @@ describe("reducer · openai sparse", () => {
     const s = run(submit({ question: "q", provider: "openai", model: "gpt-5.4" }), f("thinking", { turn: 1, model: "gpt-5.4" }), streamEnd());
     expect(s.pending).toBeNull();
     expect(s.terminal).toBe("disconnect");
-    expect(assistant(s)).toMatchObject({ isError: true, synthesized: true, content: "連線中斷", maxTurns: false, tool_calls: [] });
+    expect(assistant(s)).toMatchObject({
+      isError: true,
+      synthesized: true,
+      content: "",
+      errorCode: "run_interrupted",
+      errorDetail: null,
+      maxTurns: false,
+      tool_calls: [],
+    });
   });
 
   it("abort during the silent gap drops pending, keeps user message, clears indicator", () => {
@@ -507,7 +515,14 @@ describe("reducer · terminal & races", () => {
       streamEnd(),
     );
     expect(msgs(s)).toHaveLength(2);
-    expect(assistant(s)).toMatchObject({ isError: true, synthesized: true, content: "連線中斷", maxTurns: false });
+    expect(assistant(s)).toMatchObject({
+      isError: true,
+      synthesized: true,
+      content: "",
+      errorCode: "run_interrupted",
+      errorDetail: null,
+      maxTurns: false,
+    });
     expect(assistant(s).tool_calls).toEqual([{ name: "get_sa_feed", input: {}, result_preview: "s" }]);
     expect(s.terminal).toBe("disconnect");
   });
@@ -515,7 +530,15 @@ describe("reducer · terminal & races", () => {
   it("TRUE empty stream — streamEnd before any frame synthesizes 連線中斷", () => {
     const s = run(submit({ question: "q", provider: "openai", model: "gpt-5.4" }), streamEnd());
     expect(msgs(s)).toHaveLength(2);
-    expect(assistant(s)).toMatchObject({ isError: true, synthesized: true, content: "連線中斷", maxTurns: false, tool_calls: [] });
+    expect(assistant(s)).toMatchObject({
+      isError: true,
+      synthesized: true,
+      content: "",
+      errorCode: "run_interrupted",
+      errorDetail: null,
+      maxTurns: false,
+      tool_calls: [],
+    });
     expect(s.pending).toBeNull();
     expect(s.terminal).toBe("disconnect");
   });

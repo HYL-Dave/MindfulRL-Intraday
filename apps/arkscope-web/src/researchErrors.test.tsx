@@ -1,6 +1,14 @@
+import { createInstance, type TFunction } from "i18next";
 import { describe, expect, it } from "vitest";
 
+import { initializeI18n } from "./i18n/resources";
 import { presentResearchError } from "./researchErrors";
+
+function researchT(locale: "zh-Hant" | "en"): TFunction<"research"> {
+  const instance = createInstance();
+  initializeI18n(instance, locale);
+  return instance.getFixedT(locale, "research");
+}
 
 describe("research error presentation", () => {
   it("maps reauth_required to a login action without raw primary text", () => {
@@ -8,7 +16,7 @@ describe("research error presentation", () => {
       code: "reauth_required",
       detail: "raw provider response that must not become the title",
       developerMode: false,
-    });
+    }, researchT("zh-Hant"));
 
     expect(result).toMatchObject({
       code: "reauth_required",
@@ -19,10 +27,15 @@ describe("research error presentation", () => {
       developerDetail: null,
     });
     expect(result.title).not.toContain("raw provider");
+    expect(presentResearchError({ code: "reauth_required" }, researchT("en"))).toMatchObject({
+      title: "Sign-in required",
+      detail: "The current sign-in has expired. Sign in again before running Research.",
+      actionLabel: "Go to sign-in settings",
+    });
   });
 
   it("maps missing_credential to provider setup", () => {
-    expect(presentResearchError({ code: "missing_credential" })).toMatchObject({
+    expect(presentResearchError({ code: "missing_credential" }, researchT("zh-Hant"))).toMatchObject({
       state: "blocked",
       title: "尚未設定登入",
       actionLabel: "設定 Provider",
@@ -31,7 +44,7 @@ describe("research error presentation", () => {
   });
 
   it("maps model_timeout to the adjacent runtime-limit settings action", () => {
-    expect(presentResearchError({ code: "model_timeout" })).toMatchObject({
+    expect(presentResearchError({ code: "model_timeout" }, researchT("zh-Hant"))).toMatchObject({
       state: "failed",
       title: "模型執行逾時",
       actionLabel: "檢查 AI 研究執行限制",
@@ -40,8 +53,8 @@ describe("research error presentation", () => {
   });
 
   it("keeps model_refusal distinct from provider_call_failed", () => {
-    const refusal = presentResearchError({ code: "model_refusal" });
-    const providerFailure = presentResearchError({ code: "provider_call_failed" });
+    const refusal = presentResearchError({ code: "model_refusal" }, researchT("zh-Hant"));
+    const providerFailure = presentResearchError({ code: "provider_call_failed" }, researchT("zh-Hant"));
 
     expect(refusal.title).toBe("模型拒絕回答");
     expect(providerFailure.title).toBe("Provider 呼叫失敗");
@@ -49,7 +62,7 @@ describe("research error presentation", () => {
   });
 
   it("marks tool_limit_reached as partial-preserving and offers simplify or retry", () => {
-    expect(presentResearchError({ code: "tool_limit_reached" })).toMatchObject({
+    expect(presentResearchError({ code: "tool_limit_reached" }, researchT("zh-Hant"))).toMatchObject({
       state: "failed",
       title: "已達工具呼叫上限",
       actionLabel: "簡化問題或重試",
@@ -60,14 +73,15 @@ describe("research error presentation", () => {
 
   it("maps cancelled and interrupted run codes to interrupted rather than failed", () => {
     for (const code of ["run_cancelled", "run_interrupted", "cancelled", "interrupted"]) {
-      expect(presentResearchError({ code }).state).toBe("interrupted");
+      expect(presentResearchError({ code }, researchT("zh-Hant")).state).toBe("interrupted");
     }
   });
 
   it("shows bounded sanitized detail only in Developer Mode and never exposes credentials", () => {
     const raw = '"credential_id":"local:7" access_token=sekret refresh_token=again Bearer abc123 provider exploded';
-    const normal = presentResearchError({ code: null, detail: raw, developerMode: false });
-    const developer = presentResearchError({ code: null, detail: raw, developerMode: true });
+    const t = researchT("zh-Hant");
+    const normal = presentResearchError({ code: null, detail: raw, developerMode: false }, t);
+    const developer = presentResearchError({ code: null, detail: raw, developerMode: true }, t);
 
     expect(normal.code).toBe("provider_call_failed");
     expect(normal.developerDetail).toBeNull();

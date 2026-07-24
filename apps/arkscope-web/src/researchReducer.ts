@@ -10,6 +10,8 @@
 import type { PersonalizationTrace } from "./api";
 import type { SSEFrame } from "./sse";
 
+export const RESEARCH_DISCONNECT_ERROR_CODE = "run_interrupted" as const;
+
 export type Provider = "anthropic" | "openai" | string; // string: unknown-provider route errors
 
 // ---- Trace rows (THE chronological evidence trace) -------------------------
@@ -41,7 +43,7 @@ export interface ToolCall {
 // ---- DTO: Message (field names == future C-2b columns, spec §6a) ------------
 export interface Message {
   role: "user" | "assistant";
-  content: string; // user: question; assistant: done.answer | error text | '連線中斷'
+  content: string; // user: question; assistant: done.answer | provider error text | empty semantic disconnect
   provider?: Provider | null; // assistant: done.provider; user: null
   model?: string | null; // assistant: done.model (== optimistic thinking.model)
   effort?: string | null; // submitted/resolved effort carried outside provider frames
@@ -51,9 +53,9 @@ export interface Message {
   tickers: string[] | null; // from the TYPED ticker field — NEVER parsed from answer
   elapsed_seconds?: number | null; // (terminalTs - startedAt)/1000; assistant-done only
   created_at: string; // ISO from action ts
-  isError?: boolean; // error frame / streamError / '連線中斷'
+  isError?: boolean; // error frame / streamError / semantic disconnect
   maxTurns?: boolean; // true IFF provider==='anthropic' AND content === sentinel
-  synthesized?: boolean; // true ONLY for the client-fabricated '連線中斷' bubble
+  synthesized?: boolean; // true ONLY for the client-fabricated disconnect bubble
   personalization?: PersonalizationTrace | null; // Track A trace from done.data / store
   runId?: string | null; // exact durable run link when the sidecar supplied one
   errorCode?: string | null; // reviewed public code; raw detail stays separate
@@ -232,6 +234,7 @@ function terminalMsg(
   options: {
     synthesized?: boolean;
     errorCode?: string | null;
+    errorDetail?: string | null;
     tokenUsage?: Record<string, number> | null;
     toolsUsed?: string[];
     personalization?: PersonalizationTrace | null;
@@ -246,7 +249,7 @@ function terminalMsg(
     personalization: options.personalization ?? null,
     runId: p.runId,
     errorCode: options.errorCode ?? null,
-    errorDetail: content,
+    errorDetail: options.errorDetail === undefined ? content : options.errorDetail,
   };
 }
 
@@ -334,9 +337,10 @@ function onStreamEnd(state: State, a: Extract<Action, { kind: "streamEnd" }>): S
   const p = state.pending;
   if (p === null) return state; // no-op: clean close after done/error
   const ts = a.ts ?? p.startedAt; // ts optional → avoid Invalid Date in commit
-  return commit(state, p, terminalMsg(p, "連線中斷", ts, {
+  return commit(state, p, terminalMsg(p, "", ts, {
     synthesized: true,
-    errorCode: "run_interrupted",
+    errorCode: RESEARCH_DISCONNECT_ERROR_CODE,
+    errorDetail: null,
   }), "disconnect", ts);
 }
 
