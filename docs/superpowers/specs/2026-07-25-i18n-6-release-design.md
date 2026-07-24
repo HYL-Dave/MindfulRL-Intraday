@@ -1,13 +1,19 @@
 # ArkScope I18N-6 Release Design
 
-> **Status: INDEPENDENT PLAN REVIEW GREEN — IMPLEMENTATION CLEARED**
+> **Status: IMPLEMENTATION COMPLETE — INDEPENDENT REVIEW PENDING**
 >
 > Written against merged `master` at `cf7050ed` on 2026-07-25. This document
 > is the product and verification authority for the final app-wide i18n
-> release unit. Independent written review returned GREEN. It does not
-> authorize implementation until a separately reviewed RED-first implementation
-> plan is cleared. The public locale selector remains absent until that release
-> gate passes.
+> release unit. Independent design and implementation-plan reviews returned
+> GREEN. Isolated implementation is complete at product tip `b5228e63` on
+> unmerged branch `codex/i18n-6-release`; exact frontend accounting is
+> `+11/-4` to `95/1055`, focused is `13/147`, resources are Settings `681` /
+> total `1781`, and scanner remains `36/20/0/20`. The authority lifecycle,
+> `384/384` release matrix, targeted `24/24` 760px matrix, formatter freeze,
+> backend/no-PG, and production-read-only gates passed. Independent
+> implementation review, explicit approval, merge, and post-merge release
+> verification remain required. Production and merged master still expose no
+> public selector and contain no stored `ui_locale` value.
 
 ## 1. Purpose and Authority
 

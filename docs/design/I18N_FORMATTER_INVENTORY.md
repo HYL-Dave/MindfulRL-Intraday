@@ -1,7 +1,7 @@
 # I18N Formatter Inventory
 
 > Status: V1 UI-LOCALE BOUNDARY FROZEN BY REVIEWED I18N-6 DESIGN
-> (2026-07-25; PLAN REVIEW GREEN — IMPLEMENTATION CLEARED)
+> (2026-07-25; IMPLEMENTATION COMPLETE — INDEPENDENT REVIEW PENDING)
 >
 > This document records formatter ownership after the I18N-4/5 surface
 > migration. I18N-6 has now ruled that `ui_locale` controls interface copy
@@ -71,6 +71,13 @@ includes finite checks, `Intl` options, fraction limits, rounding, timezone and
 market/system timestamp behavior, source-currency append behavior, and
 boolean/JSON handling. The boundary is therefore the exact exception above,
 not a whole-formatter-code byte-identity claim.
+
+I18N-6 implementation at product tip `b5228e63` passed the complete formatter
+product-path and formatter-behavior byte gates against `cf7050ed`. Its isolated
+locale-switch probe also kept representative rendered values byte-identical:
+Watchlist `88.25`, `+7.75%`, and `8`; History
+`07/25/2026, 04:00:00 PM` / `07/25/2026, 04:00:12 PM`; and duration `12.3s`.
+This is review-ready evidence, not a LIVE or merged-state claim.
 
 ## Future Change Rule
 
