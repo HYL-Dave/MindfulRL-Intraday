@@ -1,7 +1,7 @@
 # I18N Formatter Inventory
 
-> Status: V1 UI-LOCALE BOUNDARY FROZEN BY I18N-6 DESIGN (2026-07-25;
-> INDEPENDENT RELEASE-SPEC REVIEW PENDING)
+> Status: V1 UI-LOCALE BOUNDARY FROZEN BY REVIEWED I18N-6 DESIGN
+> (2026-07-25; IMPLEMENTATION PLAN NEXT)
 >
 > This document records formatter ownership after the I18N-4/5 surface
 > migration. I18N-6 has now ruled that `ui_locale` controls interface copy

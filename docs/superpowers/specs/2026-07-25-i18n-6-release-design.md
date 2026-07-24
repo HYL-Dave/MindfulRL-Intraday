@@ -1,12 +1,12 @@
 # ArkScope I18N-6 Release Design
 
-> **Status: WRITTEN — INDEPENDENT REVIEW PENDING**
+> **Status: INDEPENDENT REVIEW GREEN — IMPLEMENTATION PLAN NEXT**
 >
 > Written against merged `master` at `cf7050ed` on 2026-07-25. This document
 > is the product and verification authority for the final app-wide i18n
-> release unit. It does not authorize implementation until independent written
-> review returns GREEN and a separately reviewed RED-first implementation plan
-> is cleared. The public locale selector remains absent until that release
+> release unit. Independent written review returned GREEN. It does not
+> authorize implementation until a separately reviewed RED-first implementation
+> plan is cleared. The public locale selector remains absent until that release
 > gate passes.
 
 ## 1. Purpose and Authority
@@ -442,6 +442,14 @@ literal. Existing registry nodes that prove three non-empty groups, complete
 anchor assignment, and AppRecords exclusion also remain unchanged and provide
 the no-fake-locale-section guard.
 
+A fifth existing node is a guaranteed in-place resource-accounting evolution:
+`resources.test.ts` —
+`contains the reviewed remaining-surface namespace inventory in both locales`.
+It keeps its test ID and changes only the reviewed Settings and total counts
+from `679/1779` to `681/1781` per locale. This evolution has zero test-node
+`+N/-N` impact and must appear explicitly beside the four selector/action
+guard evolutions in the implementation-plan ledger.
+
 ### 7.3 Test context is mandatory
 
 Six existing suites directly mount `SettingsView` without `LocaleProvider`:
@@ -580,15 +588,19 @@ every surface into a nine-width matrix, I18N-6 runs `759/760/761` against the
 actual selector families owned by that media boundary:
 
 - Watchlist, News, and Universe for `.surface-head` wrapping;
-- Settings Model Routing for `.settings-grid`;
+- Settings Model Routing for `.settings-grid`, with a mounted credential
+  summary and its nested `.model-credential-summary .btn-ghost` action;
 - Settings Data Sources for `.provider-config-field`; and
 - the longest mounted English `.ui-inline-alert` composition, exercising the
   generic `.main`/alert stacking rule.
 
-The plan records the exact fixture chosen for the longest alert. If source
-inspection finds another reachable owner of a behavior-changing 760px rule,
-the owner is added before the plan is cleared. Static `max-width: 760px` values
-that are not media-query behavior do not create a breakpoint gate.
+The plan records the exact fixture chosen for the longest alert. The source
+census also records `.page-head` and `.page-head-actions` as dead CSS with no
+reachable production consumer; they therefore receive no runtime fixture. If
+source inspection finds another reachable owner of a behavior-changing 760px
+rule, or either dead selector gains a reachable consumer, the owner is added
+before the plan is cleared. Static `max-width: 760px` values that are not
+media-query behavior do not create a breakpoint gate.
 
 ### 8.5 Locale-switch purity matrix
 

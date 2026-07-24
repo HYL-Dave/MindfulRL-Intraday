@@ -7,7 +7,7 @@
 > LIVE COMPLETE AT PRODUCT `be89a9b5`, FAST-FORWARD MERGED THROUGH
 > `eb4dee7b`; COMBINED I18N-4/5 LIVE COMPLETE AT TRANCHE A `34ddf08f` AND
 > PRODUCT `20666d33`, FAST-FORWARD MERGED THROUGH `5f35e8b1`; I18N-6 RELEASE
-> DESIGN WRITTEN — INDEPENDENT REVIEW PENDING; PUBLIC SELECTOR REMAINS
+> DESIGN REVIEW GREEN — IMPLEMENTATION PLAN NEXT; PUBLIC SELECTOR REMAINS
 > ABSENT.**
 > This document chooses the app-wide locale authority, runtime localization
 > mechanism, migration sequence, public-switch gate, and verification contract.
@@ -26,10 +26,11 @@
 > and Portfolio/System work shipped as one bounded unit with separately
 > evidenced Tranche A and Tranche B checkpoints. Independent implementation
 > review returned GREEN with zero findings; merged-tree gates and the normal
-> zh-Hant desktop smoke are green. The I18N-6 release design is written at
+> zh-Hant desktop smoke are green. The I18N-6 release design passed independent
+> written review at
 > [`2026-07-25-i18n-6-release-design.md`](2026-07-25-i18n-6-release-design.md),
-> but product implementation still requires independent written review and a
-> separately reviewed RED-first plan.
+> but product implementation still requires a separately reviewed RED-first
+> plan.
 
 ## 1. Purpose and Authority
 
@@ -507,7 +508,7 @@ the foundation slice, but no incomplete public affordance is rendered.
 | I18N-3 Explore | Home, Watchlist, Universe, News, Ticker Detail, AI card, related shared display helpers | LIVE — product `be89a9b5`; merged/evidence `eb4dee7b` | absent |
 | [I18N-4/5 Remaining surfaces](2026-07-24-i18n-4-5-remaining-surfaces-design.md) | Tranche A: Research and shared model-selection copy; Tranche B: Portfolio/System/common residuals, AppRecords frontend retirement, formatter inventory, and scanner closure | LIVE — A `34ddf08f`; product `20666d33`; merged/evidence `5f35e8b1` | absent |
 | I18N-5 standalone cycle | absorbed into the two-tranche I18N-4/5 unit; no separate branch/review cycle | absorbed | absent |
-| [I18N-6 Release](2026-07-25-i18n-6-release-design.md) | full coverage/audit, both-locale visual matrix, selector in Settings PageHeader, formatter freeze, docs/Design Kit release sync | DESIGN WRITTEN — INDEPENDENT REVIEW PENDING | visible only after release gate |
+| [I18N-6 Release](2026-07-25-i18n-6-release-design.md) | full coverage/audit, both-locale visual matrix, selector in Settings PageHeader, formatter freeze, docs/Design Kit release sync | DESIGN REVIEW GREEN — IMPLEMENTATION PLAN NEXT | visible only after release gate |
 
 I18N-0 through I18N-2 are the first migration tranche and remain separately
 reviewed units; they are not one high-churn branch. Slice 5 followed that
