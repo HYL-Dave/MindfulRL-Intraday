@@ -4,7 +4,9 @@
 > SLICE 4.1, 2026-07-19; APP-WIDE I18N AUTONYM ADDENDUM WRITTEN REVIEW
 > APPROVED; I18N-2 SETTINGS TERMINOLOGY ADDENDUM ADOPTED, 2026-07-20;
 > P2.8 SLICE 5 TERMINOLOGY ADDENDUM WRITTEN REVIEW APPROVED, 2026-07-22;
-> I18N-3 EXPLORE TERMINOLOGY ADDENDUM WRITTEN REVIEW APPROVED, 2026-07-23.**
+> I18N-3 EXPLORE TERMINOLOGY ADDENDUM WRITTEN REVIEW APPROVED, 2026-07-23;
+> I18N-4/5 REMAINING-SURFACES ADDENDUM WRITTEN — REVIEW PENDING,
+> 2026-07-24.**
 > This is the single repository authority for product-facing English and
 > Traditional Chinese terminology. Other documents link here instead of
 > copying canonical term tables.
@@ -89,11 +91,14 @@ printed in the interface.
 | Curated or filtered subset | Pool | 池 | Use in compounds such as `標的池`; never use for Research threads. |
 | Daily research list | Watchlist | 自選股 | A working view over profile state. |
 | Broker portfolio surface | Holdings | 持倉 | Distinct from Universe and Watchlist. |
+| Listed instrument symbol | Ticker | Ticker | Real values remain stable identifiers; generic input hints may use this term instead of a hard-coded example symbol. |
 | Primary work surface | Home | 工作台 | Default Shell destination. |
 | Event/news surface | News | 新聞·事件 | Canonical Shell destination label. |
 | AI research surface | AI Research | AI 研究 | Distinct from the broader Research workflow group. |
 | Shell workflow group | Explore | 探索 | Contains Home, Watchlist, Universe, and News. |
 | Research workflow group | Research | 研究 | Workflow group label, not a thread pool. |
+| Saved Research threads | Research history | 研究歷史 | History Drawer and related commands; do not call it a pool. |
+| Research provenance surface | Evidence and run details | 證據與執行詳情 | Chrome around source/tool/run content; the content itself remains original. |
 | Monitoring workflow group | Monitor | 追蹤 | Contains the Holdings surface. |
 | System diagnostics surface | System / Health | System / Health | Preserve the established mixed professional label. |
 | Structured §2 output | AI card | AI 卡片 | Carries per-claim traceability. |
@@ -115,6 +120,11 @@ printed in the interface.
 | Settings workflow group | Data and Sync | 資料與同步 | Owns data-source, storage, news, and macro controls. |
 | Provider settings section | Provider Sign-in and Credentials | Provider 登入與憑證 | Preserve `Provider` in Traditional Chinese. |
 | Model settings section | Model and Task Routing | 模型與任務路由 | Refers to per-task Provider/model selection. |
+| Model picker group | Available for this task | 可供此任務使用 | Eligibility is semantic metadata, never inferred from the label. |
+| Model picker group | Visible to this sign-in | 此登入可見 | Visible does not imply eligible for the selected task. |
+| Model picker group | Advanced / unverified | 進階／未驗證 | Compatibility state remains explicit metadata. |
+| Model picker group | Current route | 目前路由 | The persisted route, even when absent from discovery. |
+| Model compatibility note | Legacy sidecar compatibility mode | 舊 sidecar 相容模式 | Compose from `baseLabel` plus explicit compatibility; never parse a decorated label. |
 | Fixed-task runtime section | Fixed AI Task Runtime Limits | 固定 AI 任務執行限制 | Covers card synthesis and translation runtime bounds. |
 | Research runtime section | AI Research Runtime Limits | AI 研究執行限制 | Covers AI Research session and run bounds. |
 | Investor settings section | Investor Profile | 投資人設定 | Current profile, calibration, and personalization owner. |
@@ -166,6 +176,9 @@ printed in the interface.
 | Unknown calibration topic | Other topic | 其他主題 | Honest compatibility fallback; raw ID is Developer Mode only. |
 | Current personalization disclosure | Current personalization context | 目前的個人化 context | Exact backend source content that would be used now. |
 | Historical run personalization disclosure | Context used for this run | 本次 run 使用的個人化 context | Exact persisted source content; distinct from current settings. |
+| Portfolio event surface | Portfolio activity | 投資組合活動 | Broker/manual facts plus user annotations. |
+| Portfolio account view | Account details | 帳戶明細 | Distinct from the compact account overview summary. |
+| Portfolio capture view | Sync history | 同步紀錄 | Read-only capture and reconciliation history; ArkScope does not place orders. |
 
 Universe, Pool, Watchlist, and Holdings describe different product concepts even
 when they read from related local profile data. They are not interchangeable

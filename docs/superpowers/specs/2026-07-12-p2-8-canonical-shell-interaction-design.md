@@ -450,7 +450,7 @@ locked.
 | `NewsStorageSection` | Data and Sync | News ingestion/write route |
 | `MacroStorageSection` | Data and Sync | Detailed FRED/Macro snapshot and stored coverage; no Calendar feature claim |
 | `DataSourcesSection` | Data and Sync | Provider health, schedules, SA telemetry/setup |
-| `AppRecordsSection` (disabled) | App and Advanced | Historical migration disclosure only; not normal navigation |
+| `AppRecordsSection` (unreachable) | None | Frontend component and dead API wrappers retire in the reviewed I18N-4/5 remaining-surfaces unit; backend/offline archive and migration capabilities remain separate and intact |
 | Permissions (disabled) | App and Advanced | Render only when an implemented permission surface exists |
 | Developer Mode | App and Advanced | Shell diagnostics toggle |
 | System / Health | Separate System surface | Live diagnostics; do not duplicate normal Settings controls |

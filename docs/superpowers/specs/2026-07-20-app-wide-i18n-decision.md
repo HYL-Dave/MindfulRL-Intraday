@@ -5,7 +5,8 @@
 > FAST-FORWARD MERGED THROUGH `d2195cd0`; P2.8 SLICE 5 LIVE COMPLETE AT
 > PRODUCT `b214e1fc`, FAST-FORWARD MERGED THROUGH `de8485be`; I18N-3 EXPLORE
 > LIVE COMPLETE AT PRODUCT `be89a9b5`, FAST-FORWARD MERGED THROUGH
-> `eb4dee7b`; I18N-4 RESEARCH NEXT.**
+> `eb4dee7b`; COMBINED I18N-4/5 REMAINING SURFACES DESIGN WRITTEN —
+> INDEPENDENT REVIEW NEXT.**
 > This document chooses the app-wide locale authority, runtime localization
 > mechanism, migration sequence, public-switch gate, and verification contract.
 > Independent written review returned GREEN. I18N-0 subsequently passed its
@@ -19,8 +20,10 @@
 > implementation review, and completed its production schema migration. The
 > public selector remains unauthorized. I18N-3 Explore passed independent
 > implementation review with zero findings, explicit approval, merged-tree
-> canonical gates, and the normal zh-Hant desktop smoke. I18N-4 Research is the
-> single next migration unit.
+> canonical gates, and the normal zh-Hant desktop smoke. The remaining Research
+> and Portfolio/System work is now one bounded unit with separately evidenced
+> Tranche A and Tranche B checkpoints; independent review of that design is the
+> single next gate.
 
 ## 1. Purpose and Authority
 
@@ -489,17 +492,19 @@ the foundation slice, but no incomplete public affordance is rendered.
 | I18N-2 Settings | PageHeader, workflow tabs, directory/registry, all reachable Settings sections, Settings backend-copy mappings | LIVE — product `9f78a9ff`; merged/evidence `d2195cd0` | absent |
 | P2.8 Slice 5 | Investor Profile UX, implemented bilingual from birth against the new Settings/runtime contract | LIVE — product `b214e1fc`; merged/evidence `de8485be` | absent |
 | I18N-3 Explore | Home, Watchlist, Universe, News, Ticker Detail, AI card, related shared display helpers | LIVE — product `be89a9b5`; merged/evidence `eb4dee7b` | absent |
-| I18N-4 Research | workspace, history, evidence, progress/errors, model-selection copy not already owned by Settings | NEXT | absent |
-| I18N-5 Portfolio + System + residual | Holdings/overview/activity/capture, Dashboard/System, Markdown chrome, remaining reachable shared copy and formatter audit | queued | absent |
+| [I18N-4/5 Remaining surfaces](2026-07-24-i18n-4-5-remaining-surfaces-design.md) | Tranche A: Research and shared model-selection copy; Tranche B: Portfolio/System/common residuals, AppRecords frontend retirement, formatter inventory, and scanner closure | DESIGN WRITTEN — independent review next | absent |
+| I18N-5 standalone cycle | absorbed into the two-tranche I18N-4/5 unit; no separate branch/review cycle | absorbed | absent |
 | I18N-6 Release | full coverage/audit, both-locale visual matrix, selector in Settings PageHeader, docs/Design Kit release sync | queued | visible |
 
 I18N-0 through I18N-2 are the first migration tranche and remain separately
 reviewed units; they are not one high-churn branch. Slice 5 followed that
 tranche and shipped its redesigned content bilingual from birth. I18N-3 is
 LIVE after independent review, explicit approval, fast-forward integration,
-and merged-tree verification. I18N-4 Research is now the single next unit. The
-priority map names only the next unit at each closeout; this table does not
-authorize parallel branches or dual `NEXT` entries.
+and merged-tree verification. The combined I18N-4/5 remaining-surfaces design
+uses one branch and review cycle but freezes a named `TRANCHE_A_TIP` so Research
+and Portfolio/System remain independently comparable. The priority map names
+only the next gate at each closeout; this table does not authorize parallel
+branches or dual `NEXT` entries.
 
 The Investor Profile panel first localized in I18N-2 was subsequently
 redesigned by Slice 5. Slice 5 reused, evolved, and explicitly retired those
@@ -604,6 +609,12 @@ It ignores comments and import paths. The allowlist records file, literal,
 classification, and reason. It may shrink; adding an entry requires explicit
 review and cannot be used for a translatable sentence.
 
+The combined I18N-4/5 unit closes one measured scanner gap before claiming
+global coverage: direct `header` values and tuple-backed static table-column
+labels join the visible-copy analysis. Its final debt-zero proof also includes
+a direct owned-file AST/source inventory because a ratchet snapshot is not, by
+itself, evidence that every historical English fallback was classified.
+
 Each completed unit adds its owned paths to a zero-new-literal ratchet. The
 I18N-6 release evidence must show:
 
@@ -623,7 +634,8 @@ Developer Mode classification.
 
 ### 9.4 Selector absence/presence
 
-- I18N-0 through I18N-5: a static and render test proves the selector is absent.
+- I18N-0 through the combined I18N-4/5 unit: a static and render test proves the
+  selector is absent.
 - I18N-6: the same contract flips to exactly one selector in the Settings
   PageHeader and nowhere else.
 
@@ -734,11 +746,14 @@ At decision adoption:
 4. I18N-6 owns a later Design Kit locale-control and bilingual-state sync after
    the product gate passes.
 5. I18N-0, I18N-1, I18N-2 Settings, P2.8 Slice 5, and I18N-3 Explore are LIVE.
-6. I18N-4 Research is the single NEXT implementation unit; the public locale
-   selector remains reserved for I18N-6.
+6. The combined I18N-4/5 remaining-surfaces design is the single NEXT review
+   gate; product implementation remains unopened and the public locale selector
+   remains reserved for I18N-6.
 
-Each implementation unit receives a separately reviewed plan. This decision
-does not authorize combining all migrations into one branch.
+Each implementation unit receives a separately reviewed plan. The bounded
+I18N-4/5 combination is an explicit exception for the final debt manifest plus
+its reviewed scanner gaps. It requires two mechanical review checkpoints and
+does not authorize collapsing earlier history or I18N-6 into the same branch.
 
 ## 13. Locked Decisions
 
