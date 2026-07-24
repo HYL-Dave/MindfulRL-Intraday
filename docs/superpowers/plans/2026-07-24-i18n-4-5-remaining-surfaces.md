@@ -151,6 +151,20 @@ no IA, behavior, formatter, request, CSS, or terminology-authority change is
 allowed. Task 5 also installs the already-planned Common `Ticker` placeholder
 when its first consumer is wired; Task 7 installs the other four Common leaves.
 
+### Runtime-reviewed deviation 3: JSX entity transfer preserves rendered copy
+
+Task 6 exposed one representation-only transfer edge in the existing Provider
+recovery action. JSX source stored the greater-than separators as `&gt;`, which
+the JSX parser rendered as visible `>`. An i18next resource string does not
+decode HTML entities, so copying the source bytes would incorrectly render the
+five literal characters `&gt;`.
+
+The zh-Hant Portfolio resource therefore stores
+`前往設定 > Data Sources > IBKR`. This is the exact pre-migration rendered
+copy, not a wording correction. Task 6 may change this one resource value
+outside its six component/test owners. Resource keys/counts, scanner counts,
+runtime behavior, and all other zh-Hant bytes remain unchanged.
+
 ---
 
 ## Task 0 Evidence
