@@ -13,8 +13,10 @@
 - `browser locale` means the locale selected by `Intl` or `toLocale*` when the
   code passes `undefined` or no locale. It does not necessarily change when
   `ui_locale` changes in place.
-- Source values, identifiers, currencies, timestamps, and invalid-input
-  fallbacks remain unchanged by the completed copy migration.
+- Source values, identifiers, currencies, and timestamps remain unchanged by
+  the completed copy migration. Existing fallback policy also remains intact;
+  the reviewed `PortfolioActivity` exception supplies the same unknown state
+  from localized caller copy instead of a fixed `未知` literal.
 
 ## Inventory
 
@@ -43,7 +45,20 @@
 
 ## Frozen Boundary
 
-The I18N-4/5 implementation changes none of the owners or expectations above.
-The final implementation evidence must show formatter production files and
-formatter test expectations byte-identical to product base
-`93cda66831b7202fd0dfafcc0d1c0604b07e94bd`.
+Task 9 commit `b6ea67b6eabccdc593d91e04928331634f3647b1` has zero
+formatter product or formatter-test diff from its Task 8 input
+`6a076db3a9af3f6d3513d95c25efeea76154de06`.
+
+Across product base `93cda66831b7202fd0dfafcc0d1c0604b07e94bd` to final,
+the only verified formatter-helper change is the already-reviewed
+`PortfolioActivity.formatNumber` / `formatAmount` / `formatUnknown` semantic
+fallback localization. The helpers now accept caller-supplied unknown copy
+instead of returning or comparing against fixed `未知`; `formatAmount` performs
+the same null/non-finite guard directly before formatting. No other inventory
+formatter has an equivalent fallback-copy change.
+
+Numeric/date mechanics and their output expectations remain unchanged. This
+includes finite checks, `Intl` options, fraction limits, rounding, timezone and
+market/system timestamp behavior, source-currency append behavior, and
+boolean/JSON handling. The boundary is therefore the exact exception above,
+not a whole-formatter-code byte-identity claim.

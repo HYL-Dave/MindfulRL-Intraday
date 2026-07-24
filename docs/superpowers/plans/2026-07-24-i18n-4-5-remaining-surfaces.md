@@ -413,9 +413,13 @@ hide a removed assertion behind net growth.
 15. Final scanner policy is stronger than CLI success: debt manifest empty,
     migrated scopes exactly `src/**`, allowlist byte-identical, candidates equal
     summed allowlist occurrences, and signatures equal allowlist entries.
-16. Formatter work is inventory-only. No date, time, number, currency,
-    percentage, timezone, or market-session output and no formatter test
-    expectation may change.
+16. Formatter work is inventory-only in Task 9: its product and formatter-test
+    bytes are unchanged from the Task 8 input. Across product base to final,
+    the only formatter-helper delta is the already-reviewed
+    `PortfolioActivity.formatNumber` / `formatAmount` / `formatUnknown` change
+    that accepts localized unknown fallback copy. Null/non-finite checks,
+    `Intl` options, currency append behavior, date/time/percentage/rounding/
+    timezone mechanics, and formatter output expectations remain unchanged.
 17. Backend, data sources, backend tests, prompts, agents, desktop/native code,
     extensions, package manifests/lockfiles, and all four CSS owners are
     byte-identical by default.
@@ -848,8 +852,15 @@ Compare all protected paths to product base `93cda668`, not the docs tip.
    byte gate only with its exact `.research-conversation-title` wrapping hunk;
    no other `styles.css` byte may change.
 6. `api.ts` differs only by the exact five AppRecords export removals.
-7. Tranche B may not change any frozen Tranche A product owner.
-8. The public selector remains absent and production `ui_locale` remains
+7. Task 9 commit `b6ea67b6` has zero formatter product or formatter-test diff
+   from its Task 8 input `6a076db3`. From product base to final, the only
+   formatter-helper exception is in `PortfolioActivity.tsx`: the three named
+   helpers accept caller-localized unknown copy, preserve the same
+   null/non-finite predicates and `Intl.NumberFormat` options, and preserve the
+   same source-currency append behavior. No other formatter helper or formatter
+   output expectation may differ.
+8. Tranche B may not change any frozen Tranche A product owner.
+9. The public selector remains absent and production `ui_locale` remains
    untouched by verification.
 
 ---
@@ -1427,8 +1438,11 @@ formatter inventory doc, and this plan evidence ledger.
   - Recent Activity number formatting; and
   - Dashboard `toLocaleTimeString`.
 
-  Record current outputs only. Any formatter code or test expectation diff is
-  a stop condition.
+  Record current outputs only. Task 9 must have zero formatter product or
+  formatter-test diff against the Task 8 input. The base-to-final review must
+  admit only the already-reviewed `PortfolioActivity` unknown-fallback
+  localization described in Locked Decision 16; another formatter-helper
+  change or any formatter output-expectation change is a stop condition.
 
 - [ ] **Step 5: Verify final resource and scanner arithmetic**
 
@@ -1494,8 +1508,17 @@ required. Freeze product before requesting review.
 - [ ] **Step 4: Prove protected bytes and exact exceptions**
 
   Compare all protected groups to `93cda668`. Require all default groups
-  byte-identical, `api.ts` exactly the five-symbol deletion, no formatter code
-  or expectation diff, and no B diff in frozen A product owners. Hash the
+  byte-identical, `api.ts` exactly the five-symbol deletion, and no B diff in
+  frozen A product owners. Compare Task 9 `b6ea67b6` to Task 8 input
+  `6a076db3` and require zero formatter product/test diff. For base-to-final,
+  inspect formatter helper bodies and expectations: permit only
+  `PortfolioActivity.formatNumber(value, unknown)`,
+  `formatAmount(value, currency, unknown)`, and
+  `formatUnknown(value, unknownLabel)` replacing fixed `未知` fallback copy
+  with the caller-supplied localized value. Their finite checks,
+  `Intl.NumberFormat(undefined, { maximumFractionDigits: 4 })`, currency-code
+  append, boolean/JSON handling, and tested numeric/date output remain
+  unchanged; any other formatter-specific delta is a stop condition. Hash the
   scanner tool at A and final so final narrowing cannot erase A evidence.
 
 - [ ] **Step 5: Run Tranche B bilingual responsive matrix**
@@ -1575,7 +1598,10 @@ Stop and return to design/plan review if any of the following occurs:
 12. locale switching requires refetch, replay, remount, or state reset;
 13. AppRecords has a real production consumer or backend/offline capability
     would be removed;
-14. a formatter output or formatter test expectation changes;
+14. Task 9 changes formatter product/test bytes relative to its Task 8 input,
+    base-to-final contains a formatter-helper delta beyond the exact
+    `PortfolioActivity` localized-unknown exception, or a numeric/date/
+    rounding/timezone/currency output expectation changes;
 15. unreviewed CSS is needed or copy must be truncated/shortened to fit;
 16. `App.tsx` requires a change beyond structured sidecar state, reviewed
     capability wiring, or locale reactivity for that path;
