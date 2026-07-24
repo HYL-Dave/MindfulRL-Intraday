@@ -45,8 +45,9 @@ interface HistoryFilters {
   archived: ResearchHistoryArchiveMode;
 }
 
-type MutationFailure = "active_run_conflict" | "update_failed";
+type MutationFailure = "active_run_conflict" | "thread_missing" | "update_failed";
 type RenameFailure = MutationFailure | "empty_name";
+type LoadPageResult = "committed" | "failed" | "superseded";
 
 const INITIAL_FILTERS: HistoryFilters = {
   q: "",
@@ -108,6 +109,18 @@ function queryFor(filters: HistoryFilters, offset: number): ResearchThreadQueryP
   };
 }
 
+function queryKeyFor(filters: HistoryFilters): string {
+  const query = queryFor(filters, 0);
+  return JSON.stringify([
+    query.q ?? null,
+    query.ticker ?? null,
+    query.updated_from ?? null,
+    query.updated_before ?? null,
+    query.run_state ?? null,
+    query.archived ?? null,
+  ]);
+}
+
 function appendUnique(
   current: readonly ResearchThreadDTO[],
   incoming: readonly ResearchThreadDTO[],
@@ -136,12 +149,13 @@ function formatLocalTime(value: string): string {
 }
 
 function mutationFailure(error: unknown): MutationFailure {
-  if (
-    error instanceof ApiError
-    && error.status === 409
-    && THREAD_MUTATION_PATH.test(error.path)
-    && (error.code === null || error.code === "active_run_conflict")
-  ) {
+  if (!(error instanceof ApiError) || !THREAD_MUTATION_PATH.test(error.path)) {
+    return "update_failed";
+  }
+  if (error.status === 404 && (error.code === null || error.code === "thread_missing")) {
+    return "thread_missing";
+  }
+  if (error.status === 409 && (error.code === null || error.code === "active_run_conflict")) {
     return "active_run_conflict";
   }
   return "update_failed";
@@ -163,6 +177,7 @@ export function ResearchHistoryDrawer({
   const [rows, setRows] = useState<ResearchThreadDTO[]>([]);
   const [total, setTotal] = useState(0);
   const [nextOffset, setNextOffset] = useState(0);
+  const [acceptedQueryKey, setAcceptedQueryKey] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [appending, setAppending] = useState(false);
   const [stale, setStale] = useState(false);
@@ -180,6 +195,7 @@ export function ResearchHistoryDrawer({
   } | null>(null);
 
   const rowsRef = useRef<ResearchThreadDTO[]>([]);
+  const acceptedQueryKeyRef = useRef<string | null>(null);
   const filtersRef = useRef(filters);
   filtersRef.current = filters;
   const requestSequenceRef = useRef(0);
@@ -193,7 +209,8 @@ export function ResearchHistoryDrawer({
   const refreshButtonRef = useRef<HTMLButtonElement>(null);
   const rowSelectRefs = useRef(new Map<string, HTMLButtonElement>());
   const focusSequenceRef = useRef(0);
-  const renameMutationRef = useRef<string | null>(null);
+  const mutationOwnerRef = useRef<number | null>(null);
+  const mutationSequenceRef = useRef(0);
 
   const focusAfterRender = useCallback((target: "refresh" | string) => {
     setPendingFocusRequest({ target, sequence: ++focusSequenceRef.current });
@@ -224,11 +241,29 @@ export function ResearchHistoryDrawer({
     setAppending(false);
   }, []);
 
+  const beginMutation = useCallback((threadId: string): number | null => {
+    if (mutationOwnerRef.current !== null) return null;
+    const token = ++mutationSequenceRef.current;
+    mutationOwnerRef.current = token;
+    setMutationId(threadId);
+    return token;
+  }, []);
+
+  const finishMutation = useCallback((token: number) => {
+    if (mutationOwnerRef.current !== token) return;
+    mutationOwnerRef.current = null;
+    setMutationId(null);
+  }, []);
+
   const loadPage = useCallback(async (
     requestedFilters: HistoryFilters,
     offset: number,
     append: boolean,
-  ) => {
+  ): Promise<LoadPageResult> => {
+    const requestedQueryKey = queryKeyFor(requestedFilters);
+    if (append && acceptedQueryKeyRef.current !== requestedQueryKey) {
+      return "failed";
+    }
     const sequence = ++requestSequenceRef.current;
     if (append) setAppending(true);
     else {
@@ -238,10 +273,15 @@ export function ResearchHistoryDrawer({
     setLoadError(false);
     try {
       const page = await queryResearchThreads(queryFor(requestedFilters, offset));
-      if (sequence !== requestSequenceRef.current) return;
+      if (
+        sequence !== requestSequenceRef.current
+        || requestedQueryKey !== queryKeyFor(filtersRef.current)
+      ) return "superseded";
       const nextRows = append
         ? appendUnique(rowsRef.current, page.threads)
         : [...page.threads];
+      acceptedQueryKeyRef.current = requestedQueryKey;
+      setAcceptedQueryKey(requestedQueryKey);
       commitRows(nextRows);
       setTotal(page.total);
       setNextOffset(page.offset + page.limit);
@@ -254,10 +294,23 @@ export function ResearchHistoryDrawer({
         initialRowsNotifiedRef.current = true;
         initialRowsCallbackRef.current(page.threads);
       }
+      return "committed";
     } catch {
-      if (sequence !== requestSequenceRef.current) return;
+      if (
+        sequence !== requestSequenceRef.current
+        || requestedQueryKey !== queryKeyFor(filtersRef.current)
+      ) return "superseded";
+      const retainsAcceptedRows = acceptedQueryKeyRef.current === requestedQueryKey;
+      if (!retainsAcceptedRows) {
+        acceptedQueryKeyRef.current = null;
+        setAcceptedQueryKey(null);
+        commitRows([]);
+        setTotal(0);
+        setNextOffset(0);
+      }
       setLoadError(true);
-      setStale(rowsRef.current.length > 0);
+      setStale(retainsAcceptedRows && rowsRef.current.length > 0);
+      return "failed";
     } finally {
       if (sequence === requestSequenceRef.current) {
         if (append) setAppending(false);
@@ -298,6 +351,7 @@ export function ResearchHistoryDrawer({
   }, [commitRows]);
 
   const beginRename = useCallback((thread: ResearchThreadDTO) => {
+    if (mutationOwnerRef.current !== null) return;
     setRenamingId(thread.id);
     setRenameDraft(thread.title);
     setRenameError(null);
@@ -311,71 +365,119 @@ export function ResearchHistoryDrawer({
     if (focusThreadId) focusAfterRender(focusThreadId);
   }, [focusAfterRender]);
 
+  const reloadAfterMutation = useCallback(async (
+    token: number,
+    focusTarget: "refresh" | string,
+  ) => {
+    const result = await loadPage(filtersRef.current, 0, false);
+    if (result === "committed" && mutationOwnerRef.current === token) {
+      focusAfterRender(focusTarget);
+    }
+    return result;
+  }, [focusAfterRender, loadPage]);
+
+  const reconcileMissingThread = useCallback(async (
+    threadId: string,
+    token: number,
+  ) => {
+    if (mutationOwnerRef.current !== token) return;
+    invalidateLoads();
+    removeRow(threadId);
+    onThreadDeleted(threadId);
+    setMutationError("thread_missing");
+    const result = await reloadAfterMutation(token, "refresh");
+    if (result === "committed" && mutationOwnerRef.current === token) {
+      removeRow(threadId);
+    }
+  }, [invalidateLoads, onThreadDeleted, reloadAfterMutation, removeRow]);
+
   const saveRename = useCallback(async (thread: ResearchThreadDTO) => {
-    if (renameMutationRef.current !== null) return;
-    const title = renameDraft.trim();
-    if (!title) {
+    if (mutationOwnerRef.current !== null) return;
+    const title = renameDraft;
+    if (!title.trim()) {
       setRenameError("empty_name");
       return;
     }
-    renameMutationRef.current = thread.id;
-    setMutationId(thread.id);
+    const token = beginMutation(thread.id);
+    if (token === null) return;
     setMutationError(null);
     setRenameError(null);
     try {
       const { thread: updated } = await updateResearchThread(thread.id, { title });
+      if (mutationOwnerRef.current !== token) return;
       invalidateLoads();
       replaceRow(updated);
       cancelRename();
       onThreadUpdated(updated);
-      await loadPage(filtersRef.current, 0, false);
-      focusAfterRender(updated.id);
+      await reloadAfterMutation(token, updated.id);
     } catch (error) {
-      setRenameError(mutationFailure(error));
+      if (mutationOwnerRef.current !== token) return;
+      const failure = mutationFailure(error);
+      if (failure === "thread_missing") {
+        cancelRename();
+        await reconcileMissingThread(thread.id, token);
+      } else {
+        setRenameError(failure);
+      }
     } finally {
-      if (renameMutationRef.current === thread.id) renameMutationRef.current = null;
-      setMutationId(null);
+      finishMutation(token);
     }
-  }, [cancelRename, focusAfterRender, invalidateLoads, loadPage, onThreadUpdated, renameDraft, replaceRow]);
+  }, [beginMutation, cancelRename, finishMutation, invalidateLoads, onThreadUpdated, reconcileMissingThread, reloadAfterMutation, renameDraft, replaceRow]);
 
   const changeArchive = useCallback(async (thread: ResearchThreadDTO) => {
+    const token = beginMutation(thread.id);
+    if (token === null) return;
     const archived = !thread.archived_at;
-    setMutationId(thread.id);
     setMutationError(null);
     try {
       const { thread: updated } = await updateResearchThread(thread.id, { archived });
+      if (mutationOwnerRef.current !== token) return;
       invalidateLoads();
       removeRow(thread.id);
       if (deleteTarget?.id === thread.id) setDeleteTarget(null);
       onThreadUpdated(updated);
-      await loadPage(filtersRef.current, 0, false);
-      focusAfterRender("refresh");
+      await reloadAfterMutation(token, "refresh");
     } catch (error) {
-      setMutationError(mutationFailure(error));
+      if (mutationOwnerRef.current !== token) return;
+      const failure = mutationFailure(error);
+      if (failure === "thread_missing") {
+        if (deleteTarget?.id === thread.id) setDeleteTarget(null);
+        await reconcileMissingThread(thread.id, token);
+      } else {
+        setMutationError(failure);
+      }
     } finally {
-      setMutationId(null);
+      finishMutation(token);
     }
-  }, [deleteTarget?.id, focusAfterRender, invalidateLoads, loadPage, onThreadUpdated, removeRow]);
+  }, [beginMutation, deleteTarget?.id, finishMutation, invalidateLoads, onThreadUpdated, reconcileMissingThread, reloadAfterMutation, removeRow]);
 
   const confirmDelete = useCallback(async () => {
     if (!deleteTarget) return;
-    setMutationId(deleteTarget.id);
+    const target = deleteTarget;
+    const token = beginMutation(target.id);
+    if (token === null) return;
     setMutationError(null);
     try {
-      await deleteResearchThread(deleteTarget.id);
-      const deletedId = deleteTarget.id;
+      await deleteResearchThread(target.id);
+      if (mutationOwnerRef.current !== token) return;
       invalidateLoads();
-      removeRow(deletedId);
+      removeRow(target.id);
       setDeleteTarget(null);
-      onThreadDeleted(deletedId);
-      await loadPage(filtersRef.current, 0, false);
-      focusAfterRender("refresh");
+      onThreadDeleted(target.id);
+      await reloadAfterMutation(token, "refresh");
     } catch (error) {
-      setMutationError(mutationFailure(error));
+      if (mutationOwnerRef.current !== token) return;
+      const failure = mutationFailure(error);
+      if (failure === "thread_missing") {
+        setDeleteTarget(null);
+        await reconcileMissingThread(target.id, token);
+      } else {
+        setMutationError(failure);
+      }
     } finally {
-      setMutationId(null);
+      finishMutation(token);
     }
-  }, [deleteTarget, focusAfterRender, invalidateLoads, loadPage, onThreadDeleted, removeRow]);
+  }, [beginMutation, deleteTarget, finishMutation, invalidateLoads, onThreadDeleted, reconcileMissingThread, reloadAfterMutation, removeRow]);
 
   const activeIds = useMemo(() => activeRunIds, [activeRunIds]);
   const isActive = useCallback((thread: ResearchThreadDTO) => {
@@ -386,20 +488,26 @@ export function ResearchHistoryDrawer({
       || activeRun.status === "running";
   }, [activeIds]);
 
-  const hasMore = nextOffset < total;
+  const mutationBusy = mutationId !== null;
+  const currentQueryKey = useMemo(() => queryKeyFor(filters), [filters]);
+  const hasMore = acceptedQueryKey === currentQueryKey && nextOffset < total;
   const statusLabel = `${rows.length} / ${total}`;
   const mutationErrorLabel = mutationError === null
     ? null
     : mutationError === "active_run_conflict"
       ? researchT(($) => $.history.activeMutationBlocked)
-      : researchT(($) => $.history.updateFailed);
+      : mutationError === "thread_missing"
+        ? researchT(($) => $.workspace.threadNotFound)
+        : researchT(($) => $.history.updateFailed);
   const renameErrorLabel = renameError === null
     ? null
     : renameError === "empty_name"
       ? researchT(($) => $.history.emptyName)
       : renameError === "active_run_conflict"
         ? researchT(($) => $.history.activeMutationBlocked)
-        : researchT(($) => $.history.updateFailed);
+        : renameError === "thread_missing"
+          ? researchT(($) => $.workspace.threadNotFound)
+          : researchT(($) => $.history.updateFailed);
   const deleteTargetTitle = deleteTarget?.title.trim()
     ? deleteTarget.title
     : researchT(($) => $.history.unnamedFallback);
@@ -579,13 +687,13 @@ export function ResearchHistoryDrawer({
                             autoFocus
                             aria-label={researchT(($) => $.history.titleFilterAria)}
                             value={renameDraft}
-                            disabled={busy}
+                            disabled={mutationBusy}
                             onChange={(event) => {
                               setRenameDraft(event.currentTarget.value);
                               setRenameError(null);
                             }}
                             onKeyDown={(event) => {
-                              if (renameMutationRef.current === thread.id) {
+                              if (mutationOwnerRef.current !== null) {
                                 if (event.key === "Enter" || event.key === "Escape") {
                                   event.preventDefault();
                                   event.stopPropagation();
@@ -606,6 +714,7 @@ export function ResearchHistoryDrawer({
                             size="compact"
                             tone="primary"
                             busy={busy}
+                            disabled={mutationBusy && !busy}
                             icon={<Check size={15} />}
                             onClick={() => void saveRename(thread)}
                           >
@@ -616,7 +725,7 @@ export function ResearchHistoryDrawer({
                             size="compact"
                             tone="ghost"
                             icon={<X size={15} />}
-                            disabled={busy}
+                            disabled={mutationBusy}
                             onClick={() => cancelRename(thread.id)}
                           />
                         </div>
@@ -658,7 +767,7 @@ export function ResearchHistoryDrawer({
                             size="compact"
                             tone="ghost"
                             icon={<Pencil size={15} />}
-                            disabled={busy}
+                            disabled={mutationBusy}
                             onClick={() => beginRename(thread)}
                           />
                           <IconButton
@@ -673,7 +782,7 @@ export function ResearchHistoryDrawer({
                             icon={thread.archived_at
                               ? <ArchiveRestore size={15} />
                               : <Archive size={15} />}
-                            disabled={busy || active}
+                            disabled={mutationBusy || active}
                             title={active
                               ? researchT(($) => $.history.activeThreadWarning)
                               : undefined}
@@ -684,11 +793,12 @@ export function ResearchHistoryDrawer({
                             size="compact"
                             tone="danger"
                             icon={<Trash2 size={15} />}
-                            disabled={busy || active}
+                            disabled={mutationBusy || active}
                             title={active
                               ? researchT(($) => $.history.activeThreadWarning)
                               : undefined}
                             onClick={(event) => {
+                              if (mutationOwnerRef.current !== null) return;
                               setDeleteReturnFocus(event.currentTarget);
                               setMutationError(null);
                               setDeleteTarget(thread);
@@ -719,10 +829,10 @@ export function ResearchHistoryDrawer({
           </div>
         )}
         confirmLabel={researchT(($) => $.history.deleteAction)}
-        busy={Boolean(deleteTarget && mutationId === deleteTarget.id)}
+        busy={mutationBusy}
         onConfirm={() => void confirmDelete()}
         onCancel={() => {
-          if (mutationId) return;
+          if (mutationOwnerRef.current !== null) return;
           setDeleteTarget(null);
           setMutationError(null);
         }}

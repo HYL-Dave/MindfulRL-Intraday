@@ -524,6 +524,13 @@ function buttonByText(text: string, scope: ParentNode = document): HTMLButtonEle
   return button;
 }
 
+function buttonByAriaLabel(label: string): HTMLButtonElement {
+  const button = Array.from(document.querySelectorAll<HTMLButtonElement>("button"))
+    .find((candidate) => candidate.getAttribute("aria-label") === label);
+  if (!button) throw new Error(`button not found by aria-label: ${label}`);
+  return button;
+}
+
 function controlByLabel<T extends HTMLInputElement | HTMLSelectElement>(label: string): T {
   const control = document.querySelector<T>(`[aria-label='${label}']`);
   if (!control) throw new Error(`control not found: ${label}`);
@@ -628,110 +635,152 @@ describe("Research history drawer", () => {
 
   it("renders structured 404 and 409 outcomes without parsing messages", async () => {
     await i18n.changeLanguage("en");
-    const source = thread("thread-errors", "SOURCE_ERROR_THREAD");
-    let mutationAttempt = 0;
+    const sources = [
+      thread("missing-null", "SOURCE_MISSING_NULL"),
+      thread("missing-code", "SOURCE_MISSING_CODE"),
+      thread("wrong-child", "SOURCE_WRONG_CHILD"),
+      thread("wrong-query", "SOURCE_WRONG_QUERY"),
+      thread("unknown-missing", "SOURCE_UNKNOWN_MISSING"),
+      thread("wrong-conflict-child", "SOURCE_WRONG_CONFLICT_CHILD"),
+      thread("wrong-conflict-query", "SOURCE_WRONG_CONFLICT_QUERY"),
+      thread("unknown-conflict", "SOURCE_UNKNOWN_CONFLICT"),
+      thread("conflict-null", "SOURCE_CONFLICT_NULL"),
+      thread("conflict-code", "SOURCE_CONFLICT_CODE"),
+    ];
     const backend = createResearchFetch({
-      current: [source],
-      patchResponses: {
-        "thread-errors": [
-          json({
-            detail: {
-              code: "thread_missing",
-              message: "PLANTED returned 409 MESSAGE IS NOT STATUS",
-            },
-          }, 404),
-          json({
-            detail: "PLANTED returned 404 CODE-LESS ACTIVE CONFLICT",
-          }, 409),
-          json({
-            detail: {
-              code: "active_run_conflict",
-              message: "PLANTED returned 404 MESSAGE IS NOT STATUS",
-            },
-          }, 409),
-        ],
-      },
+      current: sources,
+      messages: { "missing-null": [message("SOURCE_SELECTED_TRANSCRIPT")] },
       override: (url, init) => {
-        if (url.pathname !== "/research/threads/thread-errors" || init?.method !== "PATCH") {
+        if (url.pathname === "/research/threads" && (init?.method ?? "GET") === "GET") {
+          return json({ threads: sources, total: sources.length, limit: 50, offset: 0 });
+        }
+        if (init?.method !== "PATCH") {
           return undefined;
         }
-        mutationAttempt += 1;
-        if (mutationAttempt === 2) {
+        if (url.pathname === "/research/threads/missing-null") {
+          return json({ detail: "PLANTED 409 TEXT MUST NOT CLASSIFY" }, 404);
+        }
+        if (url.pathname === "/research/threads/missing-code") {
+          return json({
+            detail: {
+              code: "thread_missing",
+              message: "PLANTED ACTIVE CONFLICT TEXT MUST NOT CLASSIFY",
+            },
+          }, 404);
+        }
+        if (url.pathname === "/research/threads/wrong-child") {
           return Promise.reject(new ApiError(
-            "PLANTED returned 409 MESSAGE IS NOT ROUTE",
-            "/research/threads/thread-errors/events",
-            409,
+            "PLANTED THREAD MISSING MESSAGE IS NOT ROUTE",
+            "/research/threads/wrong-child/events",
+            404,
             null,
-            "RAW_WRONG_ROUTE_DIAGNOSTIC",
+            "RAW_WRONG_CHILD_DIAGNOSTIC",
           ));
         }
-        if (mutationAttempt === 3) {
+        if (url.pathname === "/research/threads/wrong-query") {
           return Promise.reject(new ApiError(
-            "PLANTED returned 409 MESSAGE IS NOT ROUTE",
-            "/research/threads/thread-errors?force=true",
-            409,
-            null,
-            "RAW_QUERY_ROUTE_DIAGNOSTIC",
+            "PLANTED THREAD MISSING MESSAGE IS NOT ROUTE",
+            "/research/threads/wrong-query?force=true",
+            404,
+            "thread_missing",
+            "RAW_WRONG_QUERY_DIAGNOSTIC",
           ));
         }
-        if (mutationAttempt === 4) {
+        if (url.pathname === "/research/threads/unknown-missing") {
           return Promise.reject(new ApiError(
-            "PLANTED returned 409 MESSAGE IS NOT CODE",
-            "/research/threads/thread-errors",
+            "PLANTED THREAD MISSING MESSAGE IS NOT CODE",
+            "/research/threads/unknown-missing",
+            404,
+            "future_missing_code",
+            "RAW_UNKNOWN_MISSING_DIAGNOSTIC",
+          ));
+        }
+        if (url.pathname === "/research/threads/wrong-conflict-child") {
+          return Promise.reject(new ApiError(
+            "PLANTED ACTIVE CONFLICT MESSAGE IS NOT ROUTE",
+            "/research/threads/wrong-conflict-child/events",
+            409,
+            null,
+            "RAW_WRONG_CONFLICT_CHILD_DIAGNOSTIC",
+          ));
+        }
+        if (url.pathname === "/research/threads/wrong-conflict-query") {
+          return Promise.reject(new ApiError(
+            "PLANTED ACTIVE CONFLICT MESSAGE IS NOT ROUTE",
+            "/research/threads/wrong-conflict-query?force=true",
+            409,
+            "active_run_conflict",
+            "RAW_WRONG_CONFLICT_QUERY_DIAGNOSTIC",
+          ));
+        }
+        if (url.pathname === "/research/threads/unknown-conflict") {
+          return Promise.reject(new ApiError(
+            "PLANTED ACTIVE CONFLICT MESSAGE IS NOT CODE",
+            "/research/threads/unknown-conflict",
             409,
             "future_conflict",
-            "RAW_UNKNOWN_CODE_DIAGNOSTIC",
+            "RAW_UNKNOWN_CONFLICT_DIAGNOSTIC",
           ));
+        }
+        if (url.pathname === "/research/threads/conflict-null") {
+          return json({ detail: "PLANTED 404 TEXT MUST NOT CLASSIFY" }, 409);
+        }
+        if (url.pathname === "/research/threads/conflict-code") {
+          return json({
+            detail: {
+              code: "active_run_conflict",
+              message: "PLANTED 404 TEXT MUST NOT CLASSIFY",
+            },
+          }, 409);
         }
         return undefined;
       },
     });
     await mountResearch({ backend });
     await click(buttonByText("歷史", host!));
-    const row = document.querySelector("[data-research-history-row='thread-errors']")!;
-    const archive = row.querySelectorAll(".research-history-actions button")[1];
-
-    await click(archive);
-    await flush();
-    expect(document.querySelector("[role='alert']")?.textContent).toContain(
-      "Research history could not be updated. Try again later.",
+    expect(host!.querySelector(".research-conversation-title")?.textContent).toBe(
+      "SOURCE_MISSING_NULL",
     );
-    expect(document.body.textContent).not.toContain("PLANTED returned 409");
+    expect(host!.textContent).toContain("SOURCE_SELECTED_TRANSCRIPT");
 
-    await click(archive);
-    await flush();
-    expect(document.querySelector("[role='alert']")?.textContent).toContain(
-      "Research history could not be updated. Try again later.",
-    );
-    expect(document.body.textContent).not.toContain("RAW_WRONG_ROUTE_DIAGNOSTIC");
+    const archive = async (title: string) => {
+      await click(document.querySelector(`[aria-label='Archive ${title}']`)!);
+      await flush();
+    };
+    const genericCopy = "Research history could not be updated. Try again later.";
+    const conflictCopy = "A Research run is still active, so this conversation cannot be archived or permanently deleted.";
+    const missingCopy = "The requested Research conversation was not found and may have been deleted.";
 
-    await click(archive);
-    await flush();
-    expect(document.querySelector("[role='alert']")?.textContent).toContain(
-      "Research history could not be updated. Try again later.",
-    );
-    expect(document.body.textContent).not.toContain("RAW_QUERY_ROUTE_DIAGNOSTIC");
+    await archive("SOURCE_MISSING_NULL");
+    expect(document.querySelector("[role='alert']")?.textContent).toContain(missingCopy);
+    expect(document.querySelector("[data-research-history-row='missing-null']")).toBeNull();
+    expect(host!.querySelector(".research-conversation-title")?.textContent).toBe("新對話");
+    expect(host!.textContent).not.toContain("SOURCE_SELECTED_TRANSCRIPT");
+    expect(window.sessionStorage.getItem(ACTIVE_THREAD_SESSION_KEY)).toBeNull();
 
-    await click(archive);
-    await flush();
-    expect(document.querySelector("[role='alert']")?.textContent).toContain(
-      "Research history could not be updated. Try again later.",
-    );
-    expect(document.body.textContent).not.toContain("RAW_UNKNOWN_CODE_DIAGNOSTIC");
+    await archive("SOURCE_MISSING_CODE");
+    expect(document.querySelector("[role='alert']")?.textContent).toContain(missingCopy);
+    expect(document.querySelector("[data-research-history-row='missing-code']")).toBeNull();
 
-    await click(archive);
-    await flush();
-    expect(document.querySelector("[role='alert']")?.textContent).toContain(
-      "A Research run is still active, so this conversation cannot be archived or permanently deleted.",
-    );
-    expect(document.body.textContent).not.toContain("PLANTED returned 404 CODE-LESS");
+    for (const title of [
+      "SOURCE_WRONG_CHILD",
+      "SOURCE_WRONG_QUERY",
+      "SOURCE_UNKNOWN_MISSING",
+      "SOURCE_WRONG_CONFLICT_CHILD",
+      "SOURCE_WRONG_CONFLICT_QUERY",
+      "SOURCE_UNKNOWN_CONFLICT",
+    ]) {
+      await archive(title);
+      expect(document.querySelector("[role='alert']")?.textContent).toContain(genericCopy);
+    }
 
-    await click(archive);
-    await flush();
-    expect(document.querySelector("[role='alert']")?.textContent).toContain(
-      "A Research run is still active, so this conversation cannot be archived or permanently deleted.",
-    );
-    expect(document.body.textContent).not.toContain("PLANTED returned 404");
+    await archive("SOURCE_CONFLICT_NULL");
+    expect(document.querySelector("[role='alert']")?.textContent).toContain(conflictCopy);
+    await archive("SOURCE_CONFLICT_CODE");
+    expect(document.querySelector("[role='alert']")?.textContent).toContain(conflictCopy);
+
+    expect(document.body.textContent).not.toContain("PLANTED");
+    expect(document.body.textContent).not.toContain("RAW_");
   });
 
   it("preserves search draft focus and selected thread across locale changes", async () => {
@@ -769,30 +818,53 @@ describe("Research history drawer", () => {
   it("renders an in-flight rename result in the current locale", async () => {
     await i18n.changeLanguage("zh-Hant");
     const patchResult = deferred<Response>();
-    const source = thread("thread-rename-late", "SOURCE_BEFORE_RENAME");
-    const updated = { ...source, title: "SOURCE_AFTER_RENAME" };
+    const secondPatchResult = deferred<Response>();
+    const sourceTitle = "SOURCE_BEFORE_RENAME / 原始「Title」::<>&";
+    const draftTitle = "SOURCE_AFTER_RENAME / 使用者「Draft」::<>&";
+    const secondTitle = "SOURCE_SECOND_ROW / 原始「Title」::<>&";
+    const source = thread("thread-rename-late", sourceTitle);
+    const second = thread("thread-second-mutation", secondTitle);
+    const updated = { ...source, title: draftTitle };
     const backend = createResearchFetch({
-      current: [source],
-      patchResponses: { "thread-rename-late": [patchResult.promise] },
+      current: [source, second],
+      patchResponses: {
+        "thread-rename-late": [patchResult.promise],
+        "thread-second-mutation": [secondPatchResult.promise],
+      },
     });
     await mountResearch({ backend });
     await click(buttonByText("歷史", host!));
-    await click(document.querySelector("[aria-label='重新命名 SOURCE_BEFORE_RENAME']")!);
+    await click(buttonByAriaLabel(`重新命名 ${sourceTitle}`));
     const draft = controlByLabel<HTMLInputElement>("對話名稱");
-    await setInput(draft, "SOURCE_AFTER_RENAME");
-    await click(buttonByText("儲存名稱"));
+    expect(draft.value).toBe(sourceTitle);
+    await setInput(draft, draftTitle);
+    const save = buttonByText("儲存名稱");
+    const secondArchive = buttonByAriaLabel(`封存 ${secondTitle}`);
+    await act(async () => {
+      save.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      secondArchive.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      await Promise.resolve();
+    });
+    await flush();
+
+    const patchCalls = backend.fetchMock.mock.calls.filter(([, init]) => init?.method === "PATCH");
+    expect(patchCalls).toHaveLength(1);
+    expect(JSON.parse(String(patchCalls[0]?.[1]?.body))).toEqual({ title: draftTitle });
+    expect(draft.value).toBe(draftTitle);
+    expect(secondArchive.disabled).toBe(true);
+    expect(buttonByAriaLabel(`重新命名 ${secondTitle}`).disabled).toBe(true);
+    expect(buttonByAriaLabel(`永久刪除 ${secondTitle}`).disabled).toBe(true);
 
     await act(async () => { await i18n.changeLanguage("en"); });
     await resolveInAct(patchResult, json({ thread: updated }));
     await flush();
-    await vi.waitFor(() => expect(document.querySelector(
-      "[aria-label='Rename SOURCE_AFTER_RENAME']",
-    )).not.toBeNull());
+    await vi.waitFor(() => expect(buttonByAriaLabel(`Rename ${draftTitle}`)).not.toBeNull());
 
-    expect(document.querySelector(".research-history-title")?.textContent).toBe(
-      "SOURCE_AFTER_RENAME",
-    );
+    expect(document.querySelector(
+      "[data-research-history-row='thread-rename-late'] .research-history-title",
+    )?.textContent).toBe(draftTitle);
     expect(backend.fetchMock.mock.calls.filter(([, init]) => init?.method === "PATCH")).toHaveLength(1);
+    expect(buttonByAriaLabel(`Archive ${secondTitle}`).disabled).toBe(false);
   });
 
   it("preserves source thread titles exactly", async () => {
@@ -1137,6 +1209,7 @@ describe("Research history drawer", () => {
     const active = run("run-active", "thread-b", "running");
     const archiveResponse = deferred<Response>();
     const staleFilterResponse = deferred<Response>();
+    const mutationReloadResponse = deferred<Response>();
     let filterCalls = 0;
     const backend = createResearchFetch({
       current: [
@@ -1154,10 +1227,19 @@ describe("Research history drawer", () => {
         if (
           url.pathname === "/research/threads"
           && (init?.method ?? "GET") === "GET"
-          && url.searchParams.get("q") === "fresh"
         ) {
+          if (url.searchParams.get("q") === "newer") {
+            return json({
+              threads: [thread("thread-fresh", "Fresh filtered row")],
+              total: 1,
+              limit: 50,
+              offset: 0,
+            });
+          }
+          if (url.searchParams.get("q") !== "fresh") return undefined;
           filterCalls += 1;
           if (filterCalls === 1) return staleFilterResponse.promise;
+          if (filterCalls === 2) return mutationReloadResponse.promise;
           return json({
             threads: [thread("thread-fresh", "Fresh filtered row")],
             total: 1,
@@ -1187,7 +1269,23 @@ describe("Research history drawer", () => {
       thread: thread("thread-a", "Thread A", { archivedAt: "2026-07-18T01:00:00Z" }),
     }));
     await flush();
+    await vi.waitFor(() => expect(filterCalls).toBe(2));
+    const search = controlByLabel<HTMLInputElement>("搜尋歷史");
+    search.focus();
+    await setInput(search, "newer");
     await vi.waitFor(() => expect(document.body.textContent).toContain("Fresh filtered row"));
+    expect(document.activeElement).toBe(search);
+
+    await resolveInAct(mutationReloadResponse, json({
+      threads: [thread("thread-mutation-stale", "Superseded mutation reload")],
+      total: 1,
+      limit: 50,
+      offset: 0,
+    }));
+    expect(document.body.textContent).toContain("Fresh filtered row");
+    expect(document.body.textContent).not.toContain("Superseded mutation reload");
+    expect(document.activeElement).toBe(search);
+
     staleFilterResponse.resolve(json({
       threads: [thread("thread-a", "Stale filtered row")],
       total: 1,
@@ -1202,8 +1300,7 @@ describe("Research history drawer", () => {
     await vi.waitFor(() => expect(
       document.querySelector("[data-research-history-row='thread-a']"),
     ).toBeNull());
-    await vi.waitFor(() => expect(document.activeElement?.getAttribute("aria-label"))
-      .toBe("重新整理歷史"));
+    expect(document.activeElement).toBe(search);
     expect(host!.textContent).toContain("Transcript A");
     expect(buttonByText("送出", host!).disabled).toBe(true);
 
@@ -1293,11 +1390,14 @@ describe("Research history drawer", () => {
       override: (url) => {
         if (url.pathname !== "/research/threads") return undefined;
         historyCalls += 1;
+        if (url.searchParams.get("q") === "different") {
+          return json({ detail: "different query failed" }, 503);
+        }
         if (historyCalls === 2) return json({ detail: "temporary failure" }, 503);
         const rows = historyCalls >= 3
           ? [thread("thread-a", "Thread A"), thread("thread-b", "Thread B")]
           : [thread("thread-a", "Thread A")];
-        return json({ threads: rows, total: rows.length, limit: 50, offset: 0 });
+        return json({ threads: rows, total: 80, limit: 50, offset: 0 });
       },
     });
     await mountResearch({ backend });
@@ -1313,5 +1413,17 @@ describe("Research history drawer", () => {
     ).not.toBeNull());
     expect(document.body.textContent).not.toContain("資料可能已過期");
     expect(historyCalls).toBe(3);
+
+    await setInput(controlByLabel<HTMLInputElement>("搜尋歷史"), "different");
+    await vi.waitFor(() => expect(historyCalls).toBe(4));
+    expect(document.querySelector("[role='alert']")).not.toBeNull();
+    expect(document.querySelector("[role='alert']")?.textContent).toContain("無法載入研究歷史");
+    expect(document.querySelector("[data-research-history-row='thread-a']")).toBeNull();
+    expect(document.querySelector("[data-research-history-row='thread-b']")).toBeNull();
+    expect(document.body.textContent).not.toContain("資料可能已過期");
+    expect(Array.from(document.querySelectorAll("button")).some(
+      (button) => button.textContent?.trim() === "載入更多",
+    )).toBe(false);
+    expect(historyCalls).toBe(4);
   });
 });
