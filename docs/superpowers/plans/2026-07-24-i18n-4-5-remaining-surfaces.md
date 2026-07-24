@@ -9,12 +9,12 @@
 > `superpowers:verification-before-completion` before any passing or complete
 > claim. Track every step with the checkbox syntax below.
 
-> **Status: WRITTEN — INDEPENDENT PLAN REVIEW PENDING**
+> **Status: CLEARED FOR IMPLEMENTATION — INDEPENDENT PLAN REVIEW GREEN**
 >
 > The combined design received independent full-document GREEN against docs
-> tip `78f0d074f99f63a2a832c35352fdd6ba9f76192c`. Product implementation is
-> not authorized until independent review clears this plan and a docs-only
-> `PLAN_REVIEW_CLEARANCE_COMMIT` is recorded. The behavior A/B base remains
+> tip `78f0d074f99f63a2a832c35352fdd6ba9f76192c`. Independent review has
+> cleared this plan; product implementation may begin only from the docs-only
+> `PLAN_REVIEW_CLEARANCE_COMMIT`. The behavior A/B base remains
 > merged product `93cda66831b7202fd0dfafcc0d1c0604b07e94bd`; later docs commits do
 > not replace that anchor. Merge remains blocked on independent implementation
 > review GREEN and explicit user approval.
@@ -69,6 +69,24 @@ accounting:
 2. **Sidecar copy owner.** `App.tsx` owns the structured sidecar state and
    `Dashboard.tsx` renders it, but all localized sidecar/System outcome copy is
    owned by the `system` namespace. No Shell or Explore copy owner is added.
+
+---
+
+## Independent Plan-Review Resolution
+
+Independent full-plan review returned GREEN with one advisory and no accounting
+change:
+
+1. **Dashboard-wide bilingual ownership — incorporated.** The existing planned
+   node `renders System sidecar copy from the system namespace in both locales`
+   retains its exact ID and is strengthened in place. It must resolve and assert
+   all 20 `system` leaves through the mounted Dashboard in both locales,
+   including the roughly fourteen non-sidecar System/Health labels as well as
+   sidecar loading/error/retry copy. Task 10's runtime matrix remains an
+   independent visual gate, not the sole coverage for those leaves.
+
+The reviewed frontend ledger remains A `+44/-2`, B `+60/-0`; resource, scanner,
+focused-suite, and file-boundary accounting are unchanged.
 
 ---
 
@@ -1074,6 +1092,9 @@ resources, `i18n/systemPresentation.ts`, and owning tests.
   Add five AppShell, three DataTable, two overlay, and two Markdown nodes. Plant
   a hostile sidecar `Error.message` and prove App state contains none of it,
   normal UI exposes none, and Developer Mode shows only reviewed safe facts.
+  The existing planned bilingual System node must mount Dashboard in both
+  locales and assert all 20 `system` leaves, not only the six-ish sidecar
+  states. Its ID stays unchanged and no node is added.
 
 - [ ] **Step 2: Add System resources with explicit ownership**
 

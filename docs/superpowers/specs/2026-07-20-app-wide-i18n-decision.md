@@ -5,8 +5,8 @@
 > FAST-FORWARD MERGED THROUGH `d2195cd0`; P2.8 SLICE 5 LIVE COMPLETE AT
 > PRODUCT `b214e1fc`, FAST-FORWARD MERGED THROUGH `de8485be`; I18N-3 EXPLORE
 > LIVE COMPLETE AT PRODUCT `be89a9b5`, FAST-FORWARD MERGED THROUGH
-> `eb4dee7b`; COMBINED I18N-4/5 REMAINING SURFACES DESIGN REVIEW GREEN —
-> IMPLEMENTATION PLAN WRITTEN, INDEPENDENT PLAN REVIEW NEXT.**
+> `eb4dee7b`; COMBINED I18N-4/5 DESIGN AND IMPLEMENTATION PLAN REVIEW GREEN —
+> IMPLEMENTATION CLEARED.**
 > This document chooses the app-wide locale authority, runtime localization
 > mechanism, migration sequence, public-switch gate, and verification contract.
 > Independent written review returned GREEN. I18N-0 subsequently passed its
@@ -22,8 +22,8 @@
 > implementation review with zero findings, explicit approval, merged-tree
 > canonical gates, and the normal zh-Hant desktop smoke. The remaining Research
 > and Portfolio/System work is now one bounded unit with separately evidenced
-> Tranche A and Tranche B checkpoints. Independent design review returned GREEN;
-> review of the single RED-first implementation plan is the next gate.
+> Tranche A and Tranche B checkpoints. Independent design and implementation
+> plan reviews returned GREEN; isolated RED-first implementation is cleared.
 
 ## 1. Purpose and Authority
 
@@ -492,7 +492,7 @@ the foundation slice, but no incomplete public affordance is rendered.
 | I18N-2 Settings | PageHeader, workflow tabs, directory/registry, all reachable Settings sections, Settings backend-copy mappings | LIVE — product `9f78a9ff`; merged/evidence `d2195cd0` | absent |
 | P2.8 Slice 5 | Investor Profile UX, implemented bilingual from birth against the new Settings/runtime contract | LIVE — product `b214e1fc`; merged/evidence `de8485be` | absent |
 | I18N-3 Explore | Home, Watchlist, Universe, News, Ticker Detail, AI card, related shared display helpers | LIVE — product `be89a9b5`; merged/evidence `eb4dee7b` | absent |
-| [I18N-4/5 Remaining surfaces](2026-07-24-i18n-4-5-remaining-surfaces-design.md) | Tranche A: Research and shared model-selection copy; Tranche B: Portfolio/System/common residuals, AppRecords frontend retirement, formatter inventory, and scanner closure | DESIGN REVIEW GREEN; implementation plan written — independent plan review next | absent |
+| [I18N-4/5 Remaining surfaces](2026-07-24-i18n-4-5-remaining-surfaces-design.md) | Tranche A: Research and shared model-selection copy; Tranche B: Portfolio/System/common residuals, AppRecords frontend retirement, formatter inventory, and scanner closure | DESIGN + PLAN REVIEW GREEN — implementation cleared | absent |
 | I18N-5 standalone cycle | absorbed into the two-tranche I18N-4/5 unit; no separate branch/review cycle | absorbed | absent |
 | I18N-6 Release | full coverage/audit, both-locale visual matrix, selector in Settings PageHeader, docs/Design Kit release sync | queued | visible |
 
@@ -746,9 +746,9 @@ At decision adoption:
 4. I18N-6 owns a later Design Kit locale-control and bilingual-state sync after
    the product gate passes.
 5. I18N-0, I18N-1, I18N-2 Settings, P2.8 Slice 5, and I18N-3 Explore are LIVE.
-6. The combined I18N-4/5 implementation plan is the single NEXT review gate;
-   product implementation remains unopened and the public locale selector
-   remains reserved for I18N-6.
+6. The combined I18N-4/5 implementation is the single active i18n unit; merge
+   remains blocked on independent implementation review and explicit approval,
+   while the public locale selector remains reserved for I18N-6.
 
 Each implementation unit receives a separately reviewed plan. The bounded
 I18N-4/5 combination is an explicit exception for the final debt manifest plus
