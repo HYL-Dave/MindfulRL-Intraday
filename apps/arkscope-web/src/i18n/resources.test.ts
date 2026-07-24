@@ -692,12 +692,13 @@ describe("bundled i18n resources", () => {
       "../../scripts/i18n/fixtures/portfolio-resource-ownership.json",
     ), "utf8")) as PortfolioOwnershipContract;
     const expectedCounts = {
-      common: 57,
+      common: 61,
       shell: 37,
       settings: 679,
       research: 207,
       explore: 401,
       portfolio: 374,
+      system: 20,
     } as const;
 
     expect(resourceNamespaces).toEqual(Object.keys(expectedCounts));
@@ -714,7 +715,7 @@ describe("bundled i18n resources", () => {
           total += actual;
         }
       }
-      expect(total, `${locale}.total`).toBe(1755);
+      expect(total, `${locale}.total`).toBe(1779);
 
       const portfolio = flattenResource(localeResources.portfolio as ResourceTree);
       flattenedPortfolioByLocale.set(locale, portfolio);

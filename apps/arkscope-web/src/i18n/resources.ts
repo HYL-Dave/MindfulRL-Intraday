@@ -7,12 +7,14 @@ import enPortfolio from "./resources/en/portfolio";
 import enResearch from "./resources/en/research";
 import enSettings from "./resources/en/settings";
 import enShell from "./resources/en/shell";
+import enSystem from "./resources/en/system";
 import zhHantCommon from "./resources/zh-Hant/common";
 import zhHantExplore from "./resources/zh-Hant/explore";
 import zhHantPortfolio from "./resources/zh-Hant/portfolio";
 import zhHantResearch from "./resources/zh-Hant/research";
 import zhHantSettings from "./resources/zh-Hant/settings";
 import zhHantShell from "./resources/zh-Hant/shell";
+import zhHantSystem from "./resources/zh-Hant/system";
 
 export const defaultNamespace = "common" as const;
 export const resourceNamespaces = [
@@ -22,6 +24,7 @@ export const resourceNamespaces = [
   "research",
   "explore",
   "portfolio",
+  "system",
 ] as const;
 
 export const resources = {
@@ -32,6 +35,7 @@ export const resources = {
     research: zhHantResearch,
     explore: zhHantExplore,
     portfolio: zhHantPortfolio,
+    system: zhHantSystem,
   },
   en: {
     common: enCommon,
@@ -40,6 +44,7 @@ export const resources = {
     research: enResearch,
     explore: enExplore,
     portfolio: enPortfolio,
+    system: enSystem,
   },
 } as const;
 

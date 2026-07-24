@@ -72,6 +72,13 @@ const TRANCHE_A_RESEARCH_SCOPES = [
   "src/researchReducer.ts",
 ];
 
+const TASK_7_SYSTEM_COMMON_SCOPES = [
+  "src/Dashboard.tsx",
+  "src/MarkdownView.tsx",
+  "src/ui/ConfirmDialog.tsx",
+  "src/ui/DataTable.tsx",
+];
+
 const ARKSCOPE_ALLOWLIST_ENTRY = {
   file: "src/shell/ShellTopBar.tsx",
   kind: "jsx_text",
@@ -308,8 +315,9 @@ describe("I18N-0 foundation boundaries", () => {
       ...I18N_3_EXPLORE_SCOPES,
       ...TASK_1_MODEL_SCOPES,
       ...TRANCHE_A_RESEARCH_SCOPES,
+      ...TASK_7_SYSTEM_COMMON_SCOPES,
     ]);
-    expect(migrated.scopes).toHaveLength(48);
+    expect(migrated.scopes).toHaveLength(52);
     expect(allowlist.entries).toEqual([
       ARKSCOPE_ALLOWLIST_ENTRY,
       ...I18N_2_SETTINGS_ALLOWLIST_ENTRIES,

@@ -573,4 +573,56 @@ describe("overlay focus contracts", () => {
     expect(panel?.textContent).toContain("Source title");
     expect(panel?.textContent).toContain("Source child");
   });
+
+  it("localizes the built-in ConfirmDialog cancel label", async () => {
+    await render(
+      <ConfirmDialog
+        open
+        title="Source title"
+        consequence="Source consequence"
+        confirmLabel="Source confirm"
+        onConfirm={vi.fn()}
+        onCancel={vi.fn()}
+      />,
+    );
+    const dialog = document.querySelector<HTMLElement>(".ui-confirm-dialog")!;
+    const cancel = Array.from(dialog.querySelectorAll<HTMLButtonElement>("button"))
+      .find((button) => button.textContent === "取消")!;
+    expect(cancel).not.toBeUndefined();
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    expect(document.querySelector(".ui-confirm-dialog")).toBe(dialog);
+    expect(cancel.textContent).toBe("Cancel");
+    expect(dialog.textContent).toContain("Source title");
+    expect(dialog.textContent).toContain("Source consequence");
+    expect(dialog.textContent).toContain("Source confirm");
+  });
+
+  it("preserves caller-owned labels focus and keyboard behavior across locale changes", async () => {
+    const onCancel = vi.fn();
+    await render(
+      <ConfirmDialog
+        open
+        title="Caller title"
+        consequence="Caller consequence"
+        confirmLabel="Caller confirm"
+        cancelLabel="Caller cancel"
+        onConfirm={vi.fn()}
+        onCancel={onCancel}
+      />,
+    );
+    const dialog = document.querySelector<HTMLElement>(".ui-confirm-dialog")!;
+    const cancel = Array.from(dialog.querySelectorAll<HTMLButtonElement>("button"))
+      .find((button) => button.textContent === "Caller cancel")!;
+    expect(document.activeElement).toBe(cancel);
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    expect(document.querySelector(".ui-confirm-dialog")).toBe(dialog);
+    expect(document.activeElement).toBe(cancel);
+    expect(cancel.textContent).toBe("Caller cancel");
+    expect(dialog.textContent).toContain("Caller confirm");
+
+    await act(async () => pressKey("Escape"));
+    expect(onCancel).toHaveBeenCalledOnce();
+  });
 });

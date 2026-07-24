@@ -48,6 +48,10 @@
     "src/ResearchRunProgress.tsx",
     "src/researchErrors.ts",
     "src/researchSelection.ts",
-    "src/researchReducer.ts"
+    "src/researchReducer.ts",
+    "src/Dashboard.tsx",
+    "src/MarkdownView.tsx",
+    "src/ui/ConfirmDialog.tsx",
+    "src/ui/DataTable.tsx"
   ]
 }

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Menu } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { apiBase, getRuntimeConfig, getStatus, type RuntimeConfig } from "./api";
-import { DashboardView, type StatusState } from "./Dashboard";
+import { DashboardView } from "./Dashboard";
 import { HoldingsView } from "./Holdings";
 import { HomeView } from "./Home";
 import { SettingsView } from "./Settings";
@@ -28,6 +28,10 @@ import {
   type ShellView,
 } from "./shell/navigation";
 import { shellViewLabel } from "./shell/shellLabels";
+import {
+  captureSidecarFailure,
+  type SystemStatusState,
+} from "./i18n/systemPresentation";
 
 type ExploreSurfaceCapabilities = {
   developerMode: boolean;
@@ -36,7 +40,7 @@ type ExploreSurfaceCapabilities = {
 
 export function App() {
   const { t } = useTranslation("shell");
-  const [status, setStatus] = useState<StatusState>({ kind: "loading" });
+  const [status, setStatus] = useState<SystemStatusState>({ kind: "loading" });
   const [view, setView] = useState<ShellView>("Home");
   const [lastOk, setLastOk] = useState<string | null>(null);
   const [runtime, setRuntime] = useState<RuntimeConfig | null>(null);
@@ -70,8 +74,8 @@ export function App() {
       const s = await getStatus();
       setStatus({ kind: "ready", status: s });
       setLastOk(new Date().toLocaleTimeString());
-    } catch (e) {
-      setStatus({ kind: "error", message: e instanceof Error ? e.message : String(e) });
+    } catch (error) {
+      setStatus({ kind: "error", outcome: captureSidecarFailure(error) });
     }
   }, []);
 

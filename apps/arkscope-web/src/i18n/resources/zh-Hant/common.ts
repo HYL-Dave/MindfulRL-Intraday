@@ -12,6 +12,16 @@ const common = {
   labels: {
     ticker: "Ticker",
   },
+  dataTable: {
+    actionHeading: "操作",
+    rowActions: "{{label}} 操作",
+  },
+  confirmDialog: {
+    defaultCancel: "取消",
+  },
+  markdown: {
+    blockedImageFallback: "[image]",
+  },
   boundedProgress: {
     failureTitle: "工作失敗",
     failureDetail: "工作未完成，請依錯誤指示處理。",

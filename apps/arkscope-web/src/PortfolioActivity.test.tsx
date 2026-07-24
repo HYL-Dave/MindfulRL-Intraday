@@ -283,7 +283,7 @@ async function clickButton(text: string, owner: ParentNode = host!) {
 }
 
 async function openRowAction(label: string, index = 0) {
-  const triggers = host!.querySelectorAll<HTMLButtonElement>('button[aria-label$="操作"]');
+  const triggers = host!.querySelectorAll<HTMLButtonElement>('button[aria-haspopup="menu"]');
   await act(async () => triggers[index].click());
   await flush();
   await clickButton(label, document);
@@ -657,7 +657,7 @@ describe("Portfolio activity", () => {
       expect(host!.textContent).toContain("Activity records");
       expect(host!.textContent).toContain("Apply filters");
       expect(host!.textContent).toContain("Take profit");
-      await act(async () => host!.querySelector<HTMLButtonElement>('button[aria-label$="操作"]')!.click());
+      await act(async () => host!.querySelector<HTMLButtonElement>('button[aria-haspopup="menu"]')!.click());
       expect(document.body.textContent).toContain("Collapse details");
     });
 

@@ -26,6 +26,16 @@ const READY_STATUS: ApiStatus = {
   data_sources: {},
 };
 
+const FAILED_STATUS: StatusState = {
+  kind: "error",
+  outcome: {
+    kind: "status_request_failed",
+    status: null,
+    code: null,
+    route: "/status",
+  },
+};
+
 const DIAGNOSTICS: ShellDiagnostics = {
   apiBase: "http://127.0.0.1:8420",
   toolsRegistered: 19,
@@ -130,7 +140,7 @@ describe("ShellTopBar", () => {
   it("makes failed sidecar health an actionable System target", async () => {
     const onNavigate = vi.fn<(target: NavigationTarget) => void>();
     const { host } = await renderTopBar({
-      status: { kind: "error", message: "recognizable private sidecar exception" },
+      status: FAILED_STATUS,
       onNavigate,
     });
     const health = host.querySelector("[data-testid='shell-health'] button");
@@ -175,7 +185,7 @@ describe("ShellTopBar", () => {
 
   it("keeps developer diagnostics sanitized and labelled as diagnostics", async () => {
     const { host } = await renderTopBar({
-      status: { kind: "error", message: "recognizable private sidecar exception" },
+      status: FAILED_STATUS,
       developerMode: true,
     });
     const diagnostics = host.querySelector("[data-testid='shell-diagnostics']");
@@ -194,7 +204,7 @@ describe("ShellTopBar", () => {
     const context = host.querySelector("[data-testid='shell-context']");
     const health = host.querySelector("[data-testid='shell-health']");
 
-    await render({ status: { kind: "error", message: "offline" } });
+    await render({ status: FAILED_STATUS });
 
     expect(host.querySelector("[data-testid='shell-identity']")).toBe(identity);
     expect(host.querySelector("[data-testid='shell-context']")).toBe(context);
@@ -204,7 +214,7 @@ describe("ShellTopBar", () => {
   it("renders English health and developer diagnostic labels without exposing raw errors", async () => {
     await act(async () => { await i18n.changeLanguage("en"); });
     const { host } = await renderTopBar({
-      status: { kind: "error", message: "recognizable private sidecar exception" },
+      status: FAILED_STATUS,
       developerMode: true,
     });
     const diagnostics = host.querySelector("[data-testid='shell-diagnostics']");

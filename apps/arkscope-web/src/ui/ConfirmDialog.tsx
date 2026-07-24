@@ -1,5 +1,6 @@
 import { useId, useRef, type ReactNode, type RefObject } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "./Button";
 import { useOverlayFocus } from "./useOverlayFocus";
 
@@ -8,7 +9,7 @@ export function ConfirmDialog({
   title,
   consequence,
   confirmLabel,
-  cancelLabel = "取消",
+  cancelLabel,
   tone = "danger",
   busy = false,
   onConfirm,
@@ -28,6 +29,8 @@ export function ConfirmDialog({
   returnFocusRef?: RefObject<HTMLElement | null>;
   fallbackFocusRef?: RefObject<HTMLElement | null>;
 }) {
+  const { t } = useTranslation("common");
+  const resolvedCancelLabel = cancelLabel ?? t(($) => $.confirmDialog.defaultCancel);
   const panelRef = useRef<HTMLDivElement>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
@@ -58,7 +61,7 @@ export function ConfirmDialog({
         <h2 id={titleId}>{title}</h2>
         <div id={consequenceId} className="ui-confirm-consequence">{consequence}</div>
         <div className="ui-confirm-actions">
-          <Button ref={cancelRef} onClick={onCancel} disabled={busy}>{cancelLabel}</Button>
+          <Button ref={cancelRef} onClick={onCancel} disabled={busy}>{resolvedCancelLabel}</Button>
           <Button tone={tone} onClick={onConfirm} busy={busy}>{confirmLabel}</Button>
         </div>
       </section>

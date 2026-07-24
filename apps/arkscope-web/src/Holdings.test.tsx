@@ -317,7 +317,8 @@ async function buttonByText(text: string): Promise<HTMLButtonElement> {
 }
 
 async function openRowActions(label: string): Promise<HTMLButtonElement> {
-  const trigger = host!.querySelector<HTMLButtonElement>(`button[aria-label="${label} 操作"]`);
+  const trigger = Array.from(host!.querySelectorAll<HTMLButtonElement>('button[aria-haspopup="menu"]'))
+    .find((candidate) => candidate.closest("tr")?.textContent?.includes(label));
   if (!trigger) throw new Error(`row action trigger not found: ${label}`);
   await act(async () => {
     trigger.click();

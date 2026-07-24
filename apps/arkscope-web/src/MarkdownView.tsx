@@ -11,12 +11,14 @@
 // renderer (charts, evidence cards) is a later layer, not this.
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useTranslation } from "react-i18next";
 
 function isSafeImageSrc(src: string | undefined): boolean {
   return typeof src === "string" && /^https:\/\//i.test(src.trim());
 }
 
 export function MarkdownView({ source }: { source: string }) {
+  const { t } = useTranslation("common");
   return (
     <div className="markdown-body">
       <ReactMarkdown
@@ -35,7 +37,9 @@ export function MarkdownView({ source }: { source: string }) {
             return isSafeImageSrc(typeof src === "string" ? src : undefined) ? (
               <img src={src as string} alt={alt ?? ""} loading="lazy" />
             ) : (
-              <span className="md-img-blocked muted">{alt || "[image]"}</span>
+              <span className="md-img-blocked muted">
+                {alt || t(($) => $.markdown.blockedImageFallback)}
+              </span>
             );
           },
         }}

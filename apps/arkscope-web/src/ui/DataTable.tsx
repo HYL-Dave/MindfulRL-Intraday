@@ -10,6 +10,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { MoreHorizontal } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { IconButton } from "./Button";
 
@@ -42,6 +43,7 @@ function RowActionMenu<Row>({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const { t } = useTranslation("common");
   const [placement, setPlacement] = useState<"up" | "down">("down");
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -151,7 +153,7 @@ function RowActionMenu<Row>({
     <div className="ui-row-actions" ref={rootRef}>
       <IconButton
         ref={triggerRef}
-        label={`${label} 操作`}
+        label={t(($) => $.dataTable.rowActions, { label })}
         tone="ghost"
         size="compact"
         icon={<MoreHorizontal size={17} />}
@@ -186,6 +188,7 @@ export function DataTable<Row>({
   actions?: (row: Row) => DataTableAction<Row>[];
   renderExpandedRow?: (row: Row) => ReactNode;
 }) {
+  const { t } = useTranslation("common");
   const [activeActionKey, setActiveActionKey] = useState<Key | null>(null);
   const actionColumn = Boolean(actions);
   const columnCount = columns.length + (actionColumn ? 1 : 0);
@@ -204,7 +207,11 @@ export function DataTable<Row>({
                 {column.header}
               </th>
             ))}
-            {actionColumn ? <th className="ui-data-table-action-head">操作</th> : null}
+            {actionColumn ? (
+              <th className="ui-data-table-action-head">
+                {t(($) => $.dataTable.actionHeading)}
+              </th>
+            ) : null}
           </tr>
         </thead>
         <tbody>

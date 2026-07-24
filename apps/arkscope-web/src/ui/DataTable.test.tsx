@@ -1,6 +1,7 @@
 /** @vitest-environment jsdom */
 import { act, type ComponentProps, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
+import i18n from "i18next";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { DataTable, type DataTableColumn } from "./DataTable";
@@ -206,5 +207,61 @@ describe("DataTable", () => {
     expect(bodyRows[1].classList.contains("ui-data-table-expanded")).toBe(true);
     expect(bodyRows[1].textContent).toBe("Edit NVDA");
     expect(bodyRows[1].querySelector("td")?.colSpan).toBe(columns.length);
+  });
+
+  it("localizes the action heading without changing columns or cells", async () => {
+    await mount(table({
+      actions: () => [{ id: "edit", label: "編輯", onSelect: vi.fn() }],
+    }));
+    const sourceHeaders = ["Symbol", "State"];
+    const sourceCells = ["NVDA", "Open"];
+
+    expect(Array.from(host!.querySelectorAll("th"), (cell) => cell.textContent)).toEqual([
+      ...sourceHeaders,
+      "操作",
+    ]);
+    expect(Array.from(host!.querySelectorAll("tbody td:not(.ui-data-table-actions)"), (cell) => cell.textContent))
+      .toEqual(sourceCells);
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    expect(Array.from(host!.querySelectorAll("th"), (cell) => cell.textContent)).toEqual([
+      ...sourceHeaders,
+      "Actions",
+    ]);
+    expect(Array.from(host!.querySelectorAll("tbody td:not(.ui-data-table-actions)"), (cell) => cell.textContent))
+      .toEqual(sourceCells);
+  });
+
+  it("localizes the row action accessible name with source values intact", async () => {
+    await mount(table({
+      actions: () => [{ id: "edit", label: "編輯", onSelect: vi.fn() }],
+    }));
+    const trigger = host!.querySelector<HTMLButtonElement>('button[aria-haspopup="menu"]')!;
+
+    expect(trigger.getAttribute("aria-label")).toBe("NVDA 操作");
+    await act(async () => { await i18n.changeLanguage("en"); });
+    expect(trigger.getAttribute("aria-label")).toBe("Actions for NVDA");
+    expect(host!.textContent).toContain("NVDA");
+    expect(host!.textContent).toContain("Open");
+  });
+
+  it("reacts to locale changes without remounting rows", async () => {
+    await mount(table({
+      actions: () => [{ id: "edit", label: "編輯", onSelect: vi.fn() }],
+    }));
+    const row = host!.querySelector("tbody tr")!;
+    const symbolCell = row.querySelector("td")!;
+    const trigger = row.querySelector<HTMLButtonElement>('button[aria-haspopup="menu"]')!;
+    trigger.dataset.identity = "preserve-me";
+    trigger.focus();
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+
+    expect(host!.querySelector("tbody tr")).toBe(row);
+    expect(host!.querySelector("tbody td")).toBe(symbolCell);
+    expect(row.querySelector('button[aria-haspopup="menu"]')).toBe(trigger);
+    expect(trigger.dataset.identity).toBe("preserve-me");
+    expect(document.activeElement).toBe(trigger);
+    expect(trigger.getAttribute("aria-label")).toBe("Actions for NVDA");
   });
 });

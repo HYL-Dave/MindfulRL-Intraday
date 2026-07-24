@@ -4,6 +4,7 @@
 // images are restricted to https.
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import i18n from "i18next";
 import { describe, expect, it } from "vitest";
 
 import { MarkdownView } from "./MarkdownView";
@@ -54,5 +55,25 @@ describe("MarkdownView", () => {
     const out = html("![danger](file:///etc/passwd)");
     expect(out).not.toContain("file:///etc/passwd");  // never emit a file:// src
     expect(out).toContain("danger");                    // fall back to alt text
+  });
+
+  it("localizes blocked-image fallback chrome", async () => {
+    await i18n.changeLanguage("zh-Hant");
+    expect(html("![](file:///etc/passwd)")).toContain("[image]");
+
+    await i18n.changeLanguage("en");
+    expect(html("![](file:///etc/passwd)")).toContain("[blocked image]");
+  });
+
+  it("preserves Markdown source and rendered source text across locale changes", async () => {
+    const source = "# 投資人原文\n\nAAPL source text **must stay exact**.";
+    await i18n.changeLanguage("zh-Hant");
+    const zh = html(source);
+    await i18n.changeLanguage("en");
+    const en = html(source);
+
+    expect(zh).toBe(en);
+    expect(en).toContain("投資人原文");
+    expect(en).toContain("AAPL source text <strong>must stay exact</strong>.");
   });
 });

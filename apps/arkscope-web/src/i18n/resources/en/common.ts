@@ -12,6 +12,16 @@ const common = {
   labels: {
     ticker: "Ticker",
   },
+  dataTable: {
+    actionHeading: "Actions",
+    rowActions: "Actions for {{label}}",
+  },
+  confirmDialog: {
+    defaultCancel: "Cancel",
+  },
+  markdown: {
+    blockedImageFallback: "[blocked image]",
+  },
   boundedProgress: {
     failureTitle: "Work failed",
     failureDetail: "The work did not complete. Follow the error guidance to continue.",

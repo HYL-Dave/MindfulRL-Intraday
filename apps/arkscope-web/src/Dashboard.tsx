@@ -1,13 +1,15 @@
 import { Database } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import type { ApiStatus, RuntimeConfig } from "./api";
+import {
+  presentSystemStatus,
+  type SystemStatusState,
+} from "./i18n/systemPresentation";
 import type { NavigationTarget } from "./shell/navigation";
 import { Button } from "./ui";
 
-export type StatusState =
-  | { kind: "loading" }
-  | { kind: "ready"; status: ApiStatus }
-  | { kind: "error"; message: string };
+export type StatusState = SystemStatusState;
 
 export function DashboardView({
   status,
@@ -24,34 +26,46 @@ export function DashboardView({
   onDeveloperModeChange: (enabled: boolean) => void;
   onNavigate: (target: NavigationTarget) => void;
 }) {
+  const { t } = useTranslation("system");
+  const statusPresentation = presentSystemStatus(status, developerMode, t);
   return (
     <main className="main">
-      {status.kind === "loading" && <p className="muted">正在連線至本機 Sidecar…</p>}
-      {status.kind === "error" && (
+      {statusPresentation.kind === "loading" && (
+        <p className="muted">{statusPresentation.message}</p>
+      )}
+      {statusPresentation.kind === "error" && (
         <div className="errorbox">
-          <p>無法連線至本機 Sidecar</p>
-          {developerMode ? <p className="muted">{status.message}</p> : null}
-          <button onClick={onRetry}>重試</button>
+          <p>{statusPresentation.title}</p>
+          {statusPresentation.diagnostics.length > 0 ? (
+            <p className="muted" data-system-diagnostic>
+              {statusPresentation.diagnostics.join(" · ")}
+            </p>
+          ) : null}
+          <button onClick={onRetry}>{statusPresentation.retryLabel}</button>
         </div>
       )}
-      {status.kind === "ready" && !developerMode ? <p>本機 Sidecar 已連線。</p> : null}
+      {statusPresentation.kind === "ready" && !developerMode ? (
+        <p>{statusPresentation.message}</p>
+      ) : null}
       <Button
         size="compact"
         icon={<Database size={14} />}
         onClick={() => onNavigate({ kind: "settings_section", section: "data_sources" })}
       >
-        資料來源設定
+        {t(($) => $.dataSourceSettings)}
       </Button>
 
       <section aria-labelledby="developer-mode-heading">
-        <h2 id="developer-mode-heading" className="section">Developer Mode</h2>
+        <h2 id="developer-mode-heading" className="section">
+          {t(($) => $.developer.heading)}
+        </h2>
         <label>
           <input
             type="checkbox"
             checked={developerMode}
             onChange={(event) => onDeveloperModeChange(event.target.checked)}
           />{" "}
-          顯示本機診斷資訊
+          {t(($) => $.developer.showDiagnostics)}
         </label>
       </section>
 
@@ -62,34 +76,37 @@ export function DashboardView({
 }
 
 function RuntimePanel({ rt }: { rt: RuntimeConfig }) {
+  const { t } = useTranslation("system");
   const keyRow = (label: string, set: boolean) => (
     <div className="rt-row" key={label}>
       <span>{label}</span>
-      <span className={set ? "up" : "down"}>{set ? "✓ set" : "✗ missing"}</span>
+      <span className={set ? "up" : "down"}>
+        {set ? t(($) => $.runtime.keySet) : t(($) => $.runtime.keyMissing)}
+      </span>
     </div>
   );
   return (
     <>
-      <h2 className="section">Models in use</h2>
+      <h2 className="section">{t(($) => $.runtime.modelsInUse)}</h2>
       <div className="rt-list">
         <div className="rt-row">
-          <span>card synthesis</span>
+          <span>{t(($) => $.runtime.cardSynthesis)}</span>
           <span className="mono">{rt.card_synthesis.provider} · {rt.card_synthesis.model}</span>
         </div>
         <div className="rt-row">
-          <span>card translation</span>
+          <span>{t(($) => $.runtime.cardTranslation)}</span>
           <span className="mono">{rt.card_translation.provider} · {rt.card_translation.model}</span>
         </div>
         <div className="rt-row">
-          <span>anthropic (default / advanced)</span>
+          <span>{t(($) => $.runtime.anthropicDefaultAdvanced)}</span>
           <span className="mono">{rt.anthropic.model} / {rt.anthropic.model_advanced}</span>
         </div>
         <div className="rt-row">
-          <span>openai (default / advanced)</span>
+          <span>{t(($) => $.runtime.openAIDefaultAdvanced)}</span>
           <span className="mono">{rt.openai.model} / {rt.openai.model_advanced}</span>
         </div>
       </div>
-      <h2 className="section">API keys present</h2>
+      <h2 className="section">{t(($) => $.runtime.apiKeysPresent)}</h2>
       <div className="rt-list">
         {keyRow("anthropic", rt.anthropic.key_set)}
         {keyRow("openai", rt.openai.key_set)}
@@ -100,22 +117,23 @@ function RuntimePanel({ rt }: { rt: RuntimeConfig }) {
 }
 
 function StatusTiles({ status }: { status: ApiStatus }) {
+  const { t } = useTranslation("system");
   return (
     <div className="dashboard">
       <section className="tilerow">
-        <Tile label="Registry tools" value={status.tools_registered} />
-        <Tile label="Server time" value={new Date(status.timestamp).toLocaleTimeString()} />
-        <Tile label="Status" value={status.status} />
+        <Tile label={t(($) => $.status.registryTools)} value={status.tools_registered} />
+        <Tile label={t(($) => $.status.serverTime)} value={new Date(status.timestamp).toLocaleTimeString()} />
+        <Tile label={t(($) => $.status.status)} value={status.status} />
       </section>
 
-      <h2 className="section">Tool categories</h2>
+      <h2 className="section">{t(($) => $.status.toolCategories)}</h2>
       <div className="grid">
         {Object.entries(status.tool_categories).map(([k, v]) => (
           <Tile key={k} label={k} value={v} />
         ))}
       </div>
 
-      <h2 className="section">Data sources (tickers)</h2>
+      <h2 className="section">{t(($) => $.status.dataSourcesTickers)}</h2>
       <div className="grid">
         {Object.entries(status.data_sources).map(([k, v]) => (
           <Tile key={k} label={k.replace(/_/g, " ")} value={v} />

@@ -5,7 +5,15 @@ import { createRoot } from "react-dom/client";
 import i18n from "i18next";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { ApiStatus, ResearchRunDTO, RuntimeConfig } from "./api";
+import {
+  ApiError,
+  getRuntimeConfig,
+  getStatus,
+  type ApiStatus,
+  type ResearchRunDTO,
+  type RuntimeConfig,
+} from "./api";
+import { createUiLocaleController } from "./i18n/localeController";
 import type { NavigationRequest, NavigationTarget } from "./shell/navigation";
 import type { ResearchWorkItem, ResearchWorkState } from "./shell/researchWork";
 
@@ -15,7 +23,8 @@ type ExploreCapabilityProps = {
 };
 
 const shellMocks = vi.hoisted(() => ({
-  statusError: null as Error | null,
+  statusError: null as unknown,
+  statusPromise: null as Promise<ApiStatus> | null,
   work: null as ResearchWorkState | null,
   homeProps: null as Record<string, unknown> | null,
   watchlistProps: null as Record<string, unknown> | null,
@@ -72,7 +81,7 @@ const RUNTIME: RuntimeConfig = {
     db_saved: true,
     warning: null,
   },
-  data_keys: {},
+  data_keys: { finnhub: false },
 };
 
 vi.mock("./api", async (importOriginal) => {
@@ -81,6 +90,7 @@ vi.mock("./api", async (importOriginal) => {
     ...actual,
     apiBase: "http://private-sidecar-fixture:8420",
     getStatus: vi.fn(async () => {
+      if (shellMocks.statusPromise) return shellMocks.statusPromise;
       if (shellMocks.statusError) throw shellMocks.statusError;
       return READY_STATUS;
     }),
@@ -297,6 +307,7 @@ function button(text: string, scope: ParentNode = host!): HTMLButtonElement {
 
 beforeEach(() => {
   shellMocks.statusError = null;
+  shellMocks.statusPromise = null;
   shellMocks.work = emptyWork();
   shellMocks.homeProps = null;
   shellMocks.watchlistProps = null;
@@ -549,5 +560,199 @@ describe("App shell integration", () => {
     await act(async () => { await i18n.changeLanguage("zh-Hant"); });
     expect(host.querySelector('[data-testid="ticker-detail"]')).toBe(detail);
     expect(shellMocks.tickerDetailProps?.ticker).toBe("BRK.B");
+  });
+
+  it("stores sidecar failures as structured System outcomes without raw Error.message", async () => {
+    const hostile = Object.create(Error.prototype) as Error;
+    Object.defineProperty(hostile, "message", {
+      configurable: true,
+      get() {
+        throw new Error("raw Error.message was read");
+      },
+    });
+    shellMocks.statusError = hostile;
+
+    const host = await renderApp();
+    await click(button("Sidecar 無法連線"));
+
+    expect(host.textContent).toContain("無法連線至本機 Sidecar");
+    expect(host.textContent).not.toContain("raw Error.message was read");
+    expect(host.textContent).not.toContain("recognizable-private-sidecar-error");
+  });
+
+  it("renders System sidecar copy from the system namespace in both locales", async () => {
+    let rejectStatus!: (reason: unknown) => void;
+    shellMocks.statusPromise = new Promise<ApiStatus>((_resolve, reject) => {
+      rejectStatus = reject;
+    });
+    const expected = {
+      "zh-Hant": {
+        loading: "正在連線至本機 Sidecar…",
+        failure: "無法連線至本機 Sidecar",
+        retry: "重試",
+        ready: "本機 Sidecar 已連線。",
+        chrome: [
+          "資料來源設定",
+          "Developer Mode",
+          "顯示本機診斷資訊",
+          "Models in use",
+          "card synthesis",
+          "card translation",
+          "anthropic (default / advanced)",
+          "openai (default / advanced)",
+          "API keys present",
+          "✓ set",
+          "✗ missing",
+          "Registry tools",
+          "Server time",
+          "Status",
+          "Tool categories",
+          "Data sources (tickers)",
+        ],
+      },
+      en: {
+        loading: "Connecting to the local Sidecar…",
+        failure: "Could not connect to the local Sidecar",
+        retry: "Retry",
+        ready: "Local Sidecar connected.",
+        chrome: [
+          "Data source settings",
+          "Developer Mode",
+          "Show local diagnostic information",
+          "Models in use",
+          "card synthesis",
+          "card translation",
+          "anthropic (default / advanced)",
+          "openai (default / advanced)",
+          "API keys present",
+          "✓ set",
+          "✗ missing",
+          "Registry tools",
+          "Server time",
+          "Status",
+          "Tool categories",
+          "Data sources (tickers)",
+        ],
+      },
+    } as const;
+    expect(Object.values(expected["zh-Hant"]).flat()).toHaveLength(20);
+    expect(Object.values(expected.en).flat()).toHaveLength(20);
+
+    const host = await renderApp();
+    await click(button("System / Health"));
+    expect(host.textContent).toContain(expected["zh-Hant"].loading);
+    await act(async () => { await i18n.changeLanguage("en"); });
+    expect(host.textContent).toContain(expected.en.loading);
+
+    shellMocks.statusPromise = null;
+    await act(async () => {
+      rejectStatus(new ApiError(
+        "private status failure",
+        "/status?private=1",
+        503,
+        "sidecar_unavailable",
+        "sqlite3 traceback /home/private",
+      ));
+      await Promise.resolve();
+    });
+    expect(host.textContent).toContain(expected.en.failure);
+    expect(host.textContent).toContain(expected.en.retry);
+    await act(async () => { await i18n.changeLanguage("zh-Hant"); });
+    expect(host.textContent).toContain(expected["zh-Hant"].failure);
+    expect(host.textContent).toContain(expected["zh-Hant"].retry);
+
+    shellMocks.statusError = null;
+    await click(button(expected["zh-Hant"].retry));
+    expect(host.textContent).toContain(expected["zh-Hant"].ready);
+    const developerMode = host.querySelector<HTMLInputElement>(
+      '#developer-mode-heading + label input[type="checkbox"]',
+    )!;
+    await act(async () => developerMode.click());
+    for (const copy of expected["zh-Hant"].chrome) {
+      expect.soft(host.textContent, `zh-Hant: ${copy}`).toContain(copy);
+    }
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    for (const copy of expected.en.chrome) {
+      expect.soft(host.textContent, `en: ${copy}`).toContain(copy);
+    }
+    await act(async () => developerMode.click());
+    expect(host.textContent).toContain(expected.en.ready);
+  });
+
+  it("shows only reviewed sidecar facts in Developer Mode", async () => {
+    shellMocks.statusError = new ApiError(
+      "private failure?token=secret",
+      "/status?token=secret",
+      503,
+      "sidecar_unavailable",
+      "sqlite3.OperationalError at /home/private/sidecar.db",
+    );
+    const host = await renderApp();
+    await click(button("Sidecar 無法連線"));
+    const developerMode = host.querySelector<HTMLInputElement>(
+      '#developer-mode-heading + label input[type="checkbox"]',
+    )!;
+    await act(async () => developerMode.click());
+
+    expect(host.textContent).toContain("503");
+    expect(host.textContent).toContain("sidecar_unavailable");
+    expect(host.textContent).toContain("/status");
+    expect(host.textContent).not.toContain("private failure");
+    expect(host.textContent).not.toContain("token=secret");
+    expect(host.textContent).not.toContain("sqlite3");
+    expect(host.textContent).not.toContain("/home/private");
+  });
+
+  it("preserves the active view focus and status state across locale changes", async () => {
+    const host = await renderApp();
+    await click(button("System / Health"));
+    const systemView = host.querySelector("main.main");
+    const developerMode = host.querySelector<HTMLInputElement>(
+      '#developer-mode-heading + label input[type="checkbox"]',
+    )!;
+    await act(async () => developerMode.click());
+    const statusValue = Array.from(host.querySelectorAll(".tile-value"))
+      .find((node) => node.textContent === "ok")!;
+    const settingsButton = button("資料來源設定");
+    settingsButton.focus();
+    const statusCalls = vi.mocked(getStatus).mock.calls.length;
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+
+    expect(host.querySelector("main.main")).toBe(systemView);
+    expect(document.activeElement).toBe(settingsButton);
+    expect(Array.from(host.querySelectorAll(".tile-value")).find((node) => node.textContent === "ok"))
+      .toBe(statusValue);
+    expect(vi.mocked(getStatus)).toHaveBeenCalledTimes(statusCalls);
+    expect(host.textContent).toContain("Data source settings");
+  });
+
+  it("issues only the locale preference PUT while System copy changes", async () => {
+    const host = await renderApp();
+    await click(button("System / Health"));
+    const dataCalls = {
+      status: vi.mocked(getStatus).mock.calls.length,
+      runtime: vi.mocked(getRuntimeConfig).mock.calls.length,
+    };
+    const authority = {
+      get: vi.fn(async () => ({ locale: "zh-Hant" as const, source: "stored" as const })),
+      put: vi.fn(async (locale: "zh-Hant" | "en") => ({ locale, source: "stored" as const })),
+    };
+    const controller = createUiLocaleController({
+      initialLocale: "zh-Hant",
+      authority,
+      applyLocale: (locale) => { void i18n.changeLanguage(locale); },
+      writeCache: vi.fn(),
+    });
+
+    await act(async () => { await controller.setLocale("en"); });
+
+    expect(authority.put).toHaveBeenCalledOnce();
+    expect(authority.put).toHaveBeenCalledWith("en");
+    expect(authority.get).not.toHaveBeenCalled();
+    expect(vi.mocked(getStatus)).toHaveBeenCalledTimes(dataCalls.status);
+    expect(vi.mocked(getRuntimeConfig)).toHaveBeenCalledTimes(dataCalls.runtime);
+    expect(host.textContent).toContain("Local Sidecar connected.");
   });
 });
