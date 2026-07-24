@@ -166,6 +166,7 @@ vi.mock("./api", async (importOriginal) => {
 
 import { getMarketDataStatus, getTradingDayCoverage } from "./api";
 import { SettingsView } from "./Settings";
+import { withTestUiLocale } from "./test/testUiLocale";
 
 let root: ReturnType<typeof createRoot> | null = null;
 let host: HTMLDivElement | null = null;
@@ -199,11 +200,11 @@ async function renderSettings(developerMode = false) {
   document.body.append(host);
   root = createRoot(host);
   await act(async () => {
-    root!.render(React.createElement(SettingsView, {
+    root!.render(withTestUiLocale(React.createElement(SettingsView, {
       runtime: null,
       developerMode,
       onRuntimeChanged: vi.fn(),
-    }));
+    })));
   });
   await act(async () => { await Promise.resolve(); });
 }

@@ -106,10 +106,15 @@ vi.mock("./api", async (importOriginal) => {
   };
 });
 
-import { SettingsView } from "./Settings";
+import { SettingsView, type SettingsViewProps } from "./Settings";
+import { withTestUiLocale } from "./test/testUiLocale";
 
 let root: ReturnType<typeof createRoot> | null = null;
 let host: HTMLDivElement | null = null;
+
+function TestSettingsView(props: SettingsViewProps) {
+  return withTestUiLocale(React.createElement(SettingsView, props));
+}
 
 beforeEach(async () => {
   await i18n.changeLanguage("zh-Hant");
@@ -168,7 +173,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime: null,
         developerMode: false,
         onRuntimeChanged: vi.fn(),
@@ -254,7 +259,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime,
         developerMode: false,
         onRuntimeChanged,
@@ -306,7 +311,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime: null,
         developerMode: false,
         onRuntimeChanged: vi.fn(),
@@ -327,7 +332,7 @@ describe("Settings model route save gate", () => {
     });
     const render = async (navigationRequest: SettingsNavigationRequest) => {
       await act(async () => {
-        root!.render(React.createElement(SettingsView, {
+        root!.render(React.createElement(TestSettingsView, {
           runtime: null,
           developerMode: false,
           onRuntimeChanged: vi.fn(),
@@ -359,7 +364,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime: null,
         developerMode: false,
         onRuntimeChanged: vi.fn(),
@@ -381,7 +386,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime: null,
         developerMode: false,
         onRuntimeChanged: vi.fn(),
@@ -405,7 +410,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime: null,
         developerMode: false,
         onRuntimeChanged: vi.fn(),
@@ -469,7 +474,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime: null,
         developerMode: false,
         onRuntimeChanged: vi.fn(),
@@ -488,7 +493,7 @@ describe("Settings model route save gate", () => {
     });
     const render = async (navigationRequest: SettingsNavigationRequest) => {
       await act(async () => {
-        root!.render(React.createElement(SettingsView, {
+        root!.render(React.createElement(TestSettingsView, {
           runtime: null,
           developerMode: false,
           onRuntimeChanged: vi.fn(),
@@ -520,7 +525,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime: null,
         developerMode: false,
         onRuntimeChanged: vi.fn(),
@@ -583,7 +588,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime: null,
         developerMode: false,
         onRuntimeChanged: vi.fn(),
@@ -625,7 +630,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime: null,
         developerMode: false,
         onRuntimeChanged: vi.fn(),
@@ -744,7 +749,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime: null,
         developerMode: false,
         onRuntimeChanged: vi.fn(),
@@ -861,7 +866,7 @@ describe("Settings model route save gate", () => {
     document.body.append(host);
     root = createRoot(host);
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime,
         developerMode: false,
         onRuntimeChanged,
@@ -880,7 +885,7 @@ describe("Settings model route save gate", () => {
     expect(host.textContent).not.toContain("PLANTED RAW MUTATION DIAGNOSTIC");
 
     await act(async () => {
-      root!.render(React.createElement(SettingsView, {
+      root!.render(React.createElement(TestSettingsView, {
         runtime,
         developerMode: true,
         onRuntimeChanged,

@@ -413,6 +413,7 @@ vi.mock("./api", async (importOriginal) => {
 
 import { SettingsView } from "./Settings";
 import { DataSourcesSection } from "./settings/DataSourcesSection";
+import { withTestUiLocale } from "./test/testUiLocale";
 
 let root: ReturnType<typeof createRoot> | null = null;
 let host: HTMLDivElement | null = null;
@@ -450,11 +451,11 @@ async function renderDataSources(
   await act(async () => {
     root!.render(onNavigationGuardChange
       ? React.createElement(DataSourcesSection, { onNavigationGuardChange, developerMode })
-      : React.createElement(SettingsView, {
+      : withTestUiLocale(React.createElement(SettingsView, {
           runtime: null,
           developerMode,
           onRuntimeChanged: vi.fn(),
-        }));
+        })));
   });
   await act(async () => { await Promise.resolve(); });
   await act(async () => { await Promise.resolve(); });

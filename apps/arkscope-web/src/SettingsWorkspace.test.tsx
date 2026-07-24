@@ -226,6 +226,7 @@ vi.mock("./settings/RuntimeLimitSections", () => ({
 }));
 
 import { SettingsView } from "./Settings";
+import { withTestUiLocale } from "./test/testUiLocale";
 
 let root: ReturnType<typeof createRoot> | null = null;
 let host: HTMLDivElement | null = null;
@@ -266,28 +267,28 @@ async function renderSettings(options: {
   document.body.append(host);
   root = createRoot(host);
   await act(async () => {
-    root!.render(
+    root!.render(withTestUiLocale(
       <SettingsView
         runtime={null}
         developerMode={options.developerMode ?? false}
         onRuntimeChanged={vi.fn(async () => undefined)}
         navigationRequest={options.navigationRequest}
       />,
-    );
+    ));
   });
   await flush();
 }
 
 async function rerenderSettings(navigationRequest: SettingsNavigationRequest) {
   await act(async () => {
-    root!.render(
+    root!.render(withTestUiLocale(
       <SettingsView
         runtime={null}
         developerMode={false}
         onRuntimeChanged={vi.fn(async () => undefined)}
         navigationRequest={navigationRequest}
       />,
-    );
+    ));
   });
   await flush();
 }
