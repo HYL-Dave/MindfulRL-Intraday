@@ -86,8 +86,9 @@ change:
    independent visual gate, not the sole coverage for those leaves.
 
 The initial reviewed frontend ledger was A `+44/-2`, B `+60/-0`. The measured
-Research-title overflow deviation below revises A to `+45/-2` while leaving B,
-resource, scanner, and A focused-suite accounting unchanged.
+Research-title overflow deviation below revises A to `+45/-2`; the later
+Holdings narrow-width deviation revises B to `+61/-0`. Resource, scanner, and
+both focused-suite ledgers remain unchanged.
 
 ### Implementation grounding correction
 
@@ -180,6 +181,43 @@ source claims / `391` occurrences across the exact five Portfolio source
 files, and retains its exhaustive claim-to-resource/path checks. Task 9 adds
 `src/i18n/resources.test.ts` to its test-only file list. No resource, product,
 scanner-policy, or test-node change is authorized by this correction.
+
+### Runtime-reviewed deviation 4: bound the Holdings account filter
+
+Task 10's full Tranche B matrix found one real layout failure at `390x844`.
+The account-filter label and `<select>` measured `434px` wide inside a `375px`
+content viewport because a long source-owned account label established the
+control's intrinsic width. Both locales overflowed identically; all node,
+draft, focus, source-byte, request, privacy, and other geometry checks were
+green. This is a layout defect, not a reason to shorten or translate source
+content.
+
+This deviation reopens exactly `Holdings.tsx`, `styles.css`, and one existing
+test file:
+
+1. the local action row and account-filter label receive
+   `portfolio-holdings-filter-row` and
+   `portfolio-holdings-account-filter`; no source value or control behavior
+   changes;
+2. `styles.css` gains only class-scoped intrinsic-width rules for that action
+   row, label, and `<select>`. The row and label are bounded by
+   `min-width: 0` / `max-width: 100%`; the select additionally fills its
+   bounded label with `width: 100%`. No breakpoint or fixed width is added;
+3. `shell/ShellCss.test.ts` gains exactly one RED-first node named
+   `bounds the Holdings account filter against long source labels`, proving the
+   classes are wired and all three levels are bounded;
+4. B raw accounting becomes `+61/-0`, full frontend becomes
+   `94 files / 1048 nodes`, and the final Shell CSS suite becomes `10/10`.
+   B focused remains the reviewed `15/232` and the CSS node is verified
+   separately plus in the full run;
+5. the complete `36`-case bilingual runtime matrix must rerun. The Holdings
+   `390x844` select must fit without clipping, and every previously green
+   identity, request, privacy, source-byte, and geometry check must remain
+   green.
+
+This is the sole Tranche B exception to the frozen A product-owner rule. It
+extends the `styles.css` exception by one exact class-scoped hunk; no other A
+product owner may change.
 
 ---
 
@@ -645,7 +683,7 @@ Research run progress > preserves node identity while locale changes
 Research run progress > keeps the completion destination contract unchanged
 ```
 
-### `TRANCHE_A_TIP` to final: raw `+60/-0`
+### `TRANCHE_A_TIP` to final: raw `+61/-0`
 
 | Test file | Add | Remove | Contract |
 | --- | ---: | ---: | --- |
@@ -661,10 +699,12 @@ Research run progress > keeps the completion destination contract unchanged
 | `ui/overlays.test.tsx` | `2` | `0` | default/caller-owned cancel behavior |
 | `MarkdownView.test.ts` | `2` | `0` | fallback localization/source preservation |
 | `i18n/foundationBoundaries.test.ts` | `1` | `0` | global scope and exact final arithmetic |
-| **B** | **`60`** | **`0`** | net `+60` |
+| `shell/ShellCss.test.ts` | `1` | `0` | reviewed narrow Holdings filter deviation |
+| **B** | **`61`** | **`0`** | net `+61` |
 
-Full final frontend is `94 files / 1047 nodes`; B focused is
-`15 files / 232 nodes`. Base-to-final raw accounting is `+105/-2`, net `+103`.
+Full final frontend is `94 files / 1048 nodes`; B focused is
+`15 files / 232 nodes`, with the Shell CSS suite separately `10/10`.
+Base-to-final raw accounting is `+106/-2`, net `+104`.
 
 Required B node IDs:
 
@@ -754,7 +794,8 @@ may evolve only where this plan explicitly changes the contract.
 - `apps/arkscope-web/src/settings/ModelRoutingSection.tsx`
 - `apps/arkscope-web/src/settings/ProviderSection.tsx`
 - `apps/arkscope-web/src/settings/settingsBackendCopy.ts`
-- `apps/arkscope-web/src/styles.css`, only the exact runtime-reviewed deviation 1 hunk
+- `apps/arkscope-web/src/styles.css`, only the exact runtime-reviewed
+  deviations 1 and 4 hunks
 - `apps/arkscope-web/src/i18n/resources.ts`
 - `apps/arkscope-web/src/i18n/resources/en/common.ts`
 - `apps/arkscope-web/src/i18n/resources/en/settings.ts`
@@ -848,9 +889,10 @@ Compare all protected paths to product base `93cda668`, not the docs tip.
 4. Root and app `package.json`, `package-lock.json`, and desktop package files
    are byte-identical.
 5. `shell/shell.css`, `ui/primitives.css`, and `settings/settings.css` are
-   byte-identical. Runtime-reviewed deviation 1 replaces the `styles.css`
-   byte gate only with its exact `.research-conversation-title` wrapping hunk;
-   no other `styles.css` byte may change.
+   byte-identical. Runtime-reviewed deviations 1 and 4 replace the `styles.css`
+   byte gate only with the exact `.research-conversation-title` wrapping hunk
+   and the class-scoped Holdings account-filter bounds; no other `styles.css`
+   byte may change.
 6. `api.ts` differs only by the exact five AppRecords export removals.
 7. Task 9 commit `b6ea67b6` has zero formatter product or formatter-test diff
    from its Task 8 input `6a076db3`. From product base to final, the only
@@ -1475,8 +1517,8 @@ required. Freeze product before requesting review.
 
   ```text
   base -> A       +45/-2    90/944 -> 93/987
-  A -> final      +60/-0    93/987 -> 94/1047
-  base -> final  +105/-2    net +103
+  A -> final      +61/-0    93/987 -> 94/1048
+  base -> final  +106/-2    net +104
   ```
 
   The only removals are the two named resource-count nodes. Hash each
@@ -1502,7 +1544,7 @@ required. Freeze product before requesting review.
   git diff --check
   ```
 
-  Require final `94/1047`, scanner `36/20/0/20`, `src/**`, no-PG
+  Require final `94/1048`, scanner `36/20/0/20`, `src/**`, no-PG
   `ok:true`/`pg_attempts:[]`, and only the existing build warning.
 
 - [ ] **Step 4: Prove protected bytes and exact exceptions**
@@ -1533,8 +1575,9 @@ required. Freeze product before requesting review.
   chrome, full table/filter density, error banner, open menu/dialog or expanded
   row, and dirty/active state where applicable. Require zero document overflow,
   clipping, overlap, truncation, or source mutation. If any surface fails at
-  960, stop for a reviewed CSS deviation and rerun that surface at
-  `959/960/961` after repair.
+  any width, stop for a reviewed CSS deviation and rerun the complete matrix;
+  a 960 failure additionally requires that surface's `959/960/961` three-run
+  evidence after repair.
 
 - [ ] **Step 6: Exercise locale-switch preservation and privacy**
 
@@ -1578,15 +1621,16 @@ Stop and return to design/plan review if any of the following occurs:
 
 1. baseline debt does not reconcile to `230+374+30+3`, source is not
    `636/667`, or scanner hardening discovers other than the exact 22 labels;
-2. test collection differs from base `90/944`, A `93/987`, final `94/1047`,
-   raw `+45/-2` then `+60/-0`, the separate A Shell CSS `9/9`, or either
-   focused ledger;
+2. test collection differs from base `90/944`, A `93/987`, final `94/1048`,
+   raw `+45/-2` then `+61/-0`, the separate A/final Shell CSS `9/9 -> 10/10`,
+   or either focused ledger;
 3. resource counts cannot close at A `56/37/679/207/401` and final
    `61/37/679/207/401/374/20`;
 4. A scanner cannot close at `483/448/429/20` with 448 debt occurrences and 48
    scopes, or final cannot close at `36/20/0/20` with `src/**`;
 5. a new allowlist entry appears necessary;
-6. Tranche B needs to edit a frozen A product owner;
+6. Tranche B needs to edit a frozen A product owner outside the exact
+   runtime-reviewed deviation 4 `styles.css` hunk;
 7. a reachable remaining surface lies outside the file map;
 8. semantic presentation requires parsing English `.message` or a missing
    backend discriminator;
@@ -1618,7 +1662,8 @@ explicit user approval:
 
 1. restore any protected main-worktree draft exactly;
 2. fast-forward merge `codex/i18n-4-5-remaining-surfaces` only;
-3. rerun merged-tree A focused `24/305`, B focused `15/232`, full `94/1047`,
+3. rerun merged-tree A focused `24/305`, B focused `15/232`, Shell CSS `10/10`,
+   full `94/1048`,
    typecheck, build, scanner `36/20/0/20`, no-PG, resource counts, protected
    bytes, exact `api.ts` exception, and `git diff --check`;
 4. restart the normal desktop in zh-Hant and smoke Research, Holdings,
