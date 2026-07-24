@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { RefreshCw, RotateCcw } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
   deletePortfolioActivityAnnotation,
@@ -16,6 +17,27 @@ import {
 } from "./api";
 import { formatMarketTimestamp, formatSystemTimestamp } from "./timeDisplay";
 import {
+  PORTFOLIO_CLOSED_IDS,
+  capturePortfolioError,
+  portfolioActivityFieldLabel,
+  portfolioActivityIntentLabel,
+  portfolioActivityKindLabel,
+  portfolioActivitySourceLabel,
+  portfolioActivityStateLabel,
+  portfolioCloseScopeLabel,
+  portfolioCountCopy,
+  portfolioCoverageReasonLabel,
+  portfolioEmptyStateLabel,
+  portfolioExecutionCoverageLabel,
+  portfolioManualActionLabel,
+  portfolioObjectiveOutcomeLabel,
+  portfolioObjectiveSideLabel,
+  portfolioPositionDirectionLabel,
+  presentPortfolioError,
+  type PortfolioErrorState,
+  type PortfolioT,
+} from "./i18n/portfolioPresentation";
+import {
   Button,
   ConfirmDialog,
   DataTable,
@@ -25,28 +47,6 @@ import {
   type DataTableAction,
   type DataTableColumn,
 } from "./ui";
-
-const INTENT_LABELS_ZH: Record<PortfolioIntentLabel, string> = {
-  profit_take: "獲利了結",
-  stop_loss: "停損",
-  rebalance: "再平衡",
-  thesis_broken: "投資論點失效",
-  cash_need: "資金需求",
-  other: "其他",
-};
-
-const SOURCE_LABELS = {
-  broker: "Broker",
-  manual: "手動紀錄",
-  system: "系統覆蓋",
-} as const;
-
-const OUTCOME_LABELS = {
-  gain: "已實現獲利",
-  loss: "已實現虧損",
-  flat: "已實現損益為零",
-  unknown: "結果未知",
-} as const;
 
 const initialDraft = {
   date_from_et: "",
@@ -58,24 +58,27 @@ const initialDraft = {
 };
 
 type FilterDraft = typeof initialDraft;
+const ACTIVITY_COPY_KIND = "activity" as const;
 
 export function PortfolioActivity({
   localTimeZone,
 }: {
   localTimeZone?: string;
 }) {
+  const { t: portfolioT } = useTranslation("portfolio");
+  useTranslation("common");
   const [page, setPage] = useState<PortfolioActivityPage | null>(null);
   const [draft, setDraft] = useState<FilterDraft>(initialDraft);
   const [activeFilters, setActiveFilters] = useState<PortfolioActivityFilters>({});
   const [loading, setLoading] = useState(true);
   const [appending, setAppending] = useState(false);
-  const [readFailed, setReadFailed] = useState(false);
+  const [readError, setReadError] = useState<PortfolioErrorState | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [editorId, setEditorId] = useState<string | null>(null);
   const [intentDraft, setIntentDraft] = useState<PortfolioIntentLabel | "">("");
   const [noteDraft, setNoteDraft] = useState("");
   const [mutationBusy, setMutationBusy] = useState(false);
-  const [mutationError, setMutationError] = useState<string | null>(null);
+  const [mutationError, setMutationError] = useState<PortfolioErrorState | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const requestGeneration = useRef(0);
   const editorReturnFocusRef = useRef<HTMLElement | null>(null);
@@ -91,7 +94,7 @@ export function PortfolioActivity({
       setAppending(false);
       setPage(null);
       setLoading(true);
-      setReadFailed(false);
+      setReadError(null);
     }
     try {
       const loaded = await getPortfolioActivity(filters);
@@ -99,10 +102,10 @@ export function PortfolioActivity({
       setPage((current) => append && current
         ? appendActivityPage(current, loaded)
         : loaded);
-      setReadFailed(false);
-    } catch {
+      setReadError(null);
+    } catch (error) {
       if (generation !== requestGeneration.current) return;
-      setReadFailed(true);
+      setReadError(capturePortfolioError("activity_load", error));
     } finally {
       if (generation !== requestGeneration.current) return;
       if (append) setAppending(false);
@@ -166,8 +169,8 @@ export function PortfolioActivity({
       );
       replaceLocalAnnotation(annotatableEditorItem.id, annotation, setPage);
       setEditorId(null);
-    } catch {
-      setMutationError("註記未儲存；請重試");
+    } catch (error) {
+      setMutationError(capturePortfolioError("activity_save_annotation", error));
     } finally {
       setMutationBusy(false);
     }
@@ -182,8 +185,8 @@ export function PortfolioActivity({
       replaceLocalAnnotation(annotatableEditorItem.id, null, setPage);
       setConfirmDelete(false);
       setEditorId(null);
-    } catch {
-      setMutationError("註記未清除；請重試");
+    } catch (error) {
+      setMutationError(capturePortfolioError("activity_clear_annotation", error));
       setConfirmDelete(false);
     } finally {
       setMutationBusy(false);
@@ -193,7 +196,7 @@ export function PortfolioActivity({
   const columns: DataTableColumn<PortfolioActivityItem>[] = [
     {
       id: "time",
-      header: "時間",
+      header: portfolioT(($) => $.activity.surface.tableTime),
       className: "portfolio-activity-time",
       render: (item) => isPortfolioBrokerActivity(item)
         ? formatMarketTimestamp(item.occurred_at_utc, { localTimeZone })
@@ -201,41 +204,43 @@ export function PortfolioActivity({
     },
     {
       id: "account",
-      header: "帳戶",
-      render: (item) => item.account?.label ?? "全部帳戶",
+      header: portfolioT(($) => $.activity.surface.tableAccount),
+      render: (item) => item.account?.label ?? portfolioT(($) => $.activity.surface.tableAllAccounts),
     },
     {
       id: "event",
-      header: "Symbol / 事件",
-      render: (item) => eventLabel(item),
+      header: portfolioT(($) => $.activity.surface.tableEvent),
+      render: (item) => eventLabel(item, portfolioT),
     },
     {
       id: "source",
-      header: "來源",
-      render: (item) => SOURCE_LABELS[item.source],
+      header: portfolioT(($) => $.activity.surface.tableSource),
+      render: (item) => portfolioActivitySourceLabel(item.source, portfolioT),
     },
     {
       id: "objective",
-      header: "客觀結果",
-      render: (item) => <ObjectiveSummary item={item} />,
+      header: portfolioT(($) => $.activity.surface.tableObjective),
+      render: (item) => <ObjectiveSummary item={item} t={portfolioT} />,
     },
     {
       id: "intent",
-      header: "確認意圖",
-      render: (item) => <IntentSummary item={item} />,
+      header: portfolioT(($) => $.activity.surface.tableIntent),
+      render: (item) => <IntentSummary item={item} t={portfolioT} />,
     },
   ];
 
   const actions = (item: PortfolioActivityItem): DataTableAction<PortfolioActivityItem>[] => {
     const rowActions: DataTableAction<PortfolioActivityItem>[] = [{
       id: "detail",
-      label: expandedId === item.id ? "收合明細" : "查看明細",
+      label: expandedId === item.id
+        ? portfolioT(($) => $.activity.surface.collapseDetail)
+        : portfolioT(($) => $.activity.surface.viewDetail),
       onSelect: () => setExpandedId((current) => current === item.id ? null : item.id),
     }];
     if (isPortfolioAnnotatableActivity(item)) {
       rowActions.push({
         id: "annotation",
-        label: "編輯註記",
+        label: portfolioT(($) => $.activity.surface.editAnnotation),
         onSelect: (_, trigger) => openEditor(item, trigger),
       });
     }
@@ -243,16 +248,19 @@ export function PortfolioActivity({
   };
 
   return (
-    <section className="portfolio-activity" aria-label="投資組合活動">
+    <section className="portfolio-activity" aria-label={portfolioT(($) => $.activity.surface.pageTitle)}>
       <div className="portfolio-activity-head">
         <div>
-          <h2>活動紀錄</h2>
-          <p className="muted">日期篩選以美東時間（ET）為準。</p>
+          <h2>{portfolioT(($) => $.activity.surface.heading)}</h2>
+          <p className="muted">{portfolioT(($) => $.activity.surface.timezoneNotice)}</p>
         </div>
         {loading ? (
-          <StatusBadge state="loading" label="載入活動" />
+          <StatusBadge state="loading" label={portfolioT(($) => $.activity.surface.loading)} />
         ) : page ? (
-          <StatusBadge state={page.items.length ? "ready" : "empty"} label={`已載入 ${page.items.length} 筆`} />
+          <StatusBadge
+            state={page.items.length ? "ready" : "empty"}
+            label={portfolioCountCopy(ACTIVITY_COPY_KIND, page.items.length, portfolioT)}
+          />
         ) : null}
       </div>
 
@@ -264,60 +272,55 @@ export function PortfolioActivity({
         }}
       >
         <label>
-          開始日期（ET）
-          <input aria-label="開始日期（ET）" type="date" value={draft.date_from_et} onChange={(event) => updateDraft("date_from_et", event.currentTarget.value)} />
+          {portfolioT(($) => $.activity.surface.startDateLabel)}
+          <input aria-label={portfolioT(($) => $.activity.surface.startDateLabel)} type="date" value={draft.date_from_et} onChange={(event) => updateDraft("date_from_et", event.currentTarget.value)} />
         </label>
         <label>
-          結束日期（ET）
-          <input aria-label="結束日期（ET）" type="date" value={draft.date_to_et} onChange={(event) => updateDraft("date_to_et", event.currentTarget.value)} />
+          {portfolioT(($) => $.activity.surface.endDateLabel)}
+          <input aria-label={portfolioT(($) => $.activity.surface.endDateLabel)} type="date" value={draft.date_to_et} onChange={(event) => updateDraft("date_to_et", event.currentTarget.value)} />
         </label>
         <label>
-          帳戶
-          <select aria-label="帳戶篩選" value={draft.account_id} onChange={(event) => updateDraft("account_id", event.currentTarget.value)}>
-            <option value="">全部帳戶</option>
+          {portfolioT(($) => $.activity.surface.filterAccountLabel)}
+          <select aria-label={portfolioT(($) => $.activity.surface.filterAccountAria)} value={draft.account_id} onChange={(event) => updateDraft("account_id", event.currentTarget.value)}>
+            <option value="">{portfolioT(($) => $.activity.surface.tableAllAccounts)}</option>
             {page?.accounts.map((activityAccount) => (
               <option key={activityAccount.id} value={activityAccount.id}>{activityAccount.label}</option>
             ))}
           </select>
         </label>
         <label>
-          Symbol
-          <input aria-label="Symbol 篩選" value={draft.symbol} onChange={(event) => updateDraft("symbol", event.currentTarget.value)} />
+          {portfolioT(($) => $.activity.surface.filterSymbolLabel)}
+          <input aria-label={portfolioT(($) => $.activity.surface.filterSymbolAria)} value={draft.symbol} onChange={(event) => updateDraft("symbol", event.currentTarget.value)} />
         </label>
         <label>
-          來源
-          <select aria-label="來源篩選" value={draft.source} onChange={(event) => updateDraft("source", event.currentTarget.value)}>
-            <option value="">全部來源</option>
-            <option value="broker">Broker</option>
-            <option value="manual">手動紀錄</option>
-            <option value="system">系統覆蓋</option>
+          {portfolioT(($) => $.activity.surface.tableSource)}
+          <select aria-label={portfolioT(($) => $.activity.surface.filterSourceAria)} value={draft.source} onChange={(event) => updateDraft("source", event.currentTarget.value)}>
+            <option value="">{portfolioT(($) => $.activity.surface.filterAllSources)}</option>
+            {PORTFOLIO_CLOSED_IDS.activitySources.map((source) => (
+              <option key={source} value={source}>{portfolioActivitySourceLabel(source, portfolioT)}</option>
+            ))}
           </select>
         </label>
         <label>
-          狀態
-          <select aria-label="狀態篩選" value={draft.state} onChange={(event) => updateDraft("state", event.currentTarget.value)}>
-            <option value="">全部狀態</option>
-            <option value="realized_gain">已實現獲利</option>
-            <option value="realized_loss">已實現虧損</option>
-            <option value="realized_flat">已實現損益為零</option>
-            <option value="outcome_unknown">結果未知</option>
-            <option value="unmatched">未匹配變動</option>
-            <option value="manual_adjustment">手動調整</option>
-            <option value="coverage_gap">覆蓋缺口</option>
-            <option value="history_start">歷史起點</option>
+          {portfolioT(($) => $.activity.surface.filterStateLabel)}
+          <select aria-label={portfolioT(($) => $.activity.surface.filterStateAria)} value={draft.state} onChange={(event) => updateDraft("state", event.currentTarget.value)}>
+            <option value="">{portfolioT(($) => $.activity.surface.filterAllStates)}</option>
+            {PORTFOLIO_CLOSED_IDS.activityStates.map((state) => (
+              <option key={state} value={state}>{portfolioActivityStateLabel(state, portfolioT)}</option>
+            ))}
           </select>
         </label>
         <div className="portfolio-activity-filter-actions">
-          <Button type="submit" size="compact" icon={<RefreshCw size={15} />}>套用篩選</Button>
-          <Button type="button" size="compact" tone="ghost" icon={<RotateCcw size={15} />} onClick={resetFilters}>重設</Button>
+          <Button type="submit" size="compact" icon={<RefreshCw size={15} />}>{portfolioT(($) => $.activity.surface.applyFilters)}</Button>
+          <Button type="button" size="compact" tone="ghost" icon={<RotateCcw size={15} />} onClick={resetFilters}>{portfolioT(($) => $.activity.surface.resetFilters)}</Button>
         </div>
       </form>
 
-      {readFailed ? (
+      {readError ? (
         <InlineAlert
           state="failed"
-          title="活動載入失敗；請重新整理"
-          action={<Button size="compact" onClick={() => void load(activeFilters)}>重新整理</Button>}
+          title={presentPortfolioError(readError, portfolioT).title}
+          action={<Button size="compact" onClick={() => void load(activeFilters)}>{portfolioT(($) => $.activity.surface.refresh)}</Button>}
         />
       ) : null}
 
@@ -325,19 +328,21 @@ export function PortfolioActivity({
         <>
           <p className="portfolio-activity-history muted">
             {page.history_started_at_utc
-              ? `活動歷史起點：${formatSystemTimestamp(page.history_started_at_utc, { localTimeZone })}`
-              : "活動歷史尚未開始；目前沒有可確認的 Broker 擷取範圍。"}
+              ? portfolioT(($) => $.activity.surface.historyStarted, {
+                timestamp: formatSystemTimestamp(page.history_started_at_utc, { localTimeZone }),
+              })
+              : portfolioT(($) => $.activity.surface.historyNotStarted)}
           </p>
           <DataTable<PortfolioActivityItem>
-            ariaLabel="投資組合活動紀錄"
+            ariaLabel={portfolioT(($) => $.activity.surface.tableAria)}
             rows={page.items}
             columns={columns}
             rowKey={(item) => item.id}
-            rowLabel={(item) => eventLabel(item)}
-            emptyText="尚無活動紀錄"
+            rowLabel={(item) => eventLabel(item, portfolioT)}
+            emptyText={portfolioEmptyStateLabel(ACTIVITY_COPY_KIND, portfolioT)}
             actions={actions}
             renderExpandedRow={(item) => expandedId === item.id
-              ? <ActivityDetail item={item} localTimeZone={localTimeZone} />
+              ? <ActivityDetail item={item} localTimeZone={localTimeZone} t={portfolioT} />
               : null}
           />
           {page.next_cursor ? (
@@ -347,7 +352,7 @@ export function PortfolioActivity({
                 busy={appending}
                 onClick={() => void load({ ...activeFilters, cursor: page.next_cursor ?? undefined }, true)}
               >
-                載入更多
+                {portfolioT(($) => $.activity.surface.loadMore)}
               </Button>
             </div>
           ) : null}
@@ -356,50 +361,52 @@ export function PortfolioActivity({
 
       <Drawer
         open={Boolean(annotatableEditorItem)}
-        title="編輯活動註記"
+        title={portfolioT(($) => $.activity.surface.editorTitle)}
         onClose={closeEditor}
         returnFocusRef={editorReturnFocusRef}
         footer={(
           <div className="portfolio-activity-editor-actions">
             {annotatableEditorItem?.annotation ? (
-              <Button ref={deleteReturnFocusRef} tone="danger" disabled={mutationBusy} onClick={() => setConfirmDelete(true)}>清除註記</Button>
+              <Button ref={deleteReturnFocusRef} tone="danger" disabled={mutationBusy} onClick={() => setConfirmDelete(true)}>{portfolioT(($) => $.activity.surface.editorClear)}</Button>
             ) : null}
             <span className="portfolio-activity-editor-spacer" />
-            <Button disabled={mutationBusy} onClick={closeEditor}>取消</Button>
+            <Button disabled={mutationBusy} onClick={closeEditor}>{portfolioT(($) => $.activity.surface.editorCancel)}</Button>
             <Button
               tone="primary"
               busy={mutationBusy}
               disabled={!intentDraft && !noteDraft.trim()}
               onClick={() => void saveAnnotation()}
             >
-              儲存註記
+              {portfolioT(($) => $.activity.surface.editorSave)}
             </Button>
           </div>
         )}
       >
         <div className="portfolio-activity-editor">
           <label>
-            確認意圖
-            <select aria-label="確認意圖" value={intentDraft} onChange={(event) => setIntentDraft(event.currentTarget.value as PortfolioIntentLabel | "")}>
-              <option value="">未確認</option>
-              {Object.entries(INTENT_LABELS_ZH).map(([value, label]) => (
-                <option key={value} value={value}>{label}</option>
+            {portfolioT(($) => $.activity.surface.editorIntentLabel)}
+            <select aria-label={portfolioT(($) => $.activity.surface.editorIntentLabel)} value={intentDraft} onChange={(event) => setIntentDraft(event.currentTarget.value as PortfolioIntentLabel | "")}>
+              <option value="">{portfolioT(($) => $.activity.surface.editorUnconfirmed)}</option>
+              {PORTFOLIO_CLOSED_IDS.activityIntents.map((value) => (
+                <option key={value} value={value}>{portfolioActivityIntentLabel(value, portfolioT)}</option>
               ))}
             </select>
           </label>
           <label>
-            註記
-            <textarea aria-label="註記" rows={7} value={noteDraft} onChange={(event) => setNoteDraft(event.currentTarget.value)} />
+            {portfolioT(($) => $.activity.surface.editorNoteLabel)}
+            <textarea aria-label={portfolioT(($) => $.activity.surface.editorNoteLabel)} rows={7} value={noteDraft} onChange={(event) => setNoteDraft(event.currentTarget.value)} />
           </label>
-          {mutationError ? <InlineAlert state="failed" title={mutationError} /> : null}
+          {mutationError ? (
+            <InlineAlert state="failed" title={presentPortfolioError(mutationError, portfolioT).title} />
+          ) : null}
         </div>
       </Drawer>
 
       <ConfirmDialog
         open={confirmDelete}
-        title="清除活動註記"
-        consequence="已確認的意圖與註記將被清除；Broker 與手動活動事實不受影響。"
-        confirmLabel="確認清除"
+        title={portfolioT(($) => $.activity.surface.clearDialogTitle)}
+        consequence={portfolioT(($) => $.activity.surface.clearDialogConsequence)}
+        confirmLabel={portfolioT(($) => $.activity.surface.clearDialogConfirm)}
         busy={mutationBusy}
         onConfirm={() => void deleteAnnotation()}
         onCancel={() => setConfirmDelete(false)}
@@ -455,52 +462,77 @@ function replaceLocalAnnotation(
   } : current);
 }
 
-function eventLabel(item: PortfolioActivityItem): string {
+function eventLabel(item: PortfolioActivityItem, t: PortfolioT): string {
   switch (item.kind) {
-    case "order": return item.symbol ? `${item.symbol} 訂單成交` : "訂單成交";
-    case "execution": return item.symbol ? `${item.symbol} 獨立成交` : "獨立成交";
-    case "unmatched": return item.symbol ? `${item.symbol} 未匹配變動` : "未匹配變動";
-    case "manual_adjustment": return `${item.symbol} 手動調整`;
-    case "coverage_gap": return item.reason_code === "broker_day_gap" ? "Broker 日期覆蓋缺口" : "成交覆蓋不完整";
-    case "history_start": return "活動歷史起點";
+    case "order": return item.symbol
+      ? t(($) => $.activity.surface.eventOrderWithSymbol, { symbol: item.symbol })
+      : t(($) => $.activity.surface.eventOrder);
+    case "execution": return item.symbol
+      ? t(($) => $.activity.surface.eventExecutionWithSymbol, { symbol: item.symbol })
+      : t(($) => $.activity.surface.eventExecution);
+    case "unmatched": return item.symbol
+      ? t(($) => $.activity.surface.eventUnmatchedWithSymbol, { symbol: item.symbol })
+      : t(($) => $.activity.surface.eventUnmatched);
+    case "manual_adjustment": return t(($) => $.activity.surface.eventManualWithSymbol, { symbol: item.symbol });
+    case "coverage_gap": return portfolioCoverageReasonLabel(item.reason_code, t);
+    case "history_start": return t(($) => $.activity.surface.eventHistoryStart);
   }
 }
 
-function ObjectiveSummary({ item }: { item: PortfolioActivityItem }) {
+function ObjectiveSummary({ item, t }: { item: PortfolioActivityItem; t: PortfolioT }) {
   let content: ReactNode;
   switch (item.kind) {
     case "order":
     case "execution":
       content = (
         <>
-          <strong>{OUTCOME_LABELS[item.objective.realized_outcome]}</strong>
-          <span className="muted tiny">{sideLabel(item.objective.side)} · {formatNumber(item.objective.quantity)}</span>
+          <strong>{portfolioObjectiveOutcomeLabel(item.objective.realized_outcome, t)}</strong>
+          <span className="muted tiny">
+            {portfolioObjectiveSideLabel(item.objective.side, t)} · {formatNumber(item.objective.quantity, t(($) => $.activity.surface.unknown))}
+          </span>
         </>
       );
       break;
     case "unmatched":
-      content = <><strong>未匹配持倉變動</strong><span className="muted tiny">殘差 {formatNumber(item.residual_quantity)}</span></>;
+      content = (
+        <>
+          <strong>{t(($) => $.activity.surface.objectiveUnmatched)}</strong>
+          <span className="muted tiny">
+            {t(($) => $.activity.surface.objectiveResidual)} {formatNumber(item.residual_quantity, t(($) => $.activity.surface.unknown))}
+          </span>
+        </>
+      );
       break;
     case "manual_adjustment":
-      content = <><strong>手動調整</strong><span className="muted tiny">{manualActionLabel(item.action)}</span></>;
+      content = (
+        <>
+          <strong>{portfolioActivityKindLabel(item.kind, t)}</strong>
+          <span className="muted tiny">{portfolioManualActionLabel(item.action, t)}</span>
+        </>
+      );
       break;
     case "coverage_gap":
-      content = <StatusBadge state={item.reason_code === "broker_day_gap" ? "stale" : "partial"} label="覆蓋不完整" />;
+      content = (
+        <StatusBadge
+          state={item.reason_code === "broker_day_gap" ? "stale" : "partial"}
+          label={t(($) => $.activity.surface.objectiveCoverageIncomplete)}
+        />
+      );
       break;
     case "history_start":
-      content = <StatusBadge state="ready" label="歷史起點" />;
+      content = <StatusBadge state="ready" label={t(($) => $.activity.surface.objectiveHistoryStart)} />;
       break;
   }
   return <div className="portfolio-activity-objective">{content}</div>;
 }
 
-function IntentSummary({ item }: { item: PortfolioActivityItem }) {
+function IntentSummary({ item, t }: { item: PortfolioActivityItem; t: PortfolioT }) {
   if (!isPortfolioAnnotatableActivity(item)) {
-    return <div className="portfolio-activity-intent muted">不適用</div>;
+    return <div className="portfolio-activity-intent muted">{t(($) => $.activity.surface.intentNotApplicable)}</div>;
   }
   const label = item.annotation?.intent_label
-    ? INTENT_LABELS_ZH[item.annotation.intent_label]
-    : "未確認";
+    ? portfolioActivityIntentLabel(item.annotation.intent_label, t)
+    : t(($) => $.activity.surface.intentUnconfirmed);
   return (
     <div className="portfolio-activity-intent">
       <strong>{label}</strong>
@@ -512,10 +544,13 @@ function IntentSummary({ item }: { item: PortfolioActivityItem }) {
 function ActivityDetail({
   item,
   localTimeZone,
+  t,
 }: {
   item: PortfolioActivityItem;
   localTimeZone?: string;
+  t: PortfolioT;
 }) {
+  const unknown = t(($) => $.activity.surface.unknown);
   let content: ReactNode;
   switch (item.kind) {
     case "order":
@@ -523,38 +558,42 @@ function ActivityDetail({
       content = (
         <div className="portfolio-activity-fill-list">
           <dl className="portfolio-activity-detail-grid">
-            <Detail label="成交均價" value={formatNumber(item.objective.average_price)} />
-            <Detail label="名目金額（確定性算術）" value={formatNumber(item.objective.gross_notional)} />
-            <Detail label="佣金" value={formatAmount(item.objective.commission, item.objective.commission_currency)} />
-            <Detail label="已實現損益" value={formatAmount(item.objective.realized_pnl, item.currency)} />
-            <Detail label="持倉方向" value={positionDirectionLabel(item.objective.position_direction)} />
-            <Detail label="平倉範圍" value={closeScopeLabel(item.objective.close_scope)} />
+            <Detail label={t(($) => $.activity.surface.detailAveragePrice)} value={formatNumber(item.objective.average_price, unknown)} />
+            <Detail label={t(($) => $.activity.surface.detailNotional)} value={formatNumber(item.objective.gross_notional, unknown)} />
+            <Detail label={t(($) => $.activity.surface.detailCommission)} value={formatAmount(item.objective.commission, item.objective.commission_currency, unknown)} />
+            <Detail label={t(($) => $.activity.surface.detailRealizedPnl)} value={formatAmount(item.objective.realized_pnl, item.currency, unknown)} />
+            <Detail label={t(($) => $.activity.surface.detailPositionDirection)} value={portfolioPositionDirectionLabel(item.objective.position_direction, t)} />
+            <Detail label={t(($) => $.activity.surface.detailCloseScope)} value={portfolioCloseScopeLabel(item.objective.close_scope, t)} />
           </dl>
           {item.fills.map((fill) => (
             <section key={fill.family_root_id} className="portfolio-activity-fill">
-              <strong>成交家族 #{fill.family_root_id}</strong>
+              <strong>{t(($) => $.activity.surface.fillFamily)}{fill.family_root_id}</strong>
               {fill.revisions.map((execution) => (
                 <div key={execution.id} className="portfolio-activity-revision">
                   <span className="portfolio-activity-revision-head">
-                    Exec {execution.exec_id}
-                    {execution.corrects_exec_id ? ` · 修正 ${execution.corrects_exec_id}` : ""}
-                    {execution.is_effective ? " · 生效版本" : " · 歷史版本"}
+                    {t(($) => $.activity.surface.executionPrefix)} {execution.exec_id}
+                    {execution.corrects_exec_id
+                      ? <>{" "}{t(($) => $.activity.surface.executionCorrection, { executionId: execution.corrects_exec_id })}</>
+                      : null}
+                    {execution.is_effective
+                      ? <>{" "}{t(($) => $.activity.surface.executionEffective)}</>
+                      : <>{" "}{t(($) => $.activity.surface.executionHistorical)}</>}
                   </span>
                   <span className="muted tiny">
-                    {execution.side} {formatNumber(execution.quantity)} @ {formatNumber(execution.price)} · {formatMarketTimestamp(execution.execution_time_utc, { localTimeZone })}
+                    {execution.side} {formatNumber(execution.quantity, unknown)} @ {formatNumber(execution.price, unknown)} · {formatMarketTimestamp(execution.execution_time_utc, { localTimeZone })}
                   </span>
                   <span className="muted tiny">
-                    首次觀察 Run #{execution.first_observed_run_id} · {formatSystemTimestamp(execution.first_observed_at_utc, { localTimeZone })}
+                    {t(($) => $.activity.surface.executionFirstObservedRun)}{execution.first_observed_run_id} · {formatSystemTimestamp(execution.first_observed_at_utc, { localTimeZone })}
                   </span>
                   {execution.commission_revisions.length ? (
                     <ul>
                       {execution.commission_revisions.map((commission) => (
                         <li key={commission.id}>
-                          Commission #{commission.id} · {formatAmount(commission.commission, commission.currency)} · 已實現損益 {formatAmount(commission.realized_pnl, commission.currency)} · 首次觀察 Run #{commission.first_observed_run_id} · {formatSystemTimestamp(commission.first_observed_at_utc, { localTimeZone })} · Yield {formatNumber(commission.yield_value)} · 贖回日 {commission.yield_redemption_date ?? "未知"}{commission.is_latest ? " · 最新" : ""}
+                          {t(($) => $.activity.surface.commissionPrefix)}{commission.id} · {formatAmount(commission.commission, commission.currency, unknown)} {t(($) => $.activity.surface.commissionRealizedPnl)} {formatAmount(commission.realized_pnl, commission.currency, unknown)} {t(($) => $.activity.surface.commissionFirstObservedRun)}{commission.first_observed_run_id} · {formatSystemTimestamp(commission.first_observed_at_utc, { localTimeZone })} {t(($) => $.activity.surface.commissionYield)} {formatNumber(commission.yield_value, unknown)} {t(($) => $.activity.surface.commissionRedemptionDate)} {commission.yield_redemption_date ?? unknown}{commission.is_latest ? <>{" "}{t(($) => $.activity.surface.commissionLatest)}</> : null}
                         </li>
                       ))}
                     </ul>
-                  ) : <span className="muted tiny">佣金修訂：未知</span>}
+                  ) : <span className="muted tiny">{t(($) => $.activity.surface.commissionUnknown)}</span>}
                 </div>
               ))}
             </section>
@@ -565,24 +604,24 @@ function ActivityDetail({
     case "unmatched":
       content = (
         <dl className="portfolio-activity-detail-grid">
-          <Detail label="調整前" value={formatNumber(item.before_quantity)} />
-          <Detail label="調整後" value={formatNumber(item.after_quantity)} />
-          <Detail label="預期" value={formatNumber(item.expected_quantity)} />
-          <Detail label="殘差" value={formatNumber(item.residual_quantity)} />
-          <Detail label="Capture 範圍" value={`Run #${item.from_run_id} → #${item.to_run_id}`} />
-          <Detail label="時間窗" value={`${formatSystemTimestamp(item.from_as_of_utc, { localTimeZone })} → ${formatSystemTimestamp(item.to_as_of_utc, { localTimeZone })}`} />
-          <Detail label="成交覆蓋" value={coverageLabel(item.execution_coverage)} />
-          <Detail label="原因" value={item.reason_code || "未知"} />
+          <Detail label={t(($) => $.activity.surface.unmatchedBefore)} value={formatNumber(item.before_quantity, unknown)} />
+          <Detail label={t(($) => $.activity.surface.unmatchedAfter)} value={formatNumber(item.after_quantity, unknown)} />
+          <Detail label={t(($) => $.activity.surface.unmatchedExpected)} value={formatNumber(item.expected_quantity, unknown)} />
+          <Detail label={t(($) => $.activity.surface.unmatchedResidual)} value={formatNumber(item.residual_quantity, unknown)} />
+          <Detail label={t(($) => $.activity.surface.captureRange)} value={t(($) => $.activity.surface.runRange, { fromRun: item.from_run_id, toRun: item.to_run_id })} />
+          <Detail label={t(($) => $.activity.surface.timeWindow)} value={`${formatSystemTimestamp(item.from_as_of_utc, { localTimeZone })} → ${formatSystemTimestamp(item.to_as_of_utc, { localTimeZone })}`} />
+          <Detail label={t(($) => $.activity.surface.executionCoverage)} value={portfolioExecutionCoverageLabel(item.execution_coverage, t)} />
+          <Detail label={t(($) => $.activity.surface.reason)} value={item.reason_code || unknown} />
         </dl>
       );
       break;
     case "manual_adjustment":
       content = (
         <div className="portfolio-activity-change-list">
-          <span>Position #{item.position_id} · {manualActionLabel(item.action)}</span>
+          <span>{t(($) => $.activity.surface.positionPrefix)}{item.position_id} · {portfolioManualActionLabel(item.action, t)}</span>
           {item.changes.map((change, index) => (
             <div key={`${change.field}-${index}`}>
-              <strong>{change.field}</strong> {formatUnknown(change.before)} → {formatUnknown(change.after)}
+              <strong>{portfolioActivityFieldLabel(change.field, t)}</strong> {formatUnknown(change.before, unknown)} → {formatUnknown(change.after, unknown)}
             </div>
           ))}
         </div>
@@ -591,17 +630,17 @@ function ActivityDetail({
     case "coverage_gap":
       content = (
         <dl className="portfolio-activity-detail-grid">
-          <Detail label="Capture 範圍" value={`Run #${item.from_run_id ?? "未知"} → #${item.to_run_id}`} />
-          <Detail label="開始" value={item.from_as_of_utc
+          <Detail label={t(($) => $.activity.surface.captureRange)} value={t(($) => $.activity.surface.runRange, { fromRun: item.from_run_id ?? unknown, toRun: item.to_run_id })} />
+          <Detail label={t(($) => $.activity.surface.start)} value={item.from_as_of_utc
             ? formatSystemTimestamp(item.from_as_of_utc, { localTimeZone })
-            : "未知"} />
-          <Detail label="結束" value={formatSystemTimestamp(item.to_as_of_utc, { localTimeZone })} />
-          <Detail label="原因" value={eventLabel(item)} />
+            : unknown} />
+          <Detail label={t(($) => $.activity.surface.end)} value={formatSystemTimestamp(item.to_as_of_utc, { localTimeZone })} />
+          <Detail label={t(($) => $.activity.surface.reason)} value={eventLabel(item, t)} />
         </dl>
       );
       break;
     case "history_start":
-      content = <span>首次成功擷取 Run #{item.capture_run_id} · {formatSystemTimestamp(item.occurred_at_utc, { localTimeZone })}</span>;
+      content = <span>{t(($) => $.activity.surface.firstSuccessfulCaptureRun)}{item.capture_run_id} · {formatSystemTimestamp(item.occurred_at_utc, { localTimeZone })}</span>;
       break;
   }
   return <div className="portfolio-activity-detail">{content}</div>;
@@ -611,44 +650,25 @@ function Detail({ label, value }: { label: string; value: string }) {
   return <div><dt>{label}{" "}</dt><dd>{value}</dd></div>;
 }
 
-function formatNumber(value: number | null): string {
-  if (value == null || !Number.isFinite(value)) return "未知";
+function formatNumber(value: number | null, unknown: string): string {
+  if (value == null || !Number.isFinite(value)) return unknown;
   return new Intl.NumberFormat(undefined, { maximumFractionDigits: 4 }).format(value);
 }
 
-function formatAmount(value: number | null, currency: string | null): string {
-  const number = formatNumber(value);
-  return number === "未知" ? number : currency ? `${number} ${currency}` : number;
+function formatAmount(value: number | null, currency: string | null, unknown: string): string {
+  if (value == null || !Number.isFinite(value)) return unknown;
+  const number = formatNumber(value, unknown);
+  return currency ? `${number} ${currency}` : number;
 }
 
-function formatUnknown(value: unknown): string {
-  if (value == null) return "未知";
-  if (typeof value === "string") return value || "未知";
-  if (typeof value === "number") return Number.isFinite(value) ? formatNumber(value) : "未知";
+function formatUnknown(value: unknown, unknownLabel: string): string {
+  if (value == null) return unknownLabel;
+  if (typeof value === "string") return value || unknownLabel;
+  if (typeof value === "number") return Number.isFinite(value) ? formatNumber(value, unknownLabel) : unknownLabel;
   if (typeof value === "boolean") return value ? "true" : "false";
   try {
-    return JSON.stringify(value) || "未知";
+    return JSON.stringify(value) || unknownLabel;
   } catch {
-    return "未知";
+    return unknownLabel;
   }
-}
-
-function sideLabel(value: "buy" | "sell" | "mixed" | "unknown") {
-  return { buy: "買進", sell: "賣出", mixed: "混合", unknown: "方向未知" }[value];
-}
-
-function manualActionLabel(value: "create" | "update" | "close") {
-  return { create: "建立", update: "更新", close: "關閉" }[value];
-}
-
-function coverageLabel(value: "complete" | "incomplete" | "gap") {
-  return { complete: "覆蓋完整", incomplete: "覆蓋不完整", gap: "覆蓋缺口" }[value];
-}
-
-function positionDirectionLabel(value: "increase" | "reduce" | "unknown") {
-  return { increase: "增加", reduce: "減少", unknown: "未知" }[value];
-}
-
-function closeScopeLabel(value: "none" | "partial" | "complete" | "unknown") {
-  return { none: "未平倉", partial: "部分平倉", complete: "完全平倉", unknown: "未知" }[value];
 }

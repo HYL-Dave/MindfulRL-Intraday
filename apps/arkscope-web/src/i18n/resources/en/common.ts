@@ -9,6 +9,9 @@ const common = {
     unpin: "Unpin",
     stop: "Stop",
   },
+  labels: {
+    ticker: "Ticker",
+  },
   boundedProgress: {
     failureTitle: "Work failed",
     failureDetail: "The work did not complete. Follow the error guidance to continue.",

@@ -53,6 +53,7 @@ const portfolio = {
       "inlineTagsHint": "Comma-separated",
       "inlineSave": "Save",
       "inlineCancel": "Cancel",
+      "eyebrow": "Holdings",
       "pageTitle": "Holdings",
       "refresh": "Refresh",
       "overviewWarning": "Could not load account overview; holdings remain available",

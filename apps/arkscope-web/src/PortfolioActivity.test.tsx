@@ -2,7 +2,8 @@
 import React from "react";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import i18n from "i18next";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PortfolioActivity } from "./PortfolioActivity";
 import type {
@@ -30,6 +31,11 @@ afterEach(() => {
   vi.restoreAllMocks();
   document.querySelectorAll(".ui-overlay-backdrop, .ui-row-action-menu")
     .forEach((node) => node.remove());
+});
+
+beforeEach(async () => {
+  await i18n.changeLanguage("zh-Hant");
+  document.documentElement.lang = "zh-Hant";
 });
 
 const account = {
@@ -245,7 +251,11 @@ async function mount() {
   document.body.appendChild(host);
   root = createRoot(host);
   await act(async () => {
-    root!.render(<PortfolioActivity localTimeZone="Asia/Taipei" />);
+    root!.render(
+      <main className="main">
+        <PortfolioActivity localTimeZone="Asia/Taipei" />
+      </main>,
+    );
   });
 }
 
@@ -254,6 +264,14 @@ async function flush() {
     await Promise.resolve();
     await Promise.resolve();
   });
+}
+
+async function switchLocale(locale: "zh-Hant" | "en") {
+  await act(async () => {
+    await i18n.changeLanguage(locale);
+  });
+  document.documentElement.lang = locale;
+  await flush();
 }
 
 async function clickButton(text: string, owner: ParentNode = host!) {
@@ -415,9 +433,9 @@ describe("PortfolioActivity", () => {
     await openRowAction("查看明細");
 
     const detail = host!.querySelector(".portfolio-activity-detail")!;
-    expect(detail.textContent).toContain("quantity");
+    expect(detail.textContent).toContain("數量");
     expect(detail.textContent).toContain("5 → 8");
-    expect(detail.textContent).toContain("notes");
+    expect(detail.textContent).toContain("筆記");
     expect(detail.textContent).not.toContain("成交價");
     expect(detail.textContent).not.toContain("已實現損益");
   });
@@ -622,4 +640,138 @@ describe("PortfolioActivity", () => {
     expect(host!.textContent).not.toContain("sqlite SECRET");
     expect(host!.textContent).not.toContain("DU123");
   });
+
+});
+
+describe("Portfolio activity", () => {
+    it("renders filters statuses and expanded rows in both locales", async () => {
+      stubFetch(() => page());
+      await mount();
+      await flush();
+      await openRowAction("查看明細");
+      expect(host!.textContent).toContain("活動紀錄");
+      expect(host!.textContent).toContain("套用篩選");
+      expect(host!.textContent).toContain("獲利了結");
+
+      await switchLocale("en");
+      expect(host!.textContent).toContain("Activity records");
+      expect(host!.textContent).toContain("Apply filters");
+      expect(host!.textContent).toContain("Take profit");
+      await act(async () => host!.querySelector<HTMLButtonElement>('button[aria-label$="操作"]')!.click());
+      expect(document.body.textContent).toContain("Collapse details");
+    });
+
+    it("maps activity field IDs without printing schema names", async () => {
+      const item = {
+        ...manualItem,
+        changes: [
+          { field: "quantity", before: 5, after: 8 },
+          { field: "raw_schema_alpha", before: "before", after: "after" },
+        ],
+      } as PortfolioManualActivityItem;
+      stubFetch(() => page({ items: [item] }));
+      await mount();
+      await flush();
+      await openRowAction("查看明細");
+
+      expect(host!.querySelector(".portfolio-activity-detail")?.textContent).toContain("數量");
+      expect(host!.querySelector(".portfolio-activity-detail")?.textContent).toContain("未知欄位");
+      expect(host!.textContent).not.toContain("raw_schema_alpha");
+    });
+
+    it("preserves execution commission and source values", async () => {
+      stubFetch(() => page());
+      await mount();
+      await flush();
+      await openRowAction("查看明細");
+      await switchLocale("en");
+
+      const detail = host!.querySelector(".portfolio-activity-detail")?.textContent ?? "";
+      for (const sourceValue of ["0001.01", "Commission #89", "124.5 CAD", "AAPL"]) {
+        expect(document.body.textContent).toContain(sourceValue);
+      }
+      expect(document.body.textContent).toContain("First observed in run #52");
+      expect(detail).toContain("Realized P&L");
+      expect(detail).toContain("Effective revision");
+    });
+
+    it("localizes count grammar without changing pagination", async () => {
+      let reads = 0;
+      const calls = stubFetch((url) => {
+        reads += 1;
+        return url.includes("cursor=next")
+          ? page({
+            items: [manualItem],
+            summary: { item_count: 1, unmatched_count: 0, recent_window_days: null },
+            next_cursor: null,
+          })
+          : page({ next_cursor: "next" });
+      });
+      await switchLocale("en");
+      await mount();
+      await flush();
+      expect(host!.textContent).toContain("1 activity record loaded");
+      await clickButton("Load more");
+      expect(host!.textContent).toContain("2 activity records loaded");
+      expect(reads).toBe(2);
+      expect(calls.at(-1)?.url).toContain("cursor=next");
+      expect(host!.querySelectorAll("tbody tr")).toHaveLength(2);
+    });
+
+    it("preserves expansion filters focus and scroll across locale changes", async () => {
+      const calls = stubFetch(() => page());
+      await mount();
+      await flush();
+      const symbol = host!.querySelector<HTMLInputElement>('input[aria-label="Symbol 篩選"]')!;
+      setInput(symbol, "AAPL");
+      await clickButton("套用篩選");
+      await openRowAction("查看明細");
+      const detail = host!.querySelector<HTMLElement>(".portfolio-activity-detail")!;
+      detail.dataset.identity = "expanded-row";
+      symbol.dataset.identity = "symbol-filter";
+      symbol.focus();
+      const scrollContainer = document.querySelector<HTMLElement>(".main");
+      expect(scrollContainer).not.toBeNull();
+      expect(scrollContainer).not.toBe(host);
+      scrollContainer!.scrollTop = 210;
+      expect(host!.scrollTop).toBe(0);
+      const requestCount = calls.length;
+
+      await switchLocale("en");
+      const symbolAfter = host!.querySelector<HTMLInputElement>('input[aria-label="Symbol filter"]')!;
+      expect(symbolAfter).toBe(symbol);
+      expect(symbolAfter.value).toBe("AAPL");
+      expect(symbolAfter.dataset.identity).toBe("symbol-filter");
+      expect(document.activeElement).toBe(symbolAfter);
+      expect(host!.querySelector(".portfolio-activity-detail")).toBe(detail);
+      expect(detail.dataset.identity).toBe("expanded-row");
+      expect(document.querySelector(".main")).toBe(scrollContainer);
+      expect(scrollContainer!.scrollTop).toBe(210);
+      expect(calls).toHaveLength(requestCount);
+    });
+
+    it("renders late load outcomes in the active locale", async () => {
+      const pending = deferred<PortfolioActivityPage>();
+      stubFetch(() => pending.promise);
+      await mount();
+      expect(host!.textContent).toContain("載入活動");
+      await switchLocale("en");
+      await act(async () => pending.resolve(page()));
+      await flush();
+      expect(host!.textContent).toContain("1 activity record loaded");
+      expect(host!.textContent).not.toContain("已載入 1 筆");
+    });
+
+    it("omits raw details in normal mode", async () => {
+      stubFetch(() => ({
+        status: 503,
+        body: { detail: "sqlite3 Traceback /home/private token=secret" },
+      }));
+      await switchLocale("en");
+      await mount();
+      await flush();
+
+      expect(host!.textContent).toContain("Could not load activity. Refresh to try again");
+      expect(document.body.textContent).not.toMatch(/sqlite3|Traceback|home\/private|token=secret/u);
+    });
 });

@@ -2,7 +2,8 @@
 import React from "react";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import i18n from "i18next";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { HoldingsView } from "./Holdings";
 import type {
@@ -27,6 +28,12 @@ afterEach(() => {
   host = null;
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
+  i18n.addResource("en", "portfolio", "tableLabels.holdingsAccount", "Account");
+});
+
+beforeEach(async () => {
+  await i18n.changeLanguage("zh-Hant");
+  document.documentElement.lang = "zh-Hant";
 });
 
 const snapshot = (over: Partial<PortfolioSnapshot> = {}): PortfolioSnapshot => ({
@@ -62,6 +69,43 @@ const overview = (over: Partial<PortfolioOverview> = {}): PortfolioOverview => (
   },
   ...over,
 });
+
+const manualPosition = (over: Partial<PortfolioPosition> = {}): PortfolioPosition => ({
+  id: 40,
+  account_id: 1,
+  broker: "manual",
+  symbol: "NVDA",
+  asset_class: "stock",
+  quantity: 3,
+  avg_cost: 100,
+  currency: "USD",
+  notes: "start",
+  thesis: "",
+  tags: [],
+  ...over,
+});
+
+const ibkrPosition = (over: Partial<PortfolioPosition> = {}): PortfolioPosition => ({
+  id: 30,
+  account_id: 2,
+  broker: "ibkr",
+  broker_con_id: "1001",
+  symbol: "AAPL",
+  asset_class: "stock",
+  quantity: 1,
+  currency: "USD",
+  notes: "",
+  thesis: "",
+  tags: [],
+  ...over,
+});
+
+function setInput(label: string, value: string) {
+  const input = host!.querySelector<HTMLInputElement>(`input[aria-label="${label}"]`);
+  if (!input) throw new Error(`input not found: ${label}`);
+  input.value = value;
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+}
 
 type PortfolioApiResponse =
   | PortfolioAccount
@@ -148,10 +192,12 @@ const recentActivityPage = (): PortfolioActivityPage => ({
 
 function deferred<T>() {
   let resolve!: (value: T) => void;
-  const promise = new Promise<T>((done) => {
+  let reject!: (reason?: unknown) => void;
+  const promise = new Promise<T>((done, fail) => {
     resolve = done;
+    reject = fail;
   });
-  return { promise, resolve };
+  return { promise, resolve, reject };
 }
 
 function stubFetch(
@@ -249,6 +295,14 @@ async function flush() {
   await act(async () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
   });
+}
+
+async function switchLocale(locale: "zh-Hant" | "en") {
+  await act(async () => {
+    await i18n.changeLanguage(locale);
+  });
+  document.documentElement.lang = locale;
+  await flush();
 }
 
 async function buttonByText(text: string): Promise<HTMLButtonElement> {
@@ -943,43 +997,6 @@ describe("HoldingsView", () => {
     expect(host!.textContent).toContain("進階選擇權風險尚未建模");
   });
 
-  const manualPosition = (over: Partial<PortfolioPosition> = {}): PortfolioPosition => ({
-    id: 40,
-    account_id: 1,
-    broker: "manual",
-    symbol: "NVDA",
-    asset_class: "stock",
-    quantity: 3,
-    avg_cost: 100,
-    currency: "USD",
-    notes: "start",
-    thesis: "",
-    tags: [],
-    ...over,
-  });
-
-  const ibkrPosition = (over: Partial<PortfolioPosition> = {}): PortfolioPosition => ({
-    id: 30,
-    account_id: 2,
-    broker: "ibkr",
-    broker_con_id: "1001",
-    symbol: "AAPL",
-    asset_class: "stock",
-    quantity: 1,
-    currency: "USD",
-    notes: "",
-    thesis: "",
-    tags: [],
-    ...over,
-  });
-
-  function setInput(label: string, value: string) {
-    const input = host!.querySelector<HTMLInputElement>(`input[aria-label="${label}"]`);
-    if (!input) throw new Error(`input not found: ${label}`);
-    input.value = value;
-    input.dispatchEvent(new Event("input", { bubbles: true }));
-  }
-
   it("edits notes thesis and tags on an ibkr position without broker fields", async () => {
     const calls = stubFetch((url, init) => {
       if (init?.method === "PATCH") return ibkrPosition({ notes: "keep" });
@@ -1171,4 +1188,179 @@ describe("HoldingsView", () => {
     expect(menu?.textContent).toContain("編輯");
     expect(menu?.textContent).not.toContain("關閉");
   });
+
+});
+
+describe("Holdings", () => {
+    it("renders complete holdings chrome in both locales", async () => {
+      stubFetch(() => snapshot({ positions: [manualPosition()] }));
+      await mount();
+      await flush();
+
+      expect(host!.querySelector(".ui-page-header .eyebrow")?.textContent).toBe("Holdings");
+      expect(host!.textContent).toContain("新增手動持倉");
+      expect(host!.textContent).toContain("顯示已關閉");
+      expect(host!.textContent).toContain("帳戶明細");
+
+      await switchLocale("en");
+      expect(host!.querySelector(".ui-page-header .eyebrow")?.textContent).toBe("Holdings");
+      expect(host!.textContent).toContain("Add manual holding");
+      expect(host!.textContent).toContain("Show closed");
+      expect(host!.textContent).toContain("Account details");
+      expect(host!.textContent).not.toContain("新增手動持倉");
+    });
+
+    it("replaces only the example ticker placeholder and preserves real symbols", async () => {
+      stubFetch(() => snapshot({ positions: [manualPosition({ symbol: "NVDA" })] }));
+      await mount();
+      await flush();
+
+      const ticker = host!.querySelector<HTMLInputElement>('input[aria-label="Ticker"]')!;
+      expect(ticker.placeholder).toBe("Ticker");
+      expect(host!.querySelector("tbody")?.textContent).toContain("NVDA");
+
+      await switchLocale("en");
+      expect(ticker.placeholder).toBe("Ticker");
+      expect(host!.querySelector("tbody")?.textContent).toContain("NVDA");
+    });
+
+    it("localizes table headers without changing sorting or row identity", async () => {
+      stubFetch(() => snapshot({ positions: [
+        manualPosition({ id: 40, symbol: "NVDA" }),
+        manualPosition({ id: 41, symbol: "AAPL" }),
+      ] }));
+      await mount();
+      await flush();
+
+      const rowsBefore = Array.from(host!.querySelectorAll<HTMLTableRowElement>("tbody tr"));
+      const symbolsBefore = rowsBefore.map((row) => row.textContent?.match(/NVDA|AAPL/u)?.[0]);
+      expect(host!.querySelector("thead")?.textContent).toContain("Account");
+
+      i18n.addResource("en", "portfolio", "tableLabels.holdingsAccount", "Account localized");
+      await switchLocale("en");
+      const rowsAfter = Array.from(host!.querySelectorAll<HTMLTableRowElement>("tbody tr"));
+      expect(host!.querySelector("thead")?.textContent).toContain("Account localized");
+      expect(rowsAfter).toHaveLength(rowsBefore.length);
+      rowsAfter.forEach((row, index) => expect(row).toBe(rowsBefore[index]));
+      expect(rowsAfter.map((row) => row.textContent?.match(/NVDA|AAPL/u)?.[0])).toEqual(symbolsBefore);
+    });
+
+    it("localizes edit close and validation outcomes by operation", async () => {
+      stubFetch(() => snapshot({ positions: [manualPosition()] }));
+      await mount();
+      await flush();
+
+      await openRowActions("NVDA");
+      await act(async () => { (await buttonByText("編輯")).click(); });
+      await act(async () => {
+        setInput("Edit Quantity", "0");
+        (await buttonByText("儲存")).click();
+      });
+      expect(host!.textContent).toContain("數量必須是非零數字");
+
+      await switchLocale("en");
+      expect(host!.textContent).toContain("Quantity must be a non-zero number");
+      await act(async () => { (await buttonByText("Cancel")).click(); });
+      await openRowActions("NVDA");
+      await act(async () => { (await buttonByText("Close")).click(); });
+      expect(document.body.textContent).toContain("Confirm close");
+      expect(document.body.textContent).toContain("soft close");
+    });
+
+    it("preserves open editor draft and focus across locale changes", async () => {
+      stubFetch(() => snapshot({ positions: [manualPosition()] }));
+      await mount();
+      await flush();
+      await openRowActions("NVDA");
+      await act(async () => { (await buttonByText("編輯")).click(); });
+
+      const notes = host!.querySelector<HTMLInputElement>('input[aria-label="Edit Notes"]')!;
+      setInput("Edit Notes", "USER DRAFT / 保留");
+      notes.dataset.identity = "same-editor";
+      notes.focus();
+      await switchLocale("en");
+
+      const after = host!.querySelector<HTMLInputElement>('input[aria-label="Edit Notes"]')!;
+      expect(after).toBe(notes);
+      expect(after.dataset.identity).toBe("same-editor");
+      expect(after.value).toBe("USER DRAFT / 保留");
+      expect(document.activeElement).toBe(after);
+      expect(host!.textContent).toContain("Save");
+    });
+
+    it("renders an in-flight mutation outcome in the active locale", async () => {
+      const pending = deferred<PortfolioApiResponse>();
+      stubFetch((_url, init) => init?.method === "PATCH"
+        ? pending.promise
+        : snapshot({ positions: [manualPosition()] }));
+      await mount();
+      await flush();
+      await openRowActions("NVDA");
+      await act(async () => { (await buttonByText("編輯")).click(); });
+      await act(async () => { (await buttonByText("儲存")).click(); });
+
+      await switchLocale("en");
+      await act(async () => {
+        pending.reject(Object.assign(new Error("RAW PATCH SECRET /home/user"), {
+          status: 503,
+          code: "holding_update_failed",
+          path: "/portfolio/positions/40?token=private",
+        }));
+        try { await pending.promise; } catch { /* expected */ }
+      });
+      await flush();
+
+      expect(host!.textContent).toContain("Could not update holding");
+      expect(host!.textContent).not.toContain("RAW PATCH SECRET");
+      expect(host!.textContent).not.toContain("/home/user");
+    });
+
+    it("preserves archived filters selection and scroll position", async () => {
+      const calls = stubFetch(() => snapshot({ positions: [manualPosition()] }));
+      await mount();
+      await flush();
+      const filter = host!.querySelector<HTMLInputElement>('input[aria-label="顯示已關閉持倉"]')!;
+      await act(async () => filter.click());
+      await flush();
+      const scrollContainer = document.querySelector<HTMLElement>(".main");
+      expect(scrollContainer).not.toBeNull();
+      expect(scrollContainer).not.toBe(host);
+      scrollContainer!.scrollTop = 180;
+      expect(host!.scrollTop).toBe(0);
+      filter.dataset.identity = "closed-filter";
+      filter.focus();
+      const requestCount = calls.length;
+
+      await switchLocale("en");
+      const after = host!.querySelector<HTMLInputElement>('input[aria-label="Show closed holdings"]')!;
+      expect(after).toBe(filter);
+      expect(after.checked).toBe(true);
+      expect(after.dataset.identity).toBe("closed-filter");
+      expect(document.activeElement).toBe(after);
+      expect(document.querySelector(".main")).toBe(scrollContainer);
+      expect(scrollContainer!.scrollTop).toBe(180);
+      expect(calls).toHaveLength(requestCount);
+    });
+
+    it("omits raw mutation details in normal mode", async () => {
+      stubFetch((_url, init) => {
+        if (init?.method === "POST") {
+          throw Object.assign(new Error("sqlite3 Traceback /home/private token=secret"), {
+            status: 500,
+            code: "holding_create_failed",
+            path: "/portfolio/positions?token=secret",
+          });
+        }
+        return snapshot();
+      });
+      await mount();
+      await flush();
+      setInput("Ticker", "TSM");
+      setInput("Quantity", "1");
+      await act(async () => { (await buttonByText("新增持倉")).click(); });
+      await flush();
+
+      expect(host!.textContent).toContain("新增持倉失敗");
+      expect(host!.textContent).not.toMatch(/sqlite3|Traceback|home\/private|token=secret/u);
+    });
 });

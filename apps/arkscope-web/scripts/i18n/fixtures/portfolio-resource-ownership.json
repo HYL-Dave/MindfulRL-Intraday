@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "directUiClaims": [
+    {"claimType":"direct_ui","id":"holdings.page_header.eyebrow","path":"holdings.surface.eyebrow","sourceFile":"src/Holdings.tsx","selector":"$.holdings.surface.eyebrow"}
+  ],
   "sourceClaims": [
     {"signature":"[\"src/Holdings.tsx\",\"jsx_attribute\",\"Edit Asset Class\"]","count":1,"claimType":"exact","path":"holdings.surface.inlineAssetAria"},
     {"signature":"[\"src/Holdings.tsx\",\"jsx_attribute\",\"Edit Avg Cost\"]","count":1,"claimType":"exact","path":"holdings.surface.inlineAverageCostAria"},

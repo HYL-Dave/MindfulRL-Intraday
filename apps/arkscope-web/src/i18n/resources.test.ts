@@ -21,6 +21,13 @@ interface PortfolioSourceClaim {
 interface PortfolioOwnershipContract {
   version: 2;
   sourceClaims: PortfolioSourceClaim[];
+  directUiClaims: Array<{
+    claimType: "direct_ui";
+    id: string;
+    path: string;
+    sourceFile: string;
+    selector: string;
+  }>;
   presenterClaims: Array<{
     claimType: "presenter";
     id: string;
@@ -685,12 +692,12 @@ describe("bundled i18n resources", () => {
       "../../scripts/i18n/fixtures/portfolio-resource-ownership.json",
     ), "utf8")) as PortfolioOwnershipContract;
     const expectedCounts = {
-      common: 56,
+      common: 57,
       shell: 37,
       settings: 679,
       research: 207,
       explore: 401,
-      portfolio: 373,
+      portfolio: 374,
     } as const;
 
     expect(resourceNamespaces).toEqual(Object.keys(expectedCounts));
@@ -707,12 +714,12 @@ describe("bundled i18n resources", () => {
           total += actual;
         }
       }
-      expect(total, `${locale}.total`).toBe(1753);
+      expect(total, `${locale}.total`).toBe(1755);
 
       const portfolio = flattenResource(localeResources.portfolio as ResourceTree);
       flattenedPortfolioByLocale.set(locale, portfolio);
       const expectedPortfolioFamilies = {
-        holdings: 68,
+        holdings: 69,
         activity: 142,
         capture: 68,
         accountOverview: 36,
@@ -757,6 +764,35 @@ describe("bundled i18n resources", () => {
     expect(portfolioResourceOwnership.sourceClaims.filter((entry) => entry.claimType === "excluded")
       .map((entry) => [entry.signature, entry.reason]))
       .toEqual([...reviewedExclusions]);
+
+    const expectedDirectUiClaims = [[
+      "holdings.page_header.eyebrow",
+      "holdings.surface.eyebrow",
+      "src/Holdings.tsx",
+      "$.holdings.surface.eyebrow",
+    ]];
+    const directUiClaims = portfolioResourceOwnership.directUiClaims ?? [];
+    expect(directUiClaims.map(({ claimType, id, path, sourceFile, selector }) => [
+      claimType,
+      id,
+      path,
+      sourceFile,
+      selector,
+    ])).toEqual(expectedDirectUiClaims.map(([id, path, sourceFile, selector]) => [
+      "direct_ui",
+      id,
+      path,
+      sourceFile,
+      selector,
+    ]));
+    for (const claim of directUiClaims) {
+      expect(claim.path.startsWith("holdings.")).toBe(true);
+      for (const [locale, portfolio] of flattenedPortfolioByLocale) {
+        expect(portfolio.has(claim.path), `${locale}.portfolio.${claim.path}`).toBe(true);
+      }
+      const consumer = readFileSync(resolve(import.meta.dirname, "../..", claim.sourceFile), "utf8");
+      expect(consumer, `${claim.sourceFile} -> ${claim.selector}`).toContain(claim.selector);
+    }
 
     const expectedPresenterClaims = [
       ["operation.holding_create", "holdings.operations.holdingCreate"],
@@ -864,15 +900,19 @@ describe("bundled i18n resources", () => {
     const presenterPaths = new Set(portfolioResourceOwnership.presenterClaims.map(({ path }) => path));
     expect(new Set(presenterPaths).size).toBe(expectedPresenterClaims.length);
     expect([...presenterPaths].filter((path) => sourcePathClaims.has(path))).toEqual([]);
+    const directUiPaths = new Set(directUiClaims.map(({ path }) => path));
+    expect(new Set(directUiPaths).size).toBe(expectedDirectUiClaims.length);
+    expect([...directUiPaths].filter((path) => sourcePathClaims.has(path) || presenterPaths.has(path))).toEqual([]);
     const allPortfolioPaths = [...flattenedPortfolioByLocale.get("zh-Hant")!.keys()].sort();
-    const claimedPaths = new Set([...sourcePathClaims.keys(), ...presenterPaths]);
+    const claimedPaths = new Set([...sourcePathClaims.keys(), ...presenterPaths, ...directUiPaths]);
+    expect(allPortfolioPaths.filter((path) => !claimedPaths.has(path))).toEqual([]);
     expect([...claimedPaths].sort()).toEqual(allPortfolioPaths);
-    expect(claimedPaths.size).toBe(373);
+    expect(claimedPaths.size).toBe(374);
 
     const familyClaimCounts = Object.fromEntries(["holdings", "activity", "capture", "accountOverview", "recentActivity", "tableLabels"]
       .map((family) => [family, [...claimedPaths].filter((path) => path.startsWith(`${family}.`)).length]));
     expect(familyClaimCounts).toEqual({
-      holdings: 68,
+      holdings: 69,
       activity: 142,
       capture: 68,
       accountOverview: 36,

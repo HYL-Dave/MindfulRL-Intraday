@@ -53,6 +53,7 @@ const portfolio = {
       "inlineTagsHint": "逗號分隔",
       "inlineSave": "儲存",
       "inlineCancel": "取消",
+      "eyebrow": "Holdings",
       "pageTitle": "持倉",
       "refresh": "重新整理",
       "overviewWarning": "帳戶總覽無法載入；持倉仍可使用",

@@ -9,6 +9,9 @@ const common = {
     unpin: "取消釘選",
     stop: "停止",
   },
+  labels: {
+    ticker: "Ticker",
+  },
   boundedProgress: {
     failureTitle: "工作失敗",
     failureDetail: "工作未完成，請依錯誤指示處理。",
