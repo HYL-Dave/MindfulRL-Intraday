@@ -1,16 +1,18 @@
 # ArkScope I18N-4/5 Remaining Surfaces Design
 
-> **Status: DESIGN AND IMPLEMENTATION PLAN REVIEW GREEN — IMPLEMENTATION
-> CLEARED**
+> **Status: LIVE COMPLETE — INDEPENDENT IMPLEMENTATION REVIEW GREEN;
+> FAST-FORWARD MERGED THROUGH `5f35e8b1`**
 >
 > Written against merged `master` at `93cda66831b7` on 2026-07-24. This
 > document is the bounded product, localization, retirement, and verification
 > authority for the combined I18N-4/5 remaining-surfaces unit. It replaces two
 > complete process cycles with one reviewed unit containing two mechanical
 > tranches. This design alone did not authorize product implementation; the
-> independently reviewed plan now does. Neither document authorizes the public
+> independently reviewed plan now does. The implementation passed its named
+> Tranche A checkpoint, final independent review, merged-tree verification,
+> and normal zh-Hant desktop smoke. Neither document authorizes the public
 > locale selector, formatter behavior changes, backend changes, or deferred SA
-> work.
+> work; those remaining locale-release decisions belong to I18N-6.
 > Independent full-document review returned GREEN with zero required changes.
 > Its two plan-level advisories are incorporated in the implementation plan:
 > Tranche A must exercise the worst credible Research composition in one

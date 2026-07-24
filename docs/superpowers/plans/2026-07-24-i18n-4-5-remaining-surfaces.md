@@ -9,7 +9,8 @@
 > `superpowers:verification-before-completion` before any passing or complete
 > claim. Track every step with the checkbox syntax below.
 
-> **Status: IMPLEMENTED — INDEPENDENT IMPLEMENTATION REVIEW PENDING**
+> **Status: LIVE COMPLETE — INDEPENDENT IMPLEMENTATION REVIEW GREEN;
+> FAST-FORWARD MERGED THROUGH `5f35e8b1`**
 >
 > The combined design received independent full-document GREEN against docs
 > tip `78f0d074f99f63a2a832c35352fdd6ba9f76192c`. Independent review has
@@ -1695,6 +1696,45 @@ required. Freeze product before requesting review.
 - `profile_settings.ui_locale` remains absent by immutable read-only query
   before and after the normal zh-Hant/runtime work. AppRecords UI and public
   locale selector remain absent. `git diff --check` is clean.
+
+### Merge closeout
+
+- Independent implementation review returned GREEN with zero findings after
+  a virgin two-stage comparison from base
+  `93cda66831b7202fd0dfafcc0d1c0604b07e94bd` through
+  `TRANCHE_A_TIP=34ddf08f5983d523bf1bfb00ce6b06a55a76bce0` to product
+  `20666d33f440fb06ec3e85ce2367674db3685ef9`. The reviewed branch/evidence
+  tip `5f35e8b15517ebc130df569cc90e3fe0abdd5aef` then fast-forwarded to
+  `master` with explicit user approval.
+- Fresh merged-tree verification passed B focused `15/232`, Shell CSS
+  `10/10`, full frontend `94/1048`, typecheck, production build, resource
+  contracts, scanner `36/20/0/20` twice with global `src/**` scope, no-PG
+  `ok:true` with `pg_attempts:[]`, protected-byte gates, the exact five-symbol
+  `api.ts` exception, AppRecords zero references, and `git diff --check`.
+  The 24-file A set collects `310` nodes at final because B adds five reviewed
+  scanner/foundation nodes to shared files; all `305` frozen A-owned nodes
+  remain present and green.
+- The normal desktop restarted from merged `master` in zh-Hant. Research,
+  Holdings, Portfolio Capture/sync records, and System / Health rendered
+  cleanly while source/generated content remained original. Immutable
+  read-only queries before and after the smoke found zero persisted
+  `profile_settings.ui_locale` rows. The public selector remains absent.
+- During that closeout smoke, a coordinate-driven harness click accidentally
+  invoked the existing review-mode apply action for capture run `307` at
+  `2026-07-24T15:35:06.321530+00:00`. Read-only impact analysis found exactly
+  ten canonical IBKR rows matching the valid latest run, with no add, remove,
+  close, quantity, average-cost, currency, identity, metadata, note, or manual
+  adjustment change. All `49` complete observations from runs `258` through
+  `307` carry the same ten-position set and the same non-market fields; the
+  operation only refreshed mark-to-market value, unrealized P&L, and sync
+  timestamps. No speculative rollback was attempted because the exact prior
+  manually accepted run is not persisted and run `307` is a valid complete
+  observation. Future production smoke must use semantic locators and must not
+  drive mutation controls with raw coordinates.
+- I18N-6 Release is now the sole next i18n unit. It owns the formatter
+  decisions recorded in `I18N_FORMATTER_INVENTORY.md`, the final app-wide
+  audit and bilingual matrix, controller-backed locale selector, and Design
+  Kit release synchronization.
 
 ---
 
