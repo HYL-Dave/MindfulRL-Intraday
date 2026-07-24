@@ -7,7 +7,8 @@
 > LIVE COMPLETE AT PRODUCT `be89a9b5`, FAST-FORWARD MERGED THROUGH
 > `eb4dee7b`; COMBINED I18N-4/5 LIVE COMPLETE AT TRANCHE A `34ddf08f` AND
 > PRODUCT `20666d33`, FAST-FORWARD MERGED THROUGH `5f35e8b1`; I18N-6 RELEASE
-> NEXT.**
+> DESIGN WRITTEN — INDEPENDENT REVIEW PENDING; PUBLIC SELECTOR REMAINS
+> ABSENT.**
 > This document chooses the app-wide locale authority, runtime localization
 > mechanism, migration sequence, public-switch gate, and verification contract.
 > Independent written review returned GREEN. I18N-0 subsequently passed its
@@ -25,7 +26,10 @@
 > and Portfolio/System work shipped as one bounded unit with separately
 > evidenced Tranche A and Tranche B checkpoints. Independent implementation
 > review returned GREEN with zero findings; merged-tree gates and the normal
-> zh-Hant desktop smoke are green. I18N-6 Release is the sole next i18n unit.
+> zh-Hant desktop smoke are green. The I18N-6 release design is written at
+> [`2026-07-25-i18n-6-release-design.md`](2026-07-25-i18n-6-release-design.md),
+> but product implementation still requires independent written review and a
+> separately reviewed RED-first plan.
 
 ## 1. Purpose and Authority
 
@@ -409,6 +413,13 @@ slice adds an explicit `UiLocale` input and tests both locales. Hard-coded
 formatter locales are inventoried before the public switch; changing them is a
 formatter contract change, not incidental copy cleanup.
 
+I18N-6 closes that open decision by freezing every inventoried owner for V1.
+`ui_locale` controls interface messages, counters, and unit copy, but does not
+change raw number/date/time/currency/percentage formatting. Browser-locale and
+fixed-locale behavior recorded by `I18N_FORMATTER_INVENTORY.md` remains
+accepted. Any future change is a separately reviewed owner-specific unit with
+named before/after output.
+
 ## 6. Backend-Origin Visible Copy
 
 ### 6.1 Classification
@@ -496,7 +507,7 @@ the foundation slice, but no incomplete public affordance is rendered.
 | I18N-3 Explore | Home, Watchlist, Universe, News, Ticker Detail, AI card, related shared display helpers | LIVE — product `be89a9b5`; merged/evidence `eb4dee7b` | absent |
 | [I18N-4/5 Remaining surfaces](2026-07-24-i18n-4-5-remaining-surfaces-design.md) | Tranche A: Research and shared model-selection copy; Tranche B: Portfolio/System/common residuals, AppRecords frontend retirement, formatter inventory, and scanner closure | LIVE — A `34ddf08f`; product `20666d33`; merged/evidence `5f35e8b1` | absent |
 | I18N-5 standalone cycle | absorbed into the two-tranche I18N-4/5 unit; no separate branch/review cycle | absorbed | absent |
-| I18N-6 Release | full coverage/audit, both-locale visual matrix, selector in Settings PageHeader, docs/Design Kit release sync | NEXT | visible after release gate |
+| [I18N-6 Release](2026-07-25-i18n-6-release-design.md) | full coverage/audit, both-locale visual matrix, selector in Settings PageHeader, formatter freeze, docs/Design Kit release sync | DESIGN WRITTEN — INDEPENDENT REVIEW PENDING | visible only after release gate |
 
 I18N-0 through I18N-2 are the first migration tranche and remain separately
 reviewed units; they are not one high-churn branch. Slice 5 followed that
@@ -565,6 +576,12 @@ Shell topbar space.
 The control is not a Settings registry entry. Registry entries require a real
 section anchor; the PageHeader is always visible in Settings, so search for
 `語言` need not fabricate an anchor or result.
+
+The selector is a Settings-local component. Its active-locale label uses
+normal Settings translation copy, while each autonym is stored once in its own
+locale resource and read with a fixed-locale translator. Product TypeScript
+does not hard-code `繁體中文`, and V1 does not add Simplified Chinese or any third
+locale.
 
 ### 8.3 Interaction
 
@@ -751,8 +768,10 @@ At decision adoption:
    the product gate passes.
 5. I18N-0, I18N-1, I18N-2 Settings, P2.8 Slice 5, I18N-3 Explore, and the
    combined I18N-4/5 remaining-surfaces unit are LIVE.
-6. I18N-6 Release is the sole next i18n unit. The public locale selector
-   remains absent until its independently reviewed release gates pass.
+6. The I18N-6 Release design is written and awaiting independent review. It
+   remains the sole next i18n unit, and the public locale selector remains
+   absent until its independently reviewed plan, implementation, and release
+   gates pass.
 
 Each implementation unit receives a separately reviewed plan. The bounded
 I18N-4/5 combination is an explicit exception for the final debt manifest plus
@@ -777,12 +796,16 @@ Locked decisions are:
 - existing tests remain Traditional-Chinese behavioral tests, with bounded
   English render smokes;
 - i18next owns messages, not domain formatter semantics;
+- V1 formatter owners remain byte-behavior compatible and independent of
+  `ui_locale`; any future binding is an owner-specific reviewed unit;
 - stable identifiers and user/source content are not translated;
 - backend product copy maps from stable IDs/codes, with raw diagnostics limited
   to Developer Mode;
 - no public selector before mechanically complete app coverage;
 - new work during migration is bilingual from birth;
 - one compact autonym selector in the Settings PageHeader after release gate;
+- selector writes route only through `useUiLocale().setLocale()`, while
+  production closeout leaves the first durable locale write to the user;
 - no registry entry, fake anchor, fourth Settings tab, or topbar language
   control;
 - fixed migration sequence with Shell + Settings first and Slice 5 immediately
