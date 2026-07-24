@@ -1,6 +1,7 @@
 # ArkScope I18N-4/5 Remaining Surfaces Design
 
-> **Status: WRITTEN — INDEPENDENT REVIEW PENDING**
+> **Status: DESIGN REVIEW GREEN — IMPLEMENTATION PLAN WRITTEN — INDEPENDENT
+> PLAN REVIEW PENDING**
 >
 > Written against merged `master` at `93cda66831b7` on 2026-07-24. This
 > document is the bounded product, localization, retirement, and verification
@@ -8,6 +9,13 @@
 > complete process cycles with one reviewed unit containing two mechanical
 > tranches. It does not authorize product implementation, the public locale
 > selector, formatter behavior changes, backend changes, or deferred SA work.
+> Independent full-document review returned GREEN with zero required changes.
+> Its two plan-level advisories are incorporated in the implementation plan:
+> Tranche A must exercise the worst credible Research composition in one
+> mounted viewport, and sidecar structured-outcome copy belongs to the
+> `system` namespace. The RED-first plan is
+> [`2026-07-24-i18n-4-5-remaining-surfaces.md`](../plans/2026-07-24-i18n-4-5-remaining-surfaces.md).
+> Product implementation remains blocked on independent review of that plan.
 
 ## 1. Purpose and Authority
 

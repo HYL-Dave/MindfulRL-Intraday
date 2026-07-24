@@ -1,0 +1,1394 @@
+# I18N-4/5 Remaining Surfaces Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use
+> `superpowers:using-git-worktrees` before Task 0,
+> `superpowers:subagent-driven-development` (recommended) or
+> `superpowers:executing-plans` to execute the cleared plan,
+> `superpowers:test-driven-development` for every behavior change,
+> `superpowers:requesting-code-review` before integration, and
+> `superpowers:verification-before-completion` before any passing or complete
+> claim. Track every step with the checkbox syntax below.
+
+> **Status: WRITTEN — INDEPENDENT PLAN REVIEW PENDING**
+>
+> The combined design received independent full-document GREEN against docs
+> tip `78f0d074f99f63a2a832c35352fdd6ba9f76192c`. Product implementation is
+> not authorized until independent review clears this plan and a docs-only
+> `PLAN_REVIEW_CLEARANCE_COMMIT` is recorded. The behavior A/B base remains
+> merged product `93cda66831b7202fd0dfafcc0d1c0604b07e94bd`; later docs commits do
+> not replace that anchor. Merge remains blocked on independent implementation
+> review GREEN and explicit user approval.
+
+**Goal:** Finish all remaining application-chrome localization in one bounded
+two-tranche unit: Tranche A migrates Research and shared model-selection copy;
+Tranche B migrates Portfolio, System, and shared residual chrome, retires the
+unreachable AppRecords frontend, inventories formatter ownership without
+changing it, and closes the visible-literal scanner to zero debt.
+
+**Architecture:** Keep `zh-Hant` and `en` resources static and namespace-typed.
+Present semantic IDs at read time through pure presenters that receive the
+owning namespace translator. Preserve source, user, generated, identifier, and
+measured values byte-for-byte. Freeze a fully green `TRANCHE_A_TIP` before any
+Tranche B product edit, then prove canonical `base -> A` and `A -> final`
+comparisons separately. The final scanner owns all `src/**`, has an empty debt
+manifest, and reports only the unchanged reviewed allowlist.
+
+**Tech stack:** React 18, TypeScript 5.9, i18next 26.3.6 selector API,
+react-i18next 17.0.10, Vitest 4/jsdom, the TypeScript-AST visible-literal
+scanner, Vite/Electron, pytest for the immutable backend baseline, and
+Playwright/CDP against isolated fake-backed frontend data.
+
+---
+
+## Design Authority
+
+1. Combined product/localization authority:
+   `docs/superpowers/specs/2026-07-24-i18n-4-5-remaining-surfaces-design.md`.
+2. Runtime locale mechanics and selector-last release:
+   `docs/superpowers/specs/2026-07-20-app-wide-i18n-decision.md`.
+3. Canonical vocabulary: `docs/design/ARKSCOPE_TERMINOLOGY.md`.
+4. Research workspace, Portfolio/Holdings, canonical Shell, and P2.8 Slice 5
+   authorities continue to own behavior and IA.
+5. Product A/B base: `93cda66831b7202fd0dfafcc0d1c0604b07e94bd`.
+
+If this plan conflicts with an authority above, stop and amend the authority
+before editing product code.
+
+---
+
+## Independent Spec-Review Resolution
+
+Independent review returned GREEN with zero required changes. Both plan-level
+advisories are binding here without changing test, resource, or scanner
+accounting:
+
+1. **Tranche A worst composition.** Every A runtime width must mount long
+   English chrome, an error banner, active progress, and long planted source
+   content in the same Research viewport. Separate happy-path captures do not
+   satisfy this gate.
+2. **Sidecar copy owner.** `App.tsx` owns the structured sidecar state and
+   `Dashboard.tsx` renders it, but all localized sidecar/System outcome copy is
+   owned by the `system` namespace. No Shell or Explore copy owner is added.
+
+---
+
+## Grounded Baseline
+
+Reproduce these values in the cleared worktree before any product edit:
+
+| Surface | Baseline at `93cda668` |
+| --- | ---: |
+| Frontend tests | `90 files / 944 nodes` |
+| Backend collect | `4621` |
+| Scanner candidates | `703` |
+| Scanner current signatures | `656` |
+| Scanner debt signatures | `637` |
+| Scanner allowlist entries | `20` |
+| Migrated scopes | `39` |
+| Debt manifest ceiling | `637 signatures / 668 occurrences` |
+| Current source debt | `636 signatures / 667 occurrences` |
+| Resources per locale | Common `32`, Shell `37`, Settings `702`, Research `5`, Explore `401` |
+| Public locale selector | absent |
+
+The one-signature difference between manifest ceiling and source is the stale
+`api.ts` presenter-return record documented by I18N-2 Decision 65. Do not
+interpret the debt manifest as current-source truth.
+
+### Baseline scanner partition
+
+| Owner | Signatures | Occurrences |
+| --- | ---: | ---: |
+| Tranche A Research | `204` | `216` |
+| Tranche A shared model copy | `26` | `26` |
+| Tranche B reachable Portfolio/System/common | `374` | `393` |
+| AppRecords unreachable frontend | `30` | `30` |
+| `api.ts` current/stale adjudication | `3` | `3` |
+| **Manifest ceiling** | **`637`** | **`668`** |
+
+Scanner hardening must additionally expose exactly 22 current English
+table-column labels. Any other discovery is a stop-and-amend.
+
+### Tranche A focused seed suite
+
+Exactly `21 files / 263 nodes`:
+
+```text
+src/i18n/visibleLiteralScanner.test.ts                 10
+src/i18n/resources.test.ts                             13
+src/i18n/foundationBoundaries.test.ts                  10
+src/modelPicker.test.ts                                 8
+src/modelRoutingUx.test.ts                              7
+src/researchErrors.test.tsx                             7
+src/researchReducer.test.ts                            72
+src/researchSelection.test.ts                          12
+src/ResearchHistoryDrawer.test.tsx                     10
+src/ResearchWorkspace.test.tsx                         14
+src/ResearchPersonalizationContext.test.tsx            12
+src/ResearchPendingBubble.test.ts                       1
+src/researchRunReplay.test.ts                           3
+src/researchModels.test.ts                              7
+src/ProviderSection.test.ts                             8
+src/ModelRoutingSection.test.ts                        20
+src/SettingsModelRouting.test.ts                       14
+src/settings/settingsBackendCopy.test.ts               12
+src/shell/researchWork.test.tsx                        13
+src/ResearchRuntimeSection.test.ts                      5
+src/ResearchShellNavigation.test.tsx                    5
+                                                       ---
+                                                       263
+```
+
+### Tranche B focused seed suite at `TRANCHE_A_TIP`
+
+Exactly `14 files / 172 nodes` after A's scanner/resource evolution:
+
+```text
+src/i18n/visibleLiteralScanner.test.ts                 14
+src/i18n/resources.test.ts                             14
+src/i18n/foundationBoundaries.test.ts                  10
+src/Holdings.test.tsx                                  26
+src/PortfolioActivity.test.tsx                         16
+src/PortfolioCapturePanel.test.tsx                     25
+src/PortfolioAccountOverview.test.tsx                  10
+src/PortfolioRecentActivity.test.tsx                    3
+src/AppShell.test.tsx                                  15
+src/ui/DataTable.test.tsx                               6
+src/ui/overlays.test.tsx                               14
+src/MarkdownView.test.ts                                8
+src/SettingsPostPgExitStorage.test.ts                   8
+src/PortfolioCaptureCss.test.ts                         3
+                                                       ---
+                                                       172
+```
+
+Collection drift is a stop condition. Do not silently revise either suite or
+hide a removed assertion behind net growth.
+
+---
+
+## Locked Implementation Decisions
+
+1. One branch, one plan, one independent implementation review, and one merge
+   contain two hard product checkpoints. Tranche B product edits may start only
+   after a clean, fully green `TRANCHE_A_TIP` has been committed and recorded as
+   a full 40-character hash.
+2. Independent review compares `93cda668 -> TRANCHE_A_TIP` and
+   `TRANCHE_A_TIP -> final` separately. B may not mask A regressions with final
+   net counts.
+3. After the A checkpoint, B may not modify A-owned product paths. A discovered
+   cross-tranche correction requires stop-and-amend and a replacement
+   `TRANCHE_A_TIP` with refreshed evidence.
+4. Only application chrome localizes. Source content, user input, generated
+   prose, evidence, thread titles, ticker/provider/model IDs, raw metric values,
+   and persisted semantic IDs remain original.
+5. Existing rendered zh-Hant chrome moves byte-for-byte unless this plan names
+   a correction. The only visible replacement authorized here is the Holdings
+   example placeholder `NVDA -> Ticker`; real ticker values are untouched.
+6. Resources use static typed selector keys only. Dynamic key construction,
+   lazy loading, Suspense, locale-derived React keys, and runtime source values
+   in resources are forbidden.
+7. The future locale selector remains absent. `ui_locale` does not enter any
+   prompt or trigger translation, refetch, replay, or remount.
+8. Locale switching may issue only the controller's locale-preference PUT. It
+   preserves mounted node identity, draft/input state, focus, drawer/dialog
+   state, scroll position in the practical anchored sense, active work, and
+   translated/source results. Data-request counts do not increase.
+9. Shared model display copy moves to `common`; Settings duplicate leaves are
+   removed. Decision 37 remains stronger, not weaker: `id`, `baseLabel`, and
+   `compatibility` stay structural, and production code never reverse-parses a
+   decorated model label.
+10. `researchErrors.ts` and Portfolio/System outcomes use semantic IDs and
+    structured facts. Presenters read no localized or backend English message
+    to infer meaning. If a typed discriminator is missing, stop and amend; do
+    not parse `.message`.
+11. Normal UI never renders arbitrary `Error.message`, `error_detail`, SQL,
+    traceback, path, token, or exception text. Developer Mode may render only
+    reviewed stable code/status/route facts; unproven detail is omitted.
+12. Sidecar structured outcome state is stored by `App.tsx`, rendered by
+    `Dashboard.tsx`, and localized exclusively from the `system` namespace.
+13. AppRecords frontend retirement is one dedicated commit. It removes only
+    the unreachable component and exactly five dead client exports. Backend,
+    offline storage, migrations, and archive capabilities remain byte-identical.
+14. Scanner hardening is RED-first and recognizes direct `header` values plus
+    the reviewed static tuple-column shape. It must not classify machine IDs,
+    transport args, reason operands, or reducer comparison operands as copy.
+15. Final scanner policy is stronger than CLI success: debt manifest empty,
+    migrated scopes exactly `src/**`, allowlist byte-identical, candidates equal
+    summed allowlist occurrences, and signatures equal allowlist entries.
+16. Formatter work is inventory-only. No date, time, number, currency,
+    percentage, timezone, or market-session output and no formatter test
+    expectation may change.
+17. Backend, data sources, backend tests, prompts, agents, desktop/native code,
+    extensions, package manifests/lockfiles, and all four CSS owners are
+    byte-identical by default.
+18. A measured bilingual overflow may reopen one existing CSS owner only via a
+    reviewed stop-and-amend with a named RED geometry node, exact hunk, and
+    rerun boundary matrix. Copy may wrap; it may not be truncated or shortened
+    to hide overflow.
+
+---
+
+## Exact Resource Ledger
+
+### Tranche A
+
+Research has `204` debt signatures, of which two completion-state operands are
+scanner false positives. Add exactly `202` context-specific Research leaves to
+the existing five, producing `Research 207`. The one-leaf-per-true-signature
+rule is deliberate even where two existing zh-Hant literals have identical
+bytes: separate UI contexts keep independent English grammar and ownership
+instead of being coupled by accidental Chinese equality.
+
+Common adds exactly 24 shared model leaves:
+
+| Family | Leaves |
+| --- | ---: |
+| picker groups | `4` |
+| reason labels | `9` |
+| auth modes | `4` |
+| thinking modes | `5` |
+| compatibility grammatical contexts | `2` |
+| **Common additions** | **`24`** |
+
+The two compatibility contexts are a punctuation-free decorated-label suffix
+and a complete Settings notice. A presenter must not splice punctuation from
+the old decorated label or reverse-parse it.
+
+Settings removes exactly 23 now-duplicate model leaves: four groups, nine
+reasons, four auth modes, five thinking modes, and one legacy-mode label.
+Settings-only explanatory prose stays in Settings.
+
+The pre-Slice-5 Settings-origin inventory remains historically `612`, but its
+physical ownership becomes `589` leaves in Settings plus the exact 23 moved
+model leaves in Common. The Settings `models` subtree falls from `91` to `68`.
+The replacement resource node asserts all three values; no test name may keep
+claiming that all 612 leaves still reside in Settings.
+
+Tranche A resource target per locale:
+
+| Namespace | Base | A delta | A target |
+| --- | ---: | ---: | ---: |
+| Common | `32` | `+24` | `56` |
+| Shell | `37` | `0` | `37` |
+| Settings | `702` | `-23` | `679` |
+| Research | `5` | `+202` | `207` |
+| Explore | `401` | `0` | `401` |
+| **Total** | **`1177`** | **`+203`** | **`1380`** |
+
+### Tranche B and final
+
+Common adds exactly five leaves: DataTable action heading, row-action ARIA
+template, ConfirmDialog default cancel, Markdown blocked-image fallback, and
+generic `Ticker` placeholder.
+
+Portfolio adds exactly 373 leaves:
+
+| Family | Derivation | Leaves |
+| --- | --- | ---: |
+| Holdings | `68 debt - NVDA placeholder + count plural pair` | `68` |
+| Activity | `143 debt - 2 broker_day_gap operands + one plural` | `142` |
+| Capture | `67 debt + one review-change plural` | `68` |
+| Account Overview | existing semantic chrome | `36` |
+| Recent Activity | `36 debt + one field-count plural` | `37` |
+| scanner-missed table labels | exact inventory below | `22` |
+| **Portfolio** |  | **`373`** |
+
+Capture's executions/fees summary uses one neutral two-count sentence, not a
+four-way plural cross product. System adds exactly 20 leaves, one per Dashboard
+debt signature. Sidecar error copy is part of those System leaves.
+
+Final resource target per locale:
+
+| Namespace | Final leaves |
+| --- | ---: |
+| Common | `61` |
+| Shell | `37` |
+| Settings | `679` |
+| Research | `207` |
+| Explore | `401` |
+| Portfolio | `373` |
+| System | `20` |
+| **Total** | **`1778`** |
+
+Both new namespaces are statically imported by `resources.ts`. `zh-Hant` and
+`en` key sets are identical and all leaves are non-empty.
+
+---
+
+## Scanner-Hardening Inventory
+
+The RED scanner fixtures must expose exactly these 22 values that current
+policy misses. They become resource values in B; until then the A checkpoint
+debt manifest owns them.
+
+| # | Owner | Current static label |
+| ---: | --- | --- |
+| 1 | Holdings | `Account` |
+| 2 | Holdings | `Symbol` |
+| 3 | Holdings | `Asset` |
+| 4 | Holdings | `Qty` |
+| 5 | Holdings | `Currency` |
+| 6 | Holdings | `Avg Cost` |
+| 7 | Holdings | `Market Value` |
+| 8 | Holdings | `Notes` |
+| 9 | Holdings | `Status` |
+| 10 | Capture | `Avg Cost` |
+| 11 | Capture | `Market Value` |
+| 12 | Capture | `Unrealized P&L` |
+| 13 | Account Overview | `Capture Run` |
+| 14 | Account Overview | `Base Currency` |
+| 15 | account-value tuple | `Net Liquidation` |
+| 16 | account-value tuple | `Total Cash` |
+| 17 | account-value tuple | `Settled Cash` |
+| 18 | account-value tuple | `Gross Position Value` |
+| 19 | account-value tuple | `Buying Power` |
+| 20 | account-value tuple | `Available Funds` |
+| 21 | account-value tuple | `Initial Margin` |
+| 22 | account-value tuple | `Maintenance Margin` |
+
+The nested Holdings `Unrealized P&L` is already current scanner debt and is not
+one of the 22 additions. Professional English labels above may remain the same
+bytes in `zh-Hant`; moving them into resources is still required.
+
+Reviewed false-positive operands that policy must classify without allowlist
+growth:
+
+- two `sendCalibrationMessage` transport arguments;
+- four model-picker reason-code comparison operands;
+- two `broker_day_gap` comparison operands; and
+- Research `running`/`complete` completion-state operands.
+
+---
+
+## Exact Test-Node Ledger
+
+### Base to `TRANCHE_A_TIP`: raw `+44/-2`
+
+| Test file | Add | Remove | Contract |
+| --- | ---: | ---: | --- |
+| `i18n/visibleLiteralScanner.test.ts` | `4` | `0` | header, tuple, model operand, Research state fixtures |
+| `i18n/resources.test.ts` | `3` | `2` | generic inventory + shared owner + historical-origin inventory |
+| `modelRoutingUx.test.ts` | `1` | `0` | all shared semantic IDs resolve in both locales |
+| `i18n/researchPresentation.test.ts` | `10` | `0` | new pure presenter contract |
+| `ResearchWorkspace.test.tsx` | `8` | `0` | bilingual mounted workspace and state preservation |
+| `ResearchHistoryDrawer.test.tsx` | `6` | `0` | filters, mutations, in-flight and source title behavior |
+| `ResearchEvidenceDrawer.test.tsx` | `7` | `0` | new Evidence mounted suite |
+| `ResearchRunProgress.test.tsx` | `5` | `0` | new progress mounted suite |
+| **A** | **`44`** | **`2`** | net `+42` |
+
+The two removed nodes are exactly:
+
+```text
+contains exactly 702 Settings 32 Common 5 Research and 401 Explore leaves per locale
+contains exactly 612 pre-Slice-5 Settings leaves per locale
+```
+
+They are replaced by generic reviewed namespace and Settings-origin inventory
+nodes. The latter requires current pre-Slice-5 Settings leaves `589`, model
+subtree `68`, and the exact 23 leaves moved to Common to reconcile to the
+historical `612`; it does not leave a stale count in a test ID. No semantic
+coverage disappears. Full frontend closes at `93 files / 986 nodes`; A focused
+closes at `24 files / 305 nodes`.
+
+Required new A node IDs:
+
+```text
+visible literal scanner > detects direct DataTable header properties including ASCII-only copy
+visible literal scanner > detects tuple-backed static column labels without treating tuple IDs as copy
+visible literal scanner > ignores reviewed model reason operands while retaining visible reason presenters
+visible literal scanner > ignores Research completion-state operands while retaining visible status labels
+bundled i18n resources > contains the reviewed remaining-surface namespace inventory in both locales
+bundled i18n resources > moves shared model chrome to one Common owner without Settings duplicates
+bundled i18n resources > preserves the reviewed pre-Slice-5 Settings-origin inventory across the Common move
+Models terminology > resolves every shared model group reason auth mode thinking mode and compatibility context in both locales
+research presentation > maps selection provenance and provider quota chrome in both locales
+research presentation > maps run and history statuses without translating stable IDs
+research presentation > maps Evidence token and timing labels without changing values
+research presentation > maps empty response disconnect and progress outcomes from semantic IDs
+research presentation > maps suggested prompts in both locales before they become drafts
+research presentation > keeps Provider model effort run and error identifiers original
+research presentation > preserves unknown stable values instead of collapsing them
+research presentation > uses only static Research resource selectors
+research presentation > renders no raw resource key for every closed presenter branch
+research presentation > keeps source work and generated content outside the presenter
+Research workspace > renders the complete English Research workspace around original source content
+Research workspace > switches locale without remounting the workspace or resetting thread draft focus or drawers
+Research workspace > localizes unselected suggestions and freezes the selected draft across locale changes
+Research workspace > preserves transcript tool model effort and generated answer bytes
+Research workspace > renders late stream outcomes in the current locale without replaying the request
+Research workspace > uses structured thread not-found facts instead of parsing Error.message
+Research workspace > keeps active progress and error chrome localized in one mounted workspace
+Research workspace > keeps model selection metadata and no decorated-label reverse parsing
+Research history drawer > localizes filters statuses and actions in both locales
+Research history drawer > renders structured 404 and 409 outcomes without parsing messages
+Research history drawer > preserves search draft focus and selected thread across locale changes
+Research history drawer > renders an in-flight rename result in the current locale
+Research history drawer > preserves source thread titles exactly
+Research history drawer > omits arbitrary diagnostics in normal mode
+Research Evidence drawer > localizes headings token statistics and timing labels in both locales
+Research Evidence drawer > preserves source trace evidence and context bytes
+Research Evidence drawer > preserves disclosure scroll and focus across locale changes
+Research Evidence drawer > retains the existing Developer diagnostic boundary
+Research Evidence drawer > keeps unknown stable identifiers distinguishable
+Research Evidence drawer > renders partial Evidence without claiming completeness
+Research Evidence drawer > updates shared model and personalization labels reactively
+Research run progress > maps every bounded run status in both locales
+Research run progress > preserves exact progress and token values
+Research run progress > renders semantic failure facts without raw detail
+Research run progress > preserves node identity while locale changes
+Research run progress > keeps the completion destination contract unchanged
+```
+
+### `TRANCHE_A_TIP` to final: raw `+60/-0`
+
+| Test file | Add | Remove | Contract |
+| --- | ---: | ---: | --- |
+| `i18n/visibleLiteralScanner.test.ts` | `4` | `0` | B operands + durable zero-debt closure |
+| `i18n/portfolioPresentation.test.ts` | `12` | `0` | new pure Portfolio presenter |
+| `Holdings.test.tsx` | `8` | `0` | mounted bilingual holdings behavior |
+| `PortfolioActivity.test.tsx` | `7` | `0` | activity/filter/detail behavior |
+| `PortfolioCapturePanel.test.tsx` | `7` | `0` | semantic outcomes and polling races |
+| `PortfolioAccountOverview.test.tsx` | `5` | `0` | account values/table headers |
+| `PortfolioRecentActivity.test.tsx` | `4` | `0` | recent activity states |
+| `AppShell.test.tsx` | `5` | `0` | System sidecar state and locale switching |
+| `ui/DataTable.test.tsx` | `3` | `0` | heading/ARIA/source preservation |
+| `ui/overlays.test.tsx` | `2` | `0` | default/caller-owned cancel behavior |
+| `MarkdownView.test.ts` | `2` | `0` | fallback localization/source preservation |
+| `i18n/foundationBoundaries.test.ts` | `1` | `0` | global scope and exact final arithmetic |
+| **B** | **`60`** | **`0`** | net `+60` |
+
+Full final frontend is `94 files / 1046 nodes`; B focused is
+`15 files / 232 nodes`. Base-to-final raw accounting is `+104/-2`, net `+102`.
+
+Required B node IDs:
+
+```text
+visible literal scanner > ignores calibration transport operands while retaining visible calibration copy
+visible literal scanner > ignores broker day-gap comparison operands while retaining activity labels
+visible literal scanner > requires empty debt global src scope and exact allowlist arithmetic
+visible literal scanner > keeps real presenter returns visible after machine-operand narrowing
+portfolio presentation > maps every Portfolio operation outcome in both locales
+portfolio presentation > maps validation and empty states without parsing backend text
+portfolio presentation > exposes only reviewed safe ApiError fields in Developer Mode
+portfolio presentation > omits arbitrary error details in normal mode
+portfolio presentation > maps activity field IDs to local labels
+portfolio presentation > keeps unknown stable IDs visible and distinguishable
+portfolio presentation > selects reviewed one and other count copy
+portfolio presentation > renders late outcomes in the active locale
+portfolio presentation > preserves source user and measured values
+portfolio presentation > uses only static Portfolio resource selectors
+portfolio presentation > covers both locales for every closed operation branch
+portfolio presentation > never returns a raw resource key
+Holdings > renders complete holdings chrome in both locales
+Holdings > replaces only the example ticker placeholder and preserves real symbols
+Holdings > localizes table headers without changing sorting or row identity
+Holdings > localizes edit close and validation outcomes by operation
+Holdings > preserves open editor draft and focus across locale changes
+Holdings > renders an in-flight mutation outcome in the active locale
+Holdings > preserves archived filters selection and scroll position
+Holdings > omits raw mutation details in normal mode
+Portfolio activity > renders filters statuses and expanded rows in both locales
+Portfolio activity > maps activity field IDs without printing schema names
+Portfolio activity > preserves execution commission and source values
+Portfolio activity > localizes count grammar without changing pagination
+Portfolio activity > preserves expansion filters focus and scroll across locale changes
+Portfolio activity > renders late load outcomes in the active locale
+Portfolio activity > omits raw details in normal mode
+Portfolio capture > renders schedule run and review chrome in both locales
+Portfolio capture > preserves a poll issue published while settings save is pending without raw detail
+Portfolio capture > retries initial status failure on idle cadence with semantic copy
+Portfolio capture > announces a terminal start outcome only once without raw detail
+Portfolio capture > keeps terminal and settings race ordering unchanged
+Portfolio capture > preserves dirty controls and focus across locale changes
+Portfolio capture > renders late polling outcomes in the active locale
+Portfolio account overview > renders account and value headers in both locales
+Portfolio account overview > preserves account currency and measured values
+Portfolio account overview > localizes loading empty partial and error states
+Portfolio account overview > preserves selected account across locale changes
+Portfolio account overview > omits raw diagnostics in normal mode
+Portfolio recent activity > renders recent activity chrome in both locales
+Portfolio recent activity > localizes count grammar without changing rows
+Portfolio recent activity > preserves source values and identifiers
+Portfolio recent activity > preserves state across locale changes
+App shell > stores sidecar failures as structured System outcomes without raw Error.message
+App shell > renders System sidecar copy from the system namespace in both locales
+App shell > shows only reviewed sidecar facts in Developer Mode
+App shell > preserves the active view focus and status state across locale changes
+App shell > issues only the locale preference PUT while System copy changes
+DataTable > localizes the action heading without changing columns or cells
+DataTable > localizes the row action accessible name with source values intact
+DataTable > reacts to locale changes without remounting rows
+overlays > localizes the built-in ConfirmDialog cancel label
+overlays > preserves caller-owned labels focus and keyboard behavior across locale changes
+MarkdownView > localizes blocked-image fallback chrome
+MarkdownView > preserves Markdown source and rendered source text across locale changes
+i18n foundation boundaries > closes remaining localization with global src scope and exact empty-debt arithmetic
+```
+
+All pre-existing tests not named for removal retain their node IDs. Assertions
+may evolve only where this plan explicitly changes the contract.
+
+---
+
+## File Map
+
+### Tranche A product and resources
+
+**Modify**
+
+- `apps/arkscope-web/src/Research.tsx`
+- `apps/arkscope-web/src/ResearchHistoryDrawer.tsx`
+- `apps/arkscope-web/src/ResearchEvidenceDrawer.tsx`
+- `apps/arkscope-web/src/ResearchRunProgress.tsx`
+- `apps/arkscope-web/src/researchErrors.ts`
+- `apps/arkscope-web/src/researchSelection.ts`
+- `apps/arkscope-web/src/researchReducer.ts`
+- `apps/arkscope-web/src/modelRoutingUx.ts`
+- `apps/arkscope-web/src/modelPicker.ts`
+- `apps/arkscope-web/src/settings/ModelRoutingSection.tsx`
+- `apps/arkscope-web/src/settings/ProviderSection.tsx`
+- `apps/arkscope-web/src/settings/settingsBackendCopy.ts`
+- `apps/arkscope-web/src/i18n/resources.ts`
+- `apps/arkscope-web/src/i18n/resources/en/common.ts`
+- `apps/arkscope-web/src/i18n/resources/en/settings.ts`
+- `apps/arkscope-web/src/i18n/resources/en/research.ts`
+- `apps/arkscope-web/src/i18n/resources/zh-Hant/common.ts`
+- `apps/arkscope-web/src/i18n/resources/zh-Hant/settings.ts`
+- `apps/arkscope-web/src/i18n/resources/zh-Hant/research.ts`
+
+**Create**
+
+- `apps/arkscope-web/src/i18n/researchPresentation.ts`
+- `apps/arkscope-web/src/i18n/researchPresentation.test.ts`
+- `apps/arkscope-web/src/ResearchEvidenceDrawer.test.tsx`
+- `apps/arkscope-web/src/ResearchRunProgress.test.tsx`
+- `apps/arkscope-web/scripts/i18n/fixtures/table-headers.tsx.txt`
+- `apps/arkscope-web/scripts/i18n/fixtures/tuple-columns.tsx.txt`
+- `apps/arkscope-web/scripts/i18n/fixtures/machine-operands.tsx.txt`
+
+**Modify tests/tooling**
+
+- `apps/arkscope-web/src/i18n/visibleLiteralScanner.test.ts`
+- `apps/arkscope-web/src/i18n/resources.test.ts`
+- `apps/arkscope-web/src/modelRoutingUx.test.ts`
+- `apps/arkscope-web/src/modelPicker.test.ts`
+- every existing A focused test only as its owning contract requires
+- `apps/arkscope-web/scripts/i18n/visible-literal-scanner.mjs`
+- `apps/arkscope-web/scripts/i18n/visible-literal-debt.json`
+- `apps/arkscope-web/scripts/i18n/migrated-scopes.json`
+
+### Tranche B product and resources
+
+**Modify**
+
+- `apps/arkscope-web/src/Holdings.tsx`
+- `apps/arkscope-web/src/PortfolioActivity.tsx`
+- `apps/arkscope-web/src/PortfolioCapturePanel.tsx`
+- `apps/arkscope-web/src/PortfolioAccountOverview.tsx`
+- `apps/arkscope-web/src/PortfolioRecentActivity.tsx`
+- `apps/arkscope-web/src/Dashboard.tsx`
+- `apps/arkscope-web/src/App.tsx`, only the three reviewed seams
+- `apps/arkscope-web/src/ui/DataTable.tsx`
+- `apps/arkscope-web/src/ui/ConfirmDialog.tsx`
+- `apps/arkscope-web/src/MarkdownView.tsx`
+- `apps/arkscope-web/src/i18n/resources.ts`
+- `apps/arkscope-web/src/i18n/resources/en/common.ts`
+- `apps/arkscope-web/src/i18n/resources/zh-Hant/common.ts`
+
+**Create**
+
+- `apps/arkscope-web/src/i18n/portfolioPresentation.ts`
+- `apps/arkscope-web/src/i18n/portfolioPresentation.test.ts`
+- `apps/arkscope-web/src/i18n/systemPresentation.ts`
+- `apps/arkscope-web/src/i18n/resources/en/portfolio.ts`
+- `apps/arkscope-web/src/i18n/resources/zh-Hant/portfolio.ts`
+- `apps/arkscope-web/src/i18n/resources/en/system.ts`
+- `apps/arkscope-web/src/i18n/resources/zh-Hant/system.ts`
+- `apps/arkscope-web/scripts/i18n/fixtures/portfolio-machine-operands.tsx.txt`
+- `docs/design/I18N_FORMATTER_INVENTORY.md`
+
+**Dedicated deletion commit**
+
+- Delete `apps/arkscope-web/src/settings/legacy/AppRecordsSection.tsx`.
+- Modify `apps/arkscope-web/src/api.ts` only to remove:
+  `AppRecordsTablePreview`, `AppRecordsMigrationPreview`,
+  `AppRecordsMigrationResult`, `previewAppRecordsMigration`, and
+  `applyAppRecordsMigration`.
+
+**Modify tests/tooling**
+
+- all B focused tests named above
+- `apps/arkscope-web/src/i18n/visibleLiteralScanner.test.ts`
+- `apps/arkscope-web/src/i18n/foundationBoundaries.test.ts`
+- `apps/arkscope-web/scripts/i18n/visible-literal-scanner.mjs`
+- `apps/arkscope-web/scripts/i18n/visible-literal-debt.json`
+- `apps/arkscope-web/scripts/i18n/migrated-scopes.json`
+
+No other product path is owned. Discovering another reachable remaining
+surface is a stop-and-amend.
+
+---
+
+## Protected Boundaries
+
+Compare all protected paths to product base `93cda668`, not the docs tip.
+
+1. Root `src/`, `data_sources/`, and `tests/` are byte-identical.
+2. Research prompts, agent/provider backend code, DTOs, and schemas are
+   byte-identical.
+3. `apps/arkscope-desktop/` and `extensions/` are byte-identical.
+4. Root and app `package.json`, `package-lock.json`, and desktop package files
+   are byte-identical.
+5. `styles.css`, `shell/shell.css`, `ui/primitives.css`, and
+   `settings/settings.css` are byte-identical unless a reviewed overflow
+   deviation explicitly replaces this gate for one file.
+6. `api.ts` differs only by the exact five AppRecords export removals.
+7. Tranche B may not change any frozen Tranche A product owner.
+8. The public selector remains absent and production `ui_locale` remains
+   untouched by verification.
+
+---
+
+## Task 0: Plan Clearance, Worktree, and Baseline Reproduction
+
+**Files:** docs only until the plan is independently cleared.
+
+- [ ] **Step 1: Incorporate independent plan-review findings without product edits**
+
+  Update this plan's review-resolution section, exact ledgers, and status. A
+  finding that changes product scope, scanner arithmetic, resource counts, or
+  test-node accounting requires re-review rather than an informal note.
+
+- [ ] **Step 2: Record the clearance commit**
+
+  Commit the docs-only cleared plan and record its full hash as
+  `PLAN_REVIEW_CLEARANCE_COMMIT`. Product implementation starts from that docs
+  commit, while behavioral A/B remains anchored to `93cda668`.
+
+- [ ] **Step 3: Create the isolated implementation worktree**
+
+  Use `superpowers:using-git-worktrees` and create branch
+  `codex/i18n-4-5-remaining-surfaces` from the clearance commit. Do not edit
+  the main worktree. Mount the same existing root `node_modules` into any
+  virgin archive used for comparison; do not run dependency installation that
+  changes lockfiles.
+
+- [ ] **Step 4: Reproduce exact baselines from a clean tree**
+
+  Run:
+
+  ```bash
+  cd apps/arkscope-web
+  npx vitest list
+  npm test
+  npm run typecheck
+  npm run build
+  npm run check:i18n-literals
+  npm run check:i18n-literals
+  cd ../..
+  pytest --collect-only -q
+  git diff --check
+  ```
+
+  Require frontend `90/944`, backend collect `4621`, scanner
+  `703/656/637/20` twice with byte-identical output, 39 scopes, and the exact
+  A focused `21/263`. Record SHA-256 of scanner output, debt, allowlist, scopes,
+  and sorted frontend node list. Build may emit only the existing chunk-size
+  warning.
+
+- [ ] **Step 5: Reconcile source and debt inventories**
+
+  Prove the ceiling partition `230+374+30+3=637`, source `636/667`, A
+  `230/242`, and the exact 22 scanner-missed values. Any drift stops work.
+
+- [ ] **Step 6: Capture protected-byte baselines**
+
+  Hash or archive the exact protected groups above. Confirm the product
+  selector is absent and a read-only production query still finds no
+  `profile_settings.ui_locale`. Do not write production data.
+
+- [ ] **Step 7: Commit Task 0 evidence docs only**
+
+  ```bash
+  git add docs/superpowers/plans/2026-07-24-i18n-4-5-remaining-surfaces.md
+  git commit -m "docs: ground remaining i18n implementation"
+  ```
+
+---
+
+## Task 1: RED Scanner Hardening and Shared Model/Resource Authority
+
+**Files:** scanner fixtures/tool/tests/manifests, resources, model owner,
+mechanical Settings consumers, and their tests.
+
+- [ ] **Step 1: Add scanner RED fixtures first**
+
+  Add the four A scanner nodes. Require direct `header` and reviewed static
+  tuple columns to be detected; require model reason and Research completion
+  operands to be ignored while visible presenter returns remain detected.
+  Run only `visibleLiteralScanner.test.ts`; all four new nodes must fail against
+  the old scanner for the reviewed reasons.
+
+- [ ] **Step 2: Implement the narrow AST coverage**
+
+  Add `header` to visible property handling and recognize only the audited
+  tuple-column form. Do not generalize all tuple strings. Add explicit
+  classification for the six A machine operands. Require exactly 22 new
+  current candidates and no other discovery.
+
+- [ ] **Step 3: Put the 22 B labels into interim debt**
+
+  Add the exact 22 signatures to the A checkpoint debt ceiling while removing
+  all 230 A-owned signatures as they migrate. Do not touch the allowlist.
+
+- [ ] **Step 4: Add resource and model-owner RED assertions**
+
+  Replace the old exact-count node with the generic inventory node and add the
+  shared-owner node. Strengthen `modelRoutingUx.test.ts` to require every group,
+  reason, auth mode, thinking mode, and compatibility context in both locales.
+  Strengthen `modelPicker.test.ts` in place so ID/baseLabel/compatibility remain
+  structural and decorated-label parsing is impossible.
+
+- [ ] **Step 5: Move model copy to Common**
+
+  Add exactly 24 Common leaves, remove exactly 23 Settings duplicates, and
+  evolve `modelRoutingUx.ts`/`modelPicker.ts` to return semantic structure plus
+  namespace-typed display. Settings and Research pass a reactive Common
+  translator. Preserve current zh-Hant and I18N-2 English bytes exactly.
+
+- [ ] **Step 6: Add Research resource skeleton**
+
+  Add the 202 reviewed Research leaves in both locales. No source value,
+  generated text, dynamic identifier, or formatter output belongs in the
+  resources. Require A resource counts `56/37/679/207/401`.
+
+- [ ] **Step 7: Run focused gates and commit**
+
+  Run scanner, resource, model-picker, model-routing, Settings routing/provider,
+  and typecheck tests. Require no allowlist change and no backend/CSS/package
+  diff.
+
+  ```bash
+  git add apps/arkscope-web/src/i18n apps/arkscope-web/src/modelPicker.ts \
+    apps/arkscope-web/src/modelPicker.test.ts \
+    apps/arkscope-web/src/modelRoutingUx.ts \
+    apps/arkscope-web/src/modelRoutingUx.test.ts \
+    apps/arkscope-web/src/settings apps/arkscope-web/scripts/i18n
+  git commit -m "feat: establish remaining i18n authorities"
+  ```
+
+---
+
+## Task 2: RED Research Semantic Presentation
+
+**Files:** `i18n/researchPresentation.ts`, `researchErrors.ts`,
+`researchSelection.ts`, `researchReducer.ts`, and corresponding tests.
+
+- [ ] **Step 1: Add the ten pure-presenter RED nodes**
+
+  Cover both locales, all closed semantic branches, unknown stable IDs, no raw
+  resource keys, no source/generated content, and unchanged identifiers and
+  metric values. Presenter functions receive a Research-typed translator; no
+  singleton lookup is allowed.
+
+- [ ] **Step 2: Evolve Research error tests in place**
+
+  Keep existing error-node IDs. Change expected title/detail/action output to
+  translator-backed values, preserve navigation targets and `preservePartial`,
+  and prove no `.message` parsing. Developer detail retains only its already
+  reviewed sanitized boundary; this unit does not broaden it.
+
+- [ ] **Step 3: Implement semantic presenters**
+
+  Move status, selection, quota, provenance, suggested-prompt, empty-response,
+  disconnect, and progress chrome behind exhaustive typed switches. Keep
+  Research work, transcript content, tool payloads, and generated answer text
+  outside the presenter.
+
+- [ ] **Step 4: Store semantic outcomes, not localized text**
+
+  Catch/reducer paths keep code/operation/structured facts. Late asynchronous
+  completion is rendered in the then-current locale. Do not change reducer
+  sequencing, replay, run IDs, persistence, or Provider behavior.
+
+- [ ] **Step 5: Verify and commit**
+
+  Run the new presenter suite plus existing `researchErrors`, reducer,
+  selection, replay, model, and shell-work tests. Typecheck must prove namespace
+  translators cannot be crossed.
+
+  ```bash
+  git add apps/arkscope-web/src/i18n/researchPresentation.ts \
+    apps/arkscope-web/src/i18n/researchPresentation.test.ts \
+    apps/arkscope-web/src/researchErrors.ts \
+    apps/arkscope-web/src/researchErrors.test.tsx \
+    apps/arkscope-web/src/researchSelection.ts \
+    apps/arkscope-web/src/researchSelection.test.ts \
+    apps/arkscope-web/src/researchReducer.ts \
+    apps/arkscope-web/src/researchReducer.test.ts
+  git commit -m "feat: localize Research semantic outcomes"
+  ```
+
+---
+
+## Task 3: RED Research Surfaces and Freeze `TRANCHE_A_TIP`
+
+**Files:** four Research surfaces, mounted tests, A scanner/resource evidence,
+and this plan ledger.
+
+- [ ] **Step 1: Add all mounted Research RED nodes**
+
+  Add the exact eight Workspace, six History, seven Evidence, and five Progress
+  node IDs in the ledger. First prove English chrome is not wired while source
+  text, drafts, and generated output remain unchanged.
+
+- [ ] **Step 2: Wire reactive namespace subscriptions**
+
+  Each surface uses reactive `research` and, where needed, `common` hooks and
+  passes namespace-typed translators to pure presenters. Do not read the
+  i18next singleton inside a presenter. Every memoized display value includes
+  translator/locale dependencies.
+
+- [ ] **Step 3: Preserve live state across locale changes**
+
+  Prove no locale-keyed remount, no data refetch, and no run replay. Seed a
+  draft and node marker, focus a control, open History/Evidence, set a practical
+  scroll anchor, and keep active progress. Change locale through the controller
+  test seam and require the same nodes/state/focus while chrome changes.
+
+- [ ] **Step 4: Preserve source and generated bytes**
+
+  Plant thread titles, evidence, tool payloads, prompt draft, and generated
+  answer text in both languages and mixed text. Require exact byte preservation
+  before/after locale switching. Suggested prompts localize only before user
+  selection; once copied into the draft, they become user content and freeze.
+
+- [ ] **Step 5: Run A focused/full/static gates**
+
+  Require A focused `24/305`, full frontend `93/986`, typecheck/build, resource
+  target `56/37/679/207/401`, and scanner exactly:
+
+  ```text
+  candidates             483
+  current signatures     448
+  manifest debt          429
+  allowlist               20
+  manifest occurrences   448
+  migrated scopes         48
+  ```
+
+  Run scanner twice and hash output/debt/allowlist/scopes. The allowlist must be
+  byte-identical to base.
+
+- [ ] **Step 6: Run the A bilingual worst-composition matrix**
+
+  In an isolated fake-backed app, run `zh-Hant` and `en` at `1440x900`,
+  `960x768`, and `390x844`. At every width mount one Research composition that
+  simultaneously contains:
+
+  - the longest reviewed English workspace/history/evidence chrome;
+  - an error banner;
+  - active run progress;
+  - long planted source/evidence/generated content; and
+  - an open History or Evidence drawer where the viewport permits it.
+
+  Also exercise locale switching during draft and in-flight work. Record
+  viewport, bar/panel dimensions, request counts, focused node, source hashes,
+  and screenshot path. Require zero document overflow, clipping, overlap,
+  truncation, replay, or source mutation. Separate happy-path screenshots do
+  not satisfy this advisory.
+
+- [ ] **Step 7: Commit the A product checkpoint**
+
+  Commit all A product/tests/manifests. Then record the resulting full hash as
+  `TRANCHE_A_TIP`; it must descend from `93cda668`.
+
+  ```bash
+  git add apps/arkscope-web/src apps/arkscope-web/scripts/i18n
+  git commit -m "feat: complete I18N-4 Research tranche"
+  ```
+
+- [ ] **Step 8: Record A evidence without changing A product bytes**
+
+  Add the full hash and all A evidence to this plan, commit docs only, and run
+  `git diff TRANCHE_A_TIP --` on every A product owner to prove the evidence
+  commit changed no product byte.
+
+  ```bash
+  git add docs/superpowers/plans/2026-07-24-i18n-4-5-remaining-surfaces.md
+  git commit -m "docs: record I18N-4 tranche checkpoint"
+  ```
+
+From this point onward, any B edit to an A product owner is a stop condition.
+
+---
+
+## Task 4: RED Portfolio Resources and Semantic Presenter
+
+**Files:** Portfolio resources, `i18n/portfolioPresentation.ts`, tests, and B
+scanner fixture/test evolution.
+
+- [ ] **Step 1: Add B scanner RED nodes**
+
+  Add the four named nodes for calibration transport operands,
+  `broker_day_gap`, final empty-debt arithmetic, and retained visible presenter
+  detection. Do not weaken the A fixtures or alter A checkpoint evidence.
+
+- [ ] **Step 2: Add the twelve presenter RED nodes**
+
+  Cover every closed Portfolio operation/state, both locales, list/count
+  grammar, unknown stable IDs, schema-field display mapping, late outcomes,
+  normal privacy, bounded Developer facts, source preservation, static keys,
+  and zero raw key output.
+
+- [ ] **Step 3: Add Portfolio resources**
+
+  Create both `portfolio.ts` files with exactly 373 non-empty leaves and
+  identical key sets. Preserve all unnamed zh-Hant bytes. Add the five Common
+  leaves only when their owning primitive/placeholder is wired in Tasks 5-7.
+
+- [ ] **Step 4: Implement the pure presenter**
+
+  Use exhaustive switches over semantic operation/state/field IDs. Read
+  structured `ApiError` fields, never `.message`. Preserve source/user values,
+  stable IDs, and numbers. Unknown IDs remain distinguishable without exposing
+  schema field names as normal labels.
+
+- [ ] **Step 5: Verify and commit**
+
+  Run presenter, scanner, resource, and typecheck tests. Resources may be
+  temporarily unused but must remain fully typed and static.
+
+  ```bash
+  git add apps/arkscope-web/src/i18n apps/arkscope-web/scripts/i18n
+  git commit -m "feat: establish Portfolio localization boundary"
+  ```
+
+---
+
+## Task 5: RED Holdings and Portfolio Activity
+
+**Files:** `Holdings.tsx`, `PortfolioActivity.tsx`, and their tests.
+
+- [ ] **Step 1: Add the eight Holdings and seven Activity RED nodes**
+
+  Exercise complete bilingual chrome, table headers, operations, filters,
+  expanded rows, count grammar, in-flight outcomes, locale-state preservation,
+  source values, and normal-mode privacy.
+
+- [ ] **Step 2: Migrate Holdings chrome**
+
+  Subscribe reactively to `portfolio` and `common`. Replace only the static
+  example placeholder `NVDA` with Common `Ticker`; never rewrite real symbols.
+  Preserve sort/filter/row keys, editor ownership, archived behavior, and all
+  formatter output.
+
+- [ ] **Step 3: Migrate Activity chrome**
+
+  Present field/state/operation IDs through the Portfolio owner. Keep
+  execution, commission, currency, run, timestamp, and source values original.
+  Classify both `broker_day_gap` machine operands without changing their logic.
+
+- [ ] **Step 4: Prove locale-switch continuity**
+
+  Seed an open Holdings editor and expanded Activity row with filters and a
+  scroll anchor. Switch locale and require same node identity, draft, focus,
+  expansion, filters, and no data request delta.
+
+- [ ] **Step 5: Verify and commit**
+
+  Run both mounted suites, presenter/resources/scanner, typecheck, and the
+  protected formatter expectations. No CSS change is allowed here.
+
+  ```bash
+  git add apps/arkscope-web/src/Holdings.tsx \
+    apps/arkscope-web/src/Holdings.test.tsx \
+    apps/arkscope-web/src/PortfolioActivity.tsx \
+    apps/arkscope-web/src/PortfolioActivity.test.tsx
+  git commit -m "feat: localize Holdings and Portfolio activity"
+  ```
+
+---
+
+## Task 6: RED Capture, Account Overview, and Recent Activity
+
+**Files:** three Portfolio surfaces and their tests.
+
+- [ ] **Step 1: Add the seven, five, and four RED nodes**
+
+  Cover bilingual chrome, scanner-missed headers, count grammar, dirty state,
+  active polling, race ordering, in-flight locale changes, source values, and
+  normal-mode privacy.
+
+- [ ] **Step 2: Evolve existing raw-detail nodes in place**
+
+  Keep these existing node IDs while replacing raw-detail expectations with
+  semantic localized copy and explicit absence of the planted detail:
+
+  ```text
+  preserves_a_poll_issue_published_while_settings_save_is_pending
+  retries_initial_status_failure_on_the_idle_cadence
+  announces_a_terminal_start_detail_only_once
+  shows_next_due_and_recent_runs_without_raw_account_id
+  ```
+
+  The old strings `transient poll failure`, `sidecar warming up`, and
+  `IBKR provider configuration is incomplete` must not appear in normal mode.
+  Existing poll/save/start race sequencing remains unchanged.
+
+- [ ] **Step 3: Migrate Capture**
+
+  Store semantic outcomes and facts, render through the Portfolio presenter,
+  and keep polling cadence, dirty controls, current-run ordering, terminal
+  announcement dedupe, and Provider behavior intact.
+
+- [ ] **Step 4: Migrate Account and Recent Activity**
+
+  Wire the exact direct/tuple header inventory to resources. Preserve account,
+  currency, measured values, row order, and time/number formatter output.
+
+- [ ] **Step 5: Verify and commit**
+
+  Run all three suites plus Portfolio presenter/resources/scanner/typecheck.
+  Require no formatter or CSS diff.
+
+  ```bash
+  git add apps/arkscope-web/src/PortfolioCapturePanel.tsx \
+    apps/arkscope-web/src/PortfolioCapturePanel.test.tsx \
+    apps/arkscope-web/src/PortfolioAccountOverview.tsx \
+    apps/arkscope-web/src/PortfolioAccountOverview.test.tsx \
+    apps/arkscope-web/src/PortfolioRecentActivity.tsx \
+    apps/arkscope-web/src/PortfolioRecentActivity.test.tsx
+  git commit -m "feat: localize Portfolio capture and account views"
+  ```
+
+---
+
+## Task 7: RED System and Common Residual Chrome
+
+**Files:** `App.tsx`, `Dashboard.tsx`, common primitives, System/Common
+resources, `i18n/systemPresentation.ts`, and owning tests.
+
+- [ ] **Step 1: Add System and common RED nodes**
+
+  Add five AppShell, three DataTable, two overlay, and two Markdown nodes. Plant
+  a hostile sidecar `Error.message` and prove App state contains none of it,
+  normal UI exposes none, and Developer Mode shows only reviewed safe facts.
+
+- [ ] **Step 2: Add System resources with explicit ownership**
+
+  Create exactly 20 leaves per locale under `system`. Sidecar loading/error/
+  retry/diagnostic chrome lives here even though `App.tsx` stores state and
+  `Dashboard.tsx` renders it. Do not put it in Shell, Explore, or Common.
+
+- [ ] **Step 3: Replace raw sidecar state**
+
+  Replace `{kind: "error", message: string}` with a structured safe outcome
+  containing only reviewed status/code/route facts. Unknown errors become a
+  generic semantic failure. Never retain raw `.message` in React state.
+
+- [ ] **Step 4: Migrate Dashboard**
+
+  Subscribe to `system`, present structured outcomes, and preserve health
+  polling, retry, navigation, Developer Mode ownership, and all measured values.
+  `System / Health` remains the canonical mixed label.
+
+- [ ] **Step 5: Migrate common primitive defaults**
+
+  Add exactly five Common leaves and wire DataTable, ConfirmDialog, Markdown,
+  and Holdings placeholder. Caller-supplied labels remain caller-owned;
+  Markdown source and DataTable cells never enter resources.
+
+- [ ] **Step 6: Prove locale-switch request boundary**
+
+  Locale change may issue the preference PUT only. Require same active view,
+  node identity, focus, status state, dialog state, table rows, and zero data
+  refetch. Late structured outcomes render in the active locale.
+
+- [ ] **Step 7: Verify and commit**
+
+  Run AppShell, common primitive, resource, scanner, typecheck, and no-PG smoke.
+  Require System `20`, Common `61`, and no App raw-message storage.
+
+  ```bash
+  git add apps/arkscope-web/src/App.tsx \
+    apps/arkscope-web/src/Dashboard.tsx \
+    apps/arkscope-web/src/AppShell.test.tsx \
+    apps/arkscope-web/src/ui \
+    apps/arkscope-web/src/MarkdownView.tsx \
+    apps/arkscope-web/src/MarkdownView.test.ts \
+    apps/arkscope-web/src/i18n
+  git commit -m "feat: localize System and residual common chrome"
+  ```
+
+---
+
+## Task 8: Retire AppRecords Frontend in One Commit
+
+**Files:** delete the legacy component; modify `api.ts` only for five symbols;
+close the named docs backlog.
+
+- [ ] **Step 1: Prove zero production consumers before deletion**
+
+  Use `rg` for `AppRecordsSection` and each of the five exports. Require the
+  component to have no production consumer and every export consumer to be
+  inside that component only. A real consumer is a stop condition.
+
+- [ ] **Step 2: Delete exactly the reviewed frontend surface**
+
+  Remove `AppRecordsSection.tsx`, its 30 debt signatures, and only the five
+  named `api.ts` symbols. Do not touch routes, backend storage, migration code,
+  archive tables, or offline tools.
+
+- [ ] **Step 3: Prove the exact API exception**
+
+  Diff `api.ts` against `93cda668`; require exactly three interface and two
+  wrapper removals, no other hunk. Run a zero-reference grep for all six names.
+
+- [ ] **Step 4: Close the old frontend backlog and commit alone**
+
+  Update only the standing backlog statement that says App Records panel full
+  removal is deferred. Commit product deletion and that narrow status sync in
+  one dedicated commit:
+
+  ```bash
+  git add apps/arkscope-web/src/api.ts \
+    apps/arkscope-web/src/settings/legacy/AppRecordsSection.tsx \
+    docs/design/PROJECT_PRIORITY_MAP.md
+  git commit -m "refactor: retire AppRecords frontend"
+  ```
+
+- [ ] **Step 5: Re-run frontend and backend byte gates**
+
+  Frontend compiles/tests without the exports. Backend App Records paths remain
+  byte-identical to base. No test node is removed by this commit.
+
+---
+
+## Task 9: Close Scanner Debt and Record Formatter Inventory
+
+**Files:** scanner tool/tests/manifests, foundation boundary, formatter inventory
+doc, and this plan evidence ledger.
+
+- [ ] **Step 1: Adjudicate the three API records**
+
+  Two current transport/presenter literals must either migrate or be correctly
+  reclassified by the reviewed scanner semantics; the one stale Decision 65
+  row is removed. Do not change remaining API transport behavior and do not add
+  an allowlist entry.
+
+- [ ] **Step 2: Empty the debt manifest**
+
+  Remove every migrated signature and set migrated scopes exactly to
+  `["src/**"]`. Require the scanner's durable assertions, not only CLI success:
+
+  ```text
+  candidateCount       36
+  signatureCount       20
+  debtSignatureCount    0
+  allowlistCount        20
+  candidateCount == sum(allowlist occurrence counts)
+  signatureCount == allowlist entry count
+  ```
+
+  The allowlist file remains byte-identical to base. Run twice and require
+  byte-identical output.
+
+- [ ] **Step 3: Add the global foundation pin**
+
+  Evolve the existing migrated-path contract in place and add the named final
+  arithmetic node. Require `src/**` and reject any narrower or extra scope.
+
+- [ ] **Step 4: Write the formatter inventory without changing formatters**
+
+  Create `docs/design/I18N_FORMATTER_INVENTORY.md` with columns for owner,
+  current behavior, locale dependency, consumers, and future decision owner.
+  At minimum inventory:
+
+  - `timeDisplay.formatSystemTimestamp` and `formatMarketTimestamp`;
+  - Research History's local `Intl.DateTimeFormat`;
+  - Evidence timestamps and numeric `toLocaleString`;
+  - Holdings `formatNum`/`formatMaybe`;
+  - Activity `formatNumber`/`formatAmount`/`formatUnknown`;
+  - Capture `formatLocalTime`/`formatReviewMetric`;
+  - Account Overview amount formatting;
+  - Recent Activity number formatting; and
+  - Dashboard `toLocaleTimeString`.
+
+  Record current outputs only. Any formatter code or test expectation diff is
+  a stop condition.
+
+- [ ] **Step 5: Verify final resource and scanner arithmetic**
+
+  Require seven namespaces and exact per-locale counts
+  `61/37/679/207/401/373/20`, total `1778`, equal key sets, no empty leaves,
+  no dynamic keys, scanner `36/20/0/20`, and one global scope.
+
+- [ ] **Step 6: Commit closure**
+
+  ```bash
+  git add apps/arkscope-web/scripts/i18n \
+    apps/arkscope-web/src/i18n/foundationBoundaries.test.ts \
+    apps/arkscope-web/src/i18n/visibleLiteralScanner.test.ts \
+    docs/design/I18N_FORMATTER_INVENTORY.md
+  git commit -m "test: close application localization debt"
+  ```
+
+---
+
+## Task 10: Canonical, Runtime, and Review-Ready Evidence
+
+**Files:** this plan evidence ledger only unless a reviewed stop-and-amend is
+required. Freeze product before requesting review.
+
+- [ ] **Step 1: Prove two exact frontend node comparisons**
+
+  In virgin archives with the same hoisted `node_modules`, list and sort test
+  nodes for base, `TRANCHE_A_TIP`, and final product tip. Require:
+
+  ```text
+  base -> A       +44/-2    90/944 -> 93/986
+  A -> final      +60/-0    93/986 -> 94/1046
+  base -> final  +104/-2    net +102
+  ```
+
+  The sole removal is the named resource-count node. Hash each full/add/remove
+  list. Any other removal/rename is a stop condition.
+
+- [ ] **Step 2: Run exact focused suites**
+
+  Require A focused `24/305` at `TRANCHE_A_TIP` and B focused `15/232` at
+  final. Also run final A focused unchanged against final to prove B did not
+  regress frozen A behavior.
+
+- [ ] **Step 3: Run canonical frontend gates**
+
+  ```bash
+  cd apps/arkscope-web
+  npm test
+  npm run typecheck
+  npm run build
+  npm run check:i18n-literals
+  npm run check:i18n-literals
+  cd ../..
+  python -m src.smoke.pg_unreachable_e2e
+  git diff --check
+  ```
+
+  Require final `94/1046`, scanner `36/20/0/20`, `src/**`, no-PG
+  `ok:true`/`pg_attempts:[]`, and only the existing build warning.
+
+- [ ] **Step 4: Prove protected bytes and exact exceptions**
+
+  Compare all protected groups to `93cda668`. Require all default groups
+  byte-identical, `api.ts` exactly the five-symbol deletion, no formatter code
+  or expectation diff, and no B diff in frozen A product owners. Hash the
+  scanner tool at A and final so final narrowing cannot erase A evidence.
+
+- [ ] **Step 5: Run Tranche B bilingual responsive matrix**
+
+  Use an isolated fake-backed sidecar/Vite/CDP environment, temporary DBs,
+  scheduler disabled, and no production profile or paid Provider. Run Holdings,
+  Portfolio Activity/Capture/Account/Recent, and Dashboard/System in both
+  locales at `1440x900`, `1024x768`, `961x768`, `960x768`, `959x768`, and
+  `390x844`.
+
+  Every surface must show its worst credible composition: longest English
+  chrome, full table/filter density, error banner, open menu/dialog or expanded
+  row, and dirty/active state where applicable. Require zero document overflow,
+  clipping, overlap, truncation, or source mutation. If any surface fails at
+  960, stop for a reviewed CSS deviation and rerun that surface at
+  `959/960/961` after repair.
+
+- [ ] **Step 6: Exercise locale-switch preservation and privacy**
+
+  Across A and B prove same node identity, draft/input/filter/expansion/dialog/
+  drawer state, focus, practical scroll anchor, active polling/run state, and
+  no data request delta except locale PUT. Late outcomes use the active locale.
+  Plant token, traceback, sqlite, path, IP, HTML, and long exception text;
+  normal mode shows none and Developer Mode shows only reviewed structured
+  facts.
+
+- [ ] **Step 7: Exercise AppRecords absence and selector absence**
+
+  Prove no reachable UI/import/API client symbol remains, backend/offline
+  capability is untouched, and no locale selector/placeholder appears.
+  Production `ui_locale` remains absent before and after normal zh-Hant smoke.
+
+- [ ] **Step 8: Inspect screenshots and clean isolated artifacts**
+
+  Record locale, viewport, surface, state, dimensions, request counts, focused
+  node, source hashes, and screenshot paths. Inspect every image. Stop all
+  processes, prove ports refuse connection, and remove temporary profiles, DBs,
+  source-bearing screenshots, and harness files.
+
+- [ ] **Step 9: Freeze product and commit evidence docs only**
+
+  Record `TRANCHE_A_TIP`, final product tip, all hashes/counts, runtime results,
+  and deviations in this plan. Commit docs only after product freeze:
+
+  ```bash
+  git add docs/superpowers/plans/2026-07-24-i18n-4-5-remaining-surfaces.md
+  git commit -m "docs: record remaining i18n verification"
+  ```
+
+  No product change after the frozen tip inherits independent review.
+
+---
+
+## Stop Conditions
+
+Stop and return to design/plan review if any of the following occurs:
+
+1. baseline debt does not reconcile to `230+374+30+3`, source is not
+   `636/667`, or scanner hardening discovers other than the exact 22 labels;
+2. test collection differs from base `90/944`, A `93/986`, final `94/1046`,
+   raw `+44/-2` then `+60/-0`, or either focused ledger;
+3. resource counts cannot close at A `56/37/679/207/401` and final
+   `61/37/679/207/401/373/20`;
+4. A scanner cannot close at `483/448/429/20` with 448 debt occurrences and 48
+   scopes, or final cannot close at `36/20/0/20` with `src/**`;
+5. a new allowlist entry appears necessary;
+6. Tranche B needs to edit a frozen A product owner;
+7. a reachable remaining surface lies outside the file map;
+8. semantic presentation requires parsing English `.message` or a missing
+   backend discriminator;
+9. backend, schema, DTO, prompt, Provider, data-source, desktop, extension,
+   package, or dependency changes appear necessary;
+10. model routing, eligibility, metadata, or decorated-label parsing behavior
+    changes;
+11. source/user/generated content or dynamic identifiers must enter resources;
+12. locale switching requires refetch, replay, remount, or state reset;
+13. AppRecords has a real production consumer or backend/offline capability
+    would be removed;
+14. a formatter output or formatter test expectation changes;
+15. unreviewed CSS is needed or copy must be truncated/shortened to fit;
+16. `App.tsx` requires a change beyond structured sidecar state, reviewed
+    capability wiring, or locale reactivity for that path;
+17. `api.ts` differs beyond the exact five dead AppRecords exports; or
+18. selector, SA extension, `/sa/feed`, Settings sanitizer, calibration refusal,
+    or another deferred backlog item becomes entangled.
+
+---
+
+## Post-Review Integration and Closeout
+
+Independent implementation review must return GREEN before integration. After
+explicit user approval:
+
+1. restore any protected main-worktree draft exactly;
+2. fast-forward merge `codex/i18n-4-5-remaining-surfaces` only;
+3. rerun merged-tree A focused `24/305`, B focused `15/232`, full `94/1046`,
+   typecheck, build, scanner `36/20/0/20`, no-PG, resource counts, protected
+   bytes, exact `api.ts` exception, and `git diff --check`;
+4. restart the normal desktop in zh-Hant and smoke Research, Holdings,
+   Portfolio Capture, and System without writing `profile_settings.ui_locale`;
+5. flip design/plan/app-wide decision/map status to LIVE COMPLETE and record
+   base/A/product/evidence/merge hashes;
+6. close the absorbed standalone I18N-5 and AppRecords frontend backlog;
+7. clean the feature worktree/branch after merged verification; and
+8. set I18N-6 Release as the sole NEXT i18n unit while keeping all unrelated
+   standing backlog entries visible.
+
+The public locale selector remains absent until I18N-6 independently passes its
+coverage and release gates.
