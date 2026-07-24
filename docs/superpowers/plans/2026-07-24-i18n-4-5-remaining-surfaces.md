@@ -173,7 +173,7 @@ file:
 ## Tranche A Checkpoint Evidence
 
 - `TRANCHE_A_TIP` is
-  `3d1abf393fc84adc009d7a526f41722018856054`; it descends from product base
+  `34ddf08f5983d523bf1bfb00ce6b06a55a76bce0`; it descends from product base
   `93cda66831b7202fd0dfafcc0d1c0604b07e94bd` and contains no Tranche B
   product edit.
 - The reviewed raw node ledger closes at `+45/-2`: A focused is exactly
@@ -195,8 +195,12 @@ file:
   cases passed geometry, identity, request-count, focus, source-byte, and
   cleanup checks. The planted source SHA-256 was
   `b50ae8f04b0b8503b1d2ac74251a715e268553b33e0c5a0738966ec02161b960`
-  in every case; evidence SHA-256 was
+  in every case; the pre-hardening evidence SHA-256 was
   `482a7c858c4d9b109be09611a66916eb686cc24b3f83c1c6a8a48e2f876c82e7`.
+  Every viewport now also compares all five rendered source fields and their
+  aggregate hash against independently planted canonical values, rather than
+  only comparing locales with each other. Refreshed evidence SHA-256 is
+  `b8948a0916ab1ddb5c818ba0dd9e5f7accb55bf379fbe2be266559f9bb0914b1`.
   Evidence remains under
   `/tmp/arkscope-i18n45-tranche-a-gate-20260724/`; isolated Vite `8454` and
   CDP `9254` were closed after the run.
@@ -207,7 +211,12 @@ file:
   all three English widths with no clipping, overlap, or horizontal overflow.
 - Fresh narrow spec review of the checkpoint manifests, boundary test, and CSS
   hunk returned GREEN with no findings. Earlier per-task spec and quality
-  reviews are closed; no open Tranche A finding remains.
+  reviews are closed. The subsequent base-to-A review found one locale-derived
+  React key, one insufficiently anchored runtime assertion, and mismatched
+  documented suite prefixes. The key now uses stable `group.id` with an
+  in-place node-identity assertion, the runtime gate is canonical-value
+  anchored, and the ledger below names the collected suite exactly. Full
+  frontend remained `93/987`; no node was added or removed by these fixes.
 
 ---
 
@@ -553,14 +562,14 @@ research presentation > preserves unknown stable values instead of collapsing th
 research presentation > uses only static Research resource selectors
 research presentation > renders no raw resource key for every closed presenter branch
 research presentation > keeps source work and generated content outside the presenter
-Research workspace > renders the complete English Research workspace around original source content
-Research workspace > switches locale without remounting the workspace or resetting thread draft focus or drawers
-Research workspace > localizes unselected suggestions and freezes the selected draft across locale changes
-Research workspace > preserves transcript tool model effort and generated answer bytes
-Research workspace > renders late stream outcomes in the current locale without replaying the request
-Research workspace > uses structured thread not-found facts instead of parsing Error.message
-Research workspace > keeps active progress and error chrome localized in one mounted workspace
-Research workspace > keeps model selection metadata and no decorated-label reverse parsing
+Research workspace contracts > renders the complete English Research workspace around original source content
+Research workspace contracts > switches locale without remounting the workspace or resetting thread draft focus or drawers
+Research workspace contracts > localizes unselected suggestions and freezes the selected draft across locale changes
+Research workspace contracts > preserves transcript tool model effort and generated answer bytes
+Research workspace contracts > renders late stream outcomes in the current locale without replaying the request
+Research workspace contracts > uses structured thread not-found facts instead of parsing Error.message
+Research workspace contracts > keeps active progress and error chrome localized in one mounted workspace
+Research workspace contracts > keeps model selection metadata and no decorated-label reverse parsing
 responsive application shell CSS > lets Research conversation titles wrap without truncating source content
 Research history drawer > localizes filters statuses and actions in both locales
 Research history drawer > renders structured 404 and 409 outcomes without parsing messages
