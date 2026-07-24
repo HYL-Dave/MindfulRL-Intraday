@@ -131,6 +131,26 @@ file:
 5. The other three CSS owners remain byte-identical. The `styles.css` gate is
    replaced only by the exact reviewed title hunk.
 
+### Runtime-reviewed deviation 2: Holdings fixed-English eyebrow ownership
+
+Task 5's mounted bilingual review exposed one visible PageHeader prop that the
+CJK scanner does not inventory: the pre-migration Holdings eyebrow is the
+English word `Holdings` in both locales. The locked unnamed-zh byte contract
+forbids silently changing that existing zh-Hant chrome to `持倉`, while leaving
+the value hardcoded would violate resource ownership.
+
+This deviation adds exactly one direct UI-owned Portfolio leaf,
+`holdings.surface.eyebrow`, whose value is byte-identical `Holdings` in both
+locales. The ownership fixture records it as a direct claim, distinct from
+source-signature and presenter claims. The existing complete-Holdings-chrome
+node evolves in place; no test node or scanner count changes.
+
+Consequently the Holdings family is `69`, Portfolio is `374`, and the final
+per-locale resource total is `1779`. This is a resource-ledger correction only:
+no IA, behavior, formatter, request, CSS, or terminology-authority change is
+allowed. Task 5 also installs the already-planned Common `Ticker` placeholder
+when its first consumer is wired; Task 7 installs the other four Common leaves.
+
 ---
 
 ## Task 0 Evidence
@@ -431,17 +451,17 @@ Common adds exactly five leaves: DataTable action heading, row-action ARIA
 template, ConfirmDialog default cancel, Markdown blocked-image fallback, and
 generic `Ticker` placeholder.
 
-Portfolio adds exactly 373 leaves:
+Portfolio adds exactly 374 leaves after runtime-reviewed deviation 2:
 
 | Family | Derivation | Leaves |
 | --- | --- | ---: |
-| Holdings | `68 debt - NVDA placeholder + count plural pair` | `68` |
+| Holdings | `68 debt - NVDA placeholder + count plural pair + fixed-English eyebrow` | `69` |
 | Activity | `143 debt - 2 broker_day_gap operands + one plural` | `142` |
 | Capture | `67 debt + one review-change plural` | `68` |
 | Account Overview | existing semantic chrome | `36` |
 | Recent Activity | `36 debt + one field-count plural` | `37` |
 | scanner-missed table labels | exact inventory below | `22` |
-| **Portfolio** |  | **`373`** |
+| **Portfolio** |  | **`374`** |
 
 Capture's executions/fees summary uses one neutral two-count sentence, not a
 four-way plural cross product. System adds exactly 20 leaves, one per Dashboard
@@ -456,9 +476,9 @@ Final resource target per locale:
 | Settings | `679` |
 | Research | `207` |
 | Explore | `401` |
-| Portfolio | `373` |
+| Portfolio | `374` |
 | System | `20` |
-| **Total** | **`1778`** |
+| **Total** | **`1779`** |
 
 Both new namespaces are statically imported by `resources.ts`. `zh-Hant` and
 `en` key sets are identical and all leaves are non-empty.
@@ -1098,7 +1118,7 @@ scanner fixture/test evolution.
 
 - [ ] **Step 3: Add Portfolio resources**
 
-  Create both `portfolio.ts` files with exactly 373 non-empty leaves and
+  Create both `portfolio.ts` files with exactly 374 non-empty leaves and
   identical key sets. Preserve all unnamed zh-Hant bytes. Add the five Common
   leaves only when their owning primitive/placeholder is wired in Tasks 5-7.
 
@@ -1135,6 +1155,9 @@ scanner fixture/test evolution.
 
   Subscribe reactively to `portfolio` and `common`. Replace only the static
   example placeholder `NVDA` with Common `Ticker`; never rewrite real symbols.
+  Install that one Common leaf here; Task 7 installs the remaining four Common
+  residual leaves. Preserve the fixed-English `Holdings` eyebrow through the
+  direct resource owner from runtime-reviewed deviation 2.
   Preserve sort/filter/row keys, editor ownership, archived behavior, and all
   formatter output.
 
@@ -1251,11 +1274,12 @@ resources, `i18n/systemPresentation.ts`, and owning tests.
   polling, retry, navigation, Developer Mode ownership, and all measured values.
   `System / Health` remains the canonical mixed label.
 
-- [ ] **Step 5: Migrate common primitive defaults**
+- [ ] **Step 5: Migrate remaining common primitive defaults**
 
-  Add exactly five Common leaves and wire DataTable, ConfirmDialog, Markdown,
-  and Holdings placeholder. Caller-supplied labels remain caller-owned;
-  Markdown source and DataTable cells never enter resources.
+  Add the remaining four Common leaves and wire DataTable, ConfirmDialog, and
+  Markdown. The Holdings `Ticker` placeholder leaf was installed with its first
+  consumer in Task 5. Caller-supplied labels remain caller-owned; Markdown
+  source and DataTable cells never enter resources.
 
 - [ ] **Step 6: Prove locale-switch request boundary**
 
@@ -1379,7 +1403,7 @@ doc, and this plan evidence ledger.
 - [ ] **Step 5: Verify final resource and scanner arithmetic**
 
   Require seven namespaces and exact per-locale counts
-  `61/37/679/207/401/373/20`, total `1778`, equal key sets, no empty leaves,
+  `61/37/679/207/401/374/20`, total `1779`, equal key sets, no empty leaves,
   no dynamic keys, scanner `36/20/0/20`, and one global scope.
 
 - [ ] **Step 6: Commit closure**
@@ -1504,7 +1528,7 @@ Stop and return to design/plan review if any of the following occurs:
    raw `+45/-2` then `+60/-0`, the separate A Shell CSS `9/9`, or either
    focused ledger;
 3. resource counts cannot close at A `56/37/679/207/401` and final
-   `61/37/679/207/401/373/20`;
+   `61/37/679/207/401/374/20`;
 4. A scanner cannot close at `483/448/429/20` with 448 debt occurrences and 48
    scopes, or final cannot close at `36/20/0/20` with `src/**`;
 5. a new allowlist entry appears necessary;
