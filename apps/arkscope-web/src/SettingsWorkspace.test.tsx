@@ -499,7 +499,7 @@ describe("Settings workspace", () => {
     expect(document.activeElement).toBe(tabWithText("AI and Models"));
   });
 
-  it("renders no locale selector or raw planted diagnostic in Settings PageHeader", async () => {
+  it("renders one locale selector and no raw planted diagnostic in Settings PageHeader", async () => {
     let rejectCatalog: ((reason: Error) => void) | null = null;
     mocks.getModelCatalog.mockImplementationOnce(() => new Promise((_, reject) => {
       rejectCatalog = reject;
@@ -509,8 +509,14 @@ describe("Settings workspace", () => {
 
     const pageHeader = host!.querySelector(".ui-page-header")!;
     expect(pageHeader.textContent).toContain("Settings");
-    expect(pageHeader.querySelector("select, [role='combobox']")).toBeNull();
-    expect(pageHeader.textContent).not.toMatch(/English|繁體中文|Language|語言/);
+    const selector = pageHeader.querySelector<HTMLSelectElement>(
+      'select[aria-label="Interface language"]',
+    )!;
+    expect(pageHeader.querySelectorAll("select")).toHaveLength(1);
+    expect(Array.from(selector.options).map((option) => option.textContent)).toEqual([
+      "繁體中文",
+      "English",
+    ]);
     expect(host!.textContent).toContain("Loading the model catalog...");
 
     await act(async () => {
@@ -545,12 +551,15 @@ describe("Settings workspace", () => {
       ]);
   });
 
-  it("omits_legacy_model_header_runtime_band_and_global_route_actions", async () => {
+  it("omits legacy model and runtime bands while keeping locale as the sole PageHeader action", async () => {
     await renderSettings();
 
     expect(host!.querySelectorAll("h1")).toHaveLength(1);
     expect(host!.querySelector(".settings-band")).toBeNull();
-    expect(host!.querySelector(".ui-page-header-actions")).toBeNull();
+    const pageHeaderActions = host!.querySelector(".ui-page-header-actions")!;
+    expect(pageHeaderActions.children).toHaveLength(1);
+    expect(pageHeaderActions.querySelector('[data-testid="locale-selector"]')).not.toBeNull();
+    expect(pageHeaderActions.querySelectorAll("button")).toHaveLength(0);
     const models = host!.querySelector('[data-settings-anchor="models"]')!;
     const transfer = models.querySelector("details");
     expect(transfer?.open).toBe(false);

@@ -54,6 +54,7 @@ import {
   ResearchRuntimeSection,
 } from "./settings/RuntimeLimitSections";
 import { SettingsDirectory } from "./settings/SettingsDirectory";
+import { LocaleSelector } from "./settings/LocaleSelector";
 import { SettingsSectionAnchor } from "./settings/SettingsSectionAnchor";
 import {
   CLEAR_SETTINGS_NAVIGATION_GUARD,
@@ -910,7 +911,10 @@ export function SettingsView({
 
   return (
     <main className="main settings-workspace" data-settings-overlay={String(shellOverlay)}>
-      <PageHeader title={t(($) => $.workspace.title)} />
+      <PageHeader
+        title={t(($) => $.workspace.title)}
+        actions={<LocaleSelector />}
+      />
 
       {routeOutcomePresentation?.tone === "error" ? (
         <p className="error-text">{routeOutcomePresentation.message}</p>

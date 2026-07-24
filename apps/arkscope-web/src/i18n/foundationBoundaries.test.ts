@@ -262,22 +262,36 @@ describe("I18N-0 foundation boundaries", () => {
       .toBe(report.candidateCount);
   });
 
-  it("keeps the public locale selector absent after Settings migration", () => {
-    const publicSurfacePaths = [
-      "src/App.tsx",
-      ...productionFiles("src/shell").map((path) => path.slice(projectRoot.length + 1)),
-      ...migratedSettingsFiles,
-    ];
-    const publicSurfaceSource = publicSurfacePaths.map(read).join("\n");
-    const source = [
-      publicSurfaceSource,
-      read("src/main.tsx"),
-      read("src/i18n/LocaleProvider.tsx"),
-    ].join("\n");
+  it("keeps the public locale selector scoped to Settings and controller-backed", () => {
+    const selectorOwnerPath = "src/settings/LocaleSelector.tsx";
+    const settingsMountPath = "src/Settings.tsx";
+    const selectorOwner = read(selectorOwnerPath);
+    const settingsMount = read(settingsMountPath);
+    const allProductionPaths = productionFiles("src")
+      .map((path) => path.slice(projectRoot.length + 1));
+    const selectorOwnerPaths = new Set([selectorOwnerPath, settingsMountPath]);
+    const forbiddenSelectorSource = allProductionPaths
+      .filter((path) => !selectorOwnerPaths.has(path))
+      .map(read)
+      .join("\n");
+    const forbiddenAutonymSource = allProductionPaths
+      .filter((path) => !path.startsWith("src/i18n/resources/"))
+      .map(read)
+      .join("\n");
 
-    expect(source).not.toMatch(/繁體中文|簡體中文|>\s*English\s*</);
-    expect(publicSurfaceSource).not.toMatch(
-      /(?:Locale|Language)Selector|(?:locale|language)-selector|changeLanguage\s*\(/,
+    expect(settingsMount).toContain(
+      'import { LocaleSelector } from "./settings/LocaleSelector"',
+    );
+    expect(settingsMount).toMatch(
+      /<PageHeader[\s\S]*actions=\{<LocaleSelector\s*\/>\}/,
+    );
+    expect(selectorOwner).toContain("useUiLocale()");
+    expect(selectorOwner).not.toMatch(
+      /changeLanguage\s*\(|getUiLocale|setUiLocale|localStorage/,
+    );
+    expect(forbiddenSelectorSource).not.toMatch(/(?:Locale|Language)Selector/);
+    expect(forbiddenAutonymSource).not.toMatch(
+      /繁體中文|簡體中文|>\s*English\s*</,
     );
     expect(SETTINGS_GROUPS.map((group) => group.id)).toEqual([
       "ai_models",

@@ -405,7 +405,7 @@ describe("Settings model route save gate", () => {
     expect(host.querySelector('[data-settings-anchor="macro_storage"]')).not.toBeNull();
   });
 
-  it("owns_save_in_models_and_import_export_in_a_closed_advanced_disclosure", async () => {
+  it("owns save and import export in Models while locale alone occupies PageHeader actions", async () => {
     host = document.createElement("div");
     document.body.append(host);
     root = createRoot(host);
@@ -427,7 +427,10 @@ describe("Settings model route save gate", () => {
     expect(transfer?.open).toBe(false);
     expect(Array.from(transfer?.querySelectorAll("button") ?? []).map((button) => button.textContent?.trim()))
       .toEqual(["從設定檔匯入", "匯出到設定檔"]);
-    expect(host.querySelector(".ui-page-header-actions")).toBeNull();
+    const pageHeaderActions = host.querySelector(".ui-page-header-actions")!;
+    expect(pageHeaderActions.children).toHaveLength(1);
+    expect(pageHeaderActions.querySelector('[data-testid="locale-selector"]')).not.toBeNull();
+    expect(pageHeaderActions.querySelectorAll("button")).toHaveLength(0);
 
     const research = host.querySelector('[data-testid="route-ai_research"]')!;
     await click(research.querySelector<HTMLButtonElement>(".model-custom-toggle")!);
