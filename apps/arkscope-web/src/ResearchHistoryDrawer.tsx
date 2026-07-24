@@ -15,8 +15,10 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
+  ApiError,
   deleteResearchThread,
   queryResearchThreads,
   updateResearchThread,
@@ -25,10 +27,11 @@ import {
   type ResearchThreadDTO,
   type ResearchThreadQueryParams,
 } from "./api";
+import { researchHistoryStatus } from "./i18n/researchPresentation";
 import { Button, IconButton } from "./ui/Button";
 import { ConfirmDialog } from "./ui/ConfirmDialog";
 import { Drawer } from "./ui/Drawer";
-import { StatusBadge, type CommonUiState } from "./ui/Status";
+import { StatusBadge } from "./ui/Status";
 
 const PAGE_LIMIT = 50;
 
@@ -40,6 +43,9 @@ interface HistoryFilters {
   runState: ResearchHistoryRunState;
   archived: ResearchHistoryArchiveMode;
 }
+
+type MutationFailure = "active_run_conflict" | "update_failed";
+type RenameFailure = MutationFailure | "empty_name";
 
 const INITIAL_FILTERS: HistoryFilters = {
   q: "",
@@ -128,27 +134,16 @@ function formatLocalTime(value: string): string {
   }).format(date);
 }
 
-function runStatus(status: ResearchThreadDTO["latest_run_status"]): {
-  state: CommonUiState;
-  label: string;
-} {
-  switch (status) {
-    case "queued": return { state: "running", label: "排程中" };
-    case "running": return { state: "running", label: "執行中" };
-    case "succeeded": return { state: "ready", label: "已完成" };
-    case "failed": return { state: "failed", label: "失敗" };
-    case "cancelled": return { state: "interrupted", label: "已取消" };
-    case "interrupted": return { state: "interrupted", label: "已中斷" };
-    default: return { state: "empty", label: "尚無執行" };
+function mutationFailure(error: unknown): MutationFailure {
+  if (
+    error instanceof ApiError
+    && error.status === 409
+    && error.path.startsWith("/research/threads/")
+    && (error.code === null || error.code === "active_run_conflict")
+  ) {
+    return "active_run_conflict";
   }
-}
-
-function mutationErrorMessage(error: unknown): string {
-  const detail = error instanceof Error ? error.message : String(error);
-  if (/returned 409\b/.test(detail)) {
-    return "仍有研究執行中，暫時無法封存或永久刪除。";
-  }
-  return "無法更新研究歷史，請稍後重試。";
+  return "update_failed";
 }
 
 export function ResearchHistoryDrawer({
@@ -162,6 +157,7 @@ export function ResearchHistoryDrawer({
   onThreadDeleted,
   returnFocusRef,
 }: ResearchHistoryDrawerProps) {
+  const { t: researchT } = useTranslation("research");
   const [filters, setFilters] = useState<HistoryFilters>(INITIAL_FILTERS);
   const [rows, setRows] = useState<ResearchThreadDTO[]>([]);
   const [total, setTotal] = useState(0);
@@ -169,12 +165,12 @@ export function ResearchHistoryDrawer({
   const [loading, setLoading] = useState(true);
   const [appending, setAppending] = useState(false);
   const [stale, setStale] = useState(false);
-  const [loadError, setLoadError] = useState<string | null>(null);
-  const [mutationError, setMutationError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState(false);
+  const [mutationError, setMutationError] = useState<MutationFailure | null>(null);
   const [mutationId, setMutationId] = useState<string | null>(null);
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameDraft, setRenameDraft] = useState("");
-  const [renameError, setRenameError] = useState<string | null>(null);
+  const [renameError, setRenameError] = useState<RenameFailure | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<ResearchThreadDTO | null>(null);
   const [deleteReturnFocus, setDeleteReturnFocus] = useState<HTMLButtonElement | null>(null);
   const [pendingFocusRequest, setPendingFocusRequest] = useState<{
@@ -238,7 +234,7 @@ export function ResearchHistoryDrawer({
       setAppending(false);
       setLoading(true);
     }
-    setLoadError(null);
+    setLoadError(false);
     try {
       const page = await queryResearchThreads(queryFor(requestedFilters, offset));
       if (sequence !== requestSequenceRef.current) return;
@@ -257,9 +253,9 @@ export function ResearchHistoryDrawer({
         initialRowsNotifiedRef.current = true;
         initialRowsCallbackRef.current(page.threads);
       }
-    } catch (error) {
+    } catch {
       if (sequence !== requestSequenceRef.current) return;
-      setLoadError(error instanceof Error ? error.message : String(error));
+      setLoadError(true);
       setStale(rowsRef.current.length > 0);
     } finally {
       if (sequence === requestSequenceRef.current) {
@@ -318,7 +314,7 @@ export function ResearchHistoryDrawer({
     if (renameMutationRef.current !== null) return;
     const title = renameDraft.trim();
     if (!title) {
-      setRenameError("名稱不可空白");
+      setRenameError("empty_name");
       return;
     }
     renameMutationRef.current = thread.id;
@@ -334,7 +330,7 @@ export function ResearchHistoryDrawer({
       await loadPage(filtersRef.current, 0, false);
       focusAfterRender(updated.id);
     } catch (error) {
-      setRenameError(mutationErrorMessage(error));
+      setRenameError(mutationFailure(error));
     } finally {
       if (renameMutationRef.current === thread.id) renameMutationRef.current = null;
       setMutationId(null);
@@ -354,7 +350,7 @@ export function ResearchHistoryDrawer({
       await loadPage(filtersRef.current, 0, false);
       focusAfterRender("refresh");
     } catch (error) {
-      setMutationError(mutationErrorMessage(error));
+      setMutationError(mutationFailure(error));
     } finally {
       setMutationId(null);
     }
@@ -374,7 +370,7 @@ export function ResearchHistoryDrawer({
       await loadPage(filtersRef.current, 0, false);
       focusAfterRender("refresh");
     } catch (error) {
-      setMutationError(mutationErrorMessage(error));
+      setMutationError(mutationFailure(error));
     } finally {
       setMutationId(null);
     }
@@ -391,12 +387,27 @@ export function ResearchHistoryDrawer({
 
   const hasMore = nextOffset < total;
   const statusLabel = `${rows.length} / ${total}`;
+  const mutationErrorLabel = mutationError === null
+    ? null
+    : mutationError === "active_run_conflict"
+      ? researchT(($) => $.history.activeMutationBlocked)
+      : researchT(($) => $.history.updateFailed);
+  const renameErrorLabel = renameError === null
+    ? null
+    : renameError === "empty_name"
+      ? researchT(($) => $.history.emptyName)
+      : renameError === "active_run_conflict"
+        ? researchT(($) => $.history.activeMutationBlocked)
+        : researchT(($) => $.history.updateFailed);
+  const deleteTargetTitle = deleteTarget?.title.trim()
+    ? deleteTarget.title
+    : researchT(($) => $.history.unnamedFallback);
 
   return (
     <>
       <Drawer
         open={open}
-        title="研究歷史"
+        title={researchT(($) => $.history.drawerTitle)}
         onClose={onClose}
         returnFocusRef={returnFocusRef}
         footer={(
@@ -412,86 +423,89 @@ export function ResearchHistoryDrawer({
                 disabled={loading}
                 onClick={() => void loadPage(filters, nextOffset, true)}
               >
-                載入更多
+                {researchT(($) => $.history.loadMore)}
               </Button>
             ) : null}
           </div>
         )}
       >
-        <section className="research-history" aria-label="研究歷史清單">
+        <section
+          className="research-history"
+          aria-label={researchT(($) => $.history.listAria)}
+        >
           <div className="research-history-toolbar">
             <div className="research-history-filters">
               <label className="research-history-search">
-                <span>搜尋</span>
+                <span>{researchT(($) => $.history.searchLabel)}</span>
                 <input
                   type="search"
-                  aria-label="搜尋歷史"
+                  aria-label={researchT(($) => $.history.searchAria)}
                   value={filters.q}
                   onChange={(event) => updateFilter("q", event.currentTarget.value)}
                 />
               </label>
               <label>
-                <span>Ticker</span>
+                <span>{researchT(($) => $.history.tickerLabel)}</span>
                 <input
-                  aria-label="Ticker"
+                  aria-label={researchT(($) => $.history.tickerFilterAria)}
                   value={filters.ticker}
                   onChange={(event) => updateFilter("ticker", event.currentTarget.value)}
                 />
               </label>
               <label>
-                <span>更新日期起日</span>
+                <span>{researchT(($) => $.history.updatedFromLabel)}</span>
                 <input
                   type="date"
-                  aria-label="更新日期起日"
+                  aria-label={researchT(($) => $.history.updatedFromAria)}
                   value={filters.updatedFrom}
                   onChange={(event) => updateFilter("updatedFrom", event.currentTarget.value)}
                 />
               </label>
               <label>
-                <span>更新日期迄日</span>
+                <span>{researchT(($) => $.history.updatedToLabel)}</span>
                 <input
                   type="date"
-                  aria-label="更新日期迄日"
+                  aria-label={researchT(($) => $.history.updatedToAria)}
                   value={filters.updatedThrough}
                   onChange={(event) => updateFilter("updatedThrough", event.currentTarget.value)}
                 />
               </label>
               <label>
-                <span>執行狀態</span>
+                <span>{researchT(($) => $.history.runStatusLabel)}</span>
                 <select
-                  aria-label="執行狀態"
+                  aria-label={researchT(($) => $.history.runStatusFilterAria)}
                   value={filters.runState}
                   onChange={(event) => updateFilter(
                     "runState",
                     event.currentTarget.value as ResearchHistoryRunState,
                   )}
                 >
-                  <option value="all">全部狀態</option>
-                  <option value="active">執行中</option>
-                  <option value="succeeded">已完成</option>
-                  <option value="failed">失敗</option>
-                  <option value="interrupted">已中斷</option>
-                  <option value="no_run">尚無執行</option>
+                  <option value="all">{researchT(($) => $.history.allStatuses)}</option>
+                  <option value="active">{researchT(($) => $.history.runningFilter)}</option>
+                  <option value="succeeded">{researchT(($) => $.history.completedFilter)}</option>
+                  <option value="failed">{researchT(($) => $.history.failedFilter)}</option>
+                  <option value="interrupted">{researchT(($) => $.history.interruptedFilter)}</option>
+                  <option value="no_run">{researchT(($) => $.history.noRunFilter)}</option>
                 </select>
               </label>
               <label>
-                <span>封存狀態</span>
+                <span>{researchT(($) => $.history.archiveStatusLabel)}</span>
                 <select
-                  aria-label="封存狀態"
+                  aria-label={researchT(($) => $.history.archiveFilterAria)}
                   value={filters.archived}
                   onChange={(event) => updateFilter(
                     "archived",
                     event.currentTarget.value as ResearchHistoryArchiveMode,
                   )}
                 >
-                  <option value="current">目前對話</option>
-                  <option value="archived">已封存</option>
+                  <option value="current">{researchT(($) => $.history.currentThread)}</option>
+                  <option value="archived">{researchT(($) => $.history.archivedFilter)}</option>
                 </select>
               </label>
             </div>
             <IconButton
               ref={refreshButtonRef}
-              label="重新整理歷史"
+              label={researchT(($) => $.history.refreshAria)}
               tone="ghost"
               busy={loading}
               icon={<RefreshCw size={17} />}
@@ -501,39 +515,55 @@ export function ResearchHistoryDrawer({
 
           {stale ? (
             <div className="research-history-notice" role="status">
-              <StatusBadge state="stale" label="資料可能已過期" />
+              <StatusBadge
+                state="stale"
+                label={researchT(($) => $.history.staleDataTitle)}
+              />
               <Button size="compact" onClick={() => void loadPage(filters, 0, false)}>
-                重試
+                {researchT(($) => $.history.retry)}
               </Button>
             </div>
           ) : null}
           {loadError && !stale ? (
             <div className="research-history-notice" role="alert">
-              <StatusBadge state="failed" label="無法載入研究歷史" />
+              <StatusBadge
+                state="failed"
+                label={researchT(($) => $.history.loadFailedTitle)}
+              />
               <Button size="compact" onClick={() => void loadPage(filters, 0, false)}>
-                重試
+                {researchT(($) => $.history.retry)}
               </Button>
             </div>
           ) : null}
-          {mutationError && !deleteTarget ? (
+          {mutationErrorLabel && !deleteTarget ? (
             <div className="research-history-notice" role="alert">
-              <StatusBadge state="blocked" label={mutationError} />
+              <StatusBadge state="blocked" label={mutationErrorLabel} />
             </div>
           ) : null}
 
           {loading && rows.length === 0 ? (
             <div className="research-history-state">
-              <StatusBadge state="loading" label="載入研究歷史" />
+              <StatusBadge
+                state="loading"
+                label={researchT(($) => $.history.loadingAria)}
+              />
             </div>
           ) : rows.length === 0 && !loadError ? (
-            <div className="research-history-state muted">找不到符合條件的對話</div>
+            <div className="research-history-state muted">
+              {researchT(($) => $.history.emptyFiltered)}
+            </div>
           ) : (
             <ul className="research-history-list">
               {rows.map((thread) => {
-                const title = thread.title.trim() || "（未命名）";
+                const title = thread.title.trim()
+                  ? thread.title
+                  : researchT(($) => $.history.unnamedFallback);
                 const active = isActive(thread);
                 const busy = mutationId === thread.id;
-                const status = runStatus(thread.latest_run_status);
+                const status = researchHistoryStatus(
+                  thread.latest_run_status ?? null,
+                  researchT,
+                );
                 return (
                   <li
                     key={thread.id}
@@ -543,10 +573,10 @@ export function ResearchHistoryDrawer({
                     {renamingId === thread.id ? (
                       <div className="research-history-rename">
                         <label>
-                          <span>對話名稱</span>
+                          <span>{researchT(($) => $.history.conversationNameLabel)}</span>
                           <input
                             autoFocus
-                            aria-label="對話名稱"
+                            aria-label={researchT(($) => $.history.titleFilterAria)}
                             value={renameDraft}
                             disabled={busy}
                             onChange={(event) => {
@@ -578,10 +608,10 @@ export function ResearchHistoryDrawer({
                             icon={<Check size={15} />}
                             onClick={() => void saveRename(thread)}
                           >
-                            儲存名稱
+                            {researchT(($) => $.history.saveName)}
                           </Button>
                           <IconButton
-                            label="取消重新命名"
+                            label={researchT(($) => $.history.cancelRenameAria)}
                             size="compact"
                             tone="ghost"
                             icon={<X size={15} />}
@@ -589,7 +619,9 @@ export function ResearchHistoryDrawer({
                             onClick={() => cancelRename(thread.id)}
                           />
                         </div>
-                        {renameError ? <p className="error-text tiny">{renameError}</p> : null}
+                        {renameErrorLabel
+                          ? <p className="error-text tiny">{renameErrorLabel}</p>
+                          : null}
                       </div>
                     ) : (
                       <>
@@ -600,7 +632,7 @@ export function ResearchHistoryDrawer({
                           }}
                           tone="ghost"
                           className="research-history-select"
-                          aria-label={`開啟對話 ${title}`}
+                          aria-label={researchT(($) => $.history.openThreadAria, { title })}
                           onClick={() => onSelect(thread)}
                         >
                           <span className="research-history-title">{title}</span>
@@ -610,16 +642,18 @@ export function ResearchHistoryDrawer({
                           </span>
                           <span className="research-history-times">
                             <time dateTime={thread.created_at}>
-                              建立 {formatLocalTime(thread.created_at)}
+                              {researchT(($) => $.history.createdLabel)}{" "}
+                              {formatLocalTime(thread.created_at)}
                             </time>
                             <time dateTime={thread.updated_at}>
-                              更新 {formatLocalTime(thread.updated_at)}
+                              {researchT(($) => $.history.updatedLabel)}{" "}
+                              {formatLocalTime(thread.updated_at)}
                             </time>
                           </span>
                         </Button>
                         <div className="research-history-actions">
                           <IconButton
-                            label={`重新命名 ${title}`}
+                            label={researchT(($) => $.history.renameThreadAria, { title })}
                             size="compact"
                             tone="ghost"
                             icon={<Pencil size={15} />}
@@ -627,23 +661,32 @@ export function ResearchHistoryDrawer({
                             onClick={() => beginRename(thread)}
                           />
                           <IconButton
-                            label={`${thread.archived_at ? "取消封存" : "封存"} ${title}`}
+                            label={researchT(($) => $.history.archiveToggleAria, {
+                              action: thread.archived_at
+                                ? researchT(($) => $.history.unarchiveAria)
+                                : researchT(($) => $.history.archiveAria),
+                              title,
+                            })}
                             size="compact"
                             tone="ghost"
                             icon={thread.archived_at
                               ? <ArchiveRestore size={15} />
                               : <Archive size={15} />}
                             disabled={busy || active}
-                            title={active ? "這個對話仍在執行中" : undefined}
+                            title={active
+                              ? researchT(($) => $.history.activeThreadWarning)
+                              : undefined}
                             onClick={() => void changeArchive(thread)}
                           />
                           <IconButton
-                            label={`永久刪除 ${title}`}
+                            label={researchT(($) => $.history.deleteThreadAria, { title })}
                             size="compact"
                             tone="danger"
                             icon={<Trash2 size={15} />}
                             disabled={busy || active}
-                            title={active ? "這個對話仍在執行中" : undefined}
+                            title={active
+                              ? researchT(($) => $.history.activeThreadWarning)
+                              : undefined}
                             onClick={(event) => {
                               setDeleteReturnFocus(event.currentTarget);
                               setMutationError(null);
@@ -663,16 +706,18 @@ export function ResearchHistoryDrawer({
 
       <ConfirmDialog
         open={Boolean(deleteTarget)}
-        title="永久刪除對話"
+        title={researchT(($) => $.history.deleteDialogAria)}
         consequence={(
           <div className="research-history-delete-consequence">
-            <span>
-              「{deleteTarget?.title || "（未命名）"}」的訊息與研究執行紀錄將永久刪除。
-            </span>
-            {mutationError ? <StatusBadge state="blocked" label={mutationError} /> : null}
+            <span>{researchT(($) => $.history.deleteConsequence, {
+              title: deleteTargetTitle,
+            })}</span>
+            {mutationErrorLabel
+              ? <StatusBadge state="blocked" label={mutationErrorLabel} />
+              : null}
           </div>
         )}
-        confirmLabel="永久刪除"
+        confirmLabel={researchT(($) => $.history.deleteAction)}
         busy={Boolean(deleteTarget && mutationId === deleteTarget.id)}
         onConfirm={() => void confirmDelete()}
         onCancel={() => {
