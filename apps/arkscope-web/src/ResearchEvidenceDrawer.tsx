@@ -2,7 +2,13 @@ import { useEffect, useMemo, useState, type RefObject } from "react";
 import { useTranslation } from "react-i18next";
 
 import { getResearchRun, getResearchRunEvents, type ResearchRunDTO } from "./api";
-import { MODEL_UX_LABELS } from "./modelRoutingUx";
+import {
+  presentResearchRoute,
+  presentResearchSelection,
+  researchEvidenceStatusLabel,
+  researchEvidenceTimingLabel,
+  researchEvidenceTokenRows,
+} from "./i18n/researchPresentation";
 import { stanceLabel } from "./personalizationDisplay";
 import { ResearchPersonalizationContext } from "./ResearchPersonalizationContext";
 import { sanitizeResearchDiagnostic } from "./researchErrors";
@@ -55,19 +61,6 @@ export function researchEvidenceRows(
   }));
 }
 
-function authContext(run: ResearchRunDTO): string | null {
-  const mode = run.auth_mode;
-  if (!mode) return null;
-  const label = MODEL_UX_LABELS.authModes[mode] ?? mode;
-  const subscription = mode === "chatgpt_oauth" || mode === "claude_code_oauth";
-  return `${label} · ${subscription ? "使用訂閱額度，非 API 帳單" : "使用 API 額度，會計入 API 帳單"}`;
-}
-
-function effortLabel(value: string | null | undefined, fallback: string): string {
-  if (value === "default") return "Provider 預設";
-  return value || fallback;
-}
-
 function boundedPreview(value: string | undefined): string | null {
   if (!value) return null;
   return value.length > 500 ? `${value.slice(0, 500)}…` : value;
@@ -79,29 +72,6 @@ function safeJson(value: unknown): string {
   } catch {
     return "[unserializable]";
   }
-}
-
-function tokenLabel(key: string): string {
-  const normalized = key.toLowerCase();
-  if (normalized.includes("cache_creation") || normalized.includes("cache_write")) return "快取寫入 tokens";
-  if (normalized.includes("cache_read") || normalized.includes("cached")) return "快取讀取 tokens";
-  if (normalized.includes("total_input")) return "總輸入 tokens";
-  if (normalized.includes("total_output")) return "總輸出 tokens";
-  if (normalized.includes("last_input")) return "最近一輪輸入 tokens";
-  if (normalized === "total_tokens") return "總 tokens";
-  if (normalized.includes("input") || normalized.includes("prompt")) return "輸入 tokens";
-  if (normalized.includes("output") || normalized.includes("completion")) return "輸出 tokens";
-  return key.replaceAll("_", " ");
-}
-
-function tokenRows(tokenUsage: Record<string, number> | null | undefined) {
-  if (!tokenUsage) return [];
-  return Object.entries(tokenUsage)
-    .filter(([key, value]) => (
-      Number.isFinite(value)
-      && /(input|output|prompt|completion|cache|total).*token|token.*(input|output|prompt|completion|cache|total)/i.test(key)
-    ))
-    .map(([key, value]) => ({ key, label: tokenLabel(key), value }));
 }
 
 export function ResearchEvidenceDrawer({
@@ -125,7 +95,9 @@ export function ResearchEvidenceDrawer({
   activeRun: ResearchRunDTO | null;
   developerMode: boolean;
 }) {
+  const { t: researchT, i18n: researchI18n } = useTranslation("research");
   const { t: commonT } = useTranslation("common");
+  const researchLocale = researchI18n.resolvedLanguage;
   const evidence = useMemo(
     () => researchEvidenceRows(message, activeTrace),
     [activeTrace, message],
@@ -137,6 +109,7 @@ export function ResearchEvidenceDrawer({
   const [fetchedAuthority, setFetchedAuthority] = useState<FetchedRunAuthority | null>(null);
   const [detailState, setDetailState] = useState<"idle" | "loading" | "ready" | "partial">("idle");
   const [diagnostic, setDiagnostic] = useState<string | null>(null);
+  const [diagnosticFailed, setDiagnosticFailed] = useState(false);
   const [diagnosticLoading, setDiagnosticLoading] = useState(false);
 
   useEffect(() => {
@@ -144,11 +117,13 @@ export function ResearchEvidenceDrawer({
       setFetchedAuthority(null);
       setDetailState("idle");
       setDiagnostic(null);
+      setDiagnosticFailed(false);
       return;
     }
     let alive = true;
     setFetchedAuthority(null);
     setDetailState("loading");
+    setDiagnosticFailed(false);
     void getResearchRun(runId)
       .then(({ run }) => {
         if (!alive) return;
@@ -163,7 +138,7 @@ export function ResearchEvidenceDrawer({
   }, [open, runId]);
 
   const loadDiagnostics = () => {
-    if (!developerMode || !runId || diagnostic != null || diagnosticLoading) return;
+    if (!developerMode || !runId || diagnostic != null || diagnosticFailed || diagnosticLoading) return;
     setDiagnosticLoading(true);
     void getResearchRunEvents(runId, 0)
       .then((response) => {
@@ -175,7 +150,7 @@ export function ResearchEvidenceDrawer({
         }));
         setDiagnostic(sanitizeResearchDiagnostic(safeJson(safe), 8_000));
       })
-      .catch(() => setDiagnostic("無法載入診斷事件。"))
+      .catch(() => setDiagnosticFailed(true))
       .finally(() => setDiagnosticLoading(false));
   };
 
@@ -193,11 +168,49 @@ export function ResearchEvidenceDrawer({
     : (details?.personalization ?? null);
   const personalizationContextKnown = messagePersonalizationKnown || detailPersonalizationKnown;
   const hasTranscriptDetails = Boolean(details || message);
+  const route = useMemo(() => {
+    if (details) {
+      return presentResearchRoute({
+        provider: details.provider,
+        model: details.model,
+        effort: details.effort,
+        runId: details.id,
+        errorCode: details.error_code,
+      }, researchT);
+    }
+    if (message?.provider || message?.model || message?.effort) {
+      return presentResearchRoute({
+        provider: message.provider,
+        model: message.model,
+        effort: message.effort,
+        runId: message.runId,
+        errorCode: message.errorCode,
+      }, researchT);
+    }
+    return null;
+  }, [details, message, researchLocale, researchT]);
+  const auth = useMemo(() => {
+    if (!details?.auth_mode) return null;
+    const quotaKind = details.auth_mode === "chatgpt_oauth"
+      || details.auth_mode === "claude_code_oauth"
+      ? "subscription"
+      : "api";
+    return presentResearchSelection({
+      provenance: null,
+      authMode: details.auth_mode,
+      quotaKind,
+      reasonCode: null,
+    }, researchT, commonT);
+  }, [commonT, details?.auth_mode, researchLocale, researchT]);
+  const tokenRows = useMemo(
+    () => researchEvidenceTokenRows(usage, researchT),
+    [researchLocale, researchT, usage],
+  );
 
   return (
     <Drawer
       open={open}
-      title="證據與執行詳情"
+      title={researchT(($) => $.evidence.drawerTitle)}
       onClose={onClose}
       returnFocusRef={returnFocusRef}
       pinnable={hasEvidence}
@@ -206,7 +219,7 @@ export function ResearchEvidenceDrawer({
     >
       <div className="research-evidence" data-has-evidence={String(hasEvidence)}>
         <section>
-          <h3 className="surface-title tiny">工具證據</h3>
+          <h3 className="surface-title tiny">{researchT(($) => $.evidence.toolEvidence)}</h3>
           {hasEvidence ? (
             <ul className="research-evidence-list">
               {evidence.map((row, index) => (
@@ -215,7 +228,7 @@ export function ResearchEvidenceDrawer({
                     <span className="mono">{row.name}</span>
                     <StatusBadge
                       state={row.completion === "running" ? "running" : "ready"}
-                      label={row.completion === "running" ? "執行中" : row.completion === "complete" ? "完成" : "已記錄"}
+                      label={researchEvidenceStatusLabel(row.completion, researchT)}
                     />
                   </div>
                   {row.input !== undefined ? (
@@ -228,42 +241,66 @@ export function ResearchEvidenceDrawer({
               ))}
             </ul>
           ) : (
-            <p className="muted tiny">此回合沒有可用的工具證據紀錄</p>
+            <p className="muted tiny">{researchT(($) => $.evidence.noToolEvidence)}</p>
           )}
         </section>
 
         <section className="research-run-details">
-          <h3 className="surface-title tiny">執行詳情</h3>
-          {!runId ? <p className="muted tiny">此舊回合沒有精確 run 連結</p> : null}
-          {detailState === "loading" && !details ? <p className="muted tiny">載入執行詳情…</p> : null}
+          <h3 className="surface-title tiny">{researchT(($) => $.evidence.runDetails)}</h3>
+          {!runId ? <p className="muted tiny">{researchT(($) => $.evidence.legacyNoRunLink)}</p> : null}
+          {detailState === "loading" && !details ? (
+            <p className="muted tiny">{researchT(($) => $.evidence.loadingRunDetails)}</p>
+          ) : null}
           {detailState === "partial" ? (
-            <InlineAlert state="partial" title="執行詳情只載入了一部分">
-              對話內容與已保存的工具紀錄仍然可用。
+            <InlineAlert state="partial" title={researchT(($) => $.evidence.partialTitle)}>
+              {researchT(($) => $.evidence.partialDetail)}
             </InlineAlert>
           ) : null}
           {hasTranscriptDetails ? (
             <dl className="research-run-detail-list">
-              {details ? (
-                <div><dt>路線</dt><dd>{details.provider} · {details.model} · {effortLabel(details.effort, "Provider 預設")}</dd></div>
-              ) : message?.provider || message?.model || message?.effort ? (
-                <div><dt>路線</dt><dd>{message.provider ?? "未知"} · {message.model ?? "未知"} · {effortLabel(message.effort, "未知")}</dd></div>
+              {route ? (
+                <div>
+                  <dt>{researchT(($) => $.evidence.route)}</dt>
+                  <dd>{route.providerLabel} · {route.modelLabel} · {route.effortLabel}</dd>
+                </div>
               ) : null}
-              {details && authContext(details) ? <div><dt>登入與額度</dt><dd>{authContext(details)}</dd></div> : null}
-              {details ? <div><dt>建立</dt><dd>{formatSystemTimestamp(details.created_at)}</dd></div> : null}
-              {details ? <div><dt>開始</dt><dd>{formatSystemTimestamp(details.started_at)}</dd></div> : null}
-              {details ? <div><dt>完成</dt><dd>{formatSystemTimestamp(details.completed_at)}</dd></div> : null}
-              {!details && message?.created_at ? <div><dt>回合保存</dt><dd>{formatSystemTimestamp(message.created_at)}</dd></div> : null}
-              {message?.elapsed_seconds != null ? <div><dt>模型耗時</dt><dd>{message.elapsed_seconds.toFixed(1)}s</dd></div> : null}
+              {auth?.authLabel && auth.billingCopy ? (
+                <div>
+                  <dt>{researchT(($) => $.evidence.authAndQuota)}</dt>
+                  <dd>{researchT(($) => $.evidence.authQuotaSummary, {
+                    label: auth.authLabel,
+                    billing: auth.billingCopy,
+                  })}</dd>
+                </div>
+              ) : null}
+              {details ? (
+                <div><dt>{researchEvidenceTimingLabel("created", researchT)}</dt><dd>{formatSystemTimestamp(details.created_at)}</dd></div>
+              ) : null}
+              {details ? (
+                <div><dt>{researchEvidenceTimingLabel("started", researchT)}</dt><dd>{formatSystemTimestamp(details.started_at)}</dd></div>
+              ) : null}
+              {details ? (
+                <div><dt>{researchEvidenceTimingLabel("completed", researchT)}</dt><dd>{formatSystemTimestamp(details.completed_at)}</dd></div>
+              ) : null}
+              {!details && message?.created_at ? (
+                <div><dt>{researchEvidenceTimingLabel("turn_saved", researchT)}</dt><dd>{formatSystemTimestamp(message.created_at)}</dd></div>
+              ) : null}
+              {message?.elapsed_seconds != null ? (
+                <div>
+                  <dt>{researchEvidenceTimingLabel("model_elapsed", researchT)}</dt>
+                  <dd>{message.elapsed_seconds.toFixed(1)}{researchT(($) => $.evidence.secondsSuffix)}</dd>
+                </div>
+              ) : null}
               {personalization?.profile_active && personalization.assistant_stance !== "off" ? (
-                <div><dt>立場</dt><dd>{stanceLabel(personalization.assistant_stance, commonT)}</dd></div>
+                <div><dt>{researchT(($) => $.evidence.stance)}</dt><dd>{stanceLabel(personalization.assistant_stance, commonT)}</dd></div>
               ) : null}
               {personalization?.applied_skills?.length ? (
-                <div><dt>套用技能</dt><dd>{personalization.applied_skills.join("、")}</dd></div>
+                <div><dt>{researchT(($) => $.evidence.appliedSkills)}</dt><dd>{personalization.applied_skills.join(", ")}</dd></div>
               ) : null}
               {(message?.tools_used?.length ?? 0) > 0 ? (
-                <div><dt>工具</dt><dd>{message!.tools_used.join("、")}</dd></div>
+                <div><dt>{researchT(($) => $.evidence.tools)}</dt><dd>{message!.tools_used.join(", ")}</dd></div>
               ) : null}
-              {tokenRows(usage).map((row) => (
+              {tokenRows.map((row) => (
                 <div key={row.key}><dt>{row.label}</dt><dd>{row.value.toLocaleString()}</dd></div>
               ))}
             </dl>
@@ -276,9 +313,10 @@ export function ResearchEvidenceDrawer({
               className="research-diagnostic"
               onToggle={(event) => { if (event.currentTarget.open) loadDiagnostics(); }}
             >
-              <summary>診斷事件</summary>
-              {diagnosticLoading ? <p className="muted tiny">載入中…</p> : null}
+              <summary>{researchT(($) => $.evidence.diagnosticEvents)}</summary>
+              {diagnosticLoading ? <p className="muted tiny">{researchT(($) => $.evidence.loading)}</p> : null}
               {diagnostic ? <pre>{diagnostic}</pre> : null}
+              {diagnosticFailed ? <p className="error-text tiny">{researchT(($) => $.evidence.diagnosticsFailed)}</p> : null}
             </details>
           ) : null}
         </section>
