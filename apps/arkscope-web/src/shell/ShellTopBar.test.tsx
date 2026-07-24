@@ -26,7 +26,9 @@ const READY_STATUS: ApiStatus = {
   data_sources: {},
 };
 
-const FAILED_STATUS: StatusState = {
+const LEGACY_RAW_SIDECAR_SENTINEL = "recognizable private sidecar exception";
+
+const FAILED_STATUS = {
   kind: "error",
   outcome: {
     kind: "status_request_failed",
@@ -34,7 +36,8 @@ const FAILED_STATUS: StatusState = {
     code: null,
     route: "/status",
   },
-};
+  message: LEGACY_RAW_SIDECAR_SENTINEL,
+} satisfies StatusState & { readonly message: string };
 
 const DIAGNOSTICS: ShellDiagnostics = {
   apiBase: "http://127.0.0.1:8420",
@@ -195,7 +198,7 @@ describe("ShellTopBar", () => {
     expect(diagnostics?.textContent).toContain("Tools 19");
     expect(diagnostics?.textContent).toContain(`Last status ${DIAGNOSTICS.lastStatusAt}`);
     expect(diagnostics?.textContent).toContain(`Card model ${DIAGNOSTICS.cardModel}`);
-    expect(host.textContent).not.toContain("recognizable private sidecar exception");
+    expect(host.textContent).not.toContain(LEGACY_RAW_SIDECAR_SENTINEL);
   });
 
   it("keeps identity and context in stable named slots when status copy changes", async () => {
@@ -226,6 +229,6 @@ describe("ShellTopBar", () => {
     expect(diagnostics?.textContent).toContain("Tools 19");
     expect(diagnostics?.textContent).toContain(`Last status ${DIAGNOSTICS.lastStatusAt}`);
     expect(diagnostics?.textContent).toContain(`Card model ${DIAGNOSTICS.cardModel}`);
-    expect(host.textContent).not.toContain("recognizable private sidecar exception");
+    expect(host.textContent).not.toContain(LEGACY_RAW_SIDECAR_SENTINEL);
   });
 });
