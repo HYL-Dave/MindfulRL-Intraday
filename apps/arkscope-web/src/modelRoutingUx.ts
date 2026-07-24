@@ -12,6 +12,8 @@ import zhHantCommon from "./i18n/resources/zh-Hant/common";
 
 export type ModelCommonT = TFunction<"common">;
 
+const DECORATED_COMPATIBILITY_ID = "decorated_suffix";
+
 export function modelGroupLabel(id: string, t: ModelCommonT): string {
   switch (id) {
     case "available": return t(($) => $.models.groups.available);
@@ -63,6 +65,21 @@ export function modelCompatibilityLabel(id: string, t: ModelCommonT): string {
     case "decorated_suffix": return t(($) => $.models.compatibility.decoratedSuffix);
     case "settings_notice": return t(($) => $.models.compatibility.settingsNotice);
     default: return id;
+  }
+}
+
+export function modelDecoratedLabel(baseLabel: string, t: ModelCommonT): string {
+  return [baseLabel, modelCompatibilityLabel(DECORATED_COMPATIBILITY_ID, t)].join(" · ");
+}
+
+export function modelEntryLabel(
+  baseLabel: string,
+  compatibility: "legacy_unverified" | null,
+  t: ModelCommonT,
+): string {
+  switch (compatibility) {
+    case "legacy_unverified": return modelDecoratedLabel(baseLabel, t);
+    case null: return baseLabel;
   }
 }
 

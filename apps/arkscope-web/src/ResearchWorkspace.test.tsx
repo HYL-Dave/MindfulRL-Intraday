@@ -797,7 +797,7 @@ describe("Research workspace contracts", () => {
     });
     await flush();
 
-    expect(select("立場")).toBe(stanceSelect);
+    expect(select("Stance")).toBe(stanceSelect);
     expect(stanceSelect.value).toBe("growth_opportunity");
     expect(stanceSelect.selectedOptions[0]?.textContent).toBe("Growth opportunity");
     expect(host!.querySelector("textarea")).toBe(question);
@@ -856,11 +856,11 @@ describe("Research workspace contracts", () => {
     });
     await flush();
 
-    expect(row("立場")?.querySelector("dd")).toBe(stanceValue);
+    expect(row("Stance")?.querySelector("dd")).toBe(stanceValue);
     expect(stanceValue.textContent).toBe("Complementary");
-    expect(row("路線")?.querySelector("dd")).toBe(routeValue);
+    expect(row("Route")?.querySelector("dd")).toBe(routeValue);
     expect(routeValue.textContent).toBe("openai · gpt-5.6-luna · high");
-    expect(row("套用技能")?.querySelector("dd")).toBe(skillValue);
+    expect(row("Applied skills")?.querySelector("dd")).toBe(skillValue);
     expect(skillValue.textContent).toBe("source-applied-skill");
   });
 

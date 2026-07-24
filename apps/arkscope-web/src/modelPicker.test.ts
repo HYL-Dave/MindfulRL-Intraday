@@ -14,6 +14,7 @@ import {
   modelProviderReason,
   optionReason,
 } from "./modelPicker";
+import { modelEntryLabel } from "./modelRoutingUx";
 
 const entry = (
   id: string,
@@ -158,7 +159,9 @@ describe("shared model picker authority", () => {
           compatibility: "legacy_unverified",
         }),
       ]);
-    expect(groupedModelEntries(compatibility, null, commonT("zh-Hant")).flatMap((group) => group.entries).map((item) => ({
+    const groupedCompatibility = groupedModelEntries(compatibility, null, commonT("zh-Hant"))
+      .flatMap((group) => group.entries);
+    expect(groupedCompatibility.map((item) => ({
       id: item.id,
       baseLabel: item.baseLabel,
       compatibility: item.compatibility,
@@ -174,6 +177,24 @@ describe("shared model picker authority", () => {
         compatibility: "legacy_unverified",
       },
     ]);
+    expect(groupedCompatibility.map((item) => modelEntryLabel(
+      item.baseLabel,
+      item.compatibility,
+      commonT("zh-Hant"),
+    )))
+      .toEqual([
+        "GPT-5.4 mini · source label · 未驗證（舊 sidecar 相容模式）",
+        "gpt-custom · 未驗證（舊 sidecar 相容模式）",
+      ]);
+    expect(groupedCompatibility.map((item) => modelEntryLabel(
+      item.baseLabel,
+      item.compatibility,
+      commonT("en"),
+    )))
+      .toEqual([
+        "GPT-5.4 mini · source label · Unverified (legacy sidecar compatibility mode)",
+        "gpt-custom · Unverified (legacy sidecar compatibility mode)",
+      ]);
     expect(compatEntries(
       "openai",
       { model: "gpt-custom" },

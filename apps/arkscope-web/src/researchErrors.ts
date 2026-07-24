@@ -1,6 +1,5 @@
 import type { NavigationTarget } from "./shell/navigation";
 import type { CommonUiState } from "./ui";
-import zhHantResearch from "./i18n/resources/zh-Hant/research";
 import type { ResearchT } from "./i18n/researchPresentation";
 
 export interface ResearchErrorPresentation {
@@ -83,55 +82,55 @@ const DEFINITIONS: Record<string, ErrorDefinition> = {
 
 function errorCopy(
   id: ErrorDefinition["copy"],
-  t?: ResearchT,
+  t: ResearchT,
 ): { title: string; detail: string; actionLabel: string | null } {
   switch (id) {
     case "reauth":
       return {
-        title: t ? t(($) => $.errors.reauthTitle) : zhHantResearch.errors.reauthTitle,
-        detail: t ? t(($) => $.errors.reauthDetail) : zhHantResearch.errors.reauthDetail,
-        actionLabel: t ? t(($) => $.errors.reauthAction) : zhHantResearch.errors.reauthAction,
+        title: t(($) => $.errors.reauthTitle),
+        detail: t(($) => $.errors.reauthDetail),
+        actionLabel: t(($) => $.errors.reauthAction),
       };
     case "missingCredential":
       return {
-        title: t ? t(($) => $.errors.missingCredentialTitle) : zhHantResearch.errors.missingCredentialTitle,
-        detail: t ? t(($) => $.errors.missingCredentialDetail) : zhHantResearch.errors.missingCredentialDetail,
-        actionLabel: t ? t(($) => $.errors.providerSettingsAction) : zhHantResearch.errors.providerSettingsAction,
+        title: t(($) => $.errors.missingCredentialTitle),
+        detail: t(($) => $.errors.missingCredentialDetail),
+        actionLabel: t(($) => $.errors.providerSettingsAction),
       };
     case "timeout":
       return {
-        title: t ? t(($) => $.errors.timeoutTitle) : zhHantResearch.errors.timeoutTitle,
-        detail: t ? t(($) => $.errors.timeoutDetail) : zhHantResearch.errors.timeoutDetail,
-        actionLabel: t ? t(($) => $.errors.runtimeSettingsAction) : zhHantResearch.errors.runtimeSettingsAction,
+        title: t(($) => $.errors.timeoutTitle),
+        detail: t(($) => $.errors.timeoutDetail),
+        actionLabel: t(($) => $.errors.runtimeSettingsAction),
       };
     case "refusal":
       return {
-        title: t ? t(($) => $.errors.refusalTitle) : zhHantResearch.errors.refusalTitle,
-        detail: t ? t(($) => $.errors.refusalDetail) : zhHantResearch.errors.refusalDetail,
+        title: t(($) => $.errors.refusalTitle),
+        detail: t(($) => $.errors.refusalDetail),
         actionLabel: null,
       };
     case "providerCallFailed":
       return {
-        title: t ? t(($) => $.errors.providerCallFailedTitle) : zhHantResearch.errors.providerCallFailedTitle,
-        detail: t ? t(($) => $.errors.providerCallFailedDetail) : zhHantResearch.errors.providerCallFailedDetail,
+        title: t(($) => $.errors.providerCallFailedTitle),
+        detail: t(($) => $.errors.providerCallFailedDetail),
         actionLabel: null,
       };
     case "toolLimit":
       return {
-        title: t ? t(($) => $.errors.maxTurnsTitle) : zhHantResearch.errors.maxTurnsTitle,
-        detail: t ? t(($) => $.errors.maxTurnsDetail) : zhHantResearch.errors.maxTurnsDetail,
-        actionLabel: t ? t(($) => $.errors.retryAction) : zhHantResearch.errors.retryAction,
+        title: t(($) => $.errors.maxTurnsTitle),
+        detail: t(($) => $.errors.maxTurnsDetail),
+        actionLabel: t(($) => $.errors.retryAction),
       };
     case "cancelled":
       return {
-        title: t ? t(($) => $.errors.cancelledTitle) : zhHantResearch.errors.cancelledTitle,
-        detail: t ? t(($) => $.errors.cancelledDetail) : zhHantResearch.errors.cancelledDetail,
+        title: t(($) => $.errors.cancelledTitle),
+        detail: t(($) => $.errors.cancelledDetail),
         actionLabel: null,
       };
     case "interrupted":
       return {
-        title: t ? t(($) => $.errors.interruptedTitle) : zhHantResearch.errors.interruptedTitle,
-        detail: t ? t(($) => $.errors.interruptedDetail) : zhHantResearch.errors.interruptedDetail,
+        title: t(($) => $.errors.interruptedTitle),
+        detail: t(($) => $.errors.interruptedDetail),
         actionLabel: null,
       };
   }
@@ -156,7 +155,7 @@ export function presentResearchError({
   code: string | null | undefined;
   detail?: string | null;
   developerMode?: boolean;
-}, t?: ResearchT): ResearchErrorPresentation {
+}, t: ResearchT): ResearchErrorPresentation {
   const normalizedCode = code && DEFINITIONS[code] ? code : "provider_call_failed";
   const definition = DEFINITIONS[normalizedCode];
   const copy = errorCopy(definition.copy, t);

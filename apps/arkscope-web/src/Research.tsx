@@ -22,6 +22,7 @@ import { FileSearch, History, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import {
+  ApiError,
   cancelResearchRun, createResearchRun,
   getModelCatalog, getQueryProviders, getResearchRunEvents,
   getResearchThread, getResearchMessages, getResearchSelection,
@@ -33,6 +34,11 @@ import { ResearchHistoryDrawer } from "./ResearchHistoryDrawer";
 import { ResearchEvidenceDrawer, researchEvidenceRows } from "./ResearchEvidenceDrawer";
 import { ResearchRunProgress } from "./ResearchRunProgress";
 import { presentResearchError } from "./researchErrors";
+import {
+  presentResearchSelection,
+  researchSuggestedPrompts,
+  type ResearchT,
+} from "./i18n/researchPresentation";
 import {
   asResearchProviderId,
   RESEARCH_PROVIDER_IDS,
@@ -47,9 +53,10 @@ import {
   modelProviderReason,
   optionReason,
 } from "./modelPicker";
-import { MODEL_UX_LABELS } from "./modelRoutingUx";
+import { modelEntryLabel, modelReasonLabel } from "./modelRoutingUx";
 import {
   loadResearchThreadSelection,
+  quotaKindForAuthMode,
   resolveResearchSelection,
   writeExplicitResearchSelection,
   type ResearchTuple,
@@ -96,28 +103,41 @@ type ProviderId = ResearchProviderId;
 
 // trace_mode drives the live-trace vs silent-until-done affordance; copy stays
 // neutral. A new OpenAI-compatible provider is a row here, not a render rewrite.
-const PRESENTATION: Record<ProviderId, { label: string; trace_mode: "live" | "post_run"; trace_note: string }> = {
-  anthropic: { label: "Anthropic", trace_mode: "live", trace_note: "即時工具追蹤" },
-  openai: { label: "OpenAI", trace_mode: "post_run", trace_note: "完成後一次顯示工具追蹤" },
+const PROVIDER_BEHAVIOR: Record<ProviderId, { traceMode: "live" | "post_run" }> = {
+  anthropic: { traceMode: "live" },
+  openai: { traceMode: "post_run" },
 };
 
-const modelReasonLabel = (reason: string): string =>
-  MODEL_UX_LABELS.reasons[reason] ?? reason;
+function providerLabel(provider: string, t: ResearchT): string {
+  switch (provider) {
+    case "anthropic": return t(($) => $.workspace.anthropic);
+    case "openai": return t(($) => $.workspace.openai);
+    default: return provider;
+  }
+}
 
-const selectionProvenanceLabel = (value: string | null | undefined): string => {
-  if (value === "thread") return "此對話上次成功路線";
-  if (value === "settings") return "設定路線";
-  if (value === "explicit" || value === "user") return "上次明確選擇";
-  return "";
-};
+function providerTraceNote(provider: ProviderId, t: ResearchT): string {
+  return provider === "anthropic"
+    ? t(($) => $.workspace.traceLive)
+    : t(($) => $.workspace.tracePostRun);
+}
 
-// Suggested prompts scoped to the C-1 SA primitives (get_sa_feed / get_sa_comment_focus).
-const SUGGESTED = [
-  { ticker: "SMCI", text: "最近 SA 對 SMCI 有什麼新文章和評論焦點？" },
-  { ticker: "CLS", text: "CLS 過去 14 天的 SA 評論焦點與情緒變化？" },
-  { ticker: "MXL", text: "MXL 的高價值留言在吵什麼？焦點是什麼？" },
-  { ticker: "NVDA", text: "NVDA 最新 SA 動態與評論焦點重點整理。" },
-];
+type ThreadOutcome =
+  | "active_thread_load_failed"
+  | "thread_not_found"
+  | "thread_load_failed"
+  | "run_status_refresh_failed"
+  | "stop_failed";
+
+function threadOutcomeLabel(outcome: ThreadOutcome, t: ResearchT): string {
+  switch (outcome) {
+    case "active_thread_load_failed": return t(($) => $.workspace.activeThreadLoadFailed);
+    case "thread_not_found": return t(($) => $.workspace.threadNotFound);
+    case "thread_load_failed": return t(($) => $.workspace.threadLoadFailed);
+    case "run_status_refresh_failed": return t(($) => $.workspace.runStatusRefreshFailed);
+    case "stop_failed": return t(($) => $.workspace.stopFailed);
+  }
+}
 
 const ACTIVE_THREAD_SESSION_KEY = "arkscope.aiResearch.activeThreadId";
 const readActiveThreadId = (): string | null => {
@@ -135,10 +155,22 @@ const writeActiveThreadId = (id: string | null) => {
 const isTerminalRun = (run: ResearchRunDTO): boolean =>
   ["succeeded", "failed", "cancelled", "interrupted"].includes(run.status);
 
+const THREAD_ROUTE_PATH = /^\/research\/threads\/[^/?#]+$/;
 const isMissingResearchThreadError = (error: unknown): boolean => (
-  error instanceof Error
-  && /^\/research\/threads\/\S+ returned 404$/.test(error.message)
+  error instanceof ApiError
+  && error.status === 404
+  && THREAD_ROUTE_PATH.test(error.path)
 );
+
+function researchRunFailure(error: unknown): { code: string; detail: string | null } {
+  if (error instanceof ApiError) {
+    return {
+      code: error.code ?? "provider_call_failed",
+      detail: error.diagnostic,
+    };
+  }
+  return { code: "provider_call_failed", detail: null };
+}
 
 const runStartedMs = (run: ResearchRunDTO): number => {
   const raw = run.started_at ?? run.created_at;
@@ -173,13 +205,14 @@ export function ResearchView({
   developerMode = false,
   onNavigate,
 }: ResearchViewProps) {
+  const { t: researchT } = useTranslation("research");
   const { t: commonT } = useTranslation("common");
   const [state, dispatch] = useReducer(reduce, initialState);
   const [question, setQuestion] = useState("");
   const [tickerInput, setTickerInput] = useState("");
   const [sdk, setSdk] = useState<Record<string, boolean> | null>(null);
   const [booting, setBooting] = useState(true);
-  const [threadError, setThreadError] = useState<string | null>(null);
+  const [threadError, setThreadError] = useState<ThreadOutcome | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [evidenceOpen, setEvidenceOpen] = useState(false);
   const [evidencePinned, setEvidencePinned] = useState(false);
@@ -238,6 +271,14 @@ export function ResearchView({
       : null,
     [catalog, currentThreadSelection, sdk, state.activeThreadId, userSelection],
   );
+  const selectionPresentation = selection
+    ? presentResearchSelection({
+        provenance: selection.provenance,
+        authMode: selection.authMode,
+        quotaKind: selection.quotaKind,
+        reasonCode: selection.reasonCode,
+      }, researchT, commonT)
+    : null;
   const provider = incompleteSelection?.provider ?? selection?.tuple?.provider ?? null;
   const selModel = incompleteSelection?.model ?? selection?.tuple?.model ?? "";
   const selEffort = incompleteSelection ? "" : selection?.tuple?.effort ?? "default";
@@ -351,7 +392,7 @@ export function ResearchView({
       setTranscriptPendingThreadId((current) => current === thread.id ? null : current);
     } catch {
       if (sequence === hydrationSequenceRef.current) {
-        setThreadError("無法載入這個研究對話，請從歷史重新選取。");
+        setThreadError("active_thread_load_failed");
       }
     }
   }, [detachLocalPolling, observeThreadRun]);
@@ -367,8 +408,8 @@ export function ResearchView({
       const missing = isMissingResearchThreadError(error);
       if (requestSequence === hydrationSequenceRef.current) {
         setThreadError(missing
-          ? "找不到指定的研究對話，可能已被刪除。"
-          : "暫時無法載入指定的研究對話，請稍後再試。");
+          ? "thread_not_found"
+          : "thread_load_failed");
       }
       return missing ? "missing" as const : "unavailable" as const;
     }
@@ -464,7 +505,7 @@ export function ResearchView({
       }
     } catch {
       if (abortRef.current !== controller || controller.signal.aborted) return;
-      setThreadError("暫時無法更新研究執行狀態，請稍後重新開啟此對話。");
+      setThreadError("run_status_refresh_failed");
       dispatch({ kind: "abort", runId: run.id, ts: Date.now() });
     } finally {
       if (abortRef.current === controller) {
@@ -488,7 +529,18 @@ export function ResearchView({
       await pollRun(run);
     } catch (e) {
       if (submissionSequenceRef.current !== submissionSequence) return;
-      dispatch({ kind: "streamError", error: e instanceof Error ? e.message : String(e), ts: Date.now() });
+      const failure = researchRunFailure(e);
+      dispatch({
+        kind: "frame",
+        frame: {
+          type: "error",
+          data: {
+            code: failure.code,
+            ...(failure.detail ? { error: failure.detail } : {}),
+          },
+        },
+        ts: Date.now(),
+      });
     }
   }, [pollRun]);
 
@@ -584,7 +636,7 @@ export function ResearchView({
         }
         dispatch({ kind: "abort", runId, ts: Date.now() });
       })
-      .catch(() => setThreadError("無法停止目前研究，請稍後再試。"))
+      .catch(() => setThreadError("stop_failed"))
       .finally(() => {
         if (stopRequestRunIdRef.current === runId) stopRequestRunIdRef.current = null;
       });
@@ -691,11 +743,20 @@ export function ResearchView({
       entry.id === catalog?.routes.ai_research.model && !optionReason(entry, providerReason)
     ));
     const firstReady = block?.models.find((entry) => !optionReason(entry, providerReason));
+    const authMode = context?.auth_mode ?? null;
     return {
       id,
+      label: providerLabel(id, researchT),
+      traceNote: providerTraceNote(id, researchT),
       context,
       block,
       providerReason,
+      presentation: presentResearchSelection({
+        provenance: null,
+        authMode,
+        quotaKind: quotaKindForAuthMode(authMode),
+        reasonCode: providerReason,
+      }, researchT, commonT),
       suggestedModel: preferred?.id ?? firstReady?.id ?? "",
       disabled: !context || !block || !firstReady,
     };
@@ -721,8 +782,8 @@ export function ResearchView({
     : [{
         id: "default",
         provider: provider ?? "openai",
-        label: "default",
-        description: "使用 provider 預設 effort",
+        label: researchT(($) => $.workspace.defaultEffort),
+        description: researchT(($) => $.workspace.defaultEffortDescription),
         applies_to_card_tasks: false,
       }, ...effortOpts];
   const effortChoices = !selEffort || supportedEffortChoices.some((option) => option.id === selEffort)
@@ -730,8 +791,8 @@ export function ResearchView({
     : [...supportedEffortChoices, {
         id: selEffort,
         provider: provider ?? "openai",
-        label: `${selEffort} · 此模型不支援`,
-        description: "此儲存值不再受目前模型支援",
+        label: researchT(($) => $.workspace.unsupportedEffortOption, { effort: selEffort }),
+        description: researchT(($) => $.workspace.staleEffortDescription),
         applies_to_card_tasks: false,
         disabled: true,
       }];
@@ -814,22 +875,38 @@ export function ResearchView({
     () => new Set(Object.values(activeRunsByThread).map((run) => run.id)),
     [activeRunsByThread],
   );
+  const suggestedPrompts = researchSuggestedPrompts(researchT);
+  const threadErrorLabel = threadError ? threadOutcomeLabel(threadError, researchT) : null;
 
   return (
     <main className="main research">
       <PageHeader
-        title="AI 研究"
+        title={researchT(($) => $.workspace.titleAria)}
         context={(
           <div className="research-page-context">
-            <span className="muted tiny">對話與研究執行保存於本地；離開頁面後，研究仍會繼續執行。</span>
+            <span className="muted tiny">
+              {researchT(($) => $.workspace.localPersistence)}
+            </span>
             {incompleteSelection ? (
               <span className="warn-text tiny">
-                研究模型：{incompleteSelection.provider} · {incompleteSelection.model} · 尚未選擇 effort（未套用）
+                {researchT(($) => $.workspace.researchModelPrefix)}
+                {incompleteSelection.provider} · {incompleteSelection.model}{" "}
+                {researchT(($) => $.workspace.effortNotSelected)}
               </span>
             ) : selection?.tuple ? (
               <span className="muted tiny">
-                研究模型：{selection.tuple.provider} · {selection.tuple.model} · {selection.tuple.effort === "default" ? "Provider 預設" : selection.tuple.effort}
-                {selection.provenance ? `（${selectionProvenanceLabel(selection.provenance)}）` : ""}
+                {researchT(($) => $.workspace.researchModelPrefix)}
+                {selection.tuple.provider} · {selection.tuple.model}{" "}
+                {researchT(($) => $.workspace.effortSummary, {
+                  effort: selection.tuple.effort === "default"
+                    ? researchT(($) => $.workspace.providerDefault)
+                    : selection.tuple.effort,
+                })}
+                {selectionPresentation?.provenanceLabel
+                  ? researchT(($) => $.workspace.selectionProvenanceSuffix, {
+                      provenance: selectionPresentation.provenanceLabel,
+                    })
+                  : ""}
               </span>
             ) : null}
           </div>
@@ -846,7 +923,7 @@ export function ResearchView({
                 setHistoryOpen(true);
               }}
             >
-              歷史
+              {researchT(($) => $.workspace.history)}
             </Button>
             <Button
               ref={evidenceTriggerRef}
@@ -859,7 +936,7 @@ export function ResearchView({
                 setEvidenceOpen(true);
               }}
             >
-              證據
+              {researchT(($) => $.workspace.evidence)}
             </Button>
             <Button
               size="compact"
@@ -867,7 +944,7 @@ export function ResearchView({
               icon={<Plus size={16} />}
               onClick={newThread}
             >
-              新研究
+              {researchT(($) => $.workspace.newResearch)}
             </Button>
           </>
         )}
@@ -878,29 +955,38 @@ export function ResearchView({
         <section className="research-convo">
           <div className="research-conversation-head">
             <h2 className="research-conversation-title">
-              {currentThread?.title?.trim() || "新對話"}
+              {currentThread?.title?.trim()
+                ? currentThread.title
+                : researchT(($) => $.workspace.newConversation)}
             </h2>
             {currentThread?.archived_at ? (
-              <span className="warn-text tiny">此對話已封存；取消封存後才能繼續提問。</span>
+              <span className="warn-text tiny">
+                {researchT(($) => $.workspace.archivedThread)}
+              </span>
             ) : null}
             {state.pending ? (
-              <span className="muted tiny">回應由背景服務繼續執行；只有「停止」會取消目前執行。</span>
+              <span className="muted tiny">
+                {researchT(($) => $.workspace.backgroundContinuation)}
+              </span>
             ) : null}
           </div>
-          {threadError ? <p className="error-text tiny">{threadError}</p> : null}
+          {threadErrorLabel ? <p className="error-text tiny">{threadErrorLabel}</p> : null}
           <div className="research-messages">
             {msgs.length === 0 && !state.pending ? (
               <div className="research-empty">
-                <p className="muted">問一個開放式問題，看 agent 如何用工具調查並整理證據。</p>
+                <p className="muted">{researchT(($) => $.workspace.openQuestionHint)}</p>
                 <div className="research-suggest">
-                  {SUGGESTED.map((s) => (
+                  {suggestedPrompts.map((suggestion) => (
                     <Button
-                      key={s.text}
+                      key={suggestion.id}
                       size="compact"
                       tone="ghost"
-                      onClick={() => { setQuestion(s.text); setTickerInput(s.ticker); }}
+                      onClick={() => {
+                        setQuestion(suggestion.text);
+                        setTickerInput(suggestion.ticker);
+                      }}
                     >
-                      {s.text}
+                      {suggestion.text}
                     </Button>
                   ))}
                 </div>
@@ -942,13 +1028,15 @@ export function ResearchView({
           {/* input + provider control */}
           <div className="research-input">
             {booting ? (
-              <p className="muted tiny">載入 provider…</p>
+              <p className="muted tiny">{researchT(($) => $.workspace.loadingProvider)}</p>
             ) : noProvider ? (
-              <p className="muted">尚未設定可執行 AI 研究的登入。請到「設定」→ Providers 完成登入。</p>
+              <p className="muted">{researchT(($) => $.workspace.missingLogin)}</p>
             ) : (
               <>
                 <div className="research-providerbar">
-                  <span className="muted tiny">研究路線：</span>
+                  <span className="muted tiny">
+                    {researchT(($) => $.workspace.researchRoutePrefix)}
+                  </span>
                   {providerChoices.map((choice) => (
                     <Button
                       key={choice.id}
@@ -957,14 +1045,22 @@ export function ResearchView({
                       onClick={() => chooseProvider(choice.id)}
                       disabled={choice.disabled || !!state.pending}
                       title={choice.providerReason
-                        ? modelReasonLabel(choice.providerReason)
-                        : `${choice.context?.label ?? choice.id}；${PRESENTATION[choice.id].trace_note}`}
+                        ? choice.presentation.reasonLabel ?? choice.providerReason
+                        : researchT(($) => $.workspace.providerTraceTitle, {
+                            label: choice.context?.label ?? choice.id,
+                            traceNote: choice.traceNote,
+                          })}
                     >
-                      {PRESENTATION[choice.id].label} / {choice.suggestedModel || "無可用模型"}
+                      {choice.label} / {choice.suggestedModel
+                        || researchT(($) => $.workspace.noAvailableModels)}
                       {choice.providerReason
-                        ? ` · ${modelReasonLabel(choice.providerReason)}`
-                        : choice.context?.auth_mode
-                          ? ` · ${MODEL_UX_LABELS.authModes[choice.context.auth_mode] ?? choice.context.auth_mode}`
+                        ? researchT(($) => $.workspace.providerReasonSummary, {
+                            reason: choice.presentation.reasonLabel ?? choice.providerReason,
+                          })
+                        : choice.presentation.authLabel
+                          ? researchT(($) => $.workspace.authModeSummary, {
+                              authMode: choice.presentation.authLabel,
+                            })
                           : ""}
                     </Button>
                   ))}
@@ -973,33 +1069,40 @@ export function ResearchView({
                   <div className="research-providerbar">
                     {threadSelectionLoadError ? (
                       <>
-                        <span className="warn-text tiny">無法確認此對話上次使用的模型；目前不會自動 fallback。</span>
+                        <span className="warn-text tiny">
+                          {researchT(($) => $.workspace.threadModelUnknown)}
+                        </span>
                         <Button
                           size="compact"
                           tone="ghost"
                           onClick={() => setThreadSelectionRequestVersion((version) => version + 1)}
                         >
-                          重新確認模型
+                          {researchT(($) => $.workspace.reverifyModel)}
                         </Button>
                       </>
                     ) : (
-                      <span className="muted tiny">正在確認此對話上次成功使用的模型…</span>
+                      <span className="muted tiny">
+                        {researchT(($) => $.workspace.verifyingThreadModel)}
+                      </span>
                     )}
                   </div>
                 )}
                 {provider && (
                   <div className="research-pickerbar">
                     <label className="research-pick">
-                      <span className="muted tiny">模型</span>
+                      <span className="muted tiny">
+                        {researchT(($) => $.workspace.modelLabel)}
+                      </span>
                       <select
                         value={selModel}
-                        aria-label="模型"
+                        aria-label={researchT(($) => $.workspace.modelAria)}
                         onChange={(event) => chooseModel(event.target.value)}
                         disabled={!!state.pending}
                       >
                         {selectedModelMissing && (
                           <option value={selModel} disabled>
-                            {selModel} · 此登入未顯示
+                            {selModel}{" "}
+                            {researchT(($) => $.workspace.notVisibleToCredential)}
                           </option>
                         )}
                         {modelGroups.map((group) => (
@@ -1010,9 +1113,14 @@ export function ResearchView({
                                 value={entry.id}
                                 disabled={!!entry.disabledReason}
                               >
-                                {entry.label}
+                                {modelEntryLabel(entry.baseLabel, entry.compatibility, commonT)}
                                 {entry.disabledReason || entry.reason_code
-                                  ? ` · ${modelReasonLabel(entry.disabledReason ?? entry.reason_code ?? "")}`
+                                  ? researchT(($) => $.workspace.modelReasonSummary, {
+                                      reason: modelReasonLabel(
+                                        entry.disabledReason ?? entry.reason_code ?? "",
+                                        commonT,
+                                      ),
+                                    })
                                   : ""}
                               </option>
                             ))}
@@ -1021,32 +1129,46 @@ export function ResearchView({
                       </select>
                     </label>
                     <label className="research-pick">
-                      <span className="muted tiny">effort</span>
+                      <span className="muted tiny">
+                        {researchT(($) => $.workspace.effortLabel)}
+                      </span>
                       <select
                         value={selEffort}
-                        aria-label="effort"
+                        aria-label={researchT(($) => $.workspace.effortAria)}
                         aria-invalid={incompleteSelection ? "true" : undefined}
                         onChange={(event) => chooseEffort(event.target.value)}
                         disabled={!!state.pending}
                       >
                         {incompleteSelection ? (
-                          <option value="" disabled>請選擇此模型支援的 effort</option>
+                          <option value="" disabled>
+                            {researchT(($) => $.workspace.chooseSupportedEffort)}
+                          </option>
                         ) : null}
                         {effortChoices.map((o) => (
                           <option key={o.id} value={o.id} disabled={"disabled" in o && o.disabled}>
-                            {o.id === "default" ? "Provider 預設" : o.label ?? o.id}
+                            {o.id === "default"
+                              ? researchT(($) => $.workspace.providerDefault)
+                              : o.label}
                           </option>
                         ))}
                       </select>
                     </label>
                     {pickerEffortNote && <span className="warn-text tiny">{pickerEffortNote}</span>}
-                    {selection?.authLabel && <span className="muted tiny">{selection.authLabel}</span>}
-                    {selection?.billingCopy && <span className="muted tiny">{selection.billingCopy}</span>}
+                    {selectionPresentation?.authLabel && (
+                      <span className="muted tiny">{selectionPresentation.authLabel}</span>
+                    )}
+                    {selectionPresentation?.billingCopy && (
+                      <span className="muted tiny">{selectionPresentation.billingCopy}</span>
+                    )}
                     {selection?.state === "blocked" && (
-                      <span className="warn-text tiny">{selection.reasonLabel}</span>
+                      <span className="warn-text tiny">
+                        {selectionPresentation?.reasonLabel ?? selection.reasonCode}
+                      </span>
                     )}
                     {incompleteSelection ? (
-                      <span className="warn-text tiny">此模型不支援已選 effort，請明確選擇新的 effort。</span>
+                      <span className="warn-text tiny">
+                        {researchT(($) => $.workspace.unsupportedSelectedEffort)}
+                      </span>
                     ) : null}
                     {(selection?.state === "blocked" || incompleteSelection) && onNavigate ? (
                       <Button
@@ -1054,12 +1176,12 @@ export function ResearchView({
                         tone="secondary"
                         onClick={() => onNavigate({ kind: "settings_section", section: "models" })}
                       >
-                        前往模型設定
+                        {researchT(($) => $.workspace.modelSettingsAction)}
                       </Button>
                     ) : null}
                     {stanceEnabled && (
                       <label className="tiny">
-                        立場
+                        {researchT(($) => $.workspace.stance)}
                         <select value={runStance} onChange={(e) => setRunStance(e.target.value as AssistantStance)} disabled={!!state.pending}>
                           {(["off", "neutral", "aligned", "complementary", "strict_risk_control", "valuation_rationalist", "growth_opportunity"] as AssistantStance[]).map((s) => (
                             <option key={s} value={s}>{stanceLabel(s, commonT)}</option>
@@ -1072,14 +1194,14 @@ export function ResearchView({
                 <div className="research-inputrow">
                   <input
                     className="news-ticker"
-                    placeholder="Ticker（選填）"
+                    placeholder={researchT(($) => $.workspace.tickerPlaceholder)}
                     value={tickerInput}
                     onChange={(e) => setTickerInput(e.target.value)}
                     disabled={Boolean(currentThread?.archived_at)}
                   />
                   <textarea
                     className="research-textarea"
-                    placeholder="輸入問題…（Enter 送出，Shift+Enter 換行）"
+                    placeholder={researchT(($) => $.workspace.questionPlaceholder)}
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                     onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }}
@@ -1097,7 +1219,7 @@ export function ResearchView({
                       || (!!state.activeThreadId && transcriptPendingThreadId === state.activeThreadId)
                     }
                   >
-                    送出
+                    {researchT(($) => $.workspace.submit)}
                   </Button>
                 </div>
               </>
@@ -1153,13 +1275,14 @@ function Bubble({
   canRetry?: boolean;
   onRetry?: () => void;
 }) {
+  const { t: researchT } = useTranslation("research");
   const { t: commonT } = useTranslation("common");
   const error = m.role === "assistant" && (m.isError || m.maxTurns)
     ? presentResearchError({
         code: m.errorCode ?? (m.maxTurns ? "tool_limit_reached" : null),
         detail: m.errorDetail ?? m.content,
         developerMode,
-      })
+      }, researchT)
     : null;
   const personalizationSummary = traceSummary(m.personalization, commonT);
   const cls = `research-bubble ${m.role}${error ? ` ${error.state}` : ""}`;
@@ -1168,8 +1291,16 @@ function Bubble({
       {m.role === "assistant" && (m.model || m.maxTurns) && (
         <div className="research-bubble-meta muted tiny">
           {m.model && <span className="research-model">{m.provider}/{m.model}{m.effort && m.effort !== "default" ? ` · ${m.effort}` : ""}</span>}
-          {m.maxTurns && <span className="research-maxturns"> · 已達工具呼叫上限</span>}
-          {typeof m.elapsed_seconds === "number" && <span> · {m.elapsed_seconds.toFixed(1)}s</span>}
+          {m.maxTurns && (
+            <span className="research-maxturns">
+              {" "}{researchT(($) => $.workspace.toolLimitReached)}
+            </span>
+          )}
+          {typeof m.elapsed_seconds === "number" && (
+            <span>
+              {" · "}{m.elapsed_seconds.toFixed(1)}{researchT(($) => $.workspace.secondsSuffix)}
+            </span>
+          )}
           {personalizationSummary && <span> · {personalizationSummary}</span>}
         </div>
       )}
@@ -1184,19 +1315,28 @@ function Bubble({
           // stay literal text (don't reinterpret a raw question or error string).
           <MarkdownView source={m.content} />
         ) : (
-          m.content || (m.role === "assistant" ? "（空回應）" : "")
+          m.content || (m.role === "assistant"
+            ? researchT(($) => $.workspace.emptyResponse)
+            : "")
         )}
       </div>
       {error?.developerDetail ? (
         <details className="research-diagnostic">
-          <summary>診斷細節</summary>
+          <summary>{researchT(($) => $.workspace.diagnosticDetails)}</summary>
           <pre>{error.developerDetail}</pre>
         </details>
       ) : null}
       {m.tickers && m.tickers.length > 0 && (
         <div className="research-bubble-tickers">
           {m.tickers.map((t) => (
-            <button key={t} className="news-ticker-chip" onClick={() => onOpenTicker(t)} title={`開啟 ${t}`}>{t}</button>
+            <button
+              key={t}
+              className="news-ticker-chip"
+              onClick={() => onOpenTicker(t)}
+              title={researchT(($) => $.workspace.openThreadAria, { title: t })}
+            >
+              {t}
+            </button>
           ))}
         </div>
       )}
@@ -1207,7 +1347,7 @@ function Bubble({
             tone="ghost"
             onClick={(event) => onInspect(event.currentTarget)}
           >
-            查看證據
+            {researchT(($) => $.workspace.viewEvidence)}
           </Button>
           {error?.actionLabel && error.target && onNavigate ? (
             <Button size="compact" tone="secondary" onClick={() => onNavigate(error.target!)}>
@@ -1219,9 +1359,9 @@ function Bubble({
               size="compact"
               tone="secondary"
               onClick={onRetry}
-              title="保留同一對話上下文，排除最後失敗回合後重試"
+              title={researchT(($) => $.workspace.retryFailedTurnAria)}
             >
-              重試
+              {researchT(($) => $.workspace.retry)}
             </Button>
           ) : null}
         </div>
@@ -1231,15 +1371,18 @@ function Bubble({
 }
 
 export function PendingAssistantBubble({ pending }: { pending: PendingTurn }) {
+  const { t: researchT } = useTranslation("research");
   const provider = pending.provider as ProviderId;
-  const presentation = PRESENTATION[provider];
-  const providerLabel = presentation?.label ?? pending.provider;
+  const behavior = PROVIDER_BEHAVIOR[provider];
+  const pendingProviderLabel = providerLabel(pending.provider, researchT);
   const hasInterimText = pending.interimText.length > 0;
   const status = hasInterimText
-    ? "生成中…"
-    : presentation?.trace_mode === "post_run"
-      ? `${providerLabel} 執行中，完成後一次顯示工具追蹤…`
-      : "思考中…";
+    ? researchT(($) => $.workspace.generating)
+    : behavior?.traceMode === "post_run"
+      ? researchT(($) => $.workspace.providerRunning, {
+          providerLabel: pendingProviderLabel,
+        })
+      : researchT(($) => $.workspace.thinking);
 
   return (
     <div className="research-bubble assistant pending">
