@@ -9,7 +9,7 @@
 > `superpowers:verification-before-completion` before any passing or complete
 > claim. Track every step with the checkbox syntax below.
 
-> **Status: CLEARED FOR IMPLEMENTATION — INDEPENDENT PLAN REVIEW GREEN**
+> **Status: IMPLEMENTED — INDEPENDENT IMPLEMENTATION REVIEW PENDING**
 >
 > The combined design received independent full-document GREEN against docs
 > tip `78f0d074f99f63a2a832c35352fdd6ba9f76192c`. Independent review has
@@ -1510,7 +1510,7 @@ formatter inventory doc, and this plan evidence ledger.
 **Files:** this plan evidence ledger only unless a reviewed stop-and-amend is
 required. Freeze product before requesting review.
 
-- [ ] **Step 1: Prove two exact frontend node comparisons**
+- [x] **Step 1: Prove two exact frontend node comparisons**
 
   In virgin archives with the same hoisted `node_modules`, list and sort test
   nodes for base, `TRANCHE_A_TIP`, and final product tip. Require:
@@ -1524,13 +1524,13 @@ required. Freeze product before requesting review.
   The only removals are the two named resource-count nodes. Hash each
   full/add/remove list. Any other removal/rename is a stop condition.
 
-- [ ] **Step 2: Run exact focused suites**
+- [x] **Step 2: Run exact focused suites**
 
   Require A focused `24/305` at `TRANCHE_A_TIP` and B focused `15/232` at
   final. Also run final A focused unchanged against final to prove B did not
   regress frozen A behavior.
 
-- [ ] **Step 3: Run canonical frontend gates**
+- [x] **Step 3: Run canonical frontend gates**
 
   ```bash
   cd apps/arkscope-web
@@ -1547,7 +1547,7 @@ required. Freeze product before requesting review.
   Require final `94/1048`, scanner `36/20/0/20`, `src/**`, no-PG
   `ok:true`/`pg_attempts:[]`, and only the existing build warning.
 
-- [ ] **Step 4: Prove protected bytes and exact exceptions**
+- [x] **Step 4: Prove protected bytes and exact exceptions**
 
   Compare all protected groups to `93cda668`. Require all default groups
   byte-identical, `api.ts` exactly the five-symbol deletion, and no B diff in
@@ -1563,7 +1563,7 @@ required. Freeze product before requesting review.
   unchanged; any other formatter-specific delta is a stop condition. Hash the
   scanner tool at A and final so final narrowing cannot erase A evidence.
 
-- [ ] **Step 5: Run Tranche B bilingual responsive matrix**
+- [x] **Step 5: Run Tranche B bilingual responsive matrix**
 
   Use an isolated fake-backed sidecar/Vite/CDP environment, temporary DBs,
   scheduler disabled, and no production profile or paid Provider. Run Holdings,
@@ -1579,7 +1579,7 @@ required. Freeze product before requesting review.
   a 960 failure additionally requires that surface's `959/960/961` three-run
   evidence after repair.
 
-- [ ] **Step 6: Exercise locale-switch preservation and privacy**
+- [x] **Step 6: Exercise locale-switch preservation and privacy**
 
   Across A and B prove same node identity, draft/input/filter/expansion/dialog/
   drawer state, focus, practical scroll anchor, active polling/run state, and
@@ -1588,20 +1588,20 @@ required. Freeze product before requesting review.
   normal mode shows none and Developer Mode shows only reviewed structured
   facts.
 
-- [ ] **Step 7: Exercise AppRecords absence and selector absence**
+- [x] **Step 7: Exercise AppRecords absence and selector absence**
 
   Prove no reachable UI/import/API client symbol remains, backend/offline
   capability is untouched, and no locale selector/placeholder appears.
   Production `ui_locale` remains absent before and after normal zh-Hant smoke.
 
-- [ ] **Step 8: Inspect screenshots and clean isolated artifacts**
+- [x] **Step 8: Inspect screenshots and clean isolated artifacts**
 
   Record locale, viewport, surface, state, dimensions, request counts, focused
   node, source hashes, and screenshot paths. Inspect every image. Stop all
   processes, prove ports refuse connection, and remove temporary profiles, DBs,
   source-bearing screenshots, and harness files.
 
-- [ ] **Step 9: Freeze product and commit evidence docs only**
+- [x] **Step 9: Freeze product and commit evidence docs only**
 
   Record `TRANCHE_A_TIP`, final product tip, all hashes/counts, runtime results,
   and deviations in this plan. Commit docs only after product freeze:
@@ -1612,6 +1612,89 @@ required. Freeze product before requesting review.
   ```
 
   No product change after the frozen tip inherits independent review.
+
+### Task 10 review-ready evidence
+
+- Final product/test/tooling tip is
+  `20666d33f440fb06ec3e85ce2367674db3685ef9`. The preceding docs-only
+  deviation authority is `dd6a37fc`; no product byte changed after the final
+  runtime and canonical gates below.
+- Test lists were normalized as
+  `relative-test-path<TAB>full-node-name<LF>`. Full-list SHA-256 values are:
+  base `d3cbae7499f3a72ee490e0e20278463d39ba354deb9d8fa151b79e3bdd0841a7`
+  (`944`), A
+  `79da014adc02c094605ecb6b069e0333be87ebc3b2c54bca86f421f7ee8f9b3a`
+  (`987`), and final
+  `b26eee9d7c22acc3e34d0e7922737f426dcf793cf4e4108bd92c752d24f78775`
+  (`1048`). Base-to-A is exactly `+45/-2` with add hash
+  `97bfbe88584ed369d986134784d4180d079f74ec9c39c5f29a75b5cc208c88dd`
+  and remove hash
+  `a7d1d1be8dcd2f8ab04e7ead892a6b9c4f3ea3930e52cd9e03c8ec19497ada8b`.
+  A-to-final is exactly `+61/-0`, add hash
+  `1b2fe1dff62dd2e30c9e681d029cb806052585d2505872c36a59bba9c6502ea4`,
+  and the empty-list hash
+  `01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b`.
+  Base-to-final is `+106/-2`, add hash
+  `496e3546ba73212401e24dac1813ab807f3484fb3607e16820da3047fc679f13`.
+  The only removals remain the two reviewed resource-count nodes.
+- Final focused and canonical suites are green: frozen A `24/305`, B
+  `15/232`, Shell CSS `10/10`, and full frontend `94/1048`. Typecheck is
+  clean. Production build is clean except for the established chunk-size
+  warning. No-PG smoke reports `ok:true` and `pg_attempts:[]`.
+- The final scanner ran twice with byte-identical
+  `36/20/0/20`, scope `src/**`; canonical result SHA-256 is
+  `f49e0a7bd73b68fc9846324f2ec60d881ea248b549b092b606f52395e616b85d`.
+  Final manifest hashes are debt
+  `d6eaaf3e70bd344e8c3bd2d89dcc9818081e2735db9191d31dd5757246868cec`,
+  unchanged allowlist
+  `3b397a21ab7f8a1cd37819ae55d892e26f1946dc3c791aebf28d2eba2577c212`,
+  and scopes
+  `02e335bebcadfba523d502a7af86a5c184d1ac024230cfec9199dd19b4416c13`.
+  The scanner-tool SHA-256 evolves from A
+  `130414b042edebc53558d48f51837485115c2278bfb2eaed8f2ebeb669925ed8`
+  to final
+  `c22c7e784c6f1c25587a980ca7b441658f58632a004d117985e765cad70fb8da`;
+  the exact diff is only B's reviewed calibration-transport and
+  `broker_day_gap` machine-operand classifiers.
+- Protected root backend/data/test, desktop, extension, package, Shell,
+  primitive, and Settings CSS groups are byte-identical to product base.
+  Frozen A product owners are byte-identical from `TRANCHE_A_TIP` to final
+  except deviation 4's exact `styles.css` Holdings hunk. Base-to-final
+  `styles.css` has only deviations 1 and 4; `api.ts` has only the reviewed
+  three-interface/two-wrapper AppRecords deletion. All six frontend symbols
+  have zero references. Task 9 versus its Task 8 input changes only scanner
+  manifests/boundary tests and the formatter inventory; the only
+  base-to-final formatter helper exception remains the reviewed localized
+  unknown fallback in `PortfolioActivity`.
+- Deviation 4 has a true RED witness: the new named Shell CSS node failed while
+  the other nine passed. The first label-only contract then passed statically
+  but the full runtime matrix correctly remained red, exposing the action-row
+  intrinsic-width owner. The reviewed row/label/select contract produced
+  `10/10` and reduced the `390x844` Holdings control from `434px` to the
+  available viewport width without truncating source labels or adding a
+  breakpoint/fixed width. Independent narrow deviation review returned GREEN
+  with zero finding.
+- Final isolated runtime evidence identifies the exact final product tip and
+  records `36` cases, `72` screenshots, and `1188/1188` boolean checks across
+  six surfaces, both locales, and all six viewports. It reports zero finding,
+  unchanged production-profile metadata, unchanged temporary Portfolio DB
+  bytes, local-only network traffic, no paid Provider request, and closed
+  sidecar/Vite/CDP ports. Evidence JSON SHA-256 is
+  `81525c6223b70739c5977371afc7bcbe5b6081ac64c17f34bfba7c4635341eab`;
+  the sorted screenshot ledger SHA-256 is
+  `386cbb10cf959c96970523fcca61a644d4478ed1aa54aeed93323a8f2fb51255`.
+  Six surface contact sheets plus an enlarged `390x844` sheet were inspected;
+  no clipping, overlap, truncation, incoherent reflow, or source mutation was
+  observed.
+- Harness failures are retained as diagnostics, not product findings: the
+  first run could not resolve Vite from `/tmp`; two Activity runs exposed
+  missing React mount waits; and the first complete run used transient
+  error/detail nodes as reading-position anchors. Those harness defects were
+  corrected without touching product. The complete run then isolated the real
+  Holdings overflow and, after the reviewed fix, passed in full.
+- `profile_settings.ui_locale` remains absent by immutable read-only query
+  before and after the normal zh-Hant/runtime work. AppRecords UI and public
+  locale selector remain absent. `git diff --check` is clean.
 
 ---
 
