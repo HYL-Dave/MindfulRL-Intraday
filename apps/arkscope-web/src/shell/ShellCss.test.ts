@@ -50,6 +50,16 @@ describe("responsive application shell CSS", () => {
     expect(primary).toMatch(/flex-wrap:\s*wrap/);
   });
 
+  it("lets Research conversation titles wrap without truncating source content", () => {
+    const title = cssBlock(legacyCss, ".research-conversation-title");
+
+    expect(title).not.toMatch(/overflow:\s*hidden/);
+    expect(title).not.toMatch(/text-overflow:\s*ellipsis/);
+    expect(title).not.toMatch(/white-space:\s*nowrap/);
+    expect(title).toMatch(/white-space:\s*normal/);
+    expect(title).toMatch(/overflow-wrap:\s*anywhere/);
+  });
+
   it("stacks narrow surface chrome before localized copy collapses", () => {
     const narrow = cssBlock(legacyCss, "@media (max-width: 760px)");
     const surfaceHead = cssBlock(narrow, ".surface-head");

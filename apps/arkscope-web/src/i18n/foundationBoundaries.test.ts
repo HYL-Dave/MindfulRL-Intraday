@@ -62,6 +62,16 @@ const TASK_1_MODEL_SCOPES = [
   "src/modelRoutingUx.ts",
 ];
 
+const TRANCHE_A_RESEARCH_SCOPES = [
+  "src/Research.tsx",
+  "src/ResearchHistoryDrawer.tsx",
+  "src/ResearchEvidenceDrawer.tsx",
+  "src/ResearchRunProgress.tsx",
+  "src/researchErrors.ts",
+  "src/researchSelection.ts",
+  "src/researchReducer.ts",
+];
+
 const ARKSCOPE_ALLOWLIST_ENTRY = {
   file: "src/shell/ShellTopBar.tsx",
   kind: "jsx_text",
@@ -297,8 +307,9 @@ describe("I18N-0 foundation boundaries", () => {
       ...SLICE_5_MIGRATED_SCOPES,
       ...I18N_3_EXPLORE_SCOPES,
       ...TASK_1_MODEL_SCOPES,
+      ...TRANCHE_A_RESEARCH_SCOPES,
     ]);
-    expect(migrated.scopes).toHaveLength(41);
+    expect(migrated.scopes).toHaveLength(48);
     expect(allowlist.entries).toEqual([
       ARKSCOPE_ALLOWLIST_ENTRY,
       ...I18N_2_SETTINGS_ALLOWLIST_ENTRIES,
@@ -311,7 +322,8 @@ describe("I18N-0 foundation boundaries", () => {
       const [file] = JSON.parse(signature) as [string];
       return ownsSettingsDebt(file)
         || ownsExploreDebt(file)
-        || TASK_1_MODEL_SCOPES.includes(file);
+        || TASK_1_MODEL_SCOPES.includes(file)
+        || TRANCHE_A_RESEARCH_SCOPES.includes(file);
     });
     expect(ownedDebt).toEqual([]);
   });

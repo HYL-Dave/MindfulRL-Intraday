@@ -41,6 +41,13 @@
     "src/personalizationDisplay.ts",
     "src/explore/**",
     "src/modelPicker.ts",
-    "src/modelRoutingUx.ts"
+    "src/modelRoutingUx.ts",
+    "src/Research.tsx",
+    "src/ResearchHistoryDrawer.tsx",
+    "src/ResearchEvidenceDrawer.tsx",
+    "src/ResearchRunProgress.tsx",
+    "src/researchErrors.ts",
+    "src/researchSelection.ts",
+    "src/researchReducer.ts"
   ]
 }

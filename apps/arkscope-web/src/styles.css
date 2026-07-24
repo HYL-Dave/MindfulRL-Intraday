@@ -2583,9 +2583,8 @@ a.news-title:hover { color: var(--accent); text-decoration: underline; }
 .research-conversation-title {
   margin: 0;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
   font-size: 15px;
   line-height: 1.35;
   letter-spacing: 0;
