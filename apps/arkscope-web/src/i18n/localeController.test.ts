@@ -149,6 +149,29 @@ describe("locale controller", () => {
       expect(writeCache).not.toHaveBeenCalled();
       expect(JSON.stringify(controller.getSnapshot())).not.toContain("secret");
     }
+
+    const put = vi.fn()
+      .mockRejectedValueOnce(new Error("PLANTED_PRIVATE_WRITE_FAILURE"))
+      .mockResolvedValueOnce(response("en"));
+    const { controller, applyLocale, writeCache } = harness({
+      get: vi.fn(),
+      put,
+    });
+
+    await expect(controller.setLocale("en")).resolves.toBe(false);
+    expect(controller.getSnapshot().errorCode).toBe("write_failed");
+    await expect(controller.setLocale("en")).resolves.toBe(true);
+    expect(controller.getSnapshot()).toEqual({
+      locale: "en",
+      busy: false,
+      errorCode: null,
+    });
+    expect(applyLocale.mock.calls.map(([locale]) => locale)).toEqual([
+      "en",
+      "zh-Hant",
+      "en",
+    ]);
+    expect(writeCache.mock.calls.map(([locale]) => locale)).toEqual(["en"]);
   });
 
   it("prevents overlapping locale writes", async () => {

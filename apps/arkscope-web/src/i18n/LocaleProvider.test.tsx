@@ -140,11 +140,17 @@ describe("LocaleProvider", () => {
       setter.call(input, "kept value");
       input.dispatchEvent(new Event("input", { bubbles: true }));
     });
+    input.dataset.identity = "preserved";
+    input.focus();
+    const originalInput = input;
     await act(async () => host!.querySelector("button")!.click());
     await act(async () => pendingPut.resolve({ locale: "en", source: "stored" }));
 
     expect(host!.querySelector("span")?.textContent).toBe("en");
-    expect(host!.querySelector("input")?.value).toBe("kept value");
+    expect(host!.querySelector("input")).toBe(originalInput);
+    expect(originalInput.dataset.identity).toBe("preserved");
+    expect(originalInput.value).toBe("kept value");
+    expect(document.activeElement).toBe(originalInput);
     expect(mounts).toHaveBeenCalledOnce();
   });
 });
