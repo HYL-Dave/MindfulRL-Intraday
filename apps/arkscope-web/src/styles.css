@@ -2309,6 +2309,19 @@ button.wl-railitem.active,
 .portfolio-holdings-primary {
   min-width: 0;
 }
+.portfolio-holdings-filter-row {
+  min-width: 0;
+  max-width: 100%;
+}
+.portfolio-holdings-account-filter {
+  min-width: 0;
+  max-width: 100%;
+}
+.portfolio-holdings-account-filter select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
 .portfolio-holdings-layout[data-has-recent="true"] {
   display: grid;
   grid-template-columns: minmax(0,1fr) minmax(260px,320px);

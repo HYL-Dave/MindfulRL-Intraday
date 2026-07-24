@@ -11,6 +11,7 @@ const legacyCss = source("src/styles.css");
 const primitiveCss = source("src/ui/primitives.css");
 const mainSource = source("src/main.tsx");
 const appSource = source("src/App.tsx");
+const holdingsSource = source("src/Holdings.tsx");
 const shellSources = [
   "src/shell/ShellNavigation.tsx",
   "src/shell/ShellTopBar.tsx",
@@ -58,6 +59,22 @@ describe("responsive application shell CSS", () => {
     expect(title).not.toMatch(/white-space:\s*nowrap/);
     expect(title).toMatch(/white-space:\s*normal/);
     expect(title).toMatch(/overflow-wrap:\s*anywhere/);
+  });
+
+  it("bounds the Holdings account filter against long source labels", () => {
+    const row = cssBlock(legacyCss, ".portfolio-holdings-filter-row");
+    const label = cssBlock(legacyCss, ".portfolio-holdings-account-filter");
+    const select = cssBlock(legacyCss, ".portfolio-holdings-account-filter select");
+
+    expect(holdingsSource).toContain('className="ui-action-row portfolio-holdings-filter-row"');
+    expect(holdingsSource).toContain('className="muted tiny portfolio-holdings-account-filter"');
+    expect(row).toMatch(/min-width:\s*0/);
+    expect(row).toMatch(/max-width:\s*100%/);
+    expect(label).toMatch(/min-width:\s*0/);
+    expect(label).toMatch(/max-width:\s*100%/);
+    expect(select).toMatch(/width:\s*100%/);
+    expect(select).toMatch(/min-width:\s*0/);
+    expect(select).toMatch(/max-width:\s*100%/);
   });
 
   it("stacks narrow surface chrome before localized copy collapses", () => {

@@ -531,8 +531,8 @@ export function HoldingsView() {
           <section className="ui-section-band">
             <div className="ui-section-head">
               <h2>{portfolioT(($) => $.holdings.surface.positionsTitle)}</h2>
-              <div className="ui-action-row">
-                <label className="muted tiny">
+              <div className="ui-action-row portfolio-holdings-filter-row">
+                <label className="muted tiny portfolio-holdings-account-filter">
                   <span>{portfolioT(($) => $.holdings.surface.accountFilterLabel)}</span>
                   <select
                     aria-label={portfolioT(($) => $.holdings.surface.accountFilterAria)}
