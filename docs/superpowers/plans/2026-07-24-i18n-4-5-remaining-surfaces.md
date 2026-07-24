@@ -90,6 +90,45 @@ focused-suite, and file-boundary accounting are unchanged.
 
 ---
 
+## Task 0 Evidence
+
+- `PLAN_REVIEW_CLEARANCE_COMMIT`:
+  `d05bf833b92e325afd0a4c606d327b6a8c402195`.
+- Isolated branch/worktree: `codex/i18n-4-5-remaining-surfaces` at the clearance
+  commit. The linked worktree received the existing repository `git-crypt` key
+  before `git read-tree -mu HEAD`; the protected evaluation document then read
+  as `47,608` bytes.
+- Frontend baseline: `90 files / 944 nodes`, all green. Sorted node-list
+  SHA-256: `854974cb302ead688e72f8bb04a4cd85746e954a98234f0240d55a9ecdb2be86`.
+- Tranche A focused baseline: `21 files / 263 nodes`, all green. Sorted
+  focused-list SHA-256:
+  `76fb12afdca97cf08b6103d68a66d11eed43d2ec71a7b17026c3b9bf988784c0`.
+- Backend baseline: `4621` nodes collected with only the four established
+  collection/deprecation warnings.
+- Typecheck passed. Production build passed with only the established chunk
+  size warning.
+- Scanner ran twice with exact `703/656/637/20` and 39 scopes. Both output
+  files had SHA-256
+  `539fc0b4eec50c08e3cc93ff10696ab7101372187d9500566aebd9002204cde8`.
+- Scanner manifests at baseline:
+  - debt `bab538b3d57b8fb020a8aa6d1253377e6daec32d3d44a0b44974dac75bb3e3ee`;
+  - allowlist `3b397a21ab7f8a1cd37819ae55d892e26f1946dc3c791aebf28d2eba2577c212`;
+  - scopes `677345581c6c34b2503ec145fb674001876de7e2bc8f51081d79a9934dbefda8`.
+- A direct source scan reconciled manifest `637/668` to current source
+  `636/667` with exactly one stale debt entry. Per-file aggregation reproduced
+  A `230/242`, reachable B `374/393`, AppRecords `30/30`, and `api.ts` `3/3`.
+  The 22 reviewed missed headers/tuple labels were each present; no extra value
+  was admitted.
+- Product selector wiring remains absent. A read-only production DB query found
+  zero `profile_settings.ui_locale` rows.
+- Protected base tree/blob identities were captured against `93cda668`,
+  including root `src` `f02b086e`, `data_sources` `68108409`, tests
+  `e0a987ac`, desktop `1e8a0d6f`, extensions `dacd223b`, and the four CSS
+  blobs `b763608a`/`80cbacf2`/`d92000dc`/`4ba943d0`. `git diff --check`
+  passed.
+
+---
+
 ## Grounded Baseline
 
 Reproduce these values in the cleared worktree before any product edit:
@@ -671,19 +710,19 @@ Compare all protected paths to product base `93cda668`, not the docs tip.
 
 **Files:** docs only until the plan is independently cleared.
 
-- [ ] **Step 1: Incorporate independent plan-review findings without product edits**
+- [x] **Step 1: Incorporate independent plan-review findings without product edits**
 
   Update this plan's review-resolution section, exact ledgers, and status. A
   finding that changes product scope, scanner arithmetic, resource counts, or
   test-node accounting requires re-review rather than an informal note.
 
-- [ ] **Step 2: Record the clearance commit**
+- [x] **Step 2: Record the clearance commit**
 
   Commit the docs-only cleared plan and record its full hash as
   `PLAN_REVIEW_CLEARANCE_COMMIT`. Product implementation starts from that docs
   commit, while behavioral A/B remains anchored to `93cda668`.
 
-- [ ] **Step 3: Create the isolated implementation worktree**
+- [x] **Step 3: Create the isolated implementation worktree**
 
   Use `superpowers:using-git-worktrees` and create branch
   `codex/i18n-4-5-remaining-surfaces` from the clearance commit. Do not edit
@@ -691,7 +730,7 @@ Compare all protected paths to product base `93cda668`, not the docs tip.
   virgin archive used for comparison; do not run dependency installation that
   changes lockfiles.
 
-- [ ] **Step 4: Reproduce exact baselines from a clean tree**
+- [x] **Step 4: Reproduce exact baselines from a clean tree**
 
   Run:
 
@@ -714,18 +753,18 @@ Compare all protected paths to product base `93cda668`, not the docs tip.
   and sorted frontend node list. Build may emit only the existing chunk-size
   warning.
 
-- [ ] **Step 5: Reconcile source and debt inventories**
+- [x] **Step 5: Reconcile source and debt inventories**
 
   Prove the ceiling partition `230+374+30+3=637`, source `636/667`, A
   `230/242`, and the exact 22 scanner-missed values. Any drift stops work.
 
-- [ ] **Step 6: Capture protected-byte baselines**
+- [x] **Step 6: Capture protected-byte baselines**
 
   Hash or archive the exact protected groups above. Confirm the product
   selector is absent and a read-only production query still finds no
   `profile_settings.ui_locale`. Do not write production data.
 
-- [ ] **Step 7: Commit Task 0 evidence docs only**
+- [x] **Step 7: Commit Task 0 evidence docs only**
 
   ```bash
   git add docs/superpowers/plans/2026-07-24-i18n-4-5-remaining-surfaces.md
