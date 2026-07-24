@@ -314,8 +314,8 @@ const portfolio = {
     "alerts": {
       "archivedActivityTitle": "Archived accounts have new activity",
       "reviewTitle": "Review required",
-      "archivedActivityMessage": "{{count}} archived accounts have new observations and were not automatically restored.",
-      "newAccounts": "Found {{count}} new accounts."
+      "archivedActivityMessage": "Archived accounts with new observations: {{count}}. They were not automatically restored.",
+      "newAccounts": "New accounts found: {{count}}."
     },
     "runs": {
       "tableAria": "Holdings sync records",
@@ -349,8 +349,8 @@ const portfolio = {
       "metricDailyRealized": "Today's realized P&L (ET)",
       "metricDailyUnrealized": "Today's unrealized P&L (ET)",
       "metricDailyTotal": "Today's total P&L (realized + unrealized, ET)",
-      "brokerObservedPrefix": "Broker observed:",
-      "canonicalSyncPrefix": "Local holdings approval / sync:",
+      "brokerObservedLine": "Broker observed: {{timestamp}}",
+      "canonicalSyncLine": "Local holdings approval / sync: {{timestamp}}",
       "includeAccountAria": "Include {{account}} in totals",
       "includeAccountLabel": "Include in totals",
       "manualSubtotalTitle": "Manual account holdings subtotal",

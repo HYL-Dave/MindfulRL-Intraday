@@ -351,19 +351,28 @@ describe("Portfolio account overview", () => {
       TWD: { position_count: 2, market_value: 10_000, unrealized_pnl: -500 },
     };
     renderSummary(value);
+    const brokerTimestamp = formatSystemTimestamp("2026-07-14T05:00:00+00:00");
+    const canonicalTimestamp = formatSystemTimestamp("2026-07-14T05:01:00+00:00");
     const sourceFacts = [
       "IBKR · hash-one",
       "USD",
       metricValue("Net Liquidation"),
       metricValue("Total Cash"),
-      formatSystemTimestamp("2026-07-14T05:00:00+00:00"),
+      brokerTimestamp,
+      canonicalTimestamp,
     ];
     expect(host!.textContent).toContain("1 筆 · 未實現");
     expect(host!.textContent).toContain("2 筆 · 未實現");
+    expect(host!.textContent).toContain(`Broker 觀察：${brokerTimestamp}`);
+    expect(host!.textContent).toContain(`本地持倉核准 / 同步：${canonicalTimestamp}`);
     await act(async () => { await i18n.changeLanguage("en"); });
     for (const fact of sourceFacts) expect(host!.textContent).toContain(fact);
     expect(host!.textContent).toContain("Positions: 1 · Unrealized");
     expect(host!.textContent).toContain("Positions: 2 · Unrealized");
+    expect(host!.textContent).toContain(`Broker observed: ${brokerTimestamp}`);
+    expect(host!.textContent).toContain(`Local holdings approval / sync: ${canonicalTimestamp}`);
+    expect(host!.textContent).not.toContain(`Broker observed:${brokerTimestamp}`);
+    expect(host!.textContent).not.toContain(`Local holdings approval / sync:${canonicalTimestamp}`);
   });
 
   it("localizes loading empty partial and error states", async () => {

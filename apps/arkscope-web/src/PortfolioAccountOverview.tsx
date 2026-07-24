@@ -87,12 +87,14 @@ export function PortfolioAccountSummary({
 
             <div className="portfolio-account-times">
               <span className="muted tiny">
-                {t(($) => $.accountOverview.surface.brokerObservedPrefix)}
-                {formatSystemTimestamp(snapshot?.as_of_utc)}
+                {t(($) => $.accountOverview.surface.brokerObservedLine, {
+                  timestamp: formatSystemTimestamp(snapshot?.as_of_utc),
+                })}
               </span>
               <span className="muted tiny">
-                {t(($) => $.accountOverview.surface.canonicalSyncPrefix)}
-                {formatSystemTimestamp(account.canonical_last_sync_at)}
+                {t(($) => $.accountOverview.surface.canonicalSyncLine, {
+                  timestamp: formatSystemTimestamp(account.canonical_last_sync_at),
+                })}
               </span>
             </div>
             <label className="muted tiny">

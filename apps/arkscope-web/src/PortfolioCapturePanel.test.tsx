@@ -1036,11 +1036,15 @@ describe("Portfolio capture", () => {
   it("renders schedule run and review chrome in both locales", async () => {
     const singularRun = run({
       id: 72,
+      new_account_count: 1,
+      archived_activity_count: 2,
       inserted_execution_count: 1,
       inserted_commission_count: 1,
     });
     const pluralRun = run({
       id: 71,
+      new_account_count: 2,
+      archived_activity_count: 1,
       inserted_execution_count: 2,
       inserted_commission_count: 3,
     });
@@ -1075,6 +1079,8 @@ describe("Portfolio capture", () => {
     expect(host!.textContent).toContain("儲存排程");
     expect(host!.textContent).toContain("待套用差異");
     expect(host!.textContent).toContain("前往設定 > Data Sources > IBKR");
+    expect(host!.textContent).toContain("發現 1 個新帳戶。");
+    expect(host!.textContent).toContain("2 個封存帳戶有新觀察，未自動解除封存。");
     expect(host!.textContent).toContain("1 筆成交 · 1 筆費用");
     expect(host!.textContent).toContain("2 筆成交 · 3 筆費用");
     expect(host!.textContent).not.toContain("&gt;");
@@ -1083,8 +1089,39 @@ describe("Portfolio capture", () => {
     expect(host!.textContent).toContain("Save schedule");
     expect(host!.textContent).toContain("Pending changes");
     expect(host!.textContent).toContain("Go to Settings > Data Sources > IBKR");
+    expect(host!.textContent).toContain("New accounts found: 1.");
+    expect(host!.textContent).toContain(
+      "Archived accounts with new observations: 2. They were not automatically restored.",
+    );
+    expect(host!.textContent).not.toContain("Found 1 new accounts");
+    expect(host!.textContent).not.toContain("2 archived accounts have");
     expect(host!.textContent).toContain("Executions: 1 · Fees: 1");
     expect(host!.textContent).toContain("Executions: 2 · Fees: 3");
+
+    act(() => root!.unmount());
+    root = null;
+    host!.remove();
+    host = null;
+    stubFetch(() => status({
+      settings: {
+        enabled: true,
+        interval_minutes: 15,
+        source: "default",
+        provider_configured: false,
+      },
+      latest_run: pluralRun,
+      recent_runs: [pluralRun],
+    }));
+    await mount();
+    expect(host!.textContent).toContain("New accounts found: 2.");
+    expect(host!.textContent).toContain(
+      "Archived accounts with new observations: 1. They were not automatically restored.",
+    );
+    expect(host!.textContent).not.toContain("Found 2 new accounts");
+    expect(host!.textContent).not.toContain("1 archived accounts have");
+    await act(async () => { await i18n.changeLanguage("zh-Hant"); });
+    expect(host!.textContent).toContain("發現 2 個新帳戶。");
+    expect(host!.textContent).toContain("1 個封存帳戶有新觀察，未自動解除封存。");
   });
 
   it("preserves a poll issue published while settings save is pending without raw detail", async () => {
