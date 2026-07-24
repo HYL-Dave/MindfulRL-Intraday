@@ -5,8 +5,60 @@ import { createInstance } from "i18next";
 import { describe, expect, it } from "vitest";
 
 import { initializeI18n, resourceNamespaces, resources } from "./resources";
-
 type ResourceTree = Record<string, unknown>;
+
+interface PortfolioSourceClaim {
+  signature: string;
+  count: number;
+  claimType: "exact" | "shared_exact" | "plural_exact" | "compound_plural"
+    | "template_prefix" | "template_suffix" | "excluded";
+  path?: string;
+  paths?: string[];
+  reason?: string;
+  sharedContext?: string;
+}
+
+interface PortfolioOwnershipContract {
+  version: 2;
+  sourceClaims: PortfolioSourceClaim[];
+  presenterClaims: Array<{
+    claimType: "presenter";
+    id: string;
+    path: string;
+  }>;
+  referenceClaims: Array<{
+    claimType: "presenter_reference";
+    id: string;
+    path: string;
+    sourceSignature: string;
+  }>;
+}
+
+function normalizePortfolioCopy(value: string): string {
+  const input = value.replaceAll("&amp;", "&").replaceAll("&gt;", ">");
+  let output = "";
+  for (let index = 0; index < input.length;) {
+    if (input.startsWith("{{", index)) {
+      const end = input.indexOf("}}", index + 2);
+      output += "{{value}}";
+      index = end < 0 ? input.length : end + 2;
+    } else if (input.startsWith("${", index)) {
+      let depth = 1;
+      let end = index + 2;
+      while (end < input.length && depth > 0) {
+        if (input[end] === "{") depth += 1;
+        if (input[end] === "}") depth -= 1;
+        end += 1;
+      }
+      output += "{{value}}";
+      index = end;
+    } else {
+      output += input[index];
+      index += 1;
+    }
+  }
+  return output;
+}
 
 function flattenResource(tree: ResourceTree, prefix = ""): Map<string, string> {
   const flattened = new Map<string, string>();
@@ -628,15 +680,21 @@ describe("bundled i18n resources", () => {
   });
 
   it("contains the reviewed remaining-surface namespace inventory in both locales", () => {
+    const portfolioResourceOwnership = JSON.parse(readFileSync(resolve(
+      import.meta.dirname,
+      "../../scripts/i18n/fixtures/portfolio-resource-ownership.json",
+    ), "utf8")) as PortfolioOwnershipContract;
     const expectedCounts = {
       common: 56,
       shell: 37,
       settings: 679,
       research: 207,
       explore: 401,
+      portfolio: 373,
     } as const;
 
     expect(resourceNamespaces).toEqual(Object.keys(expectedCounts));
+    const flattenedPortfolioByLocale = new Map<string, Map<string, string>>();
     for (const locale of ["zh-Hant", "en"] as const) {
       const localeResources = resources[locale] as Record<string, unknown>;
       let total = 0;
@@ -649,8 +707,180 @@ describe("bundled i18n resources", () => {
           total += actual;
         }
       }
-      expect(total, `${locale}.total`).toBe(1380);
+      expect(total, `${locale}.total`).toBe(1753);
+
+      const portfolio = flattenResource(localeResources.portfolio as ResourceTree);
+      flattenedPortfolioByLocale.set(locale, portfolio);
+      const expectedPortfolioFamilies = {
+        holdings: 68,
+        activity: 142,
+        capture: 68,
+        accountOverview: 36,
+        recentActivity: 37,
+        tableLabels: 22,
+      } as const;
+      for (const [family, expected] of Object.entries(expectedPortfolioFamilies)) {
+        expect(
+          [...portfolio.keys()].filter((key) => key.startsWith(`${family}.`)),
+          `${locale}.portfolio.${family}`,
+        ).toHaveLength(expected);
+      }
+      expect([...portfolio.keys()].filter((key) => /(?:^|\.)(?:inventory|copy[0-9]+)(?:\.|$)/u.test(key)))
+        .toEqual([]);
     }
+
+    const portfolioSourceFiles = new Map([
+      ["src/Holdings.tsx", "holdings"],
+      ["src/PortfolioActivity.tsx", "activity"],
+      ["src/PortfolioCapturePanel.tsx", "capture"],
+      ["src/PortfolioAccountOverview.tsx", "accountOverview"],
+      ["src/PortfolioRecentActivity.tsx", "recentActivity"],
+    ]);
+    const debt = JSON.parse(readFileSync(resolve(
+      import.meta.dirname,
+      "../../scripts/i18n/visible-literal-debt.json",
+    ), "utf8")) as { signatures: Array<{ signature: string; count: number }> };
+    const manifestEntries = debt.signatures.filter(({ signature }) =>
+      portfolioSourceFiles.has((JSON.parse(signature) as [string, string, string])[0]));
+    expect(portfolioResourceOwnership.version).toBe(2);
+    const ownershipSignatures = portfolioResourceOwnership.sourceClaims.map(({ signature }) => signature);
+    expect(new Set(ownershipSignatures).size).toBe(portfolioResourceOwnership.sourceClaims.length);
+    expect([...ownershipSignatures].sort()).toEqual(manifestEntries.map(({ signature }) => signature).sort());
+    expect(portfolioResourceOwnership.sourceClaims.map(({ signature, count }) => ({ signature, count })))
+      .toEqual(manifestEntries);
+
+    const reviewedExclusions = new Map([
+      ['["src/Holdings.tsx","jsx_attribute","NVDA"]', "holdings-calibration-example"],
+      ['["src/PortfolioActivity.tsx","presenter_return","broker_day_gap"]', "broker-day-gap-machine-operand"],
+      ['["src/PortfolioRecentActivity.tsx","presenter_return","broker_day_gap"]', "broker-day-gap-machine-operand"],
+    ]);
+    expect(portfolioResourceOwnership.sourceClaims.filter((entry) => entry.claimType === "excluded")
+      .map((entry) => [entry.signature, entry.reason]))
+      .toEqual([...reviewedExclusions]);
+
+    const expectedPresenterClaims = [
+      ["operation.holding_create", "holdings.operations.holdingCreate"],
+      ["operation.holding_update", "holdings.operations.holdingUpdate"],
+      ["operation.holding_close", "holdings.operations.holdingClose"],
+      ["operation.overview_load", "accountOverview.operations.overviewLoad"],
+      ["operation.overview_toggle_aggregate", "accountOverview.operations.overviewToggleAggregate"],
+      ["activity.field.quantity", "activity.fields.quantity"],
+      ["activity.field.avg_cost", "activity.fields.avgCost"],
+      ["activity.field.currency", "activity.fields.currency"],
+      ["activity.field.notes", "activity.fields.notes"],
+      ["activity.field.thesis", "activity.fields.thesis"],
+      ["activity.field.tags", "activity.fields.tags"],
+      ["activity.field.market_value", "activity.fields.marketValue"],
+      ["activity.field.unrealized_pnl", "activity.fields.unrealizedPnl"],
+      ["activity.unknown.stable_id", "activity.unknown.stableId"],
+      ["activity.unknown.field", "activity.unknown.field"],
+      ["activity.position_context.complete", "activity.surface.positionContextComplete"],
+      ["activity.gross_notional_kind.deterministic_arithmetic", "activity.surface.grossNotionalKind"],
+      ["developer.code", "capture.diagnostics.code"],
+      ["developer.route", "capture.diagnostics.route"],
+    ];
+    expect(portfolioResourceOwnership.presenterClaims
+      .map(({ claimType, id, path }) => [claimType, id, path]))
+      .toEqual(expectedPresenterClaims.map(([id, path]) => ["presenter", id, path]));
+    const expectedReferenceClaims = [[
+      "developer.status",
+      "capture.surface.runsStateHeader",
+      '["src/PortfolioCapturePanel.tsx","runtime_cjk","狀態"]',
+    ]];
+    expect(portfolioResourceOwnership.referenceClaims
+      .map(({ claimType, id, path, sourceSignature }) => [claimType, id, path, sourceSignature]))
+      .toEqual(expectedReferenceClaims.map(([id, path, sourceSignature]) => [
+        "presenter_reference",
+        id,
+        path,
+        sourceSignature,
+      ]));
+
+    const sourcePathClaims = new Map<string, PortfolioSourceClaim[]>();
+    for (const entry of portfolioResourceOwnership.sourceClaims) {
+      const [sourceFile, kind, sourceCopy] = JSON.parse(entry.signature) as [string, string, string];
+      const isTableLabel = (sourceFile === "src/Holdings.tsx" && kind === "object_property"
+          && ["Account", "Symbol", "Asset", "Qty", "Currency", "Avg Cost", "Market Value", "Notes", "Status"].includes(sourceCopy))
+        || (sourceFile === "src/PortfolioCapturePanel.tsx" && kind === "object_property"
+          && ["Avg Cost", "Market Value", "Unrealized P&L"].includes(sourceCopy))
+        || (sourceFile === "src/PortfolioAccountOverview.tsx"
+          && ((kind === "object_property" && ["Capture Run", "Base Currency"].includes(sourceCopy))
+            || kind === "tuple_column_label"));
+      const expectedFamily = isTableLabel ? "tableLabels" : portfolioSourceFiles.get(sourceFile);
+      if (entry.claimType === "excluded") {
+        expect(reviewedExclusions.has(entry.signature), entry.signature).toBe(true);
+        expect(entry.path).toBeUndefined();
+        expect(entry.paths).toBeUndefined();
+        continue;
+      }
+      const paths = entry.paths ?? (entry.path ? [entry.path] : []);
+      expect(paths.length, entry.signature).toBeGreaterThan(0);
+      if (entry.claimType === "plural_exact") expect(paths).toHaveLength(2);
+      if (entry.claimType === "compound_plural") {
+        expect(entry.signature).toBe('["src/PortfolioRecentActivity.tsx","runtime_cjk","${manualActionLabel(item.action)} · ${item.changes.length} 項欄位"]');
+        expect(paths).toEqual([
+          "recentActivity.surface.manualFact",
+          "recentActivity.fieldCount.one",
+          "recentActivity.fieldCount.other",
+        ]);
+      }
+      if (!["plural_exact", "compound_plural"].includes(entry.claimType)) expect(paths).toHaveLength(1);
+      const normalizedSource = normalizePortfolioCopy(sourceCopy);
+      for (const path of paths) {
+        expect(path.startsWith(`${expectedFamily}.`), `${entry.signature} -> ${path}`).toBe(true);
+        for (const [locale, portfolio] of flattenedPortfolioByLocale) {
+          expect(portfolio.has(path), `${locale}.portfolio.${path}`).toBe(true);
+        }
+        const normalizedResource = normalizePortfolioCopy(flattenedPortfolioByLocale.get("zh-Hant")!.get(path)!);
+        if (["exact", "shared_exact", "plural_exact"].includes(entry.claimType)) {
+          expect(normalizedResource, `${entry.signature} -> ${path}`).toBe(normalizedSource);
+        } else if (entry.claimType === "template_prefix") {
+          expect(normalizedResource.startsWith(normalizedSource), `${entry.signature} -> ${path}`).toBe(true);
+        } else if (entry.claimType === "template_suffix") {
+          expect(normalizedResource.endsWith(normalizedSource), `${entry.signature} -> ${path}`).toBe(true);
+        } else {
+          expect(path === paths[0] ? normalizedResource === normalizedSource : normalizedSource.endsWith(normalizedResource), `${entry.signature} -> ${path}`).toBe(true);
+        }
+        const claims = sourcePathClaims.get(path) ?? [];
+        claims.push(entry);
+        sourcePathClaims.set(path, claims);
+      }
+    }
+    for (const [path, pathClaims] of sourcePathClaims) {
+      const exactClaims = pathClaims.filter(({ claimType }) => claimType === "shared_exact");
+      if (exactClaims.length === 0) continue;
+      expect(exactClaims).toHaveLength(pathClaims.length);
+      expect(new Set(exactClaims.map(({ sharedContext }) => sharedContext))).toEqual(new Set([path]));
+    }
+
+    for (const reference of portfolioResourceOwnership.referenceClaims) {
+      expect(sourcePathClaims.get(reference.path)?.map(({ signature }) => signature))
+        .toContain(reference.sourceSignature);
+      for (const [locale, portfolio] of flattenedPortfolioByLocale) {
+        expect(portfolio.has(reference.path), `${locale}.portfolio.${reference.path}`).toBe(true);
+      }
+    }
+
+    const presenterPaths = new Set(portfolioResourceOwnership.presenterClaims.map(({ path }) => path));
+    expect(new Set(presenterPaths).size).toBe(expectedPresenterClaims.length);
+    expect([...presenterPaths].filter((path) => sourcePathClaims.has(path))).toEqual([]);
+    const allPortfolioPaths = [...flattenedPortfolioByLocale.get("zh-Hant")!.keys()].sort();
+    const claimedPaths = new Set([...sourcePathClaims.keys(), ...presenterPaths]);
+    expect([...claimedPaths].sort()).toEqual(allPortfolioPaths);
+    expect(claimedPaths.size).toBe(373);
+
+    const familyClaimCounts = Object.fromEntries(["holdings", "activity", "capture", "accountOverview", "recentActivity", "tableLabels"]
+      .map((family) => [family, [...claimedPaths].filter((path) => path.startsWith(`${family}.`)).length]));
+    expect(familyClaimCounts).toEqual({
+      holdings: 68,
+      activity: 142,
+      capture: 68,
+      accountOverview: 36,
+      recentActivity: 37,
+      tableLabels: 22,
+    });
+    expect(resources["zh-Hant"].portfolio.holdings.validation.tickerQuantityRequired)
+      .toBe("Ticker and non-zero quantity are required");
   });
 
   it("moves shared model chrome to one Common owner without Settings duplicates", () => {

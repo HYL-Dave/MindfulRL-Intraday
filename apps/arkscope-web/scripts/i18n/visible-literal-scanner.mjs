@@ -34,6 +34,7 @@ const MODEL_REASON_OPERANDS = new Map([
   ])],
 ]);
 const RESEARCH_COMPLETION_OPERANDS = new Set(["running", "complete"]);
+const BROKER_DAY_GAP_OPERAND = "broker_day_gap";
 const CJK = /[\u3400-\u9fff\uf900-\ufaff]/u;
 const ALPHABETIC = /[A-Za-z]/;
 const ALLOWLIST_CLASSES = new Set([
@@ -236,6 +237,38 @@ function isReviewedResearchCompletionOperand(node, value) {
   return other !== null && isCompletionReference(other);
 }
 
+function isReviewedCalibrationTransportOperand(node, value, sourceFile) {
+  if (
+    enclosingFunctionName(node, sourceFile) !== "sendCalibrationMessage" ||
+    (value !== "/profile/investor/calibration/messages" && value !== "POST")
+  ) {
+    return false;
+  }
+  const call = findAncestor(node, ts.isCallExpression);
+  if (!call || callName(call) !== "sendJSON") return false;
+  return call.arguments.slice(0, 2).some((argument) => (
+    argument === node || argument.pos <= node.pos && argument.end >= node.end
+  ));
+}
+
+function isReviewedBrokerDayGapOperand(node, value) {
+  if (value !== BROKER_DAY_GAP_OPERAND) return false;
+  const binary = findAncestor(node, ts.isBinaryExpression);
+  if (!binary || !new Set([
+    ts.SyntaxKind.EqualsEqualsToken,
+    ts.SyntaxKind.EqualsEqualsEqualsToken,
+    ts.SyntaxKind.ExclamationEqualsToken,
+    ts.SyntaxKind.ExclamationEqualsEqualsToken,
+  ]).has(binary.operatorToken.kind)) return false;
+  const left = unwrapExpression(binary.left);
+  const right = unwrapExpression(binary.right);
+  const other = left === node ? right : right === node ? left : null;
+  return other !== null && (
+    ts.isIdentifier(other) && other.text === "reasonCode" ||
+    ts.isPropertyAccessExpression(other) && other.name.text === "reason_code"
+  );
+}
+
 function unwrapExpression(node) {
   let expression = node;
   while (
@@ -332,7 +365,9 @@ function literalKind(node, value, sourceFile, tupleColumnLabels) {
   if (isModuleSpecifier(node) || isPropertyName(node) || isTypeOnlyLiteral(node)) return null;
   if (
     isReviewedModelReasonOperand(node, value, sourceFile) ||
-    isReviewedResearchCompletionOperand(node, value)
+    isReviewedResearchCompletionOperand(node, value) ||
+    isReviewedCalibrationTransportOperand(node, value, sourceFile) ||
+    isReviewedBrokerDayGapOperand(node, value)
   ) {
     return null;
   }

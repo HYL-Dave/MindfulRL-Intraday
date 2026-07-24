@@ -154,6 +154,81 @@ describe("visible literal scanner", () => {
       ]);
   });
 
+  it("ignores calibration transport operands while retaining visible calibration copy", () => {
+    const candidates = scanFixture("portfolio-machine-operands");
+    expect(candidates.map(({ literal }) => literal)).not.toContain(
+      "/profile/investor/calibration/messages",
+    );
+    expect(candidates.map(({ literal }) => literal)).not.toContain("POST");
+    expect(candidates.map(({ kind, literal }) => ({ kind, literal }))).toContainEqual({
+      kind: "presenter_return",
+      literal: "Calibration response ready",
+    });
+  });
+
+  it("ignores broker day-gap comparison operands while retaining activity labels", () => {
+    const candidates = scanFixture("portfolio-machine-operands");
+    expect(candidates.map(({ literal }) => literal)).not.toContain("broker_day_gap");
+    expect(candidates.filter(({ kind }) => kind === "presenter_return").map(({ literal }) => literal))
+      .toEqual([
+        "Broker date coverage gap",
+        "Incomplete execution coverage",
+        "Broker date data gap",
+        "Incomplete execution data",
+        "Calibration response ready",
+      ]);
+  });
+
+  it("requires empty debt global src scope and exact allowlist arithmetic", () => {
+    const paths = createPolicyRoot("export const view = <><p>FRED</p><p>FRED</p></>;");
+    const scanned = run(["scan", "src/example.tsx"], paths.root);
+    expect(scanned.status, scanned.stderr).toBe(0);
+    const [candidate] = JSON.parse(scanned.stdout) as Candidate[];
+    writeFileSync(paths.allowlist, JSON.stringify({
+      version: 1,
+      entries: [{
+        file: candidate.file,
+        kind: candidate.kind,
+        literal: candidate.literal,
+        count: 2,
+        classification: "stable_identifier",
+        reason: "FRED is a reviewed stable provider identifier.",
+      }],
+    }));
+    writeFileSync(paths.migrated, JSON.stringify({ version: 1, scopes: ["src/**"] }));
+
+    const result = run(policyArgs(paths), paths.root);
+    expect(result.status, result.stderr).toBe(0);
+    const report = JSON.parse(result.stdout) as {
+      candidateCount: number;
+      signatureCount: number;
+      debtSignatureCount: number;
+      allowlistCount: number;
+      migratedScopes: string[];
+    };
+    expect(report).toEqual({
+      candidateCount: 2,
+      signatureCount: 1,
+      debtSignatureCount: 0,
+      allowlistCount: 1,
+      migratedScopes: ["src/**"],
+    });
+    const allowlist = JSON.parse(readFileSync(paths.allowlist, "utf8")) as {
+      entries: Array<{ count: number }>;
+    };
+    expect(allowlist.entries).toHaveLength(1);
+    expect(allowlist.entries.reduce((sum, entry) => sum + entry.count, 0)).toBe(2);
+    expect(report.candidateCount).toBe(2);
+    expect(report.signatureCount).toBe(report.allowlistCount);
+  });
+
+  it("keeps real presenter returns visible after machine-operand narrowing", () => {
+    const candidates = scanFixture("portfolio-machine-operands");
+    expect(candidates.filter(({ kind }) => kind === "presenter_return").map(({ literal }) => literal))
+      .toContain("Calibration response ready");
+    expect(candidates.filter(({ kind }) => kind === "presenter_return")).toHaveLength(5);
+  });
+
   it("detects visible expression and template copy", () => {
     const candidates = scanFixture("expression-template");
     expect(candidates.map(({ kind, literal }) => ({ kind, literal }))).toEqual([

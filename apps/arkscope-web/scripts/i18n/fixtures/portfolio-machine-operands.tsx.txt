@@ -1,0 +1,23 @@
+export function sendCalibrationMessage(body: unknown) {
+  return sendJSON(
+    "/profile/investor/calibration/messages",
+    "POST",
+    body,
+  );
+}
+
+export function activityReasonLabel(reasonCode: string): string {
+  return reasonCode === "broker_day_gap"
+    ? "Broker date coverage gap"
+    : "Incomplete execution coverage";
+}
+
+export function compactActivityLabel(item: { reason_code: string }): string {
+  return item.reason_code === "broker_day_gap"
+    ? "Broker date data gap"
+    : "Incomplete execution data";
+}
+
+export function calibrationStatusMessage(): string {
+  return "Calibration response ready";
+}
