@@ -505,6 +505,8 @@ describe("bundled i18n resources", () => {
     const cases = [
       {
         locale: "zh-Hant" as const,
+        localeLabel: "介面語言",
+        localeSelfName: "繁體中文",
         action: "儲存",
         workspace: "設定",
         section: "資料來源與排程",
@@ -547,6 +549,8 @@ describe("bundled i18n resources", () => {
       },
       {
         locale: "en" as const,
+        localeLabel: "Interface language",
+        localeSelfName: "English",
         action: "Save",
         workspace: "Settings",
         section: "Data Sources and Schedules",
@@ -594,6 +598,8 @@ describe("bundled i18n resources", () => {
       initializeI18n(instance, expected.locale);
       const t = instance.getFixedT(expected.locale, "settings");
       const commonT = instance.getFixedT(expected.locale, "common");
+      expect(t(($) => $.locale.label)).toBe(expected.localeLabel);
+      expect(t(($) => $.locale.selfName)).toBe(expected.localeSelfName);
       expect(t(($) => $.actions.save)).toBe(expected.action);
       expect(t(($) => $.workspace.title)).toBe(expected.workspace);
       expect(t(($) => $.registry.sections.dataSources.title)).toBe(expected.section);
@@ -694,7 +700,7 @@ describe("bundled i18n resources", () => {
     const expectedCounts = {
       common: 61,
       shell: 37,
-      settings: 679,
+      settings: 681,
       research: 207,
       explore: 401,
       portfolio: 374,
@@ -715,7 +721,7 @@ describe("bundled i18n resources", () => {
           total += actual;
         }
       }
-      expect(total, `${locale}.total`).toBe(1779);
+      expect(total, `${locale}.total`).toBe(1781);
 
       const portfolio = flattenResource(localeResources.portfolio as ResourceTree);
       flattenedPortfolioByLocale.set(locale, portfolio);
@@ -1064,10 +1070,10 @@ describe("bundled i18n resources", () => {
       expect(commonModels, `${locale}.common.models`).toBeDefined();
       if (!commonModels) continue;
       const movedModelCount = flattenResource(commonModels).size - 1;
-      expect(physicalPreSliceCount).toBe(589);
+      expect(physicalPreSliceCount).toBe(591);
       expect(movedModelCount).toBe(23);
-      expect(physicalPreSliceCount + movedModelCount).toBe(612);
-      expect(flattenResource(settings.locale as ResourceTree).size).toBe(1);
+      expect(physicalPreSliceCount + movedModelCount).toBe(614);
+      expect(flattenResource(settings.locale as ResourceTree).size).toBe(3);
       expect(workspaceCount).toBe(95);
       for (const [subtree, count] of Object.entries(expectedSubtreeCounts)) {
         expect(flattenResource(settings[subtree] as ResourceTree).size, `${locale}.${subtree}`)

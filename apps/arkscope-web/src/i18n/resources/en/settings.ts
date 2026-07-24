@@ -1,6 +1,8 @@
 // Translation authority: docs/design/ARKSCOPE_TERMINOLOGY.md
 const settings = {
   locale: {
+    label: "Interface language",
+    selfName: "English",
     writeFailed:
       "Could not save the interface language. The previous setting was restored.",
   },
