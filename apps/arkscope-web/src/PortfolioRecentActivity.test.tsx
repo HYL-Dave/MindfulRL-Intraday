@@ -2,10 +2,11 @@
 import React from "react";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import i18n from "i18next";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PortfolioRecentActivity } from "./PortfolioRecentActivity";
-import { formatSystemTimestamp } from "./timeDisplay";
+import { formatMarketTimestamp, formatSystemTimestamp } from "./timeDisplay";
 import type {
   PortfolioActivityPage,
   PortfolioBrokerActivityItem,
@@ -18,6 +19,11 @@ import type {
 
 let root: ReturnType<typeof createRoot> | null = null;
 let host: HTMLDivElement | null = null;
+
+beforeEach(async () => {
+  await i18n.changeLanguage("zh-Hant");
+  document.documentElement.lang = "zh-Hant";
+});
 
 afterEach(() => {
   if (root) act(() => root!.unmount());
@@ -229,5 +235,99 @@ describe("PortfolioRecentActivity", () => {
     expect(host!.textContent).not.toContain("成交修訂");
     expect(host!.textContent).not.toContain("佣金修訂");
     expect(host!.querySelectorAll("button")).toHaveLength(1);
+  });
+
+});
+
+describe("Portfolio recent activity", () => {
+  it("renders recent activity chrome in both locales", async () => {
+    await mount(page());
+    expect(host!.textContent).toContain("近期活動");
+    expect(host!.textContent).toContain("最近 7 日");
+    expect(host!.querySelector('button[aria-label="開啟完整活動"]')).not.toBeNull();
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    expect(host!.textContent).toContain("Recent activity");
+    expect(host!.textContent).toContain("Last 7 days");
+    expect(host!.querySelector('button[aria-label="Open full activity"]')).not.toBeNull();
+  });
+
+  it("localizes count grammar without changing rows", async () => {
+    const secondChange = {
+      ...manualItem,
+      id: "manual-two-fields",
+      symbol: "NVDA",
+      changes: [
+        { field: "quantity", before: 5, after: 8 },
+        { field: "notes", before: "old", after: "new" },
+      ],
+    } satisfies PortfolioManualActivityItem;
+    const onOpen = vi.fn();
+    await mount(page({
+      items: [manualItem, secondChange],
+      summary: { item_count: 2, unmatched_count: 1, recent_window_days: 7 },
+    }), onOpen);
+    const rows = Array.from(host!.querySelectorAll("li"));
+    expect(rows[0].textContent).toContain("1 項欄位");
+    expect(rows[1].textContent).toContain("2 項欄位");
+    expect(host!.textContent).toContain("近 7 日有 1 筆未匹配變動");
+
+    await act(async () => { await i18n.changeLanguage("en"); });
+    expect(rows[0].textContent).toContain("1 field");
+    expect(rows[1].textContent).toContain("2 fields");
+    expect(host!.textContent).toContain("Window: 7 days · Unmatched changes: 1 total");
+    expect(host!.querySelectorAll("li")).toHaveLength(2);
+
+    await act(async () => {
+      root!.render(
+        <PortfolioRecentActivity
+          page={page({
+            items: [manualItem, secondChange],
+            summary: { item_count: 2, unmatched_count: 2, recent_window_days: 7 },
+          })}
+          onOpenActivity={onOpen}
+        />,
+      );
+    });
+    expect(host!.textContent).toContain("Window: 7 days · Unmatched changes: 2 total");
+    expect(host!.querySelectorAll("li")).toHaveLength(2);
+    expect(host!.querySelectorAll("li")[0]).toBe(rows[0]);
+    expect(host!.querySelectorAll("li")[1]).toBe(rows[1]);
+  });
+
+  it("preserves source values and identifiers", async () => {
+    await mount(page({
+      items: [brokerItem],
+      summary: { item_count: 1, unmatched_count: 0, recent_window_days: 7 },
+    }));
+    const sourceValues = [
+      "AAPL",
+      "IBKR · safe-label",
+      "10",
+      formatMarketTimestamp(brokerItem.occurred_at_utc).split(" · ")[0],
+    ];
+    await act(async () => { await i18n.changeLanguage("en"); });
+    for (const value of sourceValues) expect(host!.textContent).toContain(value);
+    expect(host!.textContent).not.toContain("order-raw-id-70001");
+    expect(host!.textContent).not.toContain("broker-account-raw-hash-123456789");
+  });
+
+  it("preserves state across locale changes", async () => {
+    const onOpen = await mount(page());
+    const button = host!.querySelector<HTMLButtonElement>('button[aria-label="開啟完整活動"]')!;
+    const firstRow = host!.querySelector<HTMLLIElement>("li")!;
+    button.dataset.identity = "recent-open";
+    firstRow.dataset.identity = "recent-row";
+    button.focus();
+    await act(async () => { await i18n.changeLanguage("en"); });
+
+    const after = host!.querySelector<HTMLButtonElement>('button[aria-label="Open full activity"]')!;
+    expect(after).toBe(button);
+    expect(host!.querySelector<HTMLLIElement>("li")).toBe(firstRow);
+    expect(after.dataset.identity).toBe("recent-open");
+    expect(firstRow.dataset.identity).toBe("recent-row");
+    expect(document.activeElement).toBe(after);
+    await act(async () => { after.click(); });
+    expect(onOpen).toHaveBeenCalledTimes(1);
   });
 });

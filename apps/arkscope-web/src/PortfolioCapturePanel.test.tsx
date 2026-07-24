@@ -2,7 +2,8 @@
 import React from "react";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import i18n from "i18next";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PortfolioCapturePanel } from "./PortfolioCapturePanel";
 import type {
@@ -11,8 +12,16 @@ import type {
   PortfolioCaptureStatus,
 } from "./api";
 
+(globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT: boolean })
+  .IS_REACT_ACT_ENVIRONMENT = true;
+
 let root: ReturnType<typeof createRoot> | null = null;
 let host: HTMLDivElement | null = null;
+
+beforeEach(async () => {
+  await i18n.changeLanguage("zh-Hant");
+  document.documentElement.lang = "zh-Hant";
+});
 
 afterEach(() => {
   if (root) act(() => root!.unmount());
@@ -458,13 +467,15 @@ describe("PortfolioCapturePanel", () => {
       await Promise.resolve();
       await vi.advanceTimersByTimeAsync(30_000);
     });
-    expect(host!.textContent).toContain("transient poll failure");
+    expect(host!.textContent).toContain("同步狀態載入失敗");
+    expect(host!.textContent).not.toContain("transient poll failure");
 
     await act(async () => {
       resolveSave!(status());
       await Promise.resolve();
     });
-    expect(host!.textContent).toContain("transient poll failure");
+    expect(host!.textContent).toContain("同步狀態載入失敗");
+    expect(host!.textContent).not.toContain("transient poll failure");
     expect(host!.textContent).toContain("排程已儲存");
   });
 
@@ -481,7 +492,8 @@ describe("PortfolioCapturePanel", () => {
     }));
     await mount();
 
-    expect(host!.textContent).toContain("sidecar warming up");
+    expect(host!.textContent).toContain("同步狀態載入失敗");
+    expect(host!.textContent).not.toContain("sidecar warming up");
     expect(host!.querySelector<HTMLButtonElement>("button")?.disabled).toBe(true);
     await act(async () => {
       await vi.advanceTimersByTimeAsync(30_000);
@@ -529,7 +541,8 @@ describe("PortfolioCapturePanel", () => {
 
     await clickButton("立即同步");
 
-    expect(host!.querySelector('[data-state="blocked"]')?.textContent).toContain("另一個同步仍在執行");
+    expect(host!.querySelector('[data-state="blocked"]')?.textContent).toContain("同步已阻擋");
+    expect(host!.textContent).not.toContain("另一個同步仍在執行");
   });
 
   it("does_not_regress_a_terminal_poll_when_the_start_response_arrives_late", async () => {
@@ -619,7 +632,8 @@ describe("PortfolioCapturePanel", () => {
       await Promise.resolve();
     });
     expect(host!.querySelector('[data-state="running"]')).toBeNull();
-    expect(host!.textContent).toContain("Capture worker startup failed");
+    expect(host!.textContent).toContain("同步失敗");
+    expect(host!.textContent).not.toContain("Capture worker startup failed");
   });
 
   it("does_not_let_an_older_poll_clear_a_newer_action_failure", async () => {
@@ -647,13 +661,15 @@ describe("PortfolioCapturePanel", () => {
       await vi.advanceTimersByTimeAsync(2_000);
     });
     await clickButton("儲存排程");
-    expect(host!.textContent).toContain("settings write failed");
+    expect(host!.textContent).toContain("排程儲存失敗");
+    expect(host!.textContent).not.toContain("settings write failed");
 
     await act(async () => {
       resolvePoll!(status({ running: false, latest_run: terminal, recent_runs: [terminal] }));
       await Promise.resolve();
     });
-    expect(host!.textContent).toContain("settings write failed");
+    expect(host!.textContent).toContain("排程儲存失敗");
+    expect(host!.textContent).not.toContain("settings write failed");
     expect(host!.querySelector('[data-state="running"]')).toBeNull();
     expect(Array.from(host!.querySelectorAll('[data-state="ready"]'))
       .some((badge) => badge.textContent?.includes("成功"))).toBe(true);
@@ -685,13 +701,15 @@ describe("PortfolioCapturePanel", () => {
     });
     expect(changed).toHaveBeenCalledTimes(1);
     await clickButton("儲存排程");
-    expect(host!.textContent).toContain("settings write failed during refresh callback");
+    expect(host!.textContent).toContain("排程儲存失敗");
+    expect(host!.textContent).not.toContain("settings write failed during refresh callback");
 
     await act(async () => {
       resolveChanged!();
       await Promise.resolve();
     });
-    expect(host!.textContent).toContain("settings write failed during refresh callback");
+    expect(host!.textContent).toContain("排程儲存失敗");
+    expect(host!.textContent).not.toContain("settings write failed during refresh callback");
   });
 
   it("announces_a_terminal_start_detail_only_once", async () => {
@@ -719,8 +737,9 @@ describe("PortfolioCapturePanel", () => {
     await clickButton("立即同步");
 
     const matchingAlerts = Array.from(host!.querySelectorAll(".ui-inline-alert"))
-      .filter((alert) => alert.textContent?.includes("IBKR provider configuration is incomplete"));
+      .filter((alert) => alert.textContent?.includes("同步已阻擋"));
     expect(matchingAlerts).toHaveLength(1);
+    expect(host!.textContent).not.toContain("IBKR provider configuration is incomplete");
   });
 
   it("renders_partial_blocked_failed_and_interrupted_with_existing_status_badges", async () => {
@@ -831,8 +850,8 @@ describe("PortfolioCapturePanel", () => {
     await clickButton("套用同步");
 
     expect(host!.textContent).not.toContain("待套用差異");
-    expect(host!.textContent).toContain("status refresh failed");
     expect(host!.textContent).toContain("同步狀態載入失敗");
+    expect(host!.textContent).not.toContain("status refresh failed");
   });
 
   it("does_not_clear_a_newer_review_when_an_older_apply_response_arrives_late", async () => {
@@ -891,7 +910,8 @@ describe("PortfolioCapturePanel", () => {
       await Promise.resolve();
     });
     expect(host!.textContent).toContain("MSFT");
-    expect(host!.textContent).toContain("post-apply refresh failed");
+    expect(host!.textContent).toContain("同步狀態載入失敗");
+    expect(host!.textContent).not.toContain("post-apply refresh failed");
   });
 
   it("does_not_restore_an_applied_review_from_a_poll_started_during_apply", async () => {
@@ -957,7 +977,8 @@ describe("PortfolioCapturePanel", () => {
       await Promise.resolve();
     });
     expect(host!.textContent).not.toContain("待套用差異");
-    expect(host!.textContent).toContain("post-apply status failed");
+    expect(host!.textContent).toContain("同步狀態載入失敗");
+    expect(host!.textContent).not.toContain("post-apply status failed");
   });
 
   it("shows_nullable_review_values_being_cleared", async () => {
@@ -1007,5 +1028,205 @@ describe("PortfolioCapturePanel", () => {
     });
     expect(changed).toHaveBeenCalledTimes(1);
     expect(host!.querySelector("[aria-live]")).toBeNull();
+  });
+
+});
+
+describe("Portfolio capture", () => {
+  it("renders schedule run and review chrome in both locales", async () => {
+    const singularRun = run({
+      id: 72,
+      inserted_execution_count: 1,
+      inserted_commission_count: 1,
+    });
+    const pluralRun = run({
+      id: 71,
+      inserted_execution_count: 2,
+      inserted_commission_count: 3,
+    });
+    stubFetch(() => status({
+      settings: {
+        enabled: true,
+        interval_minutes: 15,
+        source: "default",
+        provider_configured: false,
+      },
+      review: {
+        run_id: 71,
+        changes: [{
+          kind: "update",
+          account_id: 3,
+          account_label: "Primary account",
+          broker_account_id_hash: "safe-hash",
+          broker_con_id: "265598",
+          symbol: "AAPL",
+          quantity: 3,
+          before: { quantity: 2 },
+          after: { quantity: 3 },
+        }],
+        applies: false,
+      },
+      latest_run: singularRun,
+      recent_runs: [singularRun, pluralRun],
+    }));
+    await mount();
+
+    expect(host!.textContent).toContain("同步紀錄");
+    expect(host!.textContent).toContain("儲存排程");
+    expect(host!.textContent).toContain("待套用差異");
+    expect(host!.textContent).toContain("前往設定 > Data Sources > IBKR");
+    expect(host!.textContent).toContain("1 筆成交 · 1 筆費用");
+    expect(host!.textContent).toContain("2 筆成交 · 3 筆費用");
+    expect(host!.textContent).not.toContain("&gt;");
+    await act(async () => { await i18n.changeLanguage("en"); });
+    expect(host!.textContent).toContain("Sync records");
+    expect(host!.textContent).toContain("Save schedule");
+    expect(host!.textContent).toContain("Pending changes");
+    expect(host!.textContent).toContain("Go to Settings > Data Sources > IBKR");
+    expect(host!.textContent).toContain("Executions: 1 · Fees: 1");
+    expect(host!.textContent).toContain("Executions: 2 · Fees: 3");
+  });
+
+  it("preserves a poll issue published while settings save is pending without raw detail", async () => {
+    vi.useFakeTimers();
+    let resolveSave: ((value: PortfolioCaptureStatus) => void) | null = null;
+    let reads = 0;
+    stubFetch((url, init) => {
+      if (url.endsWith("/settings") && init?.method === "PUT") {
+        return new Promise<PortfolioCaptureStatus>((resolve) => { resolveSave = resolve; });
+      }
+      reads += 1;
+      if (reads === 1) return status();
+      throw new Error("transient poll failure");
+    });
+    await mount();
+
+    await clickButton("儲存排程");
+    await act(async () => { await vi.advanceTimersByTimeAsync(30_000); });
+    expect(host!.textContent).toContain("同步狀態載入失敗");
+    expect(host!.textContent).not.toContain("transient poll failure");
+    await act(async () => {
+      resolveSave!(status());
+      await Promise.resolve();
+    });
+    expect(host!.textContent).toContain("同步狀態載入失敗");
+    expect(host!.textContent).toContain("排程已儲存");
+  });
+
+  it("retries initial status failure on idle cadence with semantic copy", async () => {
+    vi.useFakeTimers();
+    let reads = 0;
+    vi.stubGlobal("fetch", vi.fn(async () => {
+      reads += 1;
+      if (reads === 1) throw new Error("sidecar warming up");
+      return new Response(JSON.stringify(status()), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    }));
+    await mount();
+
+    expect(host!.textContent).toContain("同步狀態載入失敗");
+    expect(host!.textContent).not.toContain("sidecar warming up");
+    await act(async () => { await vi.advanceTimersByTimeAsync(30_000); });
+    expect(reads).toBe(2);
+    expect(host!.textContent).toContain("最近一次");
+  });
+
+  it("announces a terminal start outcome only once without raw detail", async () => {
+    const blocked = run({
+      id: 171,
+      trigger: "manual",
+      state: "blocked",
+      error_code: "provider_config_missing",
+      error_detail: "IBKR provider configuration is incomplete",
+    });
+    stubFetch((url, init) => {
+      if (url.endsWith("/runs") && init?.method === "POST") {
+        return {
+          accepted: true,
+          state: "blocked",
+          run: blocked,
+          error_code: blocked.error_code,
+          error_detail: blocked.error_detail,
+        };
+      }
+      return status({ latest_run: blocked, recent_runs: [blocked] });
+    });
+    await mount();
+    await clickButton("立即同步");
+
+    expect(Array.from(host!.querySelectorAll(".ui-inline-alert"))
+      .filter((alert) => alert.textContent?.includes("同步已阻擋"))).toHaveLength(1);
+    expect(host!.textContent).not.toContain("IBKR provider configuration is incomplete");
+  });
+
+  it("keeps terminal and settings race ordering unchanged", async () => {
+    vi.useFakeTimers();
+    const changed = vi.fn();
+    const running = run({ id: 172, state: "running", finished_at: null });
+    const terminal = run({ id: 172, state: "succeeded" });
+    let resolvePoll: ((value: PortfolioCaptureStatus) => void) | null = null;
+    let reads = 0;
+    stubFetch((url, init) => {
+      if (url.endsWith("/settings") && init?.method === "PUT") {
+        throw new Error("settings write planted detail");
+      }
+      reads += 1;
+      if (reads === 1) return status({ running: true, latest_run: running, recent_runs: [running] });
+      return new Promise<PortfolioCaptureStatus>((resolve) => { resolvePoll = resolve; });
+    });
+    await mount(changed);
+
+    await act(async () => { await vi.advanceTimersByTimeAsync(2_000); });
+    await clickButton("儲存排程");
+    await act(async () => {
+      resolvePoll!(status({ running: false, latest_run: terminal, recent_runs: [terminal] }));
+      await Promise.resolve();
+    });
+    expect(host!.textContent).toContain("排程儲存失敗");
+    expect(host!.textContent).not.toContain("settings write planted detail");
+    expect(changed).toHaveBeenCalledTimes(1);
+    expect(host!.querySelector('[data-state="running"]')).toBeNull();
+  });
+
+  it("preserves dirty controls and focus across locale changes", async () => {
+    const calls = stubFetch(() => status());
+    await mount();
+    const interval = host!.querySelector<HTMLInputElement>('input[aria-label="持倉同步間隔（分鐘）"]')!;
+    await act(async () => {
+      setInput(interval, "37");
+      interval.dataset.identity = "capture-interval";
+      interval.focus();
+      await i18n.changeLanguage("en");
+    });
+
+    const after = host!.querySelector<HTMLInputElement>('input[aria-label="Holdings sync interval (minutes)"]')!;
+    expect(after).toBe(interval);
+    expect(after.dataset.identity).toBe("capture-interval");
+    expect(after.value).toBe("37");
+    expect(document.activeElement).toBe(after);
+    expect(calls.filter((call) => call.method === "GET")).toHaveLength(1);
+  });
+
+  it("renders late polling outcomes in the active locale", async () => {
+    vi.useFakeTimers();
+    let rejectPoll: ((reason: Error) => void) | null = null;
+    let reads = 0;
+    stubFetch(() => {
+      reads += 1;
+      if (reads === 1) return status();
+      return new Promise<PortfolioCaptureStatus>((_resolve, reject) => { rejectPoll = reject; });
+    });
+    await mount();
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(30_000);
+      await i18n.changeLanguage("en");
+      rejectPoll!(new Error("late poll planted detail"));
+      await Promise.resolve();
+    });
+
+    expect(host!.textContent).toContain("Could not load sync status");
+    expect(host!.textContent).not.toContain("late poll planted detail");
   });
 });

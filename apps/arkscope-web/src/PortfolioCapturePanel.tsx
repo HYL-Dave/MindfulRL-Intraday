@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Check, RefreshCw, Save } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
   applyPortfolioCaptureRun,
@@ -12,6 +13,20 @@ import {
   type PortfolioCaptureStatus,
 } from "./api";
 import {
+  capturePortfolioError,
+  portfolioCaptureLegStateLabel,
+  portfolioCaptureRunDetailLabel,
+  portfolioCaptureRunStateLabel,
+  portfolioCaptureTriggerLabel,
+  portfolioCountCopy,
+  portfolioEmptyStateLabel,
+  portfolioOutcomeLabel,
+  presentPortfolioError,
+  type PortfolioErrorState,
+  type PortfolioOperation,
+  type PortfolioT,
+} from "./i18n/portfolioPresentation";
+import {
   Button,
   DataTable,
   InlineAlert,
@@ -22,47 +37,33 @@ import {
 
 const IDLE_POLL_MS = 30_000;
 const RUNNING_POLL_MS = 2_000;
-
-const RUN_LABELS: Record<PortfolioCaptureRunState, string> = {
-  running: "執行中",
-  succeeded: "成功",
-  partial: "部分完成",
-  failed: "失敗",
-  blocked: "已阻擋",
-  interrupted: "已中止",
-};
-
-const LEG_LABELS: Record<string, string> = {
-  not_attempted: "未執行",
-  complete: "完整",
-  partial: "部分完成",
-  failed: "失敗",
-};
-
-const TRIGGER_LABELS: Record<PortfolioCaptureRun["trigger"], string> = {
-  startup: "啟動補抓",
-  scheduled: "排程",
-  manual: "手動",
-};
+const SCHEDULE_SAVED_NOTICE = "schedule_saved" as const;
+const CAPTURE_APPLIED_NOTICE = "capture_applied" as const;
+const CAPTURE_LOAD_OPERATION: PortfolioOperation = "capture_load_status";
+const CAPTURE_SAVE_OPERATION: PortfolioOperation = "capture_save_schedule";
+const CAPTURE_START_OPERATION: PortfolioOperation = "capture_start";
+const CAPTURE_APPLY_OPERATION: PortfolioOperation = "capture_apply";
 
 function runUiState(state: PortfolioCaptureRunState): CommonUiState {
   return state === "succeeded" ? "ready" : state;
-}
-
-function runDetailTitle(state: PortfolioCaptureRunState): string {
-  switch (state) {
-    case "partial": return "同步資料不完整";
-    case "blocked": return "同步已阻擋";
-    case "failed": return "同步失敗";
-    case "interrupted": return "同步已中止";
-    default: return "同步資訊";
-  }
 }
 
 function formatLocalTime(value?: string | null): string {
   if (!value) return "-";
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+}
+
+function captureLegStateLabel(value: string, t: PortfolioT): string {
+  switch (value) {
+    case "not_attempted":
+    case "complete":
+    case "partial":
+    case "failed":
+      return portfolioCaptureLegStateLabel(value, t);
+    default:
+      return value;
+  }
 }
 
 export function parseCaptureInterval(raw: string): number | null {
@@ -102,10 +103,56 @@ function formatReviewMetric(
   return value == null ? "-" : format(value);
 }
 
-interface CaptureIssue {
+type CaptureCopyIssue =
+  | "status_shape"
+  | "schedule_invalid"
+  | "settings_shape";
+
+type CaptureIssue = {
   state: CommonUiState;
-  title: string;
-  message: string;
+  kind: "operation";
+  error: PortfolioErrorState;
+} | {
+  state: CommonUiState;
+  kind: "copy";
+  copy: CaptureCopyIssue;
+} | {
+  state: CommonUiState;
+  kind: "run";
+  runState: PortfolioCaptureRunState;
+};
+
+function presentCaptureIssue(issue: CaptureIssue, t: PortfolioT) {
+  if (issue.kind === "operation") {
+    return { ...presentPortfolioError(issue.error, t), message: null };
+  }
+  if (issue.kind === "run") {
+    return {
+      title: portfolioCaptureRunDetailLabel(issue.runState, t),
+      diagnostics: [],
+      message: null,
+    };
+  }
+  switch (issue.copy) {
+    case "status_shape":
+      return {
+        title: presentPortfolioError(capturePortfolioError(CAPTURE_LOAD_OPERATION, null), t).title,
+        diagnostics: [],
+        message: t(($) => $.capture.surface.statusShapeError),
+      };
+    case "schedule_invalid":
+      return {
+        title: t(($) => $.capture.surface.scheduleInvalid),
+        diagnostics: [],
+        message: t(($) => $.capture.validation.interval),
+      };
+    case "settings_shape":
+      return {
+        title: presentPortfolioError(capturePortfolioError(CAPTURE_SAVE_OPERATION, null), t).title,
+        diagnostics: [],
+        message: t(($) => $.capture.surface.settingsShapeError),
+      };
+  }
 }
 
 function statusWithRun(
@@ -134,12 +181,13 @@ export function PortfolioCapturePanel({
 }: {
   onPortfolioChanged: () => void | Promise<void>;
 }) {
+  const { t } = useTranslation("portfolio");
   const [capture, setCapture] = useState<PortfolioCaptureStatus | null>(null);
   const [enabled, setEnabled] = useState(false);
   const [interval, setIntervalValue] = useState("15");
   const [busy, setBusy] = useState<"save" | "capture" | "apply" | null>(null);
   const [issue, setIssue] = useState<CaptureIssue | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<"schedule_saved" | "capture_applied" | null>(null);
   const dirtyRef = useRef(false);
   const initializedRef = useRef(false);
   const lastTerminalRunIdRef = useRef<number | null>(null);
@@ -151,6 +199,7 @@ export function PortfolioCapturePanel({
   const issueSequenceRef = useRef(0);
   const appliedReviewRunIdsRef = useRef(new Set<number>());
   const safeCapture = isCaptureStatus(capture) ? capture : null;
+  const issueCopy = issue ? presentCaptureIssue(issue, t) : null;
 
   const publishIssue = useCallback((
     next: CaptureIssue,
@@ -214,7 +263,8 @@ export function PortfolioCapturePanel({
     try {
       const next: unknown = await getPortfolioCaptureStatus();
       if (!isCaptureStatus(next)) {
-        throw new Error("持倉同步狀態格式不相容，請重啟應用程式後再試");
+        publishIssue({ state: "failed", kind: "copy", copy: "status_shape" }, sequence);
+        return null;
       }
       const accepted = await acceptStatus(next, sequence, settingsRevision);
       if (accepted && issueVersion === issueVersionRef.current) setIssue(null);
@@ -222,8 +272,8 @@ export function PortfolioCapturePanel({
     } catch (reason) {
       publishIssue({
         state: "failed",
-        title: "同步狀態載入失敗",
-        message: reason instanceof Error ? reason.message : String(reason),
+        kind: "operation",
+        error: capturePortfolioError(CAPTURE_LOAD_OPERATION, reason),
       }, sequence);
       return null;
     }
@@ -260,8 +310,8 @@ export function PortfolioCapturePanel({
     if (parsed === null) {
       publishIssue({
         state: "failed",
-        title: "排程設定無效",
-        message: "間隔必須是 5-1440 分鐘的整數",
+        kind: "copy",
+        copy: "schedule_invalid",
       });
       return;
     }
@@ -274,7 +324,8 @@ export function PortfolioCapturePanel({
         interval_minutes: parsed,
       });
       if (!isCaptureStatus(next)) {
-        throw new Error("持倉同步設定回應格式不相容，請重啟應用程式後再試");
+        publishIssue({ state: "failed", kind: "copy", copy: "settings_shape" });
+        return;
       }
       settingsRevisionRef.current += 1;
       dirtyRef.current = false;
@@ -294,12 +345,12 @@ export function PortfolioCapturePanel({
       }
       setEnabled(next.settings.enabled);
       setIntervalValue(String(next.settings.interval_minutes));
-      setNotice("排程已儲存");
+      setNotice(SCHEDULE_SAVED_NOTICE);
     } catch (reason) {
       publishIssue({
         state: "failed",
-        title: "排程儲存失敗",
-        message: reason instanceof Error ? reason.message : String(reason),
+        kind: "operation",
+        error: capturePortfolioError(CAPTURE_SAVE_OPERATION, reason),
       });
     } finally {
       setBusy(null);
@@ -321,15 +372,15 @@ export function PortfolioCapturePanel({
       if (started.error_detail && !started.run) {
         publishIssue({
           state: runUiState(started.state),
-          title: RUN_LABELS[started.state],
-          message: started.error_detail,
+          kind: "run",
+          runState: started.state,
         });
       }
     } catch (reason) {
       publishIssue({
         state: "failed",
-        title: "持倉同步失敗",
-        message: reason instanceof Error ? reason.message : String(reason),
+        kind: "operation",
+        error: capturePortfolioError(CAPTURE_START_OPERATION, reason),
       });
     } finally {
       setBusy(null);
@@ -351,12 +402,12 @@ export function PortfolioCapturePanel({
       }
       await onPortfolioChanged();
       await refresh();
-      setNotice("同步變更已套用");
+      setNotice(CAPTURE_APPLIED_NOTICE);
     } catch (reason) {
       publishIssue({
         state: "failed",
-        title: "套用同步失敗",
-        message: reason instanceof Error ? reason.message : String(reason),
+        kind: "operation",
+        error: capturePortfolioError(CAPTURE_APPLY_OPERATION, reason),
       });
     } finally {
       setBusy(null);
@@ -366,72 +417,91 @@ export function PortfolioCapturePanel({
   const runColumns = useMemo<DataTableColumn<PortfolioCaptureRun>[]>(() => [
     {
       id: "started",
-      header: "開始時間",
+      header: t(($) => $.capture.surface.runsStartedHeader),
       render: (item) => formatLocalTime(item.started_at),
     },
     {
       id: "trigger",
-      header: "來源",
-      render: (item) => TRIGGER_LABELS[item.trigger],
+      header: t(($) => $.capture.surface.runsSourceHeader),
+      render: (item) => portfolioCaptureTriggerLabel(item.trigger, t),
     },
     {
       id: "state",
-      header: "狀態",
+      header: t(($) => $.capture.surface.runsStateHeader),
       render: (item) => (
-        <StatusBadge state={runUiState(item.state)} label={RUN_LABELS[item.state]} />
+        <StatusBadge
+          state={runUiState(item.state)}
+          label={portfolioCaptureRunStateLabel(item.state, t)}
+        />
       ),
       className: "ui-data-table-status",
     },
     {
       id: "facts",
-      header: "新增事實",
-      render: (item) => `${item.inserted_execution_count} 筆成交 · ${item.inserted_commission_count} 筆費用`,
+      header: t(($) => $.capture.surface.runsFactsHeader),
+      render: (item) => t(($) => $.capture.surface.runsFactsSummary, {
+        executionCount: item.inserted_execution_count,
+        commissionCount: item.inserted_commission_count,
+      }),
     },
-  ], []);
+  ], [t]);
 
   const reviewColumns = useMemo<DataTableColumn<PortfolioCaptureReviewChange>[]>(() => [
     {
       id: "account",
-      header: "帳戶",
-      render: (item) => item.account_label ?? item.broker_account_id_hash?.slice(0, 8) ?? "新帳戶",
+      header: t(($) => $.capture.surface.reviewAccountHeader),
+      render: (item) => item.account_label
+        ?? item.broker_account_id_hash?.slice(0, 8)
+        ?? t(($) => $.capture.surface.reviewNewAccount),
     },
-    { id: "kind", header: "變更", render: (item) => item.kind },
-    { id: "symbol", header: "標的", render: (item) => item.symbol },
+    {
+      id: "kind",
+      header: t(($) => $.capture.surface.reviewChangeHeader),
+      render: (item) => item.kind,
+    },
+    {
+      id: "symbol",
+      header: t(($) => $.capture.surface.reviewSymbolHeader),
+      render: (item) => item.symbol,
+    },
     {
       id: "quantity",
-      header: "數量",
+      header: t(($) => $.capture.surface.reviewQuantityHeader),
       render: (item) => formatReviewMetric(item, "quantity", item.quantity),
       align: "right",
     },
     {
       id: "avg-cost",
-      header: "Avg Cost",
+      header: t(($) => $.tableLabels.captureAvgCost),
       render: (item) => formatReviewMetric(item, "avg_cost"),
       align: "right",
     },
     {
       id: "market-value",
-      header: "Market Value",
+      header: t(($) => $.tableLabels.captureMarketValue),
       render: (item) => formatReviewMetric(item, "market_value"),
       align: "right",
     },
     {
       id: "unrealized-pnl",
-      header: "Unrealized P&L",
+      header: t(($) => $.tableLabels.captureUnrealizedPnl),
       render: (item) => formatReviewMetric(item, "unrealized_pnl"),
       align: "right",
     },
-  ], []);
+  ], [t]);
 
   const latest = safeCapture?.latest_run ?? null;
+  const reviewCountLabel = safeCapture?.review
+    ? portfolioCountCopy("review_changes", safeCapture.review.changes.length, t)
+    : "";
   const providerMissing = safeCapture?.provider_issue != null || safeCapture?.settings.provider_configured === false;
 
   return (
     <section className="ui-section-band portfolio-capture" data-portfolio-capture-controls>
       <div className="ui-section-head">
         <div>
-          <h2>同步紀錄</h2>
-          <p className="muted tiny">唯讀同步會擷取 IBKR 帳戶、成交與持倉事實；ArkScope 不會下單。</p>
+          <h2>{t(($) => $.capture.surface.sectionTitle)}</h2>
+          <p className="muted tiny">{t(($) => $.capture.surface.sectionNotice)}</p>
         </div>
         <Button
           icon={<RefreshCw size={15} />}
@@ -439,23 +509,35 @@ export function PortfolioCapturePanel({
           busy={busy === "capture"}
           disabled={busy != null || !safeCapture || safeCapture.running || providerMissing}
         >
-          立即同步
+          {t(($) => $.capture.surface.syncNow)}
         </Button>
       </div>
 
       {providerMissing ? (
-        <InlineAlert state="blocked" title="IBKR 尚未設定">
-          前往設定 &gt; Data Sources &gt; IBKR
+        <InlineAlert
+          state="blocked"
+          title={t(($) => $.capture.surface.providerMissingTitle)}
+        >
+          {t(($) => $.capture.surface.providerMissingAction)}
         </InlineAlert>
       ) : null}
-      {issue ? <InlineAlert state={issue.state} title={issue.title}>{issue.message}</InlineAlert> : null}
-      {notice ? <InlineAlert state="ready" title={notice} /> : null}
+      {issue && issueCopy ? (
+        <InlineAlert state={issue.state} title={issueCopy.title}>
+          {issueCopy.message}
+        </InlineAlert>
+      ) : null}
+      {notice ? (
+        <InlineAlert
+          state="ready"
+          title={portfolioOutcomeLabel(notice, t)}
+        />
+      ) : null}
 
       <div className="portfolio-capture-settings">
         <label className="portfolio-capture-toggle">
           <input
             type="checkbox"
-            aria-label="啟用持倉同步排程"
+            aria-label={t(($) => $.capture.surface.scheduleToggleAria)}
             checked={enabled}
             disabled={!safeCapture || busy != null}
             onChange={(event) => {
@@ -463,16 +545,19 @@ export function PortfolioCapturePanel({
               setEnabled(event.currentTarget.checked);
             }}
           />
-          啟用排程
+          {t(($) => $.capture.surface.scheduleToggleLabel)}
         </label>
         <label>
-          <span>間隔 <span className="muted">5-1440 分鐘</span></span>
+          <span>
+            {t(($) => $.capture.surface.intervalLabel)}{" "}
+            <span className="muted">{t(($) => $.capture.surface.intervalHint)}</span>
+          </span>
           <input
             type="number"
             min={5}
             max={1440}
             step={1}
-            aria-label="持倉同步間隔（分鐘）"
+            aria-label={t(($) => $.capture.surface.intervalAria)}
             value={interval}
             disabled={!safeCapture || busy != null}
             onChange={(event) => {
@@ -487,12 +572,14 @@ export function PortfolioCapturePanel({
           busy={busy === "save"}
           disabled={busy != null || !safeCapture}
         >
-          儲存排程
+          {t(($) => $.capture.surface.scheduleSave)}
         </Button>
         <div className="portfolio-capture-next muted tiny">
           {safeCapture?.settings.enabled
-            ? `下一次：${formatLocalTime(safeCapture.next_due_at)}`
-            : "排程已停用"}
+            ? t(($) => $.capture.surface.nextRun, {
+              timestamp: formatLocalTime(safeCapture.next_due_at),
+            })
+            : t(($) => $.capture.surface.scheduleDisabled)}
         </div>
       </div>
 
@@ -500,49 +587,75 @@ export function PortfolioCapturePanel({
         <div className="portfolio-capture-latest">
           <div className="ui-section-head">
             <div className="ui-action-row">
-              <strong>最近一次</strong>
-              <StatusBadge state={runUiState(latest.state)} label={RUN_LABELS[latest.state]} />
+              <strong>{t(($) => $.capture.surface.latestRun)}</strong>
+              <StatusBadge
+                state={runUiState(latest.state)}
+                label={portfolioCaptureRunStateLabel(latest.state, t)}
+              />
               <span className="muted tiny">{formatLocalTime(latest.finished_at ?? latest.started_at)}</span>
             </div>
           </div>
           <div className="portfolio-capture-legs">
-            <span>帳戶 · {LEG_LABELS[latest.account_leg_state] ?? latest.account_leg_state}</span>
-            <span>交易 · {LEG_LABELS[latest.execution_leg_state] ?? latest.execution_leg_state}</span>
-            <span>持倉 · {LEG_LABELS[latest.position_leg_state] ?? latest.position_leg_state}</span>
+            <span>
+              {t(($) => $.capture.surface.accountLegPrefix)}{" "}
+              {captureLegStateLabel(latest.account_leg_state, t)}
+            </span>
+            <span>
+              {t(($) => $.capture.surface.executionLegPrefix)}{" "}
+              {captureLegStateLabel(latest.execution_leg_state, t)}
+            </span>
+            <span>
+              {t(($) => $.capture.surface.positionLegPrefix)}{" "}
+              {captureLegStateLabel(latest.position_leg_state, t)}
+            </span>
           </div>
           {latest.new_account_count > 0 ? (
-            <InlineAlert state="partial" title="待檢視">
-              發現 {latest.new_account_count} 個新帳戶。
+            <InlineAlert
+              state="partial"
+              title={t(($) => $.capture.alerts.reviewTitle)}
+            >
+              {t(($) => $.capture.alerts.newAccounts, {
+                count: latest.new_account_count,
+              })}
             </InlineAlert>
           ) : null}
           {latest.archived_activity_count > 0 ? (
-            <InlineAlert state="partial" title="封存帳戶有新活動">
-              {latest.archived_activity_count} 個封存帳戶有新觀察，未自動解除封存。
+            <InlineAlert
+              state="partial"
+              title={t(($) => $.capture.alerts.archivedActivityTitle)}
+            >
+              {t(($) => $.capture.alerts.archivedActivityMessage, {
+                count: latest.archived_activity_count,
+              })}
             </InlineAlert>
           ) : null}
           {latest.error_detail ? (
-            <InlineAlert state={runUiState(latest.state)} title={runDetailTitle(latest.state)}>
-              {latest.error_detail}
-            </InlineAlert>
+            <InlineAlert
+              state={runUiState(latest.state)}
+              title={portfolioCaptureRunDetailLabel(latest.state, t)}
+            />
           ) : null}
         </div>
-      ) : <p className="muted">尚無同步紀錄。</p>}
+      ) : <p className="muted">{portfolioEmptyStateLabel("capture_runs", t)}</p>}
 
       <DataTable<PortfolioCaptureRun>
-        ariaLabel="持倉同步紀錄"
+        ariaLabel={t(($) => $.capture.runs.tableAria)}
         rows={safeCapture?.recent_runs ?? []}
         columns={runColumns}
         rowKey={(item) => item.id}
-        rowLabel={(item) => `同步 ${item.id}`}
-        emptyText="尚無同步紀錄"
+        rowLabel={(item) => t(($) => $.capture.runs.rowAria, { id: item.id })}
+        emptyText={portfolioEmptyStateLabel("capture_runs", t)}
       />
 
       {safeCapture?.review && safeCapture.review.changes.length > 0 ? (
         <div className="portfolio-capture-review">
           <div className="ui-section-head">
             <div className="ui-action-row">
-              <strong>待套用差異</strong>
-              <StatusBadge state="partial" label={`${safeCapture.review.changes.length} 項變更`} />
+              <strong>{t(($) => $.capture.review.pendingTitle)}</strong>
+              <StatusBadge
+                state="partial"
+                label={reviewCountLabel}
+              />
             </div>
             {safeCapture.review.changes.length > 0 ? (
               <Button
@@ -552,17 +665,17 @@ export function PortfolioCapturePanel({
                 busy={busy === "apply"}
                 disabled={busy != null || safeCapture.running}
               >
-                套用同步
+                {t(($) => $.capture.review.apply)}
               </Button>
             ) : null}
           </div>
           <DataTable<PortfolioCaptureReviewChange>
-            ariaLabel="持倉同步待檢視差異"
+            ariaLabel={t(($) => $.capture.review.tableAria)}
             rows={safeCapture.review.changes}
             columns={reviewColumns}
             rowKey={(item) => `${safeCapture.review!.run_id}-${item.account_id ?? item.broker_account_id_hash}-${item.broker_con_id}-${item.kind}`}
             rowLabel={(item) => item.symbol}
-            emptyText="沒有待套用差異"
+            emptyText={t(($) => $.capture.review.empty)}
           />
         </div>
       ) : null}

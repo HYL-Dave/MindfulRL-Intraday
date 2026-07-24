@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 import type {
   PortfolioAccountValueSnapshot,
@@ -6,6 +7,7 @@ import type {
   PortfolioOverviewAccount,
   PortfolioTotals,
 } from "./api";
+import type { PortfolioT } from "./i18n/portfolioPresentation";
 import { formatSystemTimestamp } from "./timeDisplay";
 import { DataTable, StatusBadge, type DataTableColumn } from "./ui";
 
@@ -19,11 +21,15 @@ export function PortfolioAccountSummary({
   busyAccountId: number | null;
   onToggleAggregate: (accountId: number, include: boolean) => void;
 }) {
+  const { t } = useTranslation("portfolio");
   const manualRows = currencyRows(overview.manual_subtotal.totals);
   return (
-    <section className="ui-section-band portfolio-account-summary" aria-label="帳戶總覽">
+    <section
+      className="ui-section-band portfolio-account-summary"
+      aria-label={t(($) => $.accountOverview.surface.summaryTitle)}
+    >
       <div className="ui-section-head">
-        <h2>帳戶總覽</h2>
+        <h2>{t(($) => $.accountOverview.surface.summaryTitle)}</h2>
       </div>
       {overview.accounts.map((account) => {
         const snapshot = account.latest_snapshot;
@@ -34,36 +40,46 @@ export function PortfolioAccountSummary({
               <div>
                 <h3>{account.label}</h3>
                 <span className="muted tiny">
-                  {account.broker === "manual" ? "手動帳戶" : account.sync_mode}
+                  {account.broker === "manual"
+                    ? t(($) => $.accountOverview.surface.manualAccount)
+                    : account.sync_mode}
                 </span>
               </div>
               {account.broker === "manual" ? (
-                <span className="muted tiny">無帳戶價值資料</span>
+                <span className="muted tiny">
+                  {t(($) => $.accountOverview.surface.valueUnavailable)}
+                </span>
               ) : snapshot ? (
-                <StatusBadge state="ready" label="已取得帳戶快照" />
+                <StatusBadge
+                  state="ready"
+                  label={t(($) => $.accountOverview.surface.snapshotAvailable)}
+                />
               ) : (
-                <StatusBadge state="empty" label="尚無帳戶快照" />
+                <StatusBadge
+                  state="empty"
+                  label={t(($) => $.accountOverview.surface.snapshotMissing)}
+                />
               )}
             </div>
 
             {account.broker !== "manual" ? (
               <div className="portfolio-account-values">
-                <Metric label="Net Liquidation">
+                <Metric label={t(($) => $.accountOverview.surface.metricNetLiquidation)}>
                   {formatAmount(snapshot?.net_liquidation, currency)}
                 </Metric>
-                <Metric label="Total Cash">
+                <Metric label={t(($) => $.accountOverview.surface.metricTotalCash)}>
                   {formatAmount(snapshot?.total_cash_value, currency)}
                 </Metric>
-                <Metric label="Buying Power">
+                <Metric label={t(($) => $.accountOverview.surface.metricBuyingPower)}>
                   {formatAmount(snapshot?.buying_power, currency)}
                 </Metric>
-                <Metric label="今日已實現損益（ET）">
+                <Metric label={t(($) => $.accountOverview.surface.metricDailyRealized)}>
                   {formatAmount(snapshot?.daily_realized_pnl, currency)}
                 </Metric>
-                <Metric label="今日未實現損益（ET）">
+                <Metric label={t(($) => $.accountOverview.surface.metricDailyUnrealized)}>
                   {formatAmount(snapshot?.daily_unrealized_pnl, currency)}
                 </Metric>
-                <Metric label="今日損益合計（已實現 + 未實現，ET）">
+                <Metric label={t(($) => $.accountOverview.surface.metricDailyTotal)}>
                   {formatAmount(snapshot?.daily_total_pnl, currency)}
                 </Metric>
               </div>
@@ -71,16 +87,20 @@ export function PortfolioAccountSummary({
 
             <div className="portfolio-account-times">
               <span className="muted tiny">
-                Broker 觀察：{formatSystemTimestamp(snapshot?.as_of_utc)}
+                {t(($) => $.accountOverview.surface.brokerObservedPrefix)}
+                {formatSystemTimestamp(snapshot?.as_of_utc)}
               </span>
               <span className="muted tiny">
-                本地持倉核准 / 同步：{formatSystemTimestamp(account.canonical_last_sync_at)}
+                {t(($) => $.accountOverview.surface.canonicalSyncPrefix)}
+                {formatSystemTimestamp(account.canonical_last_sync_at)}
               </span>
             </div>
             <label className="muted tiny">
               <input
                 type="checkbox"
-                aria-label={`${account.label} 納入總計`}
+                aria-label={t(($) => $.accountOverview.surface.includeAccountAria, {
+                  account: account.label,
+                })}
                 checked={account.include_in_total}
                 disabled={busyAccountId === account.id}
                 onChange={(event) => onToggleAggregate(
@@ -88,23 +108,26 @@ export function PortfolioAccountSummary({
                   event.currentTarget.checked,
                 )}
               />
-              納入總計
+              {t(($) => $.accountOverview.surface.includeAccountLabel)}
             </label>
           </article>
         );
       })}
 
-      <section className="portfolio-manual-subtotal" aria-label="手動帳戶持倉小計">
+      <section
+        className="portfolio-manual-subtotal"
+        aria-label={t(($) => $.accountOverview.surface.manualSubtotalTitle)}
+      >
         <div className="ui-section-head">
           <div>
-            <h3>手動帳戶持倉小計</h3>
+            <h3>{t(($) => $.accountOverview.surface.manualSubtotalTitle)}</h3>
             <span className="muted tiny">
-              只包含已勾選且未關閉的手動帳戶持倉；不與 IBKR Net Liquidation 相加。
+              {t(($) => $.accountOverview.surface.manualSubtotalNotice)}
             </span>
           </div>
         </div>
         {manualRows.length === 0 ? (
-          <p className="muted">尚無納入總計的手動持倉。</p>
+          <p className="muted">{t(($) => $.accountOverview.surface.manualSubtotalEmpty)}</p>
         ) : (
           <div className="portfolio-account-values">
             {manualRows.map(([currency, row]) => (
@@ -112,13 +135,18 @@ export function PortfolioAccountSummary({
                 <span className="ui-metric-label">{currency}</span>
                 <strong>{formatAmount(row.market_value, currency)}</strong>
                 <span className="muted tiny">
-                  {row.position_count} 筆 · 未實現 {formatAmount(row.unrealized_pnl, currency)}
+                  {t(($) => $.accountOverview.surface.manualPositionSummary, {
+                    count: row.position_count,
+                  })}{" "}
+                  {formatAmount(row.unrealized_pnl, currency)}
                 </span>
               </div>
             ))}
             {overview.manual_subtotal.totals.broker_base ? (
               <div className="ui-metric">
-                <span className="ui-metric-label">手動帳戶 broker-base 小計</span>
+                <span className="ui-metric-label">
+                  {t(($) => $.accountOverview.surface.brokerBaseSubtotal)}
+                </span>
                 <strong>
                   {formatAmount(
                     overview.manual_subtotal.totals.broker_base.market_value,
@@ -126,7 +154,7 @@ export function PortfolioAccountSummary({
                   )}
                 </strong>
                 <span className="muted tiny">
-                  未實現 {formatAmount(
+                  {t(($) => $.accountOverview.surface.unrealizedPrefix)} {formatAmount(
                     overview.manual_subtotal.totals.broker_base.unrealized_pnl,
                     null,
                   )}
@@ -142,10 +170,22 @@ export function PortfolioAccountSummary({
 
 
 export function PortfolioAccountDetails({ overview }: { overview: PortfolioOverview }) {
+  const { t } = useTranslation("portfolio");
+  const moneyColumns: DataTableColumn<PortfolioOverviewAccount>[] = moneyColumnSpecs
+    .map(([id, field]) => ({
+      id,
+      header: moneyHeader(id, t),
+      align: "right" as const,
+      render: (account: PortfolioOverviewAccount) => {
+        const snapshot = account.latest_snapshot;
+        const currency = snapshot?.base_currency ?? account.base_currency;
+        return formatAmount(snapshot?.[field], currency);
+      },
+    }));
   const columns: DataTableColumn<PortfolioOverviewAccount>[] = [
     {
       id: "account",
-      header: "帳戶",
+      header: t(($) => $.accountOverview.surface.detailsAccountHeader),
       render: (account) => (
         <>
           <strong>{account.label}</strong>
@@ -156,13 +196,13 @@ export function PortfolioAccountDetails({ overview }: { overview: PortfolioOverv
     },
     {
       id: "run",
-      header: "Capture Run",
+      header: t(($) => $.tableLabels.accountCaptureRun),
       align: "right",
       render: (account) => account.latest_snapshot?.capture_run_id ?? "—",
     },
     {
       id: "currency",
-      header: "Base Currency",
+      header: t(($) => $.tableLabels.accountBaseCurrency),
       render: (account) => account.latest_snapshot?.base_currency
         ?? account.base_currency
         ?? "—",
@@ -170,19 +210,21 @@ export function PortfolioAccountDetails({ overview }: { overview: PortfolioOverv
     ...moneyColumns,
     {
       id: "source",
-      header: "來源",
+      header: t(($) => $.accountOverview.surface.detailsSourceHeader),
       render: (account) => account.latest_snapshot
         ? `${account.latest_snapshot.source} · ${account.latest_snapshot.as_of_kind}`
-        : account.broker === "manual" ? "無帳戶價值資料" : "尚無帳戶快照",
+        : account.broker === "manual"
+          ? t(($) => $.accountOverview.surface.detailsManualUnavailable)
+          : t(($) => $.accountOverview.empty.accountSnapshot),
     },
     {
       id: "broker-time",
-      header: "Broker 觀察",
+      header: t(($) => $.accountOverview.surface.detailsBrokerObservedHeader),
       render: (account) => formatSystemTimestamp(account.latest_snapshot?.as_of_utc),
     },
     {
       id: "canonical-time",
-      header: "本地持倉核准 / 同步",
+      header: t(($) => $.accountOverview.surface.detailsCanonicalSyncHeader),
       render: (account) => formatSystemTimestamp(account.canonical_last_sync_at),
     },
   ];
@@ -190,19 +232,19 @@ export function PortfolioAccountDetails({ overview }: { overview: PortfolioOverv
     <section className="ui-section-band portfolio-account-details">
       <div className="ui-section-head">
         <div>
-          <h2>帳戶明細</h2>
+          <h2>{t(($) => $.accountOverview.surface.detailsTitle)}</h2>
           <p className="muted">
-            最新觀察值，不是績效曲線；空值表示 provider 未回報。
+            {t(($) => $.accountOverview.surface.detailsNotice)}
           </p>
         </div>
       </div>
       <DataTable<PortfolioOverviewAccount>
-        ariaLabel="帳戶最新快照明細"
+        ariaLabel={t(($) => $.accountOverview.surface.detailsTableAria)}
         rows={overview.accounts}
         columns={columns}
         rowKey={(account) => account.id}
         rowLabel={(account) => account.label}
-        emptyText="尚無帳戶"
+        emptyText={t(($) => $.accountOverview.empty.accounts)}
       />
     </section>
   );
@@ -224,31 +266,48 @@ type MoneyField = keyof Pick<
   | "daily_total_pnl"
 >;
 
-const moneyColumnSpecs: Array<[string, string, MoneyField]> = [
-  ["net-liquidation", "Net Liquidation", "net_liquidation"],
-  ["total-cash", "Total Cash", "total_cash_value"],
-  ["settled-cash", "Settled Cash", "settled_cash"],
-  ["gross-position", "Gross Position Value", "gross_position_value"],
-  ["buying-power", "Buying Power", "buying_power"],
-  ["available-funds", "Available Funds", "available_funds"],
-  ["initial-margin", "Initial Margin", "initial_margin_requirement"],
-  ["maintenance-margin", "Maintenance Margin", "maintenance_margin_requirement"],
-  ["daily-realized", "今日已實現（ET）", "daily_realized_pnl"],
-  ["daily-unrealized", "今日未實現（ET）", "daily_unrealized_pnl"],
-  ["daily-total", "今日合計（已實現 + 未實現，ET）", "daily_total_pnl"],
+type MoneyColumnId =
+  | "net-liquidation"
+  | "total-cash"
+  | "settled-cash"
+  | "gross-position"
+  | "buying-power"
+  | "available-funds"
+  | "initial-margin"
+  | "maintenance-margin"
+  | "daily-realized"
+  | "daily-unrealized"
+  | "daily-total";
+
+const moneyColumnSpecs: Array<[MoneyColumnId, MoneyField]> = [
+  ["net-liquidation", "net_liquidation"],
+  ["total-cash", "total_cash_value"],
+  ["settled-cash", "settled_cash"],
+  ["gross-position", "gross_position_value"],
+  ["buying-power", "buying_power"],
+  ["available-funds", "available_funds"],
+  ["initial-margin", "initial_margin_requirement"],
+  ["maintenance-margin", "maintenance_margin_requirement"],
+  ["daily-realized", "daily_realized_pnl"],
+  ["daily-unrealized", "daily_unrealized_pnl"],
+  ["daily-total", "daily_total_pnl"],
 ];
 
-const moneyColumns: DataTableColumn<PortfolioOverviewAccount>[] = moneyColumnSpecs
-  .map(([id, header, field]) => ({
-    id,
-    header,
-    align: "right" as const,
-    render: (account: PortfolioOverviewAccount) => {
-      const snapshot = account.latest_snapshot;
-      const currency = snapshot?.base_currency ?? account.base_currency;
-      return formatAmount(snapshot?.[field], currency);
-    },
-  }));
+function moneyHeader(id: MoneyColumnId, t: PortfolioT): string {
+  switch (id) {
+    case "net-liquidation": return t(($) => $.tableLabels.netLiquidation);
+    case "total-cash": return t(($) => $.tableLabels.totalCash);
+    case "settled-cash": return t(($) => $.tableLabels.settledCash);
+    case "gross-position": return t(($) => $.tableLabels.grossPositionValue);
+    case "buying-power": return t(($) => $.tableLabels.buyingPower);
+    case "available-funds": return t(($) => $.tableLabels.availableFunds);
+    case "initial-margin": return t(($) => $.tableLabels.initialMargin);
+    case "maintenance-margin": return t(($) => $.tableLabels.maintenanceMargin);
+    case "daily-realized": return t(($) => $.accountOverview.table.dailyRealized);
+    case "daily-unrealized": return t(($) => $.accountOverview.table.dailyUnrealized);
+    case "daily-total": return t(($) => $.accountOverview.table.dailyTotal);
+  }
+}
 
 
 function Metric({ label, children }: { label: string; children: ReactNode }) {

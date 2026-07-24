@@ -105,7 +105,7 @@
     {"signature":"[\"src/PortfolioAccountOverview.tsx\",\"jsx_text\",\"未實現\"]","count":1,"claimType":"exact","path":"accountOverview.surface.unrealizedPrefix"},
     {"signature":"[\"src/PortfolioAccountOverview.tsx\",\"jsx_text\",\"本地持倉核准 / 同步：\"]","count":1,"claimType":"exact","path":"accountOverview.surface.canonicalSyncPrefix"},
     {"signature":"[\"src/PortfolioAccountOverview.tsx\",\"jsx_text\",\"無帳戶價值資料\"]","count":1,"claimType":"exact","path":"accountOverview.surface.detailsManualUnavailable"},
-    {"signature":"[\"src/PortfolioAccountOverview.tsx\",\"jsx_text\",\"筆 · 未實現\"]","count":1,"claimType":"exact","path":"accountOverview.surface.manualPositionSummary"},
+    {"signature":"[\"src/PortfolioAccountOverview.tsx\",\"jsx_text\",\"筆 · 未實現\"]","count":1,"claimType":"template_suffix","path":"accountOverview.surface.manualPositionSummary"},
     {"signature":"[\"src/PortfolioAccountOverview.tsx\",\"jsx_text\",\"納入總計\"]","count":1,"claimType":"exact","path":"accountOverview.surface.includeAccountLabel"},
     {"signature":"[\"src/PortfolioAccountOverview.tsx\",\"object_property\",\"Base Currency\"]","count":1,"claimType":"exact","path":"tableLabels.accountBaseCurrency"},
     {"signature":"[\"src/PortfolioAccountOverview.tsx\",\"object_property\",\"Capture Run\"]","count":1,"claimType":"exact","path":"tableLabels.accountCaptureRun"},

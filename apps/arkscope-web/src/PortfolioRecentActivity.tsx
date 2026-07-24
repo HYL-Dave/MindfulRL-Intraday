@@ -1,15 +1,13 @@
 import { ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import type { PortfolioActivityItem, PortfolioActivityPage } from "./api";
+import {
+  portfolioCountCopy,
+  type PortfolioT,
+} from "./i18n/portfolioPresentation";
 import { formatMarketTimestamp, formatSystemTimestamp } from "./timeDisplay";
 import { Button } from "./ui";
-
-const OUTCOME_LABELS = {
-  gain: "已實現獲利",
-  loss: "已實現虧損",
-  flat: "已實現損益為零",
-  unknown: "結果未知",
-} as const;
 
 export function PortfolioRecentActivity({
   page,
@@ -18,6 +16,7 @@ export function PortfolioRecentActivity({
   page: PortfolioActivityPage;
   onOpenActivity: () => void;
 }) {
+  const { t } = useTranslation("portfolio");
   if (page.items.length === 0 && page.summary.unmatched_count === 0) return null;
 
   const days = page.summary.recent_window_days ?? 7;
@@ -28,22 +27,28 @@ export function PortfolioRecentActivity({
     >
       <div className="portfolio-recent-head">
         <div>
-          <h2 id="portfolio-recent-title">近期活動</h2>
-          <p className="muted tiny">最近 {days} 日</p>
+          <h2 id="portfolio-recent-title">{t(($) => $.recentActivity.surface.title)}</h2>
+          <p className="muted tiny">
+            {t(($) => $.recentActivity.surface.windowPrefix)} {days}{" "}
+            {t(($) => $.recentActivity.surface.daySuffix)}
+          </p>
         </div>
         <Button
           size="compact"
           icon={<ArrowRight size={15} />}
-          aria-label="開啟完整活動"
+          aria-label={t(($) => $.recentActivity.surface.openFullAria)}
           onClick={onOpenActivity}
         >
-          全部
+          {t(($) => $.recentActivity.surface.openFullAction)}
         </Button>
       </div>
 
       {page.summary.unmatched_count > 0 ? (
         <p className="portfolio-recent-unmatched">
-          近 {days} 日有 {page.summary.unmatched_count} 筆未匹配變動
+          {t(($) => $.recentActivity.surface.unmatchedWindowPrefix)} {days}{" "}
+          {t(($) => $.recentActivity.surface.unmatchedWindowMiddle)}{" "}
+          {page.summary.unmatched_count}{" "}
+          {t(($) => $.recentActivity.surface.unmatchedWindowSuffix)}
         </p>
       ) : null}
 
@@ -51,10 +56,10 @@ export function PortfolioRecentActivity({
         <ul className="portfolio-recent-list">
           {page.items.map((item) => (
             <li key={item.id}>
-              <strong>{eventLabel(item)}</strong>
-              <span>{compactFact(item)}</span>
+              <strong>{eventLabel(item, t)}</strong>
+              <span>{compactFact(item, t)}</span>
               <span className="muted tiny">
-                {accountLabel(item)} · {compactTime(item)}
+                {accountLabel(item, t)} · {compactTime(item)}
               </span>
             </li>
           ))}
@@ -64,42 +69,56 @@ export function PortfolioRecentActivity({
   );
 }
 
-function eventLabel(item: PortfolioActivityItem): string {
+function eventLabel(item: PortfolioActivityItem, t: PortfolioT): string {
   switch (item.kind) {
-    case "order": return item.symbol ? `${item.symbol} 訂單成交` : "訂單成交";
-    case "execution": return item.symbol ? `${item.symbol} 獨立成交` : "獨立成交";
-    case "unmatched": return item.symbol ? `${item.symbol} 未匹配變動` : "未匹配變動";
-    case "manual_adjustment": return `${item.symbol} 手動調整`;
+    case "order": return item.symbol
+      ? t(($) => $.recentActivity.surface.eventOrderWithSymbol, { symbol: item.symbol })
+      : t(($) => $.recentActivity.surface.eventOrder);
+    case "execution": return item.symbol
+      ? t(($) => $.recentActivity.surface.eventExecutionWithSymbol, { symbol: item.symbol })
+      : t(($) => $.recentActivity.surface.eventExecution);
+    case "unmatched": return item.symbol
+      ? t(($) => $.recentActivity.surface.eventUnmatchedWithSymbol, { symbol: item.symbol })
+      : t(($) => $.recentActivity.surface.eventUnmatched);
+    case "manual_adjustment": return t(($) => $.recentActivity.surface.eventManualWithSymbol, {
+      symbol: item.symbol,
+    });
     case "coverage_gap": return item.reason_code === "broker_day_gap"
-      ? "Broker 日期覆蓋缺口"
-      : "成交覆蓋不完整";
-    case "history_start": return "活動歷史起點";
+      ? t(($) => $.recentActivity.surface.eventBrokerGap)
+      : t(($) => $.recentActivity.surface.eventExecutionIncomplete);
+    case "history_start": return t(($) => $.recentActivity.surface.eventHistoryStart);
   }
 }
 
-function compactFact(item: PortfolioActivityItem): string {
+function compactFact(item: PortfolioActivityItem, t: PortfolioT): string {
   switch (item.kind) {
     case "order":
     case "execution":
       return [
-        `${sideLabel(item.objective.side)} ${formatNumber(item.objective.quantity)}`,
-        OUTCOME_LABELS[item.objective.realized_outcome],
+        `${sideLabel(item.objective.side, t)} ${formatNumber(item.objective.quantity)}`,
+        outcomeLabel(item.objective.realized_outcome, t),
       ].join(" · ");
     case "unmatched":
-      return `殘差 ${formatNumber(item.residual_quantity)}`;
+      return t(($) => $.recentActivity.surface.residualFact, {
+        quantity: formatNumber(item.residual_quantity),
+      });
     case "manual_adjustment":
-      return `${manualActionLabel(item.action)} · ${item.changes.length} 項欄位`;
+      return `${manualActionLabel(item.action, t)} · ${portfolioCountCopy(
+        "recent_fields",
+        item.changes.length,
+        t,
+      )}`;
     case "coverage_gap":
       return item.reason_code === "broker_day_gap"
-        ? "Broker 日期資料缺口"
-        : "成交資料不完整";
+        ? t(($) => $.recentActivity.surface.brokerGapFact)
+        : t(($) => $.recentActivity.surface.executionIncompleteFact);
     case "history_start":
-      return "開始保留活動紀錄";
+      return t(($) => $.recentActivity.surface.historyStartFact);
   }
 }
 
-function accountLabel(item: PortfolioActivityItem): string {
-  return item.account?.label ?? "所有帳戶";
+function accountLabel(item: PortfolioActivityItem, t: PortfolioT): string {
+  return item.account?.label ?? t(($) => $.recentActivity.surface.allAccounts);
 }
 
 function compactTime(item: PortfolioActivityItem): string {
@@ -109,12 +128,30 @@ function compactTime(item: PortfolioActivityItem): string {
   return formatted.split(" · ")[0];
 }
 
-function sideLabel(value: "buy" | "sell" | "mixed" | "unknown"): string {
-  return { buy: "買入", sell: "賣出", mixed: "混合", unknown: "方向未知" }[value];
+function sideLabel(value: "buy" | "sell" | "mixed" | "unknown", t: PortfolioT): string {
+  switch (value) {
+    case "buy": return t(($) => $.recentActivity.surface.sideBuy);
+    case "sell": return t(($) => $.recentActivity.surface.sideSell);
+    case "mixed": return t(($) => $.recentActivity.surface.sideMixed);
+    case "unknown": return t(($) => $.recentActivity.surface.sideUnknown);
+  }
 }
 
-function manualActionLabel(value: "create" | "update" | "close"): string {
-  return { create: "建立", update: "更新", close: "關閉" }[value];
+function manualActionLabel(value: "create" | "update" | "close", t: PortfolioT): string {
+  switch (value) {
+    case "create": return t(($) => $.recentActivity.surface.manualCreate);
+    case "update": return t(($) => $.recentActivity.surface.manualUpdate);
+    case "close": return t(($) => $.recentActivity.surface.manualClose);
+  }
+}
+
+function outcomeLabel(value: "gain" | "loss" | "flat" | "unknown", t: PortfolioT): string {
+  switch (value) {
+    case "gain": return t(($) => $.recentActivity.surface.outcomeGain);
+    case "loss": return t(($) => $.recentActivity.surface.outcomeLoss);
+    case "flat": return t(($) => $.recentActivity.surface.outcomeFlat);
+    case "unknown": return t(($) => $.recentActivity.surface.outcomeUnknown);
+  }
 }
 
 function formatNumber(value: number | null): string {
