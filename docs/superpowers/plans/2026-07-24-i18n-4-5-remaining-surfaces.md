@@ -88,6 +88,16 @@ change:
 The reviewed frontend ledger remains A `+44/-2`, B `+60/-0`; resource, scanner,
 focused-suite, and file-boundary accounting are unchanged.
 
+### Implementation grounding correction
+
+Task 1's RED inventory exposed one plan-only subtree arithmetic error without
+changing the reviewed namespace total or product scope. The exact 23 Settings
+leaves moved to Common consist of 22 leaves under `settings.models` plus
+`settings.providers.openAI.tokenExpired`. Therefore Settings still moves
+`702 -> 679`, Common still moves `32 -> 56`, and all node/scanner ledgers remain
+unchanged, but the `settings.models` subtree truth is `91 -> 69`, not `91 -> 68`.
+No unrelated model leaf may be deleted merely to satisfy the former typo.
+
 ---
 
 ## Task 0 Evidence
@@ -317,7 +327,9 @@ Settings-only explanatory prose stays in Settings.
 
 The pre-Slice-5 Settings-origin inventory remains historically `612`, but its
 physical ownership becomes `589` leaves in Settings plus the exact 23 moved
-model leaves in Common. The Settings `models` subtree falls from `91` to `68`.
+model leaves in Common. The Settings `models` subtree falls from `91` to `69`;
+the twenty-third moved leaf is the Provider reauthentication label named in the
+implementation grounding correction above.
 The replacement resource node asserts all three values; no test name may keep
 claiming that all 612 leaves still reside in Settings.
 
@@ -442,7 +454,7 @@ contains exactly 612 pre-Slice-5 Settings leaves per locale
 
 They are replaced by generic reviewed namespace and Settings-origin inventory
 nodes. The latter requires current pre-Slice-5 Settings leaves `589`, model
-subtree `68`, and the exact 23 leaves moved to Common to reconcile to the
+subtree `69`, and the exact 23 leaves moved to Common to reconcile to the
 historical `612`; it does not leave a stale count in a test ID. No semantic
 coverage disappears. Full frontend closes at `93 files / 986 nodes`; A focused
 closes at `24 files / 305 nodes`.

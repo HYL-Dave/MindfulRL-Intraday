@@ -8,6 +8,10 @@ import type {
 } from "../api";
 import enSettings from "../i18n/resources/en/settings";
 import zhHantSettings from "../i18n/resources/zh-Hant/settings";
+import {
+  modelThinkingModeLabel,
+  type ModelCommonT,
+} from "../modelRoutingUx";
 import type { SettingsAnchorId, SettingsGroupId } from "./settingsRegistry";
 
 export type SettingsT = TFunction<"settings">;
@@ -223,21 +227,8 @@ export function settingsEffortDescription(
   }
 }
 
-export function settingsThinkingLabel(id: string, t: SettingsT): string {
-  switch (id) {
-    case "none":
-      return t(($) => $.models.thinking.none);
-    case "manual_budget":
-      return t(($) => $.models.thinking.manualBudget);
-    case "adaptive_opt_in":
-      return t(($) => $.models.thinking.adaptiveOptIn);
-    case "adaptive_default_on":
-      return t(($) => $.models.thinking.adaptiveDefaultOn);
-    case "adaptive_always_on":
-      return t(($) => $.models.thinking.adaptiveAlwaysOn);
-    default:
-      return id;
-  }
+export function settingsThinkingLabel(id: string, t: ModelCommonT): string {
+  return modelThinkingModeLabel(id, t);
 }
 
 export function settingsRouteSourceLabel(

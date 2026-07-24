@@ -1,6 +1,9 @@
+import { createInstance } from "i18next";
 import { describe, expect, it } from "vitest";
 
+import { initializeI18n } from "./i18n/resources";
 import type { ModelCatalog, TaskRoute } from "./api";
+import * as modelRoutingUx from "./modelRoutingUx";
 import {
   blockedRouteSaves,
   isTaskTestSnapshotCurrent,
@@ -20,6 +23,115 @@ describe("Models terminology", () => {
     expect(MODEL_UX_LABELS.reasons.reauth_required).toBe("登入已失效，請重新登入");
     expect(MODEL_UX_LABELS.authModes.chatgpt_oauth).toBe("ChatGPT 訂閱登入");
     expect(MODEL_UX_LABELS.thinking.adaptive_default_on).toBe("預設開啟 adaptive thinking");
+  });
+
+  it("resolves every shared model group reason auth mode thinking mode and compatibility context in both locales", () => {
+    type ModelRoutingPresenters = {
+      modelGroupLabel: (id: string, t: ReturnType<ReturnType<typeof createInstance>["getFixedT"]>) => string;
+      modelReasonLabel: (id: string, t: ReturnType<ReturnType<typeof createInstance>["getFixedT"]>) => string;
+      modelAuthModeLabel: (id: string, t: ReturnType<ReturnType<typeof createInstance>["getFixedT"]>) => string;
+      modelThinkingModeLabel: (id: string, t: ReturnType<ReturnType<typeof createInstance>["getFixedT"]>) => string;
+      modelCompatibilityLabel: (id: string, t: ReturnType<ReturnType<typeof createInstance>["getFixedT"]>) => string;
+    };
+    const presenters = modelRoutingUx as typeof modelRoutingUx & Partial<ModelRoutingPresenters>;
+    expect(presenters.modelGroupLabel).toBeTypeOf("function");
+    expect(presenters.modelReasonLabel).toBeTypeOf("function");
+    expect(presenters.modelAuthModeLabel).toBeTypeOf("function");
+    expect(presenters.modelThinkingModeLabel).toBeTypeOf("function");
+    expect(presenters.modelCompatibilityLabel).toBeTypeOf("function");
+    if (
+      !presenters.modelGroupLabel ||
+      !presenters.modelReasonLabel ||
+      !presenters.modelAuthModeLabel ||
+      !presenters.modelThinkingModeLabel ||
+      !presenters.modelCompatibilityLabel
+    ) return;
+
+    const expected = {
+      "zh-Hant": {
+        groups: ["可供此任務使用", "此登入可見", "進階／未驗證", "目前路由"],
+        reasons: [
+          "尚未設定此 provider 的登入",
+          "此登入方式不支援這個任務",
+          "此登入方式尚不支援實際測試",
+          "缺少任務能力",
+          "此登入的探索清單未顯示此模型",
+          "自訂／未知模型，尚未驗證能力",
+          "暫時無法讀取模型探索狀態",
+          "provider 實際呼叫失敗",
+          "登入已失效，請重新登入",
+        ],
+        authModes: ["API key", "API key pool", "ChatGPT 訂閱登入", "Claude 訂閱登入"],
+        thinkingModes: [
+          "無特殊 thinking 行為",
+          "使用手動 thinking budget",
+          "可選擇 adaptive thinking",
+          "預設開啟 adaptive thinking",
+          "固定開啟 adaptive thinking",
+        ],
+        compatibility: ["未驗證（舊 sidecar 相容模式）", "未驗證（舊 sidecar 相容模式）。"],
+      },
+      en: {
+        groups: ["Available for this task", "Visible to this sign-in", "Advanced / unverified", "Current route"],
+        reasons: [
+          "No sign-in is configured for this provider",
+          "This sign-in method does not support the task",
+          "This sign-in method does not yet support live testing",
+          "Task capability is missing",
+          "This model does not appear in the discovery list for this sign-in",
+          "Custom or unknown model; capabilities are unverified",
+          "Model discovery status is temporarily unavailable",
+          "The live provider call failed",
+          "The sign-in has expired. Sign in again",
+        ],
+        authModes: ["API key", "API key pool", "ChatGPT subscription sign-in", "Claude subscription sign-in"],
+        thinkingModes: [
+          "No special thinking behavior",
+          "Uses a manual thinking budget",
+          "Adaptive thinking available",
+          "Adaptive thinking on by default",
+          "Adaptive thinking always on",
+        ],
+        compatibility: [
+          "Unverified (legacy sidecar compatibility mode)",
+          "Unverified (legacy sidecar compatibility mode).",
+        ],
+      },
+    } as const;
+    const groupIds = ["available", "visible_disabled", "advanced", "current"];
+    const reasonIds = [
+      "missing_active_credential",
+      "task_auth_mode_unsupported",
+      "task_test_unsupported",
+      "task_capability_missing",
+      "model_not_visible",
+      "model_not_in_registry",
+      "discovery_unavailable",
+      "provider_call_failed",
+      "reauth_required",
+    ];
+    const authModeIds = ["api_key", "api_key_pool", "chatgpt_oauth", "claude_code_oauth"];
+    const thinkingModeIds = [
+      "none",
+      "manual_budget",
+      "adaptive_opt_in",
+      "adaptive_default_on",
+      "adaptive_always_on",
+    ];
+    const compatibilityIds = ["decorated_suffix", "settings_notice"];
+
+    for (const locale of ["zh-Hant", "en"] as const) {
+      const instance = createInstance();
+      initializeI18n(instance, locale);
+      const t = instance.getFixedT(locale, "common");
+      expect(groupIds.map((id) => presenters.modelGroupLabel!(id, t))).toEqual(expected[locale].groups);
+      expect(reasonIds.map((id) => presenters.modelReasonLabel!(id, t))).toEqual(expected[locale].reasons);
+      expect(authModeIds.map((id) => presenters.modelAuthModeLabel!(id, t))).toEqual(expected[locale].authModes);
+      expect(thinkingModeIds.map((id) => presenters.modelThinkingModeLabel!(id, t))).toEqual(expected[locale].thinkingModes);
+      expect(compatibilityIds.map((id) => presenters.modelCompatibilityLabel!(id, t)))
+        .toEqual(expected[locale].compatibility);
+    }
+    expect(presenters.modelReasonLabel("future_reason", createInstance().t)).toBe("future_reason");
   });
 });
 

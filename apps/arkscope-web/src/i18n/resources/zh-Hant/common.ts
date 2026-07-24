@@ -24,6 +24,42 @@ const common = {
     cancellationUnavailable: "無法從此處取消",
     result: "結果：{{destination}}",
   },
+  models: {
+    groups: {
+      available: "可供此任務使用",
+      visibleDisabled: "此登入可見",
+      advanced: "進階／未驗證",
+      current: "目前路由",
+    },
+    reasons: {
+      missingActiveCredential: "尚未設定此 provider 的登入",
+      taskAuthModeUnsupported: "此登入方式不支援這個任務",
+      taskTestUnsupported: "此登入方式尚不支援實際測試",
+      taskCapabilityMissing: "缺少任務能力",
+      modelNotVisible: "此登入的探索清單未顯示此模型",
+      modelNotInRegistry: "自訂／未知模型，尚未驗證能力",
+      discoveryUnavailable: "暫時無法讀取模型探索狀態",
+      providerCallFailed: "provider 實際呼叫失敗",
+      reauthRequired: "登入已失效，請重新登入",
+    },
+    authModes: {
+      apiKey: "API key",
+      apiKeyPool: "API key pool",
+      chatgptOauth: "ChatGPT 訂閱登入",
+      claudeCodeOauth: "Claude 訂閱登入",
+    },
+    thinkingModes: {
+      none: "無特殊 thinking 行為",
+      manualBudget: "使用手動 thinking budget",
+      adaptiveOptIn: "可選擇 adaptive thinking",
+      adaptiveDefaultOn: "預設開啟 adaptive thinking",
+      adaptiveAlwaysOn: "固定開啟 adaptive thinking",
+    },
+    compatibility: {
+      decoratedSuffix: "未驗證（舊 sidecar 相容模式）",
+      settingsNotice: "未驗證（舊 sidecar 相容模式）。",
+    },
+  },
   personalization: {
     stances: {
       off: "關閉",

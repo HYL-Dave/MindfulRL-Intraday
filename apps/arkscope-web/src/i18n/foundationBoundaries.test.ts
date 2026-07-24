@@ -57,6 +57,11 @@ const I18N_3_EXPLORE_SCOPES = [
   "src/explore/**",
 ];
 
+const TASK_1_MODEL_SCOPES = [
+  "src/modelPicker.ts",
+  "src/modelRoutingUx.ts",
+];
+
 const ARKSCOPE_ALLOWLIST_ENTRY = {
   file: "src/shell/ShellTopBar.tsx",
   kind: "jsx_text",
@@ -291,8 +296,9 @@ describe("I18N-0 foundation boundaries", () => {
       ...I18N_2_SETTINGS_SCOPES,
       ...SLICE_5_MIGRATED_SCOPES,
       ...I18N_3_EXPLORE_SCOPES,
+      ...TASK_1_MODEL_SCOPES,
     ]);
-    expect(migrated.scopes).toHaveLength(39);
+    expect(migrated.scopes).toHaveLength(41);
     expect(allowlist.entries).toEqual([
       ARKSCOPE_ALLOWLIST_ENTRY,
       ...I18N_2_SETTINGS_ALLOWLIST_ENTRIES,
@@ -303,7 +309,9 @@ describe("I18N-0 foundation boundaries", () => {
 
     const ownedDebt = debt.signatures.filter(({ signature }) => {
       const [file] = JSON.parse(signature) as [string];
-      return ownsSettingsDebt(file) || ownsExploreDebt(file);
+      return ownsSettingsDebt(file)
+        || ownsExploreDebt(file)
+        || TASK_1_MODEL_SCOPES.includes(file);
     });
     expect(ownedDebt).toEqual([]);
   });

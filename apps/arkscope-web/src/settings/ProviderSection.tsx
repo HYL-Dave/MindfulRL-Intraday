@@ -42,6 +42,7 @@ import {
 } from "../chatgptOAuth";
 import { formatSystemTimestamp } from "../timeDisplay";
 import { ConfirmDialog } from "../ui";
+import type { ModelCommonT } from "../modelRoutingUx";
 import { DeveloperDiagnostics } from "./DeveloperDiagnostics";
 import { modelReasonLabel, settingsErrorPresentation } from "./settingsBackendCopy";
 import type { SettingsT } from "./settingsCopy";
@@ -103,7 +104,11 @@ function providerNoticeText(notice: ProviderNotice, t: SettingsT): string {
   }
 }
 
-function providerFailureText(failure: ProviderFailure, t: SettingsT): string {
+function providerFailureText(
+  failure: ProviderFailure,
+  t: SettingsT,
+  commonT: ModelCommonT,
+): string {
   switch (failure.kind) {
     case "empty_key":
       return t(($) => $.providers.credential.emptyKey, { providerId: failure.provider });
@@ -124,28 +129,39 @@ function providerFailureText(failure: ProviderFailure, t: SettingsT): string {
     case "missing_code":
       return t(($) => $.providers.openAI.missingCode);
     case "request":
-      return settingsErrorPresentation(failure.error, t).message;
+      return settingsErrorPresentation(failure.error, t, commonT).message;
   }
 }
 
-function providerFailureDiagnostic(failure: ProviderFailure | null, t: SettingsT): string | null {
+function providerFailureDiagnostic(
+  failure: ProviderFailure | null,
+  t: SettingsT,
+  commonT: ModelCommonT,
+): string | null {
   if (!failure) return null;
   if (failure.kind === "oauth_error") return failure.detail;
-  if (failure.kind === "request") return settingsErrorPresentation(failure.error, t).diagnostic;
+  if (failure.kind === "request") {
+    return settingsErrorPresentation(failure.error, t, commonT).diagnostic;
+  }
   return null;
 }
 
 function discoveryStatusLabel(
   status: ModelDiscoveryResult["status"],
   t: SettingsT,
+  commonT: ModelCommonT,
 ): string {
   switch (status) {
     case "ok":
       return t(($) => $.dataStorage.available);
-    case "missing_credential":
-      return t(($) => $.models.credentials.missing);
-    case "unsupported":
-      return t(($) => $.models.test.unsupported);
+    case "missing_credential": {
+      const label = modelReasonLabel("missing_active_credential", commonT);
+      return label;
+    }
+    case "unsupported": {
+      const label = modelReasonLabel("task_test_unsupported", commonT);
+      return label;
+    }
     case "error":
       return t(($) => $.providers.discovery.failure);
   }
@@ -173,6 +189,7 @@ export function ProviderSection({
   developerMode?: boolean;
 }) {
   const { t } = useTranslation("settings");
+  const { t: commonT } = useTranslation("common");
   const [selectedCreds, setSelectedCreds] = useState<Partial<Record<ModelProvider, string>>>({});
   const [newAlias, setNewAlias] = useState<Partial<Record<ModelProvider, string>>>({});
   const [newSecret, setNewSecret] = useState<Partial<Record<ModelProvider, string>>>({});
@@ -498,8 +515,8 @@ export function ProviderSection({
     }
   }
 
-  const providerErrorText = providerErr ? providerFailureText(providerErr, t) : null;
-  const providerDiagnostic = providerFailureDiagnostic(providerErr, t);
+  const providerErrorText = providerErr ? providerFailureText(providerErr, t, commonT) : null;
+  const providerDiagnostic = providerFailureDiagnostic(providerErr, t, commonT);
 
   return (
     <>
@@ -520,7 +537,7 @@ export function ProviderSection({
             (provider === "anthropic" ? runtime?.anthropic.credentials : runtime?.openai.credentials) ??
             [];
           const activeCred = credentials.find((c) => c.active && c.available) ?? null;
-          const pill = credentialPill(activeCred, t);
+          const pill = credentialPill(activeCred, t, commonT);
           // Smart-collapse the setup forms: expanded only when the provider has NO
           // usable credential (the empty-state where setup IS the task); a user
           // toggle (setupOpen[provider]) overrides.
@@ -1177,6 +1194,7 @@ export function DiscoveryResultView({
   developerMode?: boolean;
 }) {
   const { t } = useTranslation("settings");
+  const { t: commonT } = useTranslation("common");
   const [query, setQuery] = useState("");
   const models = result.models.filter((model) =>
     model.id.toLowerCase().includes(query.trim().toLowerCase()),
@@ -1197,14 +1215,16 @@ export function DiscoveryResultView({
   );
   const errorMessage = result.error
     ? result.error_code
-      ? modelReasonLabel(result.error_code, t)
+      ? modelReasonLabel(result.error_code, commonT)
       : t(($) => $.providers.discovery.failure)
     : null;
   return (
     <div className="discovery-box">
       <div className="discovery-head">
         <div>
-          <strong>{discoveryHeaderTitle(authMode, t)} · {discoveryStatusLabel(result.status, t)}</strong>
+          <strong>
+            {discoveryHeaderTitle(authMode, t)} · {discoveryStatusLabel(result.status, t, commonT)}
+          </strong>
           <span className="discovery-credential tiny">{credentialSummary}</span>
         </div>
         {result.models.length > 0 && <span className="source-badge tiny">{sourceBadge}</span>}
@@ -1221,7 +1241,9 @@ export function DiscoveryResultView({
       {developerMode ? <DeveloperDiagnostics diagnostics={[result.error]} t={t} /> : null}
       {result.error_code === "reauth_required" && onRelogin && (
         <div className="reauth-hint">
-          <span className="warn-text tiny">{t(($) => $.providers.openAI.tokenExpired)}</span>
+          <span className="warn-text tiny">
+            {modelReasonLabel("reauth_required", commonT)}
+          </span>
           <button type="button" className="btn-ghost small" disabled={reloginBusy} onClick={onRelogin}>
             {t(($) => $.providers.openAI.relogin)}
           </button>

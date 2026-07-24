@@ -286,6 +286,7 @@ describe("Settings static copy authority", () => {
 
     for (const expected of cases) {
       const t = settingsT(expected.locale);
+      const modelT = commonT(expected.locale);
       expect(efforts.map((id) => settingsEffortLabel(id, t))).toEqual(expected.efforts);
       const providerEfforts: Record<ModelProvider, string[]> = {
         openai: efforts,
@@ -295,11 +296,11 @@ describe("Settings static copy authority", () => {
         .toEqual(expected.descriptions.openai);
       expect(providerEfforts.anthropic.map((id) => settingsEffortDescription("anthropic", id, t)))
         .toEqual(expected.descriptions.anthropic);
-      expect(thinking.map((id) => settingsThinkingLabel(id, t))).toEqual(expected.thinking);
+      expect(thinking.map((id) => settingsThinkingLabel(id, modelT))).toEqual(expected.thinking);
       expect(settingsEffortLabel("future_effort", t)).toBe("future_effort");
       expect(settingsEffortDescription("openai", "future_effort", t)).toBe("future_effort");
       expect(settingsEffortDescription("anthropic", "future_effort", t)).toBe("future_effort");
-      expect(settingsThinkingLabel("future_thinking", t)).toBe("future_thinking");
+      expect(settingsThinkingLabel("future_thinking", modelT)).toBe("future_thinking");
     }
   });
 

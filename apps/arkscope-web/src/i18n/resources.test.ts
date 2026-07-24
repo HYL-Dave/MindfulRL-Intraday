@@ -627,32 +627,153 @@ describe("bundled i18n resources", () => {
     }
   });
 
-  it("contains exactly 702 Settings 32 Common 5 Research and 401 Explore leaves per locale", () => {
+  it("contains the reviewed remaining-surface namespace inventory in both locales", () => {
+    const expectedCounts = {
+      common: 56,
+      shell: 37,
+      settings: 679,
+      research: 207,
+      explore: 401,
+    } as const;
+
+    expect(resourceNamespaces).toEqual(Object.keys(expectedCounts));
     for (const locale of ["zh-Hant", "en"] as const) {
-      expect.soft(flattenResource(resources[locale].settings as ResourceTree).size, `${locale}.settings`)
-        .toBe(702);
       const localeResources = resources[locale] as Record<string, unknown>;
-      const expectedCounts = { common: 32, research: 5, explore: 401 } as const;
+      let total = 0;
       for (const [namespace, count] of Object.entries(expectedCounts)) {
         const resource = localeResources[namespace];
         expect.soft(resource, `${locale}.${namespace}`).toBeDefined();
         if (resource && typeof resource === "object" && !Array.isArray(resource)) {
-          expect(flattenResource(resource as ResourceTree).size, `${locale}.${namespace}`)
-            .toBe(count);
+          const actual = flattenResource(resource as ResourceTree).size;
+          expect.soft(actual, `${locale}.${namespace}`).toBe(count);
+          total += actual;
         }
+      }
+      expect(total, `${locale}.total`).toBe(1380);
+    }
+  });
+
+  it("moves shared model chrome to one Common owner without Settings duplicates", () => {
+    const expectedModels = {
+      "zh-Hant": {
+        groups: {
+          available: "可供此任務使用",
+          visibleDisabled: "此登入可見",
+          advanced: "進階／未驗證",
+          current: "目前路由",
+        },
+        reasons: {
+          missingActiveCredential: "尚未設定此 provider 的登入",
+          taskAuthModeUnsupported: "此登入方式不支援這個任務",
+          taskTestUnsupported: "此登入方式尚不支援實際測試",
+          taskCapabilityMissing: "缺少任務能力",
+          modelNotVisible: "此登入的探索清單未顯示此模型",
+          modelNotInRegistry: "自訂／未知模型，尚未驗證能力",
+          discoveryUnavailable: "暫時無法讀取模型探索狀態",
+          providerCallFailed: "provider 實際呼叫失敗",
+          reauthRequired: "登入已失效，請重新登入",
+        },
+        authModes: {
+          apiKey: "API key",
+          apiKeyPool: "API key pool",
+          chatgptOauth: "ChatGPT 訂閱登入",
+          claudeCodeOauth: "Claude 訂閱登入",
+        },
+        thinkingModes: {
+          none: "無特殊 thinking 行為",
+          manualBudget: "使用手動 thinking budget",
+          adaptiveOptIn: "可選擇 adaptive thinking",
+          adaptiveDefaultOn: "預設開啟 adaptive thinking",
+          adaptiveAlwaysOn: "固定開啟 adaptive thinking",
+        },
+        compatibility: {
+          decoratedSuffix: "未驗證（舊 sidecar 相容模式）",
+          settingsNotice: "未驗證（舊 sidecar 相容模式）。",
+        },
+      },
+      en: {
+        groups: {
+          available: "Available for this task",
+          visibleDisabled: "Visible to this sign-in",
+          advanced: "Advanced / unverified",
+          current: "Current route",
+        },
+        reasons: {
+          missingActiveCredential: "No sign-in is configured for this provider",
+          taskAuthModeUnsupported: "This sign-in method does not support the task",
+          taskTestUnsupported: "This sign-in method does not yet support live testing",
+          taskCapabilityMissing: "Task capability is missing",
+          modelNotVisible: "This model does not appear in the discovery list for this sign-in",
+          modelNotInRegistry: "Custom or unknown model; capabilities are unverified",
+          discoveryUnavailable: "Model discovery status is temporarily unavailable",
+          providerCallFailed: "The live provider call failed",
+          reauthRequired: "The sign-in has expired. Sign in again",
+        },
+        authModes: {
+          apiKey: "API key",
+          apiKeyPool: "API key pool",
+          chatgptOauth: "ChatGPT subscription sign-in",
+          claudeCodeOauth: "Claude subscription sign-in",
+        },
+        thinkingModes: {
+          none: "No special thinking behavior",
+          manualBudget: "Uses a manual thinking budget",
+          adaptiveOptIn: "Adaptive thinking available",
+          adaptiveDefaultOn: "Adaptive thinking on by default",
+          adaptiveAlwaysOn: "Adaptive thinking always on",
+        },
+        compatibility: {
+          decoratedSuffix: "Unverified (legacy sidecar compatibility mode)",
+          settingsNotice: "Unverified (legacy sidecar compatibility mode).",
+        },
+      },
+    } as const;
+    const removedSettingsPaths = [
+      "models.catalog.unavailable",
+      "models.credentials.missing",
+      "models.credentials.apiKey",
+      "models.credentials.apiKeyPool",
+      "models.credentials.chatgptOAuth",
+      "models.credentials.claudeCodeOAuth",
+      "models.compatibility.legacyMode",
+      "models.compatibility.missingCapability",
+      "models.compatibility.unsupported",
+      "models.compatibility.modelNotVisible",
+      "models.groups.available",
+      "models.groups.visibleDisabled",
+      "models.groups.advanced",
+      "models.groups.current",
+      "models.custom.unknown",
+      "models.thinking.none",
+      "models.thinking.manualBudget",
+      "models.thinking.adaptiveOptIn",
+      "models.thinking.adaptiveDefaultOn",
+      "models.thinking.adaptiveAlwaysOn",
+      "models.test.failed",
+      "models.test.unsupported",
+      "providers.openAI.tokenExpired",
+    ] as const;
+
+    for (const locale of ["zh-Hant", "en"] as const) {
+      const commonModels = (resources[locale].common as ResourceTree).models as ResourceTree;
+      expect(commonModels, `${locale}.common.models`).toEqual(expectedModels[locale]);
+      expect(flattenResource(commonModels).size, `${locale}.common.models`).toBe(24);
+      const settings = flattenResource(resources[locale].settings as ResourceTree);
+      for (const path of removedSettingsPaths) {
+        expect.soft(settings.has(path), `${locale}.settings.${path}`).toBe(false);
       }
     }
   });
 
-  it("contains exactly 612 pre-Slice-5 Settings leaves per locale", () => {
+  it("preserves the reviewed pre-Slice-5 Settings-origin inventory across the Common move", () => {
     const expectedSubtreeCounts = {
       actions: 18,
       workspace: 29,
       registry: 30,
       errors: 13,
-      models: 91,
+      models: 69,
       runtime: 21,
-      providers: 104,
+      providers: 103,
       dataSources: 149,
       dataStorage: 48,
       newsStorage: 27,
@@ -665,7 +786,14 @@ describe("bundled i18n resources", () => {
       const workspaceCount = flattenResource(
         (settings.investor as ResourceTree).workspace as ResourceTree,
       ).size;
-      expect(flattenResource(settings).size - workspaceCount + 5).toBe(612);
+      const physicalPreSliceCount = flattenResource(settings).size - workspaceCount + 5;
+      const commonModels = (resources[locale].common as ResourceTree).models as ResourceTree;
+      expect(commonModels, `${locale}.common.models`).toBeDefined();
+      if (!commonModels) continue;
+      const movedModelCount = flattenResource(commonModels).size - 1;
+      expect(physicalPreSliceCount).toBe(589);
+      expect(movedModelCount).toBe(23);
+      expect(physicalPreSliceCount + movedModelCount).toBe(612);
       expect(flattenResource(settings.locale as ResourceTree).size).toBe(1);
       expect(workspaceCount).toBe(95);
       for (const [subtree, count] of Object.entries(expectedSubtreeCounts)) {

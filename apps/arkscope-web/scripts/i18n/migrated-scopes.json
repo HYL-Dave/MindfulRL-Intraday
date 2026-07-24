@@ -39,6 +39,8 @@
     "src/AICard.tsx",
     "src/tags.tsx",
     "src/personalizationDisplay.ts",
-    "src/explore/**"
+    "src/explore/**",
+    "src/modelPicker.ts",
+    "src/modelRoutingUx.ts"
   ]
 }

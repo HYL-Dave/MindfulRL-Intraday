@@ -1,0 +1,18 @@
+type MoneyField = "net_liquidation" | "total_cash_value";
+
+const moneyColumnSpecs: Array<[string, string, MoneyField]> = [
+  ["net-liquidation", "Net Liquidation", "net_liquidation"],
+  ["total-cash", "Total Cash", "total_cash_value"],
+];
+
+const moneyColumns = moneyColumnSpecs.map(([id, header, field]) => ({
+  id,
+  header,
+  render: (row: Record<MoneyField, string>) => row[field],
+}));
+
+const unrelatedTuples: Array<[string, string, string]> = [
+  ["machine-id", "Arbitrary tuple copy", "machine_field"],
+];
+
+export { moneyColumns, unrelatedTuples };

@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 
 import { ApiError, type ScheduleRunResult } from "../api";
 import { initializeI18n } from "../i18n/resources";
+import type { ModelCommonT } from "../modelRoutingUx";
 import {
   diagnosticValue,
   modelReasonLabel,
@@ -27,6 +28,12 @@ function settingsT(locale: Locale) {
   const instance = createInstance();
   initializeI18n(instance, locale);
   return instance.getFixedT(locale, "settings");
+}
+
+function modelCommonT(locale: Locale): ModelCommonT {
+  const instance = createInstance();
+  initializeI18n(instance, locale);
+  return instance.getFixedT(locale, "common") as ModelCommonT;
 }
 
 describe("Settings backend copy boundary", () => {
@@ -104,6 +111,7 @@ describe("Settings backend copy boundary", () => {
 
     for (const expected of cases) {
       const t = settingsT(expected.locale);
+      const commonT = modelCommonT(expected.locale);
       const copies = statuses.map((status) => providerHealthCopy("polygon", status, t));
       expect(copies.map(({ label }) => label)).toEqual(expected.labels);
       expect(copies.every(({ detail }) => detail.includes("Polygon"))).toBe(true);
@@ -117,6 +125,7 @@ describe("Settings backend copy boundary", () => {
       const setup = settingsErrorPresentation(
         new ApiError("planted backend message", "/providers/config", 503, "provider_config_setup_required", "PLANTED_SETUP_DETAIL"),
         t,
+        commonT,
       );
       expect(setup).toEqual({
         message: expected.setup,
@@ -397,23 +406,29 @@ describe("Settings backend copy boundary", () => {
 
     for (const expected of cases) {
       const t = settingsT(expected.locale);
+      const commonT = modelCommonT(expected.locale);
       expect(settingsErrorPresentation(
         new ApiError("raw", "/providers/config", 409, "provider_config_missing", "RAW_MISSING"),
         t,
+        commonT,
       ).message).toBe(expected.known);
       expect(settingsErrorPresentation(
         new ApiError("raw", "/investor-profile", 422, "invalid_investor_profile", "RAW_PROFILE"),
         t,
+        commonT,
       ).message).toBe(expected.invalidProfile);
       expect(settingsErrorPresentation(
         new ApiError("raw", "/future", 500, "future_error", "RAW_FUTURE"),
         t,
+        commonT,
       ).message).toBe(expected.unknown);
-      expect(settingsErrorPresentation(new Error("network exploded"), t).message).toBe(expected.generic);
-      expect(reasonIds.map((id) => modelReasonLabel(id, t))).toEqual(expected.reasons);
+      expect(settingsErrorPresentation(new Error("network exploded"), t, commonT).message)
+        .toBe(expected.generic);
+      expect(reasonIds.map((id) => modelReasonLabel(id, commonT))).toEqual(expected.reasons);
       expect(reasonIds.map((code) => settingsErrorPresentation(
         new ApiError("raw", "/models", 409, code, `RAW_${code}`),
         t,
+        commonT,
       ).message)).toEqual(expected.reasons);
     }
   });
@@ -429,18 +444,20 @@ describe("Settings backend copy boundary", () => {
   it("keeps unknown provider source and error identifiers stable", () => {
     for (const locale of ["zh-Hant", "en"] as const) {
       const t = settingsT(locale);
+      const commonT = modelCommonT(locale);
       expect(providerName("future_provider", t)).toBe("future_provider");
       expect(providerConfigFieldLabel("future_provider", "future_field", t))
         .toBe("future_provider.future_field");
       expect(providerClientDomainLabel("future_domain", t)).toBe("future_domain");
       expect(saSegmentLabel("future_segment", t)).toBe("future_segment");
-      expect(modelReasonLabel("future_model_reason", t)).toBe("future_model_reason");
+      expect(modelReasonLabel("future_model_reason", commonT)).toBe("future_model_reason");
       const source = scheduleSourceCopy("future_source", t);
       expect(source.label).toBe("future_source");
       expect(source.description).toContain("future_source");
       const error = settingsErrorPresentation(
         new ApiError("raw", "/future", 500, "future_error", "future diagnostic"),
         t,
+        commonT,
       );
       expect(error.code).toBe("future_error");
       expect(error.message).toContain("future_error");

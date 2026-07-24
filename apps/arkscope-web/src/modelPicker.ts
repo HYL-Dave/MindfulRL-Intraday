@@ -5,7 +5,12 @@ import type {
   ModelOption,
   ModelProvider,
 } from "./api";
-import { MODEL_UX_LABELS, type DraftRouteValue } from "./modelRoutingUx";
+import {
+  modelCompatibilityLabel,
+  modelGroupLabel,
+  type DraftRouteValue,
+  type ModelCommonT,
+} from "./modelRoutingUx";
 
 export type ModelEntryGroupId = "available" | "visible_disabled" | "advanced" | "current";
 
@@ -52,7 +57,12 @@ export function optionReason(
 export function groupedModelEntries(
   entries: ModelEntryInput[],
   providerReason: string | null,
+  t: ModelCommonT,
 ): ModelEntryGroup[] {
+  const availableLabel = modelGroupLabel("available", t);
+  const visibleDisabledLabel = modelGroupLabel("visible_disabled", t);
+  const advancedLabel = modelGroupLabel("advanced", t);
+  const currentLabel = modelGroupLabel("current", t);
   const withReason = entries.map((entry) => ({
     ...entry,
     disabledReason: optionReason(entry, providerReason),
@@ -62,22 +72,22 @@ export function groupedModelEntries(
   return [
     {
       id: "available",
-      label: MODEL_UX_LABELS.groups[0],
+      label: availableLabel,
       entries: withReason.filter((entry) => entry.status === "visible" && !entry.disabledReason),
     },
     {
       id: "visible_disabled",
-      label: MODEL_UX_LABELS.groups[1],
+      label: visibleDisabledLabel,
       entries: withReason.filter((entry) => entry.status === "visible" && !!entry.disabledReason),
     },
     {
       id: "advanced",
-      label: MODEL_UX_LABELS.groups[2],
+      label: advancedLabel,
       entries: withReason.filter((entry) => entry.status === "advanced" || entry.status === "seed"),
     },
     {
       id: "current",
-      label: MODEL_UX_LABELS.groups[3],
+      label: currentLabel,
       entries: withReason.filter((entry) => entry.status === "route"),
     },
   ];
@@ -87,23 +97,29 @@ export function compatEntries(
   provider: ModelProvider,
   row: Pick<DraftRouteValue, "model">,
   modelsByProvider: Record<ModelProvider, ModelOption[]>,
+  t: ModelCommonT,
 ): ModelEntryInput[] {
-  const entries: ModelEntryInput[] = (modelsByProvider[provider] ?? []).map((model) => ({
-    id: model.id,
-    label: `${model.label} · 未驗證（舊 sidecar 相容模式）`,
-    baseLabel: model.label,
-    compatibility: "legacy_unverified",
-    status: "advanced",
-    visible_to_credential: null,
-    eligible: true,
-    reason_code: null,
-    thinking_mode: "none",
-    effort_options: model.effort_options,
-  }));
+  const suffix = modelCompatibilityLabel("decorated_suffix", t);
+  const entries: ModelEntryInput[] = (modelsByProvider[provider] ?? []).map((model) => {
+    const label = [model.label, suffix].join(" · ");
+    return {
+      id: model.id,
+      label,
+      baseLabel: model.label,
+      compatibility: "legacy_unverified",
+      status: "advanced",
+      visible_to_credential: null,
+      eligible: true,
+      reason_code: null,
+      thinking_mode: "none",
+      effort_options: model.effort_options,
+    };
+  });
   if (row.model && !entries.some((entry) => entry.id === row.model)) {
+    const label = [row.model, suffix].join(" · ");
     entries.push({
       id: row.model,
-      label: `${row.model} · 未驗證（舊 sidecar 相容模式）`,
+      label,
       baseLabel: row.model,
       compatibility: "legacy_unverified",
       status: "route",

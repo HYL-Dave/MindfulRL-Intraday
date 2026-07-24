@@ -16,13 +16,19 @@ import {
   isoToDateInput,
   dateInputToIso,
 } from "./credentialDisplay";
+import type { ModelCommonT } from "./modelRoutingUx";
 import type { SettingsT } from "./settings/settingsCopy";
 
 function settingsT(locale: "zh-Hant" | "en"): SettingsT {
   return i18n.getFixedT(locale, "settings") as SettingsT;
 }
 
+function modelCommonT(locale: "zh-Hant" | "en"): ModelCommonT {
+  return i18n.getFixedT(locale, "common") as ModelCommonT;
+}
+
 const zhT = settingsT("zh-Hant");
+const zhCommonT = modelCommonT("zh-Hant");
 
 describe("activeFirst", () => {
   it("moves the active credential to the front, preserving the rest's order", () => {
@@ -57,12 +63,12 @@ describe("discoverySourceLabel", () => {
 
 describe("credentialPill", () => {
   it("reflects the active credential's auth mode (not just key set/no key)", () => {
-    expect(credentialPill({ auth_type: "api_key" }, zhT)).toEqual({ label: "API key", ok: true });
-    expect(credentialPill({ auth_type: "chatgpt_oauth" }, zhT)).toEqual({ label: "ChatGPT 訂閱", ok: true });
-    expect(credentialPill({ auth_type: "claude_code_oauth" }, zhT)).toEqual({ label: "Claude 訂閱", ok: true });
+    expect(credentialPill({ auth_type: "api_key" }, zhT, zhCommonT)).toEqual({ label: "API key", ok: true });
+    expect(credentialPill({ auth_type: "chatgpt_oauth" }, zhT, zhCommonT)).toEqual({ label: "ChatGPT 訂閱", ok: true });
+    expect(credentialPill({ auth_type: "claude_code_oauth" }, zhT, zhCommonT)).toEqual({ label: "Claude 訂閱", ok: true });
   });
   it("says no credential when none active", () => {
-    expect(credentialPill(null, zhT)).toEqual({ label: "尚未設定此 provider 的登入", ok: false });
+    expect(credentialPill(null, zhT, zhCommonT)).toEqual({ label: "尚未設定此 provider 的登入", ok: false });
   });
 });
 
@@ -146,8 +152,9 @@ describe("discovery result header copy", () => {
 describe("localized credential presentation", () => {
   it("renders credential presentation helpers in both locales", () => {
     const enT = settingsT("en");
-    expect(credentialPill({ auth_type: "chatgpt_oauth" }, zhT).label).toBe("ChatGPT 訂閱");
-    expect(credentialPill({ auth_type: "chatgpt_oauth" }, enT).label).toBe("ChatGPT subscription");
+    const enCommonT = modelCommonT("en");
+    expect(credentialPill({ auth_type: "chatgpt_oauth" }, zhT, zhCommonT).label).toBe("ChatGPT 訂閱");
+    expect(credentialPill({ auth_type: "chatgpt_oauth" }, enT, enCommonT).label).toBe("ChatGPT subscription");
     expect(credentialAvailabilityText({ available: false, masked: null }, zhT)).toBe("目前無法使用");
     expect(credentialAvailabilityText({ available: false, masked: null }, enT)).toBe("Currently unavailable");
     expect(discoverButtonLabel("claude_code_oauth", zhT)).toBe("查看候選模型");

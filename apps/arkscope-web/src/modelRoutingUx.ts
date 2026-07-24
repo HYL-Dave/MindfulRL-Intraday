@@ -1,3 +1,5 @@
+import type { TFunction } from "i18next";
+
 import type {
   EffectiveProviderSummary,
   ModelCatalog,
@@ -6,37 +8,101 @@ import type {
   ProviderCredential,
   TaskRoute,
 } from "./api";
+import zhHantCommon from "./i18n/resources/zh-Hant/common";
 
+export type ModelCommonT = TFunction<"common">;
+
+export function modelGroupLabel(id: string, t: ModelCommonT): string {
+  switch (id) {
+    case "available": return t(($) => $.models.groups.available);
+    case "visible_disabled": return t(($) => $.models.groups.visibleDisabled);
+    case "advanced": return t(($) => $.models.groups.advanced);
+    case "current": return t(($) => $.models.groups.current);
+    default: return id;
+  }
+}
+
+export function modelReasonLabel(id: string, t: ModelCommonT): string {
+  switch (id) {
+    case "missing_active_credential": return t(($) => $.models.reasons.missingActiveCredential);
+    case "task_auth_mode_unsupported": return t(($) => $.models.reasons.taskAuthModeUnsupported);
+    case "task_test_unsupported": return t(($) => $.models.reasons.taskTestUnsupported);
+    case "task_capability_missing": return t(($) => $.models.reasons.taskCapabilityMissing);
+    case "model_not_visible": return t(($) => $.models.reasons.modelNotVisible);
+    case "model_not_in_registry": return t(($) => $.models.reasons.modelNotInRegistry);
+    case "discovery_unavailable": return t(($) => $.models.reasons.discoveryUnavailable);
+    case "provider_call_failed": return t(($) => $.models.reasons.providerCallFailed);
+    case "reauth_required": return t(($) => $.models.reasons.reauthRequired);
+    default: return id;
+  }
+}
+
+export function modelAuthModeLabel(id: string, t: ModelCommonT): string {
+  switch (id) {
+    case "api_key": return t(($) => $.models.authModes.apiKey);
+    case "api_key_pool": return t(($) => $.models.authModes.apiKeyPool);
+    case "chatgpt_oauth": return t(($) => $.models.authModes.chatgptOauth);
+    case "claude_code_oauth": return t(($) => $.models.authModes.claudeCodeOauth);
+    default: return id;
+  }
+}
+
+export function modelThinkingModeLabel(id: string, t: ModelCommonT): string {
+  switch (id) {
+    case "none": return t(($) => $.models.thinkingModes.none);
+    case "manual_budget": return t(($) => $.models.thinkingModes.manualBudget);
+    case "adaptive_opt_in": return t(($) => $.models.thinkingModes.adaptiveOptIn);
+    case "adaptive_default_on": return t(($) => $.models.thinkingModes.adaptiveDefaultOn);
+    case "adaptive_always_on": return t(($) => $.models.thinkingModes.adaptiveAlwaysOn);
+    default: return id;
+  }
+}
+
+export function modelCompatibilityLabel(id: string, t: ModelCommonT): string {
+  switch (id) {
+    case "decorated_suffix": return t(($) => $.models.compatibility.decoratedSuffix);
+    case "settings_notice": return t(($) => $.models.compatibility.settingsNotice);
+    default: return id;
+  }
+}
+
+// Research presentation migrates in the next tranche steps. Until then, its
+// existing zh-Hant projection references the Common resource owner directly.
 export const MODEL_UX_LABELS: {
   groups: readonly string[];
   reasons: Record<string, string>;
   authModes: Record<string, string>;
   thinking: Record<string, string>;
 } = {
-  groups: ["可供此任務使用", "此登入可見", "進階／未驗證", "目前路由"],
+  groups: [
+    zhHantCommon.models.groups.available,
+    zhHantCommon.models.groups.visibleDisabled,
+    zhHantCommon.models.groups.advanced,
+    zhHantCommon.models.groups.current,
+  ],
   reasons: {
-    missing_active_credential: "尚未設定此 provider 的登入",
-    task_auth_mode_unsupported: "此登入方式不支援這個任務",
-    task_test_unsupported: "此登入方式尚不支援實際測試",
-    task_capability_missing: "缺少任務能力",
-    model_not_visible: "此登入的探索清單未顯示此模型",
-    model_not_in_registry: "自訂／未知模型，尚未驗證能力",
-    discovery_unavailable: "暫時無法讀取模型探索狀態",
-    provider_call_failed: "provider 實際呼叫失敗",
-    reauth_required: "登入已失效，請重新登入",
+    missing_active_credential: zhHantCommon.models.reasons.missingActiveCredential,
+    task_auth_mode_unsupported: zhHantCommon.models.reasons.taskAuthModeUnsupported,
+    task_test_unsupported: zhHantCommon.models.reasons.taskTestUnsupported,
+    task_capability_missing: zhHantCommon.models.reasons.taskCapabilityMissing,
+    model_not_visible: zhHantCommon.models.reasons.modelNotVisible,
+    model_not_in_registry: zhHantCommon.models.reasons.modelNotInRegistry,
+    discovery_unavailable: zhHantCommon.models.reasons.discoveryUnavailable,
+    provider_call_failed: zhHantCommon.models.reasons.providerCallFailed,
+    reauth_required: zhHantCommon.models.reasons.reauthRequired,
   },
   authModes: {
-    api_key: "API key",
-    api_key_pool: "API key pool",
-    chatgpt_oauth: "ChatGPT 訂閱登入",
-    claude_code_oauth: "Claude 訂閱登入",
+    api_key: zhHantCommon.models.authModes.apiKey,
+    api_key_pool: zhHantCommon.models.authModes.apiKeyPool,
+    chatgpt_oauth: zhHantCommon.models.authModes.chatgptOauth,
+    claude_code_oauth: zhHantCommon.models.authModes.claudeCodeOauth,
   },
   thinking: {
-    none: "無特殊 thinking 行為",
-    manual_budget: "使用手動 thinking budget",
-    adaptive_opt_in: "可選擇 adaptive thinking",
-    adaptive_default_on: "預設開啟 adaptive thinking",
-    adaptive_always_on: "固定開啟 adaptive thinking",
+    none: zhHantCommon.models.thinkingModes.none,
+    manual_budget: zhHantCommon.models.thinkingModes.manualBudget,
+    adaptive_opt_in: zhHantCommon.models.thinkingModes.adaptiveOptIn,
+    adaptive_default_on: zhHantCommon.models.thinkingModes.adaptiveDefaultOn,
+    adaptive_always_on: zhHantCommon.models.thinkingModes.adaptiveAlwaysOn,
   },
 };
 

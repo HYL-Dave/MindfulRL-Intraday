@@ -176,6 +176,7 @@ export function InvestorProfilePanel({
   turnIdFactory = defaultTurnId,
 }: InvestorProfilePanelProps) {
   const { t } = useTranslation("settings");
+  const { t: commonT } = useTranslation("common");
   const mountedRef = useRef(false);
   const profileGenerationRef = useRef(0);
   const calibrationGenerationRef = useRef(0);
@@ -938,7 +939,7 @@ export function InvestorProfilePanel({
         || profileGenerationRef.current !== profileGeneration
         || calibrationGenerationRef.current !== calibrationGeneration
       ) return;
-      const presentation = settingsErrorPresentation(error, t);
+      const presentation = settingsErrorPresentation(error, t, commonT);
       await reconcileProposalMutationFailure(
         profileGeneration,
         calibrationGeneration,
@@ -1040,13 +1041,13 @@ export function InvestorProfilePanel({
   };
 
   const profileErrorPresentation = profileError
-    ? settingsErrorPresentation(profileError, t)
+    ? settingsErrorPresentation(profileError, t, commonT)
     : null;
   const calibrationErrorPresentation = calibrationError
-    ? settingsErrorPresentation(calibrationError, t)
+    ? settingsErrorPresentation(calibrationError, t, commonT)
     : null;
   const operationErrorPresentation = operationError
-    ? settingsErrorPresentation(operationError.error, t)
+    ? settingsErrorPresentation(operationError.error, t, commonT)
     : null;
   const providerMissing = operationErrorPresentation?.code === "provider_config_missing";
   const conflictError = operationErrorPresentation?.code === "proposal_conflict";

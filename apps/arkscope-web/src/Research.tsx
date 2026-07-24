@@ -705,6 +705,7 @@ export function ResearchView({
   const modelGroups = groupedModelEntries(
     selectedProviderChoice?.block?.models ?? [],
     selectedProviderReason,
+    commonT,
   );
   const selectedEffectiveModel = selectedProviderChoice?.block?.models
     .find((item) => item.id === selModel);

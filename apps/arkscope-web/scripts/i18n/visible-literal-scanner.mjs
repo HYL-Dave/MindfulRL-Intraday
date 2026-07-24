@@ -19,9 +19,21 @@ const VISIBLE_NAMES = new Set([
   "errorMessage",
   "statusText",
   "tooltip",
+  "header",
 ]);
 const MESSAGE_SETTER = /^set(?:Err|Error|Notice|Warning|Message|BlockedReason)$/;
 const PRESENTER_SUFFIX = /(?:Label|Description|Message|Reason|Text|Title)$/;
+const MODEL_REASON_OPERANDS = new Map([
+  ["modelProviderReason", new Set([
+    "missing_active_credential",
+    "task_auth_mode_unsupported",
+  ])],
+  ["optionReason", new Set([
+    "task_capability_missing",
+    "model_not_visible",
+  ])],
+]);
+const RESEARCH_COMPLETION_OPERANDS = new Set(["running", "complete"]);
 const CJK = /[\u3400-\u9fff\uf900-\ufaff]/u;
 const ALPHABETIC = /[A-Za-z]/;
 const ALLOWLIST_CLASSES = new Set([
@@ -193,13 +205,144 @@ function callName(call) {
   return null;
 }
 
-function literalKind(node, value, sourceFile) {
+function isReviewedModelReasonOperand(node, value, sourceFile) {
+  const functionName = enclosingFunctionName(node, sourceFile);
+  return MODEL_REASON_OPERANDS.get(functionName)?.has(value) ?? false;
+}
+
+function isCompletionReference(node) {
+  const expression = unwrapExpression(node);
+  return (
+    ts.isIdentifier(expression) && expression.text === "completion"
+  ) || (
+    ts.isPropertyAccessExpression(expression) && expression.name.text === "completion"
+  );
+}
+
+function isReviewedResearchCompletionOperand(node, value) {
+  if (!RESEARCH_COMPLETION_OPERANDS.has(value)) return false;
+  const binary = findAncestor(node, ts.isBinaryExpression);
+  if (!binary) return false;
+  if (!new Set([
+    ts.SyntaxKind.EqualsEqualsToken,
+    ts.SyntaxKind.EqualsEqualsEqualsToken,
+    ts.SyntaxKind.ExclamationEqualsToken,
+    ts.SyntaxKind.ExclamationEqualsEqualsToken,
+  ]).has(binary.operatorToken.kind)) return false;
+
+  const left = unwrapExpression(binary.left);
+  const right = unwrapExpression(binary.right);
+  const other = left === node ? right : right === node ? left : null;
+  return other !== null && isCompletionReference(other);
+}
+
+function unwrapExpression(node) {
+  let expression = node;
+  while (
+    ts.isParenthesizedExpression(expression) ||
+    ts.isAsExpression(expression) ||
+    ts.isSatisfiesExpression(expression)
+  ) {
+    expression = expression.expression;
+  }
+  return expression;
+}
+
+function callbackReturnsHeader(callback, sourceName) {
+  if (!ts.isArrowFunction(callback) && !ts.isFunctionExpression(callback)) return false;
+  if (callback.parameters.length !== 1) return false;
+  const binding = callback.parameters[0].name;
+  if (!ts.isArrayBindingPattern(binding) || binding.elements.length < 2) return false;
+  const headerBinding = binding.elements[1];
+  if (!ts.isBindingElement(headerBinding) || !ts.isIdentifier(headerBinding.name)) return false;
+
+  const headerName = headerBinding.name.text;
+  const bodies = [];
+  const body = unwrapExpression(callback.body);
+  if (ts.isObjectLiteralExpression(body)) {
+    bodies.push(body);
+  } else if (ts.isBlock(body)) {
+    for (const statement of body.statements) {
+      if (ts.isReturnStatement(statement) && statement.expression) {
+        const returned = unwrapExpression(statement.expression);
+        if (ts.isObjectLiteralExpression(returned)) bodies.push(returned);
+      }
+    }
+  }
+
+  return bodies.some((object) => object.properties.some((property) => {
+    if (ts.isShorthandPropertyAssignment(property)) {
+      return property.name.text === "header" && property.name.text === headerName;
+    }
+    if (!ts.isPropertyAssignment(property)) return false;
+    const name = propertyNameText(property.name, property.getSourceFile());
+    const initializer = unwrapExpression(property.initializer);
+    return name === "header" && ts.isIdentifier(initializer) && initializer.text === headerName;
+  })) && sourceName.length > 0;
+}
+
+function tupleSourceFeedsHeader(sourceFile, sourceName) {
+  let matched = false;
+  function visit(node) {
+    if (matched) return;
+    if (
+      ts.isCallExpression(node) &&
+      ts.isPropertyAccessExpression(node.expression) &&
+      node.expression.name.text === "map" &&
+      ts.isIdentifier(node.expression.expression) &&
+      node.expression.expression.text === sourceName &&
+      node.arguments[0] &&
+      callbackReturnsHeader(node.arguments[0], sourceName)
+    ) {
+      matched = true;
+      return;
+    }
+    ts.forEachChild(node, visit);
+  }
+  visit(sourceFile);
+  return matched;
+}
+
+function collectTupleColumnLabels(sourceFile) {
+  const labels = new Set();
+  for (const statement of sourceFile.statements) {
+    if (!ts.isVariableStatement(statement)) continue;
+    for (const declaration of statement.declarationList.declarations) {
+      if (
+        !ts.isIdentifier(declaration.name) ||
+        !declaration.initializer ||
+        !ts.isArrayLiteralExpression(declaration.initializer) ||
+        !tupleSourceFeedsHeader(sourceFile, declaration.name.text)
+      ) {
+        continue;
+      }
+      for (const row of declaration.initializer.elements) {
+        if (!ts.isArrayLiteralExpression(row) || row.elements.length < 2) continue;
+        const label = row.elements[1];
+        if (ts.isStringLiteral(label) || ts.isNoSubstitutionTemplateLiteral(label)) {
+          labels.add(label);
+        }
+      }
+    }
+  }
+  return labels;
+}
+
+function literalKind(node, value, sourceFile, tupleColumnLabels) {
   if (isModuleSpecifier(node) || isPropertyName(node) || isTypeOnlyLiteral(node)) return null;
+  if (
+    isReviewedModelReasonOperand(node, value, sourceFile) ||
+    isReviewedResearchCompletionOperand(node, value)
+  ) {
+    return null;
+  }
 
   const jsxAttribute = findAncestor(node, ts.isJsxAttribute);
   if (jsxAttribute) {
     const name = propertyNameText(jsxAttribute.name, sourceFile);
-    if (name && VISIBLE_NAMES.has(name)) return "jsx_attribute";
+    if (name && VISIBLE_NAMES.has(name) && (name !== "header" || !CJK.test(value))) {
+      return "jsx_attribute";
+    }
   }
 
   if (isDirectJsxExpressionContent(node)) return "jsx_expression";
@@ -207,8 +350,12 @@ function literalKind(node, value, sourceFile) {
   const property = findAncestor(node, ts.isPropertyAssignment);
   if (property) {
     const name = propertyNameText(property.name, sourceFile);
-    if (name && VISIBLE_NAMES.has(name)) return "object_property";
+    if (name && VISIBLE_NAMES.has(name) && (name !== "header" || !CJK.test(value))) {
+      return "object_property";
+    }
   }
+
+  if (tupleColumnLabels.has(node) && !CJK.test(value)) return "tuple_column_label";
 
   const call = findAncestor(node, ts.isCallExpression);
   if (call && call.arguments.some((argument) => argument === node || argument.pos <= node.pos && argument.end >= node.end)) {
@@ -327,6 +474,7 @@ function scanSource(file, source) {
     ts.ScriptKind.TSX,
   );
   const bindings = collectTranslationBindings(sourceFile);
+  const tupleColumnLabels = collectTupleColumnLabels(sourceFile);
   const candidates = [];
 
   function add(node, kind, literal) {
@@ -354,7 +502,7 @@ function scanSource(file, source) {
     ) {
       const value = literalText(node, sourceFile);
       if (value !== null) {
-        const kind = literalKind(node, value, sourceFile);
+        const kind = literalKind(node, value, sourceFile, tupleColumnLabels);
         if (kind) add(node, kind, value);
       }
       if (ts.isTemplateExpression(node)) {

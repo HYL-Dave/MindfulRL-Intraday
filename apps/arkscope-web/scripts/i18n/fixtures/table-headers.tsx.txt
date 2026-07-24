@@ -1,0 +1,13 @@
+type Column = {
+  id: string;
+  header: string;
+};
+
+const columns: Column[] = [
+  { id: "account", header: "Account" },
+  { id: "quantity", header: "Qty" },
+];
+
+const machineOnly = { headerId: "internal_header" };
+
+export { columns, machineOnly };

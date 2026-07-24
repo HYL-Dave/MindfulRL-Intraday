@@ -166,6 +166,7 @@ export function DataSourcesSection({
   developerMode?: boolean;
 }) {
   const { t } = useTranslation("settings");
+  const { t: commonT } = useTranslation("common");
   const [schedule, setSchedule] = useState<Record<string, ScheduleSourceState> | null>(null);
   const [health, setHealth] = useState<ProvidersHealthResponse | null>(null);
   const [saExtensionHealth, setSaExtensionHealth] = useState<SAExtensionHealthResponse | null>(null);
@@ -625,7 +626,7 @@ export function DataSourcesSection({
   }
 
   const outcomePresentation = outcome?.kind === "error"
-    ? settingsErrorPresentation(outcome.error, t)
+    ? settingsErrorPresentation(outcome.error, t, commonT)
     : null;
   const outcomeMessage = outcome?.kind === "schedule"
     ? scheduleOutcomeCopy(outcome.source, outcome.result, t)

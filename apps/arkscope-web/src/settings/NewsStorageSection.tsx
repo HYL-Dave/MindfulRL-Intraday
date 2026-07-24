@@ -27,6 +27,7 @@ export function NewsStorageSection({
   developerMode?: boolean;
 }) {
   const { t } = useTranslation("settings");
+  const { t: commonT } = useTranslation("common");
   const [status, setStatus] = useState<NewsStatus | null>(null);
   const [err, setErr] = useState<Error | null>(null);
 
@@ -56,7 +57,7 @@ export function NewsStorageSection({
       ...state.ticker_errors.map((error) => `${provider}/${error.ticker}: ${error.error}`),
     ]),
   ];
-  const errorPresentation = err ? settingsErrorPresentation(err, t) : null;
+  const errorPresentation = err ? settingsErrorPresentation(err, t, commonT) : null;
 
   return (
     <div>

@@ -2,6 +2,10 @@ import {
   ApiError,
   type ScheduleRunResult,
 } from "../api";
+import {
+  modelReasonLabel as sharedModelReasonLabel,
+  type ModelCommonT,
+} from "../modelRoutingUx";
 import type { SettingsT } from "./settingsCopy";
 
 export type SettingsErrorPresentation = {
@@ -33,39 +37,31 @@ function providerConfigErrorMessage(code: string, t: SettingsT): string | null {
   }
 }
 
-function knownModelReasonLabel(id: string, t: SettingsT): string | null {
+function knownModelReasonLabel(id: string, t: ModelCommonT): string | null {
   switch (id) {
     case "missing_active_credential":
-      return t(($) => $.models.credentials.missing);
     case "task_auth_mode_unsupported":
-      return t(($) => $.models.compatibility.unsupported);
     case "task_test_unsupported":
-      return t(($) => $.models.test.unsupported);
     case "task_capability_missing":
-      return t(($) => $.models.compatibility.missingCapability);
     case "model_not_visible":
-      return t(($) => $.models.compatibility.modelNotVisible);
     case "model_not_in_registry":
-      return t(($) => $.models.custom.unknown);
     case "discovery_unavailable":
-      return t(($) => $.models.catalog.unavailable);
     case "provider_call_failed":
-      return t(($) => $.models.test.failed);
     case "reauth_required":
-      return t(($) => $.providers.openAI.tokenExpired);
+      return sharedModelReasonLabel(id, t);
     default:
       return null;
   }
 }
 
-export function modelReasonLabel(id: string, t: SettingsT): string {
-  return knownModelReasonLabel(id, t) ?? id;
+export function modelReasonLabel(id: string, t: ModelCommonT): string {
+  return sharedModelReasonLabel(id, t);
 }
 
-function apiErrorMessage(code: string, t: SettingsT): string {
+function apiErrorMessage(code: string, t: SettingsT, commonT: ModelCommonT): string {
   const providerMessage = providerConfigErrorMessage(code, t);
   if (providerMessage) return providerMessage;
-  const modelMessage = knownModelReasonLabel(code, t);
+  const modelMessage = knownModelReasonLabel(code, commonT);
   if (modelMessage) return modelMessage;
   switch (code) {
     case "invalid_investor_profile":
@@ -147,11 +143,12 @@ export function scheduleBodyBacklogCopy(
 export function settingsErrorPresentation(
   error: unknown,
   t: SettingsT,
+  commonT: ModelCommonT,
 ): SettingsErrorPresentation {
   if (error instanceof ApiError) {
     return {
       message: error.code
-        ? apiErrorMessage(error.code, t)
+        ? apiErrorMessage(error.code, t, commonT)
         : t(($) => $.errors.requestFailed),
       code: error.code,
       diagnostic: error.diagnostic,

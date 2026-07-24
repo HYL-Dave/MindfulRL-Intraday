@@ -12,20 +12,22 @@ import {
   groupedModelEntries,
   modelProviderReason,
   optionReason,
-  type ModelEntryGroupId,
   type ModelEntryWithReason,
 } from "../modelPicker";
 import { routeIsOverridable, routeSourceBadge } from "../modelRouteDisplay";
 import {
   isTaskTestSnapshotCurrent,
+  modelAuthModeLabel,
+  modelCompatibilityLabel,
+  modelReasonLabel,
   providerContexts,
   type DraftRouteValue,
+  type ModelCommonT,
   type TaskTestSnapshot,
 } from "../modelRoutingUx";
 import { effortOptionsForModel } from "../researchModels";
 import { formatSystemTimestamp } from "../timeDisplay";
 import { DeveloperDiagnostics } from "./DeveloperDiagnostics";
-import { modelReasonLabel } from "./settingsBackendCopy";
 import {
   settingsEffortDescription,
   settingsEffortLabel,
@@ -45,53 +47,33 @@ function taskDescription(task: ModelTask, t: SettingsT): string {
   }
 }
 
-function modelGroupLabel(group: ModelEntryGroupId, t: SettingsT): string {
-  switch (group) {
-    case "available":
-      return t(($) => $.models.groups.available);
-    case "visible_disabled":
-      return t(($) => $.models.groups.visibleDisabled);
-    case "advanced":
-      return t(($) => $.models.groups.advanced);
-    case "current":
-      return t(($) => $.models.groups.current);
-  }
-}
-
-function authModeLabel(authMode: string, t: SettingsT): string {
-  switch (authMode) {
-    case "api_key":
-      return t(($) => $.models.credentials.apiKey);
-    case "api_key_pool":
-      return t(($) => $.models.credentials.apiKeyPool);
-    case "chatgpt_oauth":
-      return t(($) => $.models.credentials.chatgptOAuth);
-    case "claude_code_oauth":
-      return t(($) => $.models.credentials.claudeCodeOAuth);
-    default:
-      return authMode;
-  }
-}
-
 function providerLabel(provider: ModelProvider, t: SettingsT): string {
   if (provider === "openai") return t(($) => $.models.providers.openai);
   return t(($) => $.models.providers.anthropic);
 }
 
-function modelEntrySuffix(entry: ModelEntryWithReason, t: SettingsT): string | null {
-  if (entry.disabledReason) return modelReasonLabel(entry.disabledReason, t);
+function modelEntrySuffix(
+  entry: ModelEntryWithReason,
+  t: SettingsT,
+  commonT: ModelCommonT,
+): string | null {
+  if (entry.disabledReason) return modelReasonLabel(entry.disabledReason, commonT);
   if (entry.compatibility === "legacy_unverified") {
     return t(($) => $.models.compatibility.unverified);
   }
   if (entry.status === "advanced") return t(($) => $.models.compatibility.advanced);
   if (entry.status === "seed") return t(($) => $.models.compatibility.unverified);
   if (entry.status === "route" && entry.reason_code) {
-    return modelReasonLabel(entry.reason_code, t);
+    return modelReasonLabel(entry.reason_code, commonT);
   }
   return null;
 }
 
-function modelCatalogStateLabel(cacheState: string | undefined, t: SettingsT): string {
+function modelCatalogStateLabel(
+  cacheState: string | undefined,
+  t: SettingsT,
+  commonT: ModelCommonT,
+): string {
   switch (cacheState) {
     case "ok":
       return t(($) => $.models.catalog.visibleListLoaded);
@@ -99,8 +81,10 @@ function modelCatalogStateLabel(cacheState: string | undefined, t: SettingsT): s
       return t(($) => $.models.catalog.seedOnly);
     case "never_discovered":
       return t(($) => $.models.catalog.neverDiscovered);
-    default:
-      return t(($) => $.models.catalog.unavailable);
+    default: {
+      const label = modelReasonLabel("discovery_unavailable", commonT);
+      return label;
+    }
   }
 }
 
@@ -139,6 +123,7 @@ export function ModelRoutingSection({
   developerMode: boolean;
 }) {
   const { t } = useTranslation("settings");
+  const { t: commonT } = useTranslation("common");
   const contexts = providerContexts(catalog.effective?.providers, catalog.credentials);
   const compatMode = !catalog.effective?.providers;
 
@@ -165,7 +150,7 @@ export function ModelRoutingSection({
           const taskEffective = catalog.effective?.tasks?.[task.id];
           const providerBlock = taskEffective?.providers?.[row.provider];
           const rawEntries = providerBlock?.models
-            ?? compatEntries(row.provider, row, modelsByProvider);
+            ?? compatEntries(row.provider, row, modelsByProvider, commonT);
           const entries = rawEntries.some((entry) => entry.id === row.model) || !row.model
             ? rawEntries
             : [
@@ -182,7 +167,7 @@ export function ModelRoutingSection({
                 },
               ];
           const providerReason = modelProviderReason(context, providerBlock);
-          const groups = groupedModelEntries(entries, providerReason);
+          const groups = groupedModelEntries(entries, providerReason, commonT);
           const selectedEntry = entries.find((entry) => entry.id === row.model) ?? null;
           const selectedReason = selectedEntry ? optionReason(selectedEntry, providerReason) : null;
           const disabledReasons = Array.from(new Set(
@@ -268,7 +253,7 @@ export function ModelRoutingSection({
                         if (provider === row.provider) return;
                         const nextBlock = taskEffective?.providers?.[provider];
                         const nextModels = nextBlock?.models
-                          ?? compatEntries(provider, row, modelsByProvider);
+                          ?? compatEntries(provider, row, modelsByProvider, commonT);
                         const keepModel = nextModels.some((entry) => entry.id === row.model);
                         updateTask(task.id, {
                           provider,
@@ -288,8 +273,8 @@ export function ModelRoutingSection({
                 {context ? (
                   <>
                     <strong>{context.label}</strong>
-                    <span>{authModeLabel(context.auth_mode, t)}</span>
-                    <span>{modelCatalogStateLabel(providerBlock?.cache_state, t)}</span>
+                    <span>{modelAuthModeLabel(context.auth_mode, commonT)}</span>
+                    <span>{modelCatalogStateLabel(providerBlock?.cache_state, t, commonT)}</span>
                     {providerBlock?.discovered_at && (
                       <span>
                         {t(($) => $.models.metrics.verifiedAt, {
@@ -307,7 +292,7 @@ export function ModelRoutingSection({
                   </>
                 ) : (
                   <>
-                    <strong>{t(($) => $.models.credentials.missing)}</strong>
+                    <strong>{modelReasonLabel("missing_active_credential", commonT)}</strong>
                     <button type="button" className="btn-ghost small" onClick={onOpenProviders}>
                       {t(($) => $.models.credentials.openProviders)}
                     </button>
@@ -317,7 +302,7 @@ export function ModelRoutingSection({
 
               {compatMode ? (
                 <p className="warn-text">
-                  {t(($) => $.models.compatibility.legacyMode)}{" "}
+                  {modelCompatibilityLabel("settings_notice", commonT)}{" "}
                   {t(($) => $.models.compatibility.restartSidecar)}
                 </p>
               ) : null}
@@ -344,9 +329,9 @@ export function ModelRoutingSection({
                   >
                     <option value="">{t(($) => $.models.catalog.select)}</option>
                     {groups.map((group) => (
-                      <optgroup key={group.id} label={modelGroupLabel(group.id, t)}>
+                      <optgroup key={group.id} label={group.label}>
                         {group.entries.map((entry) => {
-                          const suffix = modelEntrySuffix(entry, t);
+                          const suffix = modelEntrySuffix(entry, t, commonT);
                           return (
                             <option
                               key={`${group.id}:${entry.id}`}
@@ -364,7 +349,7 @@ export function ModelRoutingSection({
                     <p className="field-help">
                       {t(($) => $.models.compatibility.unavailableReasons, {
                         value: disabledReasons
-                          .map((reason) => modelReasonLabel(reason, t))
+                          .map((reason) => modelReasonLabel(reason, commonT))
                           .join("; "),
                       })}
                     </p>
@@ -391,7 +376,9 @@ export function ModelRoutingSection({
                       custom: true,
                     })}
                   />
-                  <span className="field-help">{t(($) => $.models.custom.unknown)}</span>
+                  <span className="field-help">
+                    {modelReasonLabel("model_not_in_registry", commonT)}
+                  </span>
                   <button
                     type="button"
                     className="btn-ghost small model-custom-toggle"
@@ -426,7 +413,7 @@ export function ModelRoutingSection({
               <div className="model-thinking-line">
                 <span>{t(($) => $.models.fields.thinking)}</span>
                 <strong>
-                  {settingsThinkingLabel(selectedEntry?.thinking_mode ?? "none", t)}
+                  {settingsThinkingLabel(selectedEntry?.thinking_mode ?? "none", commonT)}
                 </strong>
               </div>
 
@@ -470,6 +457,7 @@ export function ModelRoutingSection({
                   result={currentTest.result}
                   developerMode={developerMode}
                   t={t}
+                  commonT={commonT}
                 />
               )}
             </div>
@@ -483,16 +471,20 @@ function TaskModelTestStatus({
   result,
   developerMode,
   t,
+  commonT,
 }: {
   result: TaskModelTestResult;
   developerMode: boolean;
   t: SettingsT;
+  commonT: ModelCommonT;
 }) {
   const ok = result.status === "ok";
-  const action = result.error_code ? modelReasonLabel(result.error_code, t) : null;
+  const action = result.error_code ? modelReasonLabel(result.error_code, commonT) : null;
   return (
     <div className={`test-status ${ok ? "ok" : "bad"}`}>
-      <strong>{ok ? t(($) => $.models.test.succeeded) : action ?? t(($) => $.models.test.failed)}</strong>
+      <strong>
+        {ok ? t(($) => $.models.test.succeeded) : action ?? modelReasonLabel("provider_call_failed", commonT)}
+      </strong>
       {result.latency_ms != null ? (
         <span>{t(($) => $.models.metrics.latency, { value: result.latency_ms })}</span>
       ) : null}

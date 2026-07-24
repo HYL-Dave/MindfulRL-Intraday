@@ -1,5 +1,7 @@
+import { createInstance } from "i18next";
 import { describe, expect, it } from "vitest";
 
+import { initializeI18n } from "./i18n/resources";
 import type {
   EffectiveProviderModelEntry,
   EffectiveProviderModels,
@@ -32,6 +34,12 @@ const context: EffectiveProviderSummary = {
   credential_id: "local:7",
   auth_mode: "chatgpt_oauth",
   label: "ChatGPT Plus",
+};
+
+const commonT = (locale: "zh-Hant" | "en") => {
+  const instance = createInstance();
+  initializeI18n(instance, locale);
+  return instance.getFixedT(locale, "common");
 };
 
 const providerBlock = (
@@ -72,7 +80,7 @@ describe("shared model picker authority", () => {
       reason_code: "model_not_in_registry",
     });
     expect(optionReason(custom, null)).toBeNull();
-    expect(groupedModelEntries([custom], null)[3].entries[0]).toMatchObject({
+    expect(groupedModelEntries([custom], null, commonT("zh-Hant"))[3].entries[0]).toMatchObject({
       id: "gpt-future",
       reason_code: "model_not_in_registry",
       disabledReason: null,
@@ -80,12 +88,13 @@ describe("shared model picker authority", () => {
   });
 
   it("preserves visible, disabled, advanced, and route group ordering", () => {
-    const groups = groupedModelEntries([
+    const entries = [
       entry("ready"),
       entry("disabled", { eligible: false }),
       entry("advanced", { status: "advanced" }),
       entry("route", { status: "route" }),
-    ], null);
+    ];
+    const groups = groupedModelEntries(entries, null, commonT("zh-Hant"));
     expect(groups.map((group) => [group.id, group.label, group.entries.map((item) => item.id)]))
       .toEqual([
         ["available", "可供此任務使用", ["ready"]],
@@ -103,13 +112,20 @@ describe("shared model picker authority", () => {
       { id: "advanced", baseLabel: "advanced", compatibility: null },
       { id: "route", baseLabel: "route", compatibility: null },
     ]);
+    expect(groupedModelEntries(entries, null, commonT("en")).map((group) => group.label))
+      .toEqual([
+        "Available for this task",
+        "Visible to this sign-in",
+        "Advanced / unverified",
+        "Current route",
+      ]);
   });
 
   it("keeps old-sidecar compatibility entries visibly unverified", () => {
     const seed: ModelOption = {
       id: "gpt-5.4-mini",
       provider: "openai",
-      label: "GPT-5.4 mini",
+      label: "GPT-5.4 mini · source label",
       quality: "balanced",
       speed: "fast",
       cost_tier: "low",
@@ -124,13 +140,14 @@ describe("shared model picker authority", () => {
       "openai",
       { model: "gpt-custom" },
       { openai: [seed], anthropic: [] },
+      commonT("zh-Hant"),
     );
     expect(compatibility).toEqual([
         expect.objectContaining({
           id: "gpt-5.4-mini",
           status: "advanced",
-          label: "GPT-5.4 mini · 未驗證（舊 sidecar 相容模式）",
-          baseLabel: "GPT-5.4 mini",
+          label: "GPT-5.4 mini · source label · 未驗證（舊 sidecar 相容模式）",
+          baseLabel: "GPT-5.4 mini · source label",
           compatibility: "legacy_unverified",
         }),
         expect.objectContaining({
@@ -141,18 +158,42 @@ describe("shared model picker authority", () => {
           compatibility: "legacy_unverified",
         }),
       ]);
-    expect(groupedModelEntries(compatibility, null).flatMap((group) => group.entries).map((item) => ({
+    expect(groupedModelEntries(compatibility, null, commonT("zh-Hant")).flatMap((group) => group.entries).map((item) => ({
       id: item.id,
       baseLabel: item.baseLabel,
       compatibility: item.compatibility,
     }))).toEqual([
       {
         id: "gpt-5.4-mini",
-        baseLabel: "GPT-5.4 mini",
+        baseLabel: "GPT-5.4 mini · source label",
         compatibility: "legacy_unverified",
       },
       {
         id: "gpt-custom",
+        baseLabel: "gpt-custom",
+        compatibility: "legacy_unverified",
+      },
+    ]);
+    expect(compatEntries(
+      "openai",
+      { model: "gpt-custom" },
+      { openai: [seed], anthropic: [] },
+      commonT("en"),
+    ).map(({ id, label, baseLabel, compatibility: context }) => ({
+      id,
+      label,
+      baseLabel,
+      compatibility: context,
+    }))).toEqual([
+      {
+        id: "gpt-5.4-mini",
+        label: "GPT-5.4 mini · source label · Unverified (legacy sidecar compatibility mode)",
+        baseLabel: "GPT-5.4 mini · source label",
+        compatibility: "legacy_unverified",
+      },
+      {
+        id: "gpt-custom",
+        label: "gpt-custom · Unverified (legacy sidecar compatibility mode)",
         baseLabel: "gpt-custom",
         compatibility: "legacy_unverified",
       },
@@ -162,7 +203,11 @@ describe("shared model picker authority", () => {
   it("turns a missing active credential into one provider veto for every entry", () => {
     const reason = modelProviderReason(null, providerBlock({ reason_code: "task_auth_mode_unsupported" }));
     expect(reason).toBe("missing_active_credential");
-    expect(groupedModelEntries([entry("a"), entry("b", { eligible: false })], reason)
+    expect(groupedModelEntries(
+      [entry("a"), entry("b", { eligible: false })],
+      reason,
+      commonT("zh-Hant"),
+    )
       .flatMap((group) => group.entries)
       .map((item) => item.disabledReason))
       .toEqual(["missing_active_credential", "missing_active_credential"]);
@@ -176,7 +221,11 @@ describe("shared model picker authority", () => {
     const reason = modelProviderReason(context, block);
     const selected = entry("gpt-5.4-mini");
     const settingsReason = optionReason(selected, reason);
-    const researchReason = groupedModelEntries(block.models.concat(selected), reason)
+    const researchReason = groupedModelEntries(
+      block.models.concat(selected),
+      reason,
+      commonT("zh-Hant"),
+    )
       .flatMap((group) => group.entries)
       .find((item) => item.id === selected.id)?.disabledReason;
     expect(settingsReason).toBe("task_auth_mode_unsupported");

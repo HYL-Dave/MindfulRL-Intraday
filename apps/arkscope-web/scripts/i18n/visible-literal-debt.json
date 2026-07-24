@@ -310,6 +310,42 @@
       "count": 1
     },
     {
+      "signature": "[\"src/Holdings.tsx\",\"object_property\",\"Account\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/Holdings.tsx\",\"object_property\",\"Asset\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/Holdings.tsx\",\"object_property\",\"Avg Cost\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/Holdings.tsx\",\"object_property\",\"Currency\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/Holdings.tsx\",\"object_property\",\"Market Value\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/Holdings.tsx\",\"object_property\",\"Notes\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/Holdings.tsx\",\"object_property\",\"Qty\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/Holdings.tsx\",\"object_property\",\"Status\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/Holdings.tsx\",\"object_property\",\"Symbol\"]",
+      "count": 1
+    },
+    {
       "signature": "[\"src/Holdings.tsx\",\"object_property\",\"同步紀錄\"]",
       "count": 1
     },
@@ -367,110 +403,6 @@
     },
     {
       "signature": "[\"src/MarkdownView.tsx\",\"jsx_expression\",\"[image]\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelPicker.ts\",\"object_property\",\"${model.label} · 未驗證（舊 sidecar 相容模式）\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelPicker.ts\",\"object_property\",\"${row.model} · 未驗證（舊 sidecar 相容模式）\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelPicker.ts\",\"presenter_return\",\"missing_active_credential\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelPicker.ts\",\"presenter_return\",\"model_not_visible\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelPicker.ts\",\"presenter_return\",\"task_auth_mode_unsupported\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelPicker.ts\",\"presenter_return\",\"task_capability_missing\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"ChatGPT 訂閱登入\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"Claude 訂閱登入\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"provider 實際呼叫失敗\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"使用手動 thinking budget\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"可供此任務使用\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"可選擇 adaptive thinking\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"固定開啟 adaptive thinking\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"尚未設定此 provider 的登入\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"暫時無法讀取模型探索狀態\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"此登入可見\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"此登入方式不支援這個任務\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"此登入方式尚不支援實際測試\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"此登入的探索清單未顯示此模型\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"無特殊 thinking 行為\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"登入已失效，請重新登入\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"目前路由\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"缺少任務能力\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"自訂／未知模型，尚未驗證能力\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"進階／未驗證\"]",
-      "count": 1
-    },
-    {
-      "signature": "[\"src/modelRoutingUx.ts\",\"runtime_cjk\",\"預設開啟 adaptive thinking\"]",
       "count": 1
     },
     {
@@ -578,6 +510,14 @@
       "count": 1
     },
     {
+      "signature": "[\"src/PortfolioAccountOverview.tsx\",\"object_property\",\"Base Currency\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioAccountOverview.tsx\",\"object_property\",\"Capture Run\"]",
+      "count": 1
+    },
+    {
       "signature": "[\"src/PortfolioAccountOverview.tsx\",\"runtime_cjk\",\"Broker 觀察\"]",
       "count": 1
     },
@@ -615,6 +555,38 @@
     },
     {
       "signature": "[\"src/PortfolioAccountOverview.tsx\",\"runtime_cjk\",\"無帳戶價值資料\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioAccountOverview.tsx\",\"tuple_column_label\",\"Available Funds\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioAccountOverview.tsx\",\"tuple_column_label\",\"Buying Power\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioAccountOverview.tsx\",\"tuple_column_label\",\"Gross Position Value\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioAccountOverview.tsx\",\"tuple_column_label\",\"Initial Margin\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioAccountOverview.tsx\",\"tuple_column_label\",\"Maintenance Margin\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioAccountOverview.tsx\",\"tuple_column_label\",\"Net Liquidation\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioAccountOverview.tsx\",\"tuple_column_label\",\"Settled Cash\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioAccountOverview.tsx\",\"tuple_column_label\",\"Total Cash\"]",
       "count": 1
     },
     {
@@ -1307,6 +1279,18 @@
     },
     {
       "signature": "[\"src/PortfolioCapturePanel.tsx\",\"message_setter\",\"排程已儲存\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioCapturePanel.tsx\",\"object_property\",\"Avg Cost\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioCapturePanel.tsx\",\"object_property\",\"Market Value\"]",
+      "count": 1
+    },
+    {
+      "signature": "[\"src/PortfolioCapturePanel.tsx\",\"object_property\",\"Unrealized P&L\"]",
       "count": 1
     },
     {

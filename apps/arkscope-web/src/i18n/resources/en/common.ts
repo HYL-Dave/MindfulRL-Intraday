@@ -24,6 +24,42 @@ const common = {
     cancellationUnavailable: "Cannot be cancelled here",
     result: "Result: {{destination}}",
   },
+  models: {
+    groups: {
+      available: "Available for this task",
+      visibleDisabled: "Visible to this sign-in",
+      advanced: "Advanced / unverified",
+      current: "Current route",
+    },
+    reasons: {
+      missingActiveCredential: "No sign-in is configured for this provider",
+      taskAuthModeUnsupported: "This sign-in method does not support the task",
+      taskTestUnsupported: "This sign-in method does not yet support live testing",
+      taskCapabilityMissing: "Task capability is missing",
+      modelNotVisible: "This model does not appear in the discovery list for this sign-in",
+      modelNotInRegistry: "Custom or unknown model; capabilities are unverified",
+      discoveryUnavailable: "Model discovery status is temporarily unavailable",
+      providerCallFailed: "The live provider call failed",
+      reauthRequired: "The sign-in has expired. Sign in again",
+    },
+    authModes: {
+      apiKey: "API key",
+      apiKeyPool: "API key pool",
+      chatgptOauth: "ChatGPT subscription sign-in",
+      claudeCodeOauth: "Claude subscription sign-in",
+    },
+    thinkingModes: {
+      none: "No special thinking behavior",
+      manualBudget: "Uses a manual thinking budget",
+      adaptiveOptIn: "Adaptive thinking available",
+      adaptiveDefaultOn: "Adaptive thinking on by default",
+      adaptiveAlwaysOn: "Adaptive thinking always on",
+    },
+    compatibility: {
+      decoratedSuffix: "Unverified (legacy sidecar compatibility mode)",
+      settingsNotice: "Unverified (legacy sidecar compatibility mode).",
+    },
+  },
   personalization: {
     stances: {
       off: "Off",

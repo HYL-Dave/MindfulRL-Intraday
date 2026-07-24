@@ -3,6 +3,7 @@
 // a model id is NOT split, but its SOURCE/capability is shown per credential's
 // (provider, auth_mode) — never as one global catalog.
 import type { CredentialAuthType, ModelProvider } from "./api";
+import { modelReasonLabel, type ModelCommonT } from "./modelRoutingUx";
 import type { SettingsT } from "./settings/settingsCopy";
 
 // Discovery-result badge. `provider_api` is ambiguous at the data layer (OpenAI API
@@ -32,8 +33,12 @@ export function discoverySourceLabel(
 export function credentialPill(
   active: { auth_type: CredentialAuthType } | null,
   t: SettingsT,
+  commonT: ModelCommonT,
 ): { label: string; ok: boolean } {
-  if (!active) return { label: t(($) => $.models.credentials.missing), ok: false };
+  if (!active) {
+    const label = modelReasonLabel("missing_active_credential", commonT);
+    return { label, ok: false };
+  }
   switch (active.auth_type) {
     case "api_key":
       return { label: t(($) => $.providers.authModes.apiKey), ok: true };

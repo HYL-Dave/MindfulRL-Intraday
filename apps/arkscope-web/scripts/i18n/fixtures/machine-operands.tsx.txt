@@ -1,0 +1,33 @@
+export function modelProviderReason(
+  hasContext: boolean,
+  executable: boolean,
+): string | null {
+  if (!hasContext) return "missing_active_credential";
+  return executable ? null : "task_auth_mode_unsupported";
+}
+
+export function optionReason(eligible: boolean, visible: boolean): string | null {
+  if (!eligible) return "task_capability_missing";
+  return visible ? null : "model_not_visible";
+}
+
+export function modelReasonLabel(reason: string): string {
+  if (reason === "provider") return "Provider sign-in required";
+  return "Model unavailable";
+}
+
+export function EvidenceStatus({ completion }: { completion: string }) {
+  return (
+    <StatusBadge
+      label={completion === "running" ? "執行中" : completion === "complete" ? "完成" : "已記錄"}
+    />
+  );
+}
+
+export function UnrelatedStatus({ phase }: { phase: string }) {
+  return (
+    <StatusBadge
+      label={phase === "running" ? translatedBusy : translatedIdle}
+    />
+  );
+}

@@ -114,6 +114,46 @@ describe("visible literal scanner", () => {
     ]);
   });
 
+  it("detects direct DataTable header properties including ASCII-only copy", () => {
+    const candidates = scanFixture("table-headers");
+    expect(candidates.map(({ kind, literal }) => ({ kind, literal }))).toEqual([
+      { kind: "object_property", literal: "Account" },
+      { kind: "object_property", literal: "Qty" },
+    ]);
+  });
+
+  it("detects tuple-backed static column labels without treating tuple IDs as copy", () => {
+    const candidates = scanFixture("tuple-columns");
+    expect(candidates.map(({ kind, literal }) => ({ kind, literal }))).toEqual([
+      { kind: "tuple_column_label", literal: "Net Liquidation" },
+      { kind: "tuple_column_label", literal: "Total Cash" },
+    ]);
+  });
+
+  it("ignores reviewed model reason operands while retaining visible reason presenters", () => {
+    const candidates = scanFixture("machine-operands");
+    expect(candidates
+      .filter(({ kind }) => kind === "presenter_return")
+      .map(({ kind, literal }) => ({ kind, literal })))
+      .toEqual([
+        { kind: "presenter_return", literal: "Provider sign-in required" },
+        { kind: "presenter_return", literal: "Model unavailable" },
+      ]);
+  });
+
+  it("ignores Research completion-state operands while retaining visible status labels", () => {
+    const candidates = scanFixture("machine-operands");
+    expect(candidates
+      .filter(({ kind }) => kind === "jsx_attribute")
+      .map(({ kind, literal }) => ({ kind, literal })))
+      .toEqual([
+        { kind: "jsx_attribute", literal: "執行中" },
+        { kind: "jsx_attribute", literal: "完成" },
+        { kind: "jsx_attribute", literal: "已記錄" },
+        { kind: "jsx_attribute", literal: "running" },
+      ]);
+  });
+
   it("detects visible expression and template copy", () => {
     const candidates = scanFixture("expression-template");
     expect(candidates.map(({ kind, literal }) => ({ kind, literal }))).toEqual([

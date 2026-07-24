@@ -51,6 +51,7 @@ export function DataStorageSection({
   developerMode?: boolean;
 }) {
   const { t } = useTranslation("settings");
+  const { t: commonT } = useTranslation("common");
   const [status, setStatus] = useState<MarketDataStatus | null>(null);
   const [err, setErr] = useState<Error | null>(null);
 
@@ -72,7 +73,7 @@ export function DataStorageSection({
   const iv = status?.iv;
   const fd = status?.fundamentals;
   const fc = status?.financial_cache;
-  const errorPresentation = err ? settingsErrorPresentation(err, t) : null;
+  const errorPresentation = err ? settingsErrorPresentation(err, t, commonT) : null;
 
   return (
     <div>
@@ -160,6 +161,7 @@ function coverageToneColor(tone: "ok" | "warn" | "muted" | "bad"): string {
 
 function TradingDayCoveragePanel({ developerMode }: { developerMode: boolean }) {
   const { t } = useTranslation("settings");
+  const { t: commonT } = useTranslation("common");
   const [cov, setCov] = useState<TradingDayCoverage | null>(null);
   const [err, setErr] = useState<Error | null>(null);
   const [busy, setBusy] = useState(false);
@@ -180,7 +182,7 @@ function TradingDayCoveragePanel({ developerMode }: { developerMode: boolean }) 
   useEffect(() => {
     void load();
   }, [load]);
-  const errorPresentation = err ? settingsErrorPresentation(err, t) : null;
+  const errorPresentation = err ? settingsErrorPresentation(err, t, commonT) : null;
 
   return (
     <div style={{ marginTop: 24, borderTop: "1px solid var(--border, #333)", paddingTop: 16 }}>
