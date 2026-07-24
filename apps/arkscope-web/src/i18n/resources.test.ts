@@ -748,14 +748,16 @@ describe("bundled i18n resources", () => {
       import.meta.dirname,
       "../../scripts/i18n/visible-literal-debt.json",
     ), "utf8")) as { signatures: Array<{ signature: string; count: number }> };
-    const manifestEntries = debt.signatures.filter(({ signature }) =>
-      portfolioSourceFiles.has((JSON.parse(signature) as [string, string, string])[0]));
     expect(portfolioResourceOwnership.version).toBe(2);
     const ownershipSignatures = portfolioResourceOwnership.sourceClaims.map(({ signature }) => signature);
     expect(new Set(ownershipSignatures).size).toBe(portfolioResourceOwnership.sourceClaims.length);
-    expect([...ownershipSignatures].sort()).toEqual(manifestEntries.map(({ signature }) => signature).sort());
-    expect(portfolioResourceOwnership.sourceClaims.map(({ signature, count }) => ({ signature, count })))
-      .toEqual(manifestEntries);
+    expect(debt.signatures).toEqual([]);
+    expect(portfolioResourceOwnership.sourceClaims).toHaveLength(372);
+    expect(portfolioResourceOwnership.sourceClaims.reduce((sum, entry) => sum + entry.count, 0))
+      .toBe(391);
+    expect(new Set(portfolioResourceOwnership.sourceClaims.map(({ signature }) => (
+      (JSON.parse(signature) as [string, string, string])[0]
+    )))).toEqual(new Set(portfolioSourceFiles.keys()));
 
     const reviewedExclusions = new Map([
       ['["src/Holdings.tsx","jsx_attribute","NVDA"]', "holdings-calibration-example"],

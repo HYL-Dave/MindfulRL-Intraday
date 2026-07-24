@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -5,15 +6,6 @@ import { describe, expect, it } from "vitest";
 import { SETTINGS_GROUPS } from "../settings/settingsRegistry";
 
 const projectRoot = resolve(import.meta.dirname, "../..");
-
-const I18N_1_MIGRATED_SCOPES = [
-  "src/i18n/**",
-  "src/main.tsx",
-  "src/App.tsx",
-  "src/shell/**",
-  "src/ui/BoundedProgress.tsx",
-  "src/ui/Drawer.tsx",
-];
 
 const I18N_2_SETTINGS_SCOPES = [
   "src/InvestorProfilePanel.tsx",
@@ -43,40 +35,6 @@ const I18N_2_SETTINGS_SCOPES = [
 const SLICE_5_MIGRATED_SCOPES = [
   "src/settings/investor/**",
   "src/ResearchPersonalizationContext.tsx",
-];
-
-const I18N_3_EXPLORE_SCOPES = [
-  "src/Home.tsx",
-  "src/Watchlist.tsx",
-  "src/Universe.tsx",
-  "src/News.tsx",
-  "src/TickerDetail.tsx",
-  "src/AICard.tsx",
-  "src/tags.tsx",
-  "src/personalizationDisplay.ts",
-  "src/explore/**",
-];
-
-const TASK_1_MODEL_SCOPES = [
-  "src/modelPicker.ts",
-  "src/modelRoutingUx.ts",
-];
-
-const TRANCHE_A_RESEARCH_SCOPES = [
-  "src/Research.tsx",
-  "src/ResearchHistoryDrawer.tsx",
-  "src/ResearchEvidenceDrawer.tsx",
-  "src/ResearchRunProgress.tsx",
-  "src/researchErrors.ts",
-  "src/researchSelection.ts",
-  "src/researchReducer.ts",
-];
-
-const TASK_7_SYSTEM_COMMON_SCOPES = [
-  "src/Dashboard.tsx",
-  "src/MarkdownView.tsx",
-  "src/ui/ConfirmDialog.tsx",
-  "src/ui/DataTable.tsx",
 ];
 
 const ARKSCOPE_ALLOWLIST_ENTRY = {
@@ -120,26 +78,6 @@ const I18N_2_SETTINGS_ALLOWLIST_ENTRIES = [
   reason: SETTINGS_ALLOWLIST_REASON,
 }));
 
-const I18N_2_OWNED_DEBT_FILES = new Set([
-  "src/InvestorProfilePanel.tsx",
-  "src/Settings.tsx",
-  "src/SourceRunProgress.tsx",
-  "src/chatgptOAuth.ts",
-  "src/credentialDisplay.ts",
-  "src/marketDataDisplay.ts",
-  "src/modelRouteDisplay.ts",
-  "src/saExtensionHealthDisplay.ts",
-  "src/settings/DataSourcesSection.tsx",
-  "src/settings/DataStorageSection.tsx",
-  "src/settings/MacroStorageSection.tsx",
-  "src/settings/ModelRoutingSection.tsx",
-  "src/settings/NewsStorageSection.tsx",
-  "src/settings/ProviderSection.tsx",
-  "src/settings/RuntimeLimitSections.tsx",
-  "src/settings/SettingsDirectory.tsx",
-  "src/settings/settingsRegistry.ts",
-]);
-
 function read(relativePath: string): string {
   const path = resolve(projectRoot, relativePath);
   return existsSync(path) ? readFileSync(path, "utf8") : "";
@@ -167,20 +105,6 @@ const migratedSettingsFiles = [
   ...I18N_2_SETTINGS_SCOPES,
   ...SLICE_5_MIGRATED_SCOPES,
 ].flatMap(productionScopeFiles);
-
-function ownsSettingsDebt(file: string): boolean {
-  return I18N_2_OWNED_DEBT_FILES.has(file)
-    || file === "src/ResearchPersonalizationContext.tsx"
-    || file.startsWith("src/settings/investor/");
-}
-
-function ownsExploreDebt(file: string): boolean {
-  return I18N_3_EXPLORE_SCOPES.some((scope) => {
-    if (!scope.endsWith("/**")) return file === scope;
-    const prefix = scope.slice(0, -3);
-    return file === prefix || file.startsWith(`${prefix}/`);
-  });
-}
 
 describe("I18N-0 foundation boundaries", () => {
   it("bootstraps locale before createRoot and mounts both providers", () => {
@@ -273,8 +197,7 @@ describe("I18N-0 foundation boundaries", () => {
       signatures: Array<{ signature: string }>;
     };
 
-    expect(migrated.scopes.filter((scope) => I18N_1_MIGRATED_SCOPES.includes(scope)))
-      .toEqual(I18N_1_MIGRATED_SCOPES);
+    expect(migrated.scopes).toEqual(["src/**"]);
     expect(allowlist.entries.filter(({ file }) => {
       return typeof file === "string" && (
         file === "src/App.tsx"
@@ -284,17 +207,7 @@ describe("I18N-0 foundation boundaries", () => {
       );
     })).toEqual([ARKSCOPE_ALLOWLIST_ENTRY]);
 
-    const owned = (file: string) => (
-      file === "src/App.tsx"
-      || file.startsWith("src/shell/")
-      || file === "src/ui/Drawer.tsx"
-      || file === "src/ui/BoundedProgress.tsx"
-    );
-    const ownedDebt = debt.signatures.filter(({ signature }) => {
-      const [file] = JSON.parse(signature) as [string];
-      return owned(file);
-    });
-    expect(ownedDebt).toEqual([]);
+    expect(debt.signatures).toEqual([]);
   });
 
   it("records the exact I18N-2 migrated scopes and stable-value allowlist", () => {
@@ -308,16 +221,7 @@ describe("I18N-0 foundation boundaries", () => {
       signatures: Array<{ signature: string }>;
     };
 
-    expect(migrated.scopes).toEqual([
-      ...I18N_1_MIGRATED_SCOPES,
-      ...I18N_2_SETTINGS_SCOPES,
-      ...SLICE_5_MIGRATED_SCOPES,
-      ...I18N_3_EXPLORE_SCOPES,
-      ...TASK_1_MODEL_SCOPES,
-      ...TRANCHE_A_RESEARCH_SCOPES,
-      ...TASK_7_SYSTEM_COMMON_SCOPES,
-    ]);
-    expect(migrated.scopes).toHaveLength(52);
+    expect(migrated.scopes).toEqual(["src/**"]);
     expect(allowlist.entries).toEqual([
       ARKSCOPE_ALLOWLIST_ENTRY,
       ...I18N_2_SETTINGS_ALLOWLIST_ENTRIES,
@@ -326,14 +230,36 @@ describe("I18N-0 foundation boundaries", () => {
       JSON.stringify([file, kind, literal])
     ))).size).toBe(20);
 
-    const ownedDebt = debt.signatures.filter(({ signature }) => {
-      const [file] = JSON.parse(signature) as [string];
-      return ownsSettingsDebt(file)
-        || ownsExploreDebt(file)
-        || TASK_1_MODEL_SCOPES.includes(file)
-        || TRANCHE_A_RESEARCH_SCOPES.includes(file);
+    expect(debt.signatures).toEqual([]);
+  });
+
+  it("closes remaining localization with global src scope and exact empty-debt arithmetic", () => {
+    const report = JSON.parse(execFileSync(
+      process.execPath,
+      ["scripts/i18n/visible-literal-scanner.mjs", "check"],
+      { cwd: projectRoot, encoding: "utf8" },
+    )) as {
+      candidateCount: number;
+      signatureCount: number;
+      debtSignatureCount: number;
+      allowlistCount: number;
+      migratedScopes: string[];
+    };
+    const allowlist = JSON.parse(read("scripts/i18n/visible-literal-allowlist.json")) as {
+      entries: Array<{ count: number }>;
+    };
+
+    expect(report).toEqual({
+      candidateCount: 36,
+      signatureCount: 20,
+      debtSignatureCount: 0,
+      allowlistCount: 20,
+      migratedScopes: ["src/**"],
     });
-    expect(ownedDebt).toEqual([]);
+    expect(allowlist.entries).toHaveLength(report.allowlistCount);
+    expect(report.signatureCount).toBe(allowlist.entries.length);
+    expect(allowlist.entries.reduce((sum, entry) => sum + entry.count, 0))
+      .toBe(report.candidateCount);
   });
 
   it("keeps the public locale selector absent after Settings migration", () => {

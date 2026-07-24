@@ -1,0 +1,49 @@
+# I18N Formatter Inventory
+
+> Status: CURRENT-BEHAVIOR INVENTORY (2026-07-24)
+>
+> This document records formatter ownership after the I18N-4/5 surface
+> migration. It does not authorize output, rounding, timezone, sign, locale,
+> or fallback changes. Those decisions belong to I18N-6 or a separately
+> reviewed formatter unit.
+
+## Interpretation
+
+- `ui_locale` means ArkScope's profile-backed `zh-Hant` / `en` preference.
+- `browser locale` means the locale selected by `Intl` or `toLocale*` when the
+  code passes `undefined` or no locale. It does not necessarily change when
+  `ui_locale` changes in place.
+- Source values, identifiers, currencies, timestamps, and invalid-input
+  fallbacks remain unchanged by the completed copy migration.
+
+## Inventory
+
+| Owner | Current behavior | Locale dependency | Consumers | Future decision owner |
+| --- | --- | --- | --- | --- |
+| `timeDisplay.dateParts`, `formatSystemTimestamp`, `formatMarketTimestamp` | Normalizes compact ISO offsets; renders `MM-DD HH:mm` with 24-hour fields. System order is local timezone then ET; market order is ET then local timezone. Missing values render `—`; invalid values pass through unchanged. | Fixed `en-US` formatter; host-resolved local timezone plus fixed `America/New_York`. Independent of `ui_locale`. | Research Evidence, Portfolio Activity, Recent Activity, Account Overview, and Settings storage/provider status. | I18N-6 formatter decision. |
+| `ui/BoundedProgress.formatElapsed` | Floors milliseconds to whole seconds and clamps negatives to zero. Values below one minute render `Ns`; longer values render `Nm SSs`. | Locale-neutral digits and fixed unit letters; surrounding labels are localized. | Research progress and Shell background-work progress. | I18N-6 formatter decision. |
+| `SourceRunProgress` percentage | Displays `max(0, done) / total`; the bar value is additionally capped at `total`, and the rounded percentage is clamped to `0..100`. Missing, non-finite, or non-positive totals remain indeterminate. | Locale-neutral digits and punctuation; independent of `ui_locale`. | Settings source-run progress. | I18N-6 formatter decision. |
+| `App` sidecar `lastOk` | Captures the successful check time with `new Date().toLocaleTimeString()`. | Browser locale and local timezone at capture time; the stored display string does not reformat on an in-place `ui_locale` change. | Shell topbar sidecar status. | I18N-6 formatter decision. |
+| `Dashboard` server time | Converts the status timestamp with `toLocaleTimeString()`. | Browser locale and local timezone, not explicit `ui_locale`. | System / Health status tiles. | I18N-6 formatter decision. |
+| `ResearchHistoryDrawer.formatLocalTime` | Valid dates render year, two-digit month/day, and two-digit hour/minute/second; invalid source text passes through. | Browser locale and local timezone via `Intl.DateTimeFormat(undefined, ...)`. | Research thread created/updated metadata. | I18N-6 formatter decision. |
+| Research workspace and Evidence elapsed time | Uses `toFixed(1)` seconds and appends a localized seconds suffix. | Locale-neutral decimal point; only the suffix follows `ui_locale`. | Research transcript metadata and Evidence timing. | I18N-6 formatter decision. |
+| Research Evidence token statistics | Uses `number.toLocaleString()` for token-count rows. | Browser locale; not explicitly tied to `ui_locale`. | Evidence Drawer token details. | I18N-6 formatter decision. |
+| `Holdings.formatNum` / `formatMaybe` | `formatNum` passes numeric inputs to `Intl.NumberFormat` with at most four fraction digits. `formatMaybe` renders null and non-finite optional values as an empty string before delegating. | Browser locale through `Intl.NumberFormat(undefined, ...)`. | Holdings quantity, average cost, market value, and unrealized P&L columns. | I18N-6 formatter decision. |
+| `PortfolioActivity.formatNumber` / `formatAmount` / `formatUnknown` | Finite numbers use at most four fraction digits. Amounts append the source currency code rather than applying currency style. Unknown values use localized caller copy; booleans remain literal `true` / `false`; objects use `JSON.stringify` or the unknown fallback. | Browser locale for numbers; source currency/boolean/JSON values are not localized. | Portfolio activity summaries, execution/commission detail, and field-change detail. | I18N-6 formatter decision. |
+| `PortfolioCapturePanel.formatLocalTime` | Missing values render `-`; valid dates use `Date.toLocaleString()`; invalid values pass through. | Browser locale and local timezone; not explicit `ui_locale`. | Capture run timestamps and next-due status. | I18N-6 formatter decision. |
+| `PortfolioCapturePanel.formatReviewMetric` | Runtime number values use at most four fraction digits; missing/non-number values render `-`; changed updates render `before → after`. There is no separate finite-value guard before `Intl.NumberFormat`. | Browser locale for numbers; punctuation is fixed. | Capture review table quantities and financial metrics. | I18N-6 formatter decision. |
+| `PortfolioAccountOverview.formatAmount` | Missing/non-finite values render `—`. With a currency, uses `Intl` currency style and at most two fraction digits; an invalid currency falls back to a localized number plus the source currency code. Without a currency, uses at most two fraction digits. | Browser locale through `Intl.NumberFormat(undefined, ...)`; source currency controls currency formatting. | Account totals, per-currency values, positions, and P&L. | I18N-6 formatter decision. |
+| `PortfolioRecentActivity.formatNumber` | Null values render `—`; other numeric inputs use fixed `en-US` grouping with at most six fraction digits, without a separate finite-value guard. Compact timestamps retain only the first half of shared market/system timestamp output. | Fixed `en-US` for numbers; shared timestamp rules above. Independent of `ui_locale`. | Recent portfolio activity summaries. | I18N-6 formatter decision. |
+| Explore numeric helpers (`Home`, `Watchlist`, `Universe`, `TickerDetail`) | General values use browser grouping with at most two fraction digits. Percentages use `toFixed(2)`, preserve the existing positive-sign rule, and append `%`. Missing values render `—`. Home dates use abbreviated month/day and two-digit hour/minute; invalid dates pass through. | Browser locale for general values and Home dates; locale-neutral decimal point for percentages. Not explicitly tied to `ui_locale`. | Home market summary, Watchlist, Universe, and Ticker Detail. | I18N-6 formatter decision. |
+| `News` count formatting | Feed totals, facets, comments, and pagination counts use `toLocaleString()`. | Browser locale; not explicit `ui_locale`. | Market and Seeking Alpha news views. | I18N-6 formatter decision. |
+| `settings/DataSourcesSection.formatCount` / `shortDate` | Finite counts use fixed `en-US` grouping; missing values render `—`. FRED snapshot dates use the first ten source characters with no parsing; missing dates render `—`. Body-backlog timestamps use `formatSystemTimestamp`. | Fixed `en-US` for counts; source-text slicing for FRED dates; shared timestamp rules for backlog status. Independent of `ui_locale`. | Data-source FRED summary and body-backlog status. | I18N-6 formatter decision. |
+| Settings storage count/value formatting (`DataStorageSection`, `MacroStorageSection`, `NewsStorageSection`) | Row counts, observation counts, values, and row deltas use `toLocaleString()`; missing values retain each surface's existing `—` behavior. Timestamps use `formatSystemTimestamp`. | Browser locale for counts/values; shared timestamp rules above. | Data Storage, Macro Data, and News Storage settings sections. | I18N-6 formatter decision. |
+| Settings model/provider timestamps | Discovery, model-test, and credential-expiry timestamps use `formatSystemTimestamp`. | Shared timestamp rules above. | Model Routing and Provider settings sections. | I18N-6 formatter decision. |
+| `credentialDisplay.isoToDateInput` / `dateInputToIso` | Valid stored dates render UTC `YYYY-MM-DD`; missing or invalid stored values render an empty input. A non-empty date input appends `T00:00:00+00:00`; an empty input stays empty. | Fixed UTC ISO conversion, independent of browser locale and `ui_locale`. | Provider credential expiry editor. | I18N-6 formatter decision. |
+
+## Frozen Boundary
+
+The I18N-4/5 implementation changes none of the owners or expectations above.
+The final implementation evidence must show formatter production files and
+formatter test expectations byte-identical to product base
+`93cda66831b7202fd0dfafcc0d1c0604b07e94bd`.
