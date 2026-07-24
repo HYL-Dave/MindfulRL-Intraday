@@ -341,13 +341,14 @@ describe("Research Evidence drawer", () => {
     expect(fetchMock.mock.calls.filter(([input]) => (
       new URL(String(input)).pathname === "/research/runs/run-a/events"
     ))).toHaveLength(1);
+    expect((diagnostic as HTMLDetailsElement).open).toBe(true);
 
     await rerenderEvidence({ message: message({ runId: "run-b" }) });
     const runBDiagnostic = document.querySelector(".research-diagnostic")!;
-    expect(runBDiagnostic).toBe(diagnostic);
+    expect((runBDiagnostic as HTMLDetailsElement).open).toBe(false);
+    expect(runBDiagnostic.querySelector("pre")).toBeNull();
     const runBSummary = runBDiagnostic.querySelector("summary") as HTMLElement;
     await act(async () => {
-      if ((runBDiagnostic as HTMLDetailsElement).open) runBSummary.click();
       runBSummary.click();
       await Promise.resolve();
     });

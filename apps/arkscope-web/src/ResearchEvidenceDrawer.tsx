@@ -29,6 +29,13 @@ interface FetchedRunAuthority {
   run: ResearchRunDTO;
 }
 
+interface DiagnosticRunState {
+  runId: string;
+  diagnostic: string | null;
+  failed: boolean;
+  loading: boolean;
+}
+
 function freshestRunDetail(
   fetchedRun: ResearchRunDTO | null,
   activeRun: ResearchRunDTO | null,
@@ -110,10 +117,9 @@ export function ResearchEvidenceDrawer({
   const runId = message ? (message.runId ?? null) : (activeRun?.id ?? null);
   const [fetchedAuthority, setFetchedAuthority] = useState<FetchedRunAuthority | null>(null);
   const [detailState, setDetailState] = useState<"idle" | "loading" | "ready" | "partial">("idle");
-  const [diagnostic, setDiagnostic] = useState<string | null>(null);
-  const [diagnosticFailed, setDiagnosticFailed] = useState(false);
-  const [diagnosticLoading, setDiagnosticLoading] = useState(false);
+  const [diagnosticState, setDiagnosticState] = useState<DiagnosticRunState | null>(null);
   const diagnosticAuthorityRef = useRef({ generation: 0, runId: null as string | null });
+  const visibleDiagnosticState = diagnosticState?.runId === runId ? diagnosticState : null;
 
   useEffect(() => {
     const authority = {
@@ -132,9 +138,12 @@ export function ResearchEvidenceDrawer({
         };
       }
     };
-    setDiagnostic(null);
-    setDiagnosticFailed(false);
-    setDiagnosticLoading(false);
+    setDiagnosticState(runId && open ? {
+      runId,
+      diagnostic: null,
+      failed: false,
+      loading: false,
+    } : null);
     if (!open || !runId) {
       setFetchedAuthority(null);
       setDetailState("idle");
@@ -161,13 +170,26 @@ export function ResearchEvidenceDrawer({
 
   const loadDiagnostics = () => {
     const authority = diagnosticAuthorityRef.current;
-    if (!developerMode || !authority.runId || diagnostic != null || diagnosticFailed || diagnosticLoading) return;
+    const diagnosticRunId = authority.runId;
+    const stateForAuthority = diagnosticState?.runId === diagnosticRunId ? diagnosticState : null;
+    if (
+      !developerMode
+      || !diagnosticRunId
+      || stateForAuthority?.diagnostic != null
+      || stateForAuthority?.failed
+      || stateForAuthority?.loading
+    ) return;
     const authorityIsCurrent = () => (
       diagnosticAuthorityRef.current.generation === authority.generation
-      && diagnosticAuthorityRef.current.runId === authority.runId
+      && diagnosticAuthorityRef.current.runId === diagnosticRunId
     );
-    setDiagnosticLoading(true);
-    void getResearchRunEvents(authority.runId, 0)
+    setDiagnosticState({
+      runId: diagnosticRunId,
+      diagnostic: null,
+      failed: false,
+      loading: true,
+    });
+    void getResearchRunEvents(diagnosticRunId, 0)
       .then((response) => {
         if (!authorityIsCurrent()) return;
         const safe = response.events.map((event) => ({
@@ -176,13 +198,26 @@ export function ResearchEvidenceDrawer({
           created_at: event.created_at,
           data: event.data,
         }));
-        setDiagnostic(sanitizeResearchDiagnostic(safeJson(safe), 8_000));
+        const nextDiagnostic = sanitizeResearchDiagnostic(safeJson(safe), 8_000);
+        setDiagnosticState((current) => (
+          authorityIsCurrent() && current?.runId === diagnosticRunId
+            ? { ...current, diagnostic: nextDiagnostic }
+            : current
+        ));
       })
       .catch(() => {
-        if (authorityIsCurrent()) setDiagnosticFailed(true);
+        setDiagnosticState((current) => (
+          authorityIsCurrent() && current?.runId === diagnosticRunId
+            ? { ...current, failed: true }
+            : current
+        ));
       })
       .finally(() => {
-        if (authorityIsCurrent()) setDiagnosticLoading(false);
+        setDiagnosticState((current) => (
+          authorityIsCurrent() && current?.runId === diagnosticRunId
+            ? { ...current, loading: false }
+            : current
+        ));
       });
   };
 
@@ -340,13 +375,14 @@ export function ResearchEvidenceDrawer({
           ) : null}
           {developerMode && runId ? (
             <details
+              key={runId}
               className="research-diagnostic"
               onToggle={(event) => { if (event.currentTarget.open) loadDiagnostics(); }}
             >
               <summary>{researchT(($) => $.evidence.diagnosticEvents)}</summary>
-              {diagnosticLoading ? <p className="muted tiny">{researchT(($) => $.evidence.loading)}</p> : null}
-              {diagnostic ? <pre>{diagnostic}</pre> : null}
-              {diagnosticFailed ? <p className="error-text tiny">{researchT(($) => $.evidence.diagnosticsFailed)}</p> : null}
+              {visibleDiagnosticState?.loading ? <p className="muted tiny">{researchT(($) => $.evidence.loading)}</p> : null}
+              {visibleDiagnosticState?.diagnostic ? <pre>{visibleDiagnosticState.diagnostic}</pre> : null}
+              {visibleDiagnosticState?.failed ? <p className="error-text tiny">{researchT(($) => $.evidence.diagnosticsFailed)}</p> : null}
             </details>
           ) : null}
         </section>
