@@ -34,6 +34,7 @@ import { Drawer } from "./ui/Drawer";
 import { StatusBadge } from "./ui/Status";
 
 const PAGE_LIMIT = 50;
+const THREAD_MUTATION_PATH = /^\/research\/threads\/[^/?#]+$/;
 
 interface HistoryFilters {
   q: string;
@@ -138,7 +139,7 @@ function mutationFailure(error: unknown): MutationFailure {
   if (
     error instanceof ApiError
     && error.status === 409
-    && error.path.startsWith("/research/threads/")
+    && THREAD_MUTATION_PATH.test(error.path)
     && (error.code === null || error.code === "active_run_conflict")
   ) {
     return "active_run_conflict";

@@ -15,7 +15,7 @@ import type {
   RuntimeConfig,
   TaskRoute,
 } from "./api";
-import { getResearchMessages, getResearchThread } from "./api";
+import { ApiError, getResearchMessages, getResearchThread } from "./api";
 import { ResearchHistoryDrawer } from "./ResearchHistoryDrawer";
 import type { ResearchNavigationRequest } from "./shell/navigation";
 
@@ -629,6 +629,7 @@ describe("Research history drawer", () => {
   it("renders structured 404 and 409 outcomes without parsing messages", async () => {
     await i18n.changeLanguage("en");
     const source = thread("thread-errors", "SOURCE_ERROR_THREAD");
+    let mutationAttempt = 0;
     const backend = createResearchFetch({
       current: [source],
       patchResponses: {
@@ -640,12 +641,49 @@ describe("Research history drawer", () => {
             },
           }, 404),
           json({
+            detail: "PLANTED returned 404 CODE-LESS ACTIVE CONFLICT",
+          }, 409),
+          json({
             detail: {
               code: "active_run_conflict",
               message: "PLANTED returned 404 MESSAGE IS NOT STATUS",
             },
           }, 409),
         ],
+      },
+      override: (url, init) => {
+        if (url.pathname !== "/research/threads/thread-errors" || init?.method !== "PATCH") {
+          return undefined;
+        }
+        mutationAttempt += 1;
+        if (mutationAttempt === 2) {
+          return Promise.reject(new ApiError(
+            "PLANTED returned 409 MESSAGE IS NOT ROUTE",
+            "/research/threads/thread-errors/events",
+            409,
+            null,
+            "RAW_WRONG_ROUTE_DIAGNOSTIC",
+          ));
+        }
+        if (mutationAttempt === 3) {
+          return Promise.reject(new ApiError(
+            "PLANTED returned 409 MESSAGE IS NOT ROUTE",
+            "/research/threads/thread-errors?force=true",
+            409,
+            null,
+            "RAW_QUERY_ROUTE_DIAGNOSTIC",
+          ));
+        }
+        if (mutationAttempt === 4) {
+          return Promise.reject(new ApiError(
+            "PLANTED returned 409 MESSAGE IS NOT CODE",
+            "/research/threads/thread-errors",
+            409,
+            "future_conflict",
+            "RAW_UNKNOWN_CODE_DIAGNOSTIC",
+          ));
+        }
+        return undefined;
       },
     });
     await mountResearch({ backend });
@@ -659,6 +697,34 @@ describe("Research history drawer", () => {
       "Research history could not be updated. Try again later.",
     );
     expect(document.body.textContent).not.toContain("PLANTED returned 409");
+
+    await click(archive);
+    await flush();
+    expect(document.querySelector("[role='alert']")?.textContent).toContain(
+      "Research history could not be updated. Try again later.",
+    );
+    expect(document.body.textContent).not.toContain("RAW_WRONG_ROUTE_DIAGNOSTIC");
+
+    await click(archive);
+    await flush();
+    expect(document.querySelector("[role='alert']")?.textContent).toContain(
+      "Research history could not be updated. Try again later.",
+    );
+    expect(document.body.textContent).not.toContain("RAW_QUERY_ROUTE_DIAGNOSTIC");
+
+    await click(archive);
+    await flush();
+    expect(document.querySelector("[role='alert']")?.textContent).toContain(
+      "Research history could not be updated. Try again later.",
+    );
+    expect(document.body.textContent).not.toContain("RAW_UNKNOWN_CODE_DIAGNOSTIC");
+
+    await click(archive);
+    await flush();
+    expect(document.querySelector("[role='alert']")?.textContent).toContain(
+      "A Research run is still active, so this conversation cannot be archived or permanently deleted.",
+    );
+    expect(document.body.textContent).not.toContain("PLANTED returned 404 CODE-LESS");
 
     await click(archive);
     await flush();
@@ -686,7 +752,7 @@ describe("Research history drawer", () => {
     await flush();
     search.focus();
     const activeRow = document.querySelector("[data-research-history-row='thread-b']")!;
-    const requestCount = requestUrls(backend.fetchMock, "/research/threads").length;
+    const requestCount = backend.fetchMock.mock.calls.length;
 
     await act(async () => { await i18n.changeLanguage("en"); });
     await flush();
@@ -697,7 +763,7 @@ describe("Research history drawer", () => {
     expect(document.querySelector("[data-research-history-row='thread-b']")).toBe(activeRow);
     expect(activeRow.classList.contains("active")).toBe(true);
     expect(host!.querySelector(".research-conversation-title")?.textContent).toBe("SOURCE_THREAD_B");
-    expect(requestUrls(backend.fetchMock, "/research/threads")).toHaveLength(requestCount);
+    expect(backend.fetchMock).toHaveBeenCalledTimes(requestCount);
   });
 
   it("renders an in-flight rename result in the current locale", async () => {
@@ -739,6 +805,9 @@ describe("Research history drawer", () => {
     await click(buttonByText("歷史", host!));
     const row = document.querySelector("[data-research-history-row='thread-source-title']")!;
     expect(row.querySelector(".research-history-title")?.textContent).toBe(sourceTitle);
+    await click(row.querySelectorAll(".research-history-actions button")[0]);
+    expect(controlByLabel<HTMLInputElement>("Conversation name").value).toBe(sourceTitle);
+    await click(document.querySelector("[aria-label='Cancel rename']")!);
     await click(row.querySelectorAll(".research-history-actions button")[2]);
     const dialog = document.querySelector("[role='alertdialog']") ?? document.querySelector(".ui-confirm-dialog");
     expect(dialog?.textContent).toContain("Permanently delete conversation");
