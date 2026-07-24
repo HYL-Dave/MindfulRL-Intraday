@@ -502,6 +502,9 @@ describe("Research workspace contracts", () => {
 
     const workspace = host!.querySelector(".research-workspace")!;
     const textarea = host!.querySelector("textarea") as HTMLTextAreaElement;
+    const modelSelect = select("模型")!;
+    const modelGroup = modelSelect.querySelector("optgroup")!;
+    const modelOption = modelGroup.querySelector("option")!;
     const evidenceDrawer = host!.querySelector(".ui-drawer-inline")!;
     const historyDrawer = document.querySelector("[role='dialog']")!;
     const search = document.querySelector("[aria-label='搜尋歷史']") as HTMLInputElement;
@@ -516,6 +519,9 @@ describe("Research workspace contracts", () => {
 
     expect(host!.querySelector(".research-workspace")).toBe(workspace);
     expect(host!.querySelector("textarea")).toBe(textarea);
+    expect(select("Model")).toBe(modelSelect);
+    expect(modelSelect.querySelector("optgroup")).toBe(modelGroup);
+    expect(modelGroup.querySelector("option")).toBe(modelOption);
     expect(textarea.value).toBe("SOURCE_DRAFT_NOT_TRANSLATED");
     expect(host!.querySelector(".ui-drawer-inline")).toBe(evidenceDrawer);
     expect(document.querySelector("[role='dialog']")).toBe(historyDrawer);

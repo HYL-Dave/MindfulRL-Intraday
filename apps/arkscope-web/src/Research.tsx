@@ -1107,7 +1107,7 @@ export function ResearchView({
                           </option>
                         )}
                         {modelGroups.map((group) => (
-                          <optgroup key={group.label} label={group.label}>
+                          <optgroup key={group.id} label={group.label}>
                             {group.entries.map((entry) => (
                               <option
                                 key={entry.id}
