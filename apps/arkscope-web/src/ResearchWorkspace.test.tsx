@@ -647,6 +647,18 @@ describe("Research workspace contracts", () => {
     const cases = [
       { id: "missing-null", code: null, expected: missingCopy },
       { id: "missing-code", code: "thread_missing", expected: missingCopy },
+      {
+        id: "wrong-status-null",
+        code: null,
+        status: 500,
+        expected: genericCopy,
+      },
+      {
+        id: "wrong-status-code",
+        code: "thread_missing",
+        status: 409,
+        expected: genericCopy,
+      },
       { id: "unknown-code", code: "future_missing_code", expected: genericCopy },
       {
         id: "wrong-child",
@@ -663,6 +675,7 @@ describe("Research workspace contracts", () => {
     ] as const;
 
     for (const scenario of cases) {
+      const status = "status" in scenario ? scenario.status : 404;
       unmount();
       window.sessionStorage.clear();
       const baseFetch = stubFetch();
@@ -676,7 +689,7 @@ describe("Research workspace contracts", () => {
             throw new ApiError(
               "PLANTED_MESSAGE_NOT_AUTHORITY",
               scenario.errorPath,
-              404,
+              status,
               scenario.code,
               "RAW_DIAGNOSTIC_NOT_NORMAL_UI",
             );
@@ -688,7 +701,7 @@ describe("Research workspace contracts", () => {
                   code: scenario.code,
                   message: "PLANTED_MESSAGE_NOT_AUTHORITY",
                 },
-          }, 404);
+          }, status);
         }
         return await baseFetch(input, init);
       });
