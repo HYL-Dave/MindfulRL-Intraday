@@ -60,10 +60,16 @@ export const RESEARCH_SELECTION_STORAGE_KEY = "arkscope.aiResearch.explicitSelec
 export function quotaKindForAuthMode(
   authMode: string | null,
 ): "subscription" | "api" | null {
-  if (!authMode) return null;
-  return authMode === "chatgpt_oauth" || authMode === "claude_code_oauth"
-    ? "subscription"
-    : "api";
+  switch (authMode) {
+    case "chatgpt_oauth":
+    case "claude_code_oauth":
+      return "subscription";
+    case "api_key":
+    case "api_key_pool":
+      return "api";
+    default:
+      return null;
+  }
 }
 
 const isProvider = (value: unknown): value is ModelProvider =>
@@ -126,7 +132,7 @@ function presentation(authMode: CredentialAuthType | null): SelectionPresentatio
     authLabel: MODEL_UX_LABELS.authModes[authMode] ?? authMode,
     billingCopy: quotaKind === "subscription"
       ? "使用訂閱額度，非 API 帳單"
-      : "使用 API 額度，會計入 API 帳單",
+      : quotaKind === "api" ? "使用 API 額度，會計入 API 帳單" : null,
   };
 }
 

@@ -211,7 +211,8 @@ describe("research selection precedence and validation", () => {
     expect(quotaKindForAuthMode("chatgpt_oauth")).toBe("subscription");
     expect(quotaKindForAuthMode("claude_code_oauth")).toBe("subscription");
     expect(quotaKindForAuthMode("api_key")).toBe("api");
-    expect(quotaKindForAuthMode("future_auth_mode")).toBe("api");
+    expect(quotaKindForAuthMode("api_key_pool")).toBe("api");
+    expect(quotaKindForAuthMode("future_auth_mode")).toBeNull();
     expect(quotaKindForAuthMode(null)).toBeNull();
 
     const subscription = resolveResearchSelection({

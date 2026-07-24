@@ -19,6 +19,14 @@ function json(value: unknown, status = 200): Response {
   });
 }
 
+function deferred<T>() {
+  let resolve!: (value: T | PromiseLike<T>) => void;
+  const promise = new Promise<T>((resolvePromise) => {
+    resolve = resolvePromise;
+  });
+  return { promise, resolve };
+}
+
 function run(over: Partial<ResearchRunDTO> = {}): ResearchRunDTO {
   return {
     id: "run-evidence",
@@ -288,8 +296,34 @@ describe("Research Evidence drawer", () => {
 
   it("retains the existing Developer diagnostic boundary", async () => {
     await i18n.changeLanguage("en");
-    const fetchMock = stubEvidenceFetch();
-    await mountEvidence({ developerMode: false });
+    const runAEvents = deferred<Response>();
+    const fetchMock = vi.fn(async (input: string | URL | Request) => {
+      const raw = typeof input === "string"
+        ? input
+        : input instanceof URL ? input.href : input.url;
+      const pathname = new URL(raw).pathname;
+      if (pathname === "/research/runs/run-a/events") return await runAEvents.promise;
+      if (pathname === "/research/runs/run-b/events") {
+        return json({
+          run: run({ id: "run-b" }),
+          events: [{
+            seq: 2,
+            type: "diagnostic",
+            created_at: "2026-07-20T00:01:40Z",
+            data: { source: "SOURCE_EVENT_B", access_token: "SECRET_DIAGNOSTIC_TOKEN_B" },
+          }],
+          has_more: false,
+        });
+      }
+      if (pathname === "/research/runs/run-a") return json({ run: run({ id: "run-a" }) });
+      if (pathname === "/research/runs/run-b") return json({ run: run({ id: "run-b" }) });
+      throw new Error(`unhandled test request: ${pathname}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    await mountEvidence({
+      developerMode: false,
+      message: message({ runId: "run-a" }),
+    });
     expect(document.querySelector(".research-diagnostic")).toBeNull();
     expect(fetchMock.mock.calls.some(([input]) => (
       new URL(String(input)).pathname.endsWith("/events")
@@ -304,12 +338,46 @@ describe("Research Evidence drawer", () => {
       await Promise.resolve();
     });
     await flush();
-    await vi.waitFor(() => expect(diagnostic.querySelector("pre")).not.toBeNull());
-    expect(diagnostic.textContent).toContain("[REDACTED]");
-    expect(diagnostic.textContent).not.toContain("SECRET_DIAGNOSTIC_TOKEN");
     expect(fetchMock.mock.calls.filter(([input]) => (
-      new URL(String(input)).pathname.endsWith("/events")
+      new URL(String(input)).pathname === "/research/runs/run-a/events"
     ))).toHaveLength(1);
+
+    await rerenderEvidence({ message: message({ runId: "run-b" }) });
+    const runBDiagnostic = document.querySelector(".research-diagnostic")!;
+    expect(runBDiagnostic).toBe(diagnostic);
+    const runBSummary = runBDiagnostic.querySelector("summary") as HTMLElement;
+    await act(async () => {
+      if ((runBDiagnostic as HTMLDetailsElement).open) runBSummary.click();
+      runBSummary.click();
+      await Promise.resolve();
+    });
+    await flush();
+    await vi.waitFor(() => expect(fetchMock.mock.calls.filter(([input]) => (
+      new URL(String(input)).pathname === "/research/runs/run-b/events"
+    ))).toHaveLength(1));
+    await vi.waitFor(() => expect(runBDiagnostic.querySelector("pre")?.textContent).toContain(
+      "SOURCE_EVENT_B",
+    ));
+    expect(runBDiagnostic.textContent).toContain("[REDACTED]");
+    expect(runBDiagnostic.textContent).not.toContain("SECRET_DIAGNOSTIC_TOKEN_B");
+
+    await act(async () => {
+      runAEvents.resolve(json({
+        run: run({ id: "run-a" }),
+        events: [{
+          seq: 1,
+          type: "diagnostic",
+          created_at: "2026-07-20T00:01:30Z",
+          data: { source: "SOURCE_EVENT_A_LATE", access_token: "SECRET_DIAGNOSTIC_TOKEN" },
+        }],
+        has_more: false,
+      }));
+      await Promise.resolve();
+    });
+    await flush();
+    expect(runBDiagnostic.querySelector("pre")?.textContent).toContain("SOURCE_EVENT_B");
+    expect(runBDiagnostic.textContent).not.toContain("SOURCE_EVENT_A_LATE");
+    expect(runBDiagnostic.textContent).not.toContain("SECRET_DIAGNOSTIC_TOKEN");
   });
 
   it("keeps unknown stable identifiers distinguishable", async () => {
@@ -320,7 +388,7 @@ describe("Research Evidence drawer", () => {
           provider: "future-provider",
           model: "future-model/source-v9",
           effort: "future-effort",
-          auth_mode: null,
+          auth_mode: "future_auth_mode",
         }),
       }),
     });
@@ -335,6 +403,10 @@ describe("Research Evidence drawer", () => {
     expect(detailRow("Route")?.querySelector("dd")?.textContent).toBe(
       "future-provider · future-model/source-v9 · future-effort",
     );
+    expect(detailRow("Sign-in and quota")?.querySelector("dd")?.textContent).toBe(
+      "future_auth_mode",
+    );
+    expect(detailRow("Sign-in and quota")?.textContent).not.toContain("Uses API quota");
     expect(document.body.textContent).toContain("source_tool");
     expect(document.body.textContent).toContain("Evidence and Run Details");
   });

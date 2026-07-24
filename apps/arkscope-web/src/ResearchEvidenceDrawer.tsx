@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type RefObject } from "react";
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { useTranslation } from "react-i18next";
 
 import { getResearchRun, getResearchRunEvents, type ResearchRunDTO } from "./api";
@@ -113,19 +113,36 @@ export function ResearchEvidenceDrawer({
   const [diagnostic, setDiagnostic] = useState<string | null>(null);
   const [diagnosticFailed, setDiagnosticFailed] = useState(false);
   const [diagnosticLoading, setDiagnosticLoading] = useState(false);
+  const diagnosticAuthorityRef = useRef({ generation: 0, runId: null as string | null });
 
   useEffect(() => {
+    const authority = {
+      generation: diagnosticAuthorityRef.current.generation + 1,
+      runId: open ? runId : null,
+    };
+    diagnosticAuthorityRef.current = authority;
+    const revokeAuthority = () => {
+      if (
+        diagnosticAuthorityRef.current.generation === authority.generation
+        && diagnosticAuthorityRef.current.runId === authority.runId
+      ) {
+        diagnosticAuthorityRef.current = {
+          generation: authority.generation + 1,
+          runId: null,
+        };
+      }
+    };
+    setDiagnostic(null);
+    setDiagnosticFailed(false);
+    setDiagnosticLoading(false);
     if (!open || !runId) {
       setFetchedAuthority(null);
       setDetailState("idle");
-      setDiagnostic(null);
-      setDiagnosticFailed(false);
-      return;
+      return revokeAuthority;
     }
     let alive = true;
     setFetchedAuthority(null);
     setDetailState("loading");
-    setDiagnosticFailed(false);
     void getResearchRun(runId)
       .then(({ run }) => {
         if (!alive) return;
@@ -136,14 +153,23 @@ export function ResearchEvidenceDrawer({
         if (!alive) return;
         setDetailState("partial");
       });
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+      revokeAuthority();
+    };
   }, [open, runId]);
 
   const loadDiagnostics = () => {
-    if (!developerMode || !runId || diagnostic != null || diagnosticFailed || diagnosticLoading) return;
+    const authority = diagnosticAuthorityRef.current;
+    if (!developerMode || !authority.runId || diagnostic != null || diagnosticFailed || diagnosticLoading) return;
+    const authorityIsCurrent = () => (
+      diagnosticAuthorityRef.current.generation === authority.generation
+      && diagnosticAuthorityRef.current.runId === authority.runId
+    );
     setDiagnosticLoading(true);
-    void getResearchRunEvents(runId, 0)
+    void getResearchRunEvents(authority.runId, 0)
       .then((response) => {
+        if (!authorityIsCurrent()) return;
         const safe = response.events.map((event) => ({
           seq: event.seq,
           type: event.type,
@@ -152,8 +178,12 @@ export function ResearchEvidenceDrawer({
         }));
         setDiagnostic(sanitizeResearchDiagnostic(safeJson(safe), 8_000));
       })
-      .catch(() => setDiagnosticFailed(true))
-      .finally(() => setDiagnosticLoading(false));
+      .catch(() => {
+        if (authorityIsCurrent()) setDiagnosticFailed(true);
+      })
+      .finally(() => {
+        if (authorityIsCurrent()) setDiagnosticLoading(false);
+      });
   };
 
   const fetchedRun = fetchedAuthority?.runId === runId && fetchedAuthority.run.id === runId
@@ -262,13 +292,15 @@ export function ResearchEvidenceDrawer({
                   <dd>{route.providerLabel} · {route.modelLabel} · {route.effortLabel}</dd>
                 </div>
               ) : null}
-              {auth?.authLabel && auth.billingCopy ? (
+              {auth?.authLabel ? (
                 <div>
                   <dt>{researchT(($) => $.evidence.authAndQuota)}</dt>
-                  <dd>{researchT(($) => $.evidence.authQuotaSummary, {
-                    label: auth.authLabel,
-                    billing: auth.billingCopy,
-                  })}</dd>
+                  <dd>{auth.billingCopy
+                    ? researchT(($) => $.evidence.authQuotaSummary, {
+                      label: auth.authLabel,
+                      billing: auth.billingCopy,
+                    })
+                    : auth.authLabel}</dd>
                 </div>
               ) : null}
               {details ? (
