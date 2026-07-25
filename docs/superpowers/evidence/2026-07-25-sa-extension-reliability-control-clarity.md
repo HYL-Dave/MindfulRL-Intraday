@@ -29,7 +29,7 @@
 
 ## Pending Evidence
 
-- Structured run-protocol fixture parity and telemetry outbox bounds.
+- Telemetry outbox bounds and atomic sidecar persistence.
 - Derived-status consumer audit and native-host privacy gates.
 - Repair manifest/state-machine copied-DB proof and separately approved live
   repair, if later authorized.
@@ -58,3 +58,33 @@
   dependencies, remote/traversing/query references, and final-swap failure.
   Failure preserves the previous known-good directory; successful replacement
   drops stale files.
+
+## Task 2 - Structured Run Protocol
+
+- RED proof: the combined protocol/background suite was exactly
+  `15 failed / 5 passed`. The twelve pure protocol nodes and three real
+  background-adapter nodes failed for absent modules/functions; the five
+  existing Alpha Picks nodes remained green.
+- Shared fixture: `15` protocol cases plus opaque background-adapter cases.
+  The incident-shape case contains exactly `18` retryable details. Python and
+  classic-script JS return byte-equivalent JSON values or the same stable
+  validation code for every case.
+- GREEN proof: protocol `12/12`, Alpha `8/8`, packaging `10/10`. An in-place
+  hardening case subsequently exposed unknown legacy Market status as false
+  complete (`1 failed`); it now fails closed to `protocol_invalid` with no
+  node-accounting change.
+- Task 2 product tip:
+  `46bce5886b7d466bcc0d0cd3f21d522a4ca41619`.
+- Backend checkpoint collection: `4646`; sorted raw node-list SHA-256:
+  `8d0a838196e2cd5552844963ce270985bcb169c3ad096df375d48ead7a78c8f1`.
+- Focused checkpoint collection/run: `263`; `263 passed`; sorted raw
+  node-list SHA-256:
+  `00b1d9ed399b898f1821dac7f1039cc6b41359ae578864acb94bbb726f651366`.
+- Canonical results derive database status and healthy-anchor eligibility from
+  closed phases/items. Raw legacy prose is not admitted to canonical items;
+  unknown browser failures become `unknown_failure`; only explicit
+  `404`/`410`/removed evidence can be source-unavailable.
+- Firefox and Chrome both acquire `extension_run_protocol.js` through the
+  dependency graph. Two fresh Firefox builds were byte-identical and each
+  contained exactly `13` files. Normalized artifact hash-list SHA-256:
+  `f34e12aa153b054735ca133fcb918d682e4d52b9cd6a5481d39aecd5cd719522`.
