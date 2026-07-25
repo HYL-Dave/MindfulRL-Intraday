@@ -270,8 +270,17 @@ describe("I18N-0 foundation boundaries", () => {
     const allProductionPaths = productionFiles("src")
       .map((path) => path.slice(projectRoot.length + 1));
     const selectorOwnerPaths = new Set([selectorOwnerPath, settingsMountPath]);
+    const directChangeLanguageOwnerPaths = new Set([
+      "src/main.tsx",
+      "src/test/setupI18n.ts",
+      "src/test/testUiLocale.tsx",
+    ]);
     const forbiddenSelectorSource = allProductionPaths
       .filter((path) => !selectorOwnerPaths.has(path))
+      .map(read)
+      .join("\n");
+    const forbiddenChangeLanguageSource = allProductionPaths
+      .filter((path) => !directChangeLanguageOwnerPaths.has(path))
       .map(read)
       .join("\n");
     const forbiddenAutonymSource = allProductionPaths
@@ -289,7 +298,10 @@ describe("I18N-0 foundation boundaries", () => {
     expect(selectorOwner).not.toMatch(
       /changeLanguage\s*\(|getUiLocale|setUiLocale|localStorage/,
     );
-    expect(forbiddenSelectorSource).not.toMatch(/(?:Locale|Language)Selector/);
+    expect(forbiddenSelectorSource).not.toMatch(
+      /(?:Locale|Language)Selector|(?:locale|language)-selector/,
+    );
+    expect(forbiddenChangeLanguageSource).not.toMatch(/changeLanguage\s*\(/);
     expect(forbiddenAutonymSource).not.toMatch(
       /繁體中文|簡體中文|>\s*English\s*</,
     );
