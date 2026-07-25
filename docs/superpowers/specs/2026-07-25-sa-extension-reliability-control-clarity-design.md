@@ -1,12 +1,35 @@
 # ArkScope SA Extension Reliability and Control-Clarity Design
 
-> **Status: WRITTEN - INDEPENDENT REVIEW PENDING**
+> **Status: INDEPENDENT REVIEW GREEN - REQUIRED AMENDMENT APPLIED - PLAN NEXT**
 >
 > Written against clean `master` at `38178f65` on 2026-07-25. This document
 > is the design authority for the bounded Seeking Alpha browser-extension
 > reliability batch that follows the completed app-wide i18n line. Product
-> implementation is not authorized until this document receives independent
-> written review and a separate RED-first implementation plan is reviewed.
+> implementation remains unauthorized until a separate RED-first
+> implementation plan receives independent review.
+
+## Review Resolution (2026-07-25)
+
+Independent review returned GREEN with one required control-bound amendment
+and three advisories. The underlying finding is adopted: the third Alpha
+Picks action was named too narrowly and omitted its expensive article-list
+and detail behavior. It is renamed `Deep Repair Scan`, and Section 8 now
+states every fixed bound plus the absence of a global Alpha article-detail
+cap.
+
+One factual part of the review is corrected rather than copied: `18`, `30`,
+and `80` are Market News detail budgets in
+`MARKET_NEWS_DETAIL_TOTAL_LIMITS`/`MARKET_NEWS_PROFILES`; they do not cap the
+Alpha Picks `doRefresh()` path. Alpha normal missing-body work is bounded by
+the returned article-list work set, not by a separate numeric detail limit.
+Writing the Market News values into the Alpha action rows would create the
+same misleading-control defect this unit exists to remove.
+
+All three advisories are adopted: legacy `detail_not_saved` prose cannot seed
+four-state outcomes, the reviewed historical manifest uses no-age
+recorded-ID repair rather than the 168-hour incident window, and the
+implementation plan must audit every consumer affected by mapping degraded
+extension runs to database `failed`.
 
 ## 1. Purpose and Authority
 
@@ -370,6 +393,13 @@ sidecar derives or validates the mapping from the structured result and
 rejects a contradiction. The popup and sidecar derivations use the same
 fixture corpus so cross-language behavior cannot drift.
 
+Mapping `degraded` to database `failed` is deliberate. Before implementation,
+the plan must inventory `/jobs/status`, `/jobs/history`, health summaries,
+failure counters, alerts, and scheduler/backoff consumers. It must prove that
+extension-pushed rows do not accidentally enter scheduler retry/backoff
+control, and it must explicitly evolve every display/count that previously
+treated all `failed` rows as equivalent.
+
 Alpha Picks is included in aggregate derivation even though its item-level
 historical repair remains outside this unit. `details.failed > 0`, a detail
 error, a failed required current/closed scope, or reconciliation persistence
@@ -589,7 +619,7 @@ The popup groups controls by function:
 
 1. `Quick Update`
 2. `Full Article Scan`
-3. `Repair Comment Gaps`
+3. `Deep Repair Scan`
 
 **Market News**
 
@@ -614,22 +644,29 @@ Touch and persistent-reference needs are served by the inline
 - when to use it; and
 - a required `Does not guarantee` statement.
 
-The description and table derive from one local action catalog, so button
-labels, accessible descriptions, and disclosure rows cannot drift.
+The description and table derive from one presentation action catalog, so
+button labels, accessible descriptions, and disclosure rows cannot drift.
+Fixed extension limits live in that catalog. Native configuration values,
+including the Full/Deep comment-recovery batch caps, arrive as structured
+numeric action-limit fields and are interpolated into the same rows. If those
+values are unavailable, the popup says `configured limit unavailable`; it
+does not silently substitute a default and present it as the active value.
 
 ### 8.3 Required action semantics
 
 | Action | Scope | Does not guarantee |
 | --- | --- | --- |
-| Quick Update | Current/closed picks, five recent article-list load rounds, quick comments capped at 12 scrolls/12 seconds, reconciliation enrichment cap 4. | Full article history or complete comments. |
-| Full Article Scan | Available article list, up to 200 load rounds, full comments capped at 80 scrolls/60 seconds, enrichment cap 12. | Lifetime completeness or terminal treatment of unreachable comment history. |
-| Repair Comment Gaps | Prioritizes pending/parked comment continuity, comments capped at 140 scrolls/120 seconds with five stable-bottom rounds, enrichment cap 20. | Market News repair or every historical comment. |
+| Quick Update | Current/closed picks; five article-list load rounds; all normal missing-body and changed-count work returned by that scan, with no separate global Alpha article-detail cap; at most 4 extra reconciliation-enrichment items; each comment scan capped at 12 scrolls/12 seconds. | Full article history, a fixed request budget, or complete comments. |
+| Full Article Scan | Current/closed picks; available article list up to 200 load rounds; all normal detail work returned by that scan, with no separate global Alpha article-detail cap; at most 12 extra reconciliation-enrichment items; each comment scan capped at 80 scrolls/60 seconds; configured additional recovery batch shown at runtime (default 10), excluding parked pending rows. | Lifetime completeness or terminal treatment of unreachable comment history. Runtime grows with the returned work set. |
+| Deep Repair Scan | Current/closed picks; available article list up to 200 load rounds; all normal detail work returned by that scan, with no separate global Alpha article-detail cap; at most 20 extra reconciliation-enrichment items; each comment scan capped at 140 scrolls/120 seconds with five stable-bottom rounds; configured additional recovery batch shown at runtime (default 50), including parked pending rows. | Market News repair, a fixed request budget, or every historical comment. This is the deepest and potentially longest Alpha Picks action. |
 | Sync Latest News | Three list scrolls and up to 18 current-list details. | Older missing details. |
 | Catch Up News (24h) | Three list scrolls, 12 current details plus up to 6 known missing details within 24 hours, total cap 18. | Details older than 24 hours or interval completeness. |
 
-The implementation plan must verify these values against source constants. If
-behavior changes, the action catalog and tests change in the same reviewed
-commit. Copy must not silently outlive the limits it describes.
+The implementation plan must verify these values against source constants and
+the native configuration projection. It must also prove that the Market News
+`18/30/80` budgets are not rendered as Alpha Picks bounds. If behavior
+changes, the action catalog and tests change in the same reviewed commit. Copy
+must not silently outlive the limits it describes.
 
 ### 8.4 Last-run status and contextual actions
 
@@ -759,11 +796,22 @@ The earlier `27` and current read-only `30` observations are historical
 evidence only. Any fresh count is acceptable if the derivation is explained;
 unexplained drift is a stop condition.
 
+All 450 historical failure entries currently carry only the generic legacy
+value `detail_not_saved`. That value is evidence that an attempt failed, not
+evidence for any four-state outcome or modern reason code. Preview and repair
+must re-evaluate each target; they may not infer `unavailable_at_source`,
+access restriction, or another terminal classification from the old prose.
+
 ### 10.2 Execution
 
 The approved set runs through `market_news_retry_recorded` using the same
 durable manifest path as future repairs. It is not a special console script
 with a different outcome model.
+
+This historical manifest is an exact recorded-ID repair and therefore has no
+age predicate. `MARKET_NEWS_INCIDENT_RECOVERY_MAX_HOURS = 168` applies only to
+interval rediscovery; it must not filter, truncate, or silently omit IDs in
+the approved historical manifest.
 
 The repair may proceed in bounded resumable batches, but every batch references
 the same parent manifest hash and finalization covers every target. Browser
@@ -809,7 +857,8 @@ coverage for:
 8. durable manifest hash, duplicate-start, resume, cancel, and finish;
 9. 24h/recorded-ID/168h window boundaries;
 10. last-derived-complete health selection;
-11. popup action catalog, grouping, descriptions, and Advanced behavior;
+11. popup action catalog, grouping, descriptions, resolved native limits,
+    Alpha no-global-detail-cap disclosure, and Advanced behavior;
 12. localized Settings degraded health without raw backend prose; and
 13. incident preview/apply proof on copied databases before production.
 
