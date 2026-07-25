@@ -1225,7 +1225,7 @@ table.wl tbody tr.archived td {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.credential-row > .credential-status-pill {
+.credential-row > .credential-status-pill.missing {
   max-width: none;
 }
 /* scoped under .credential-row so it beats the generic `.credential-row span`

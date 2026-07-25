@@ -80,13 +80,17 @@ describe("responsive application shell CSS", () => {
 
   it("lets credential availability status use full localized copy without widening masked keys", () => {
     const genericPill = cssBlock(legacyCss, ".credential-row > .key-pill");
-    const statusPill = cssBlock(legacyCss, ".credential-row > .credential-status-pill");
+    const unavailableStatusPill = cssBlock(
+      legacyCss,
+      ".credential-row > .credential-status-pill.missing",
+    );
 
     expect(providerSectionSource).toContain(
       'className={`key-pill credential-status-pill ${cred.available ? "ok" : "missing"}`}',
     );
     expect(genericPill).toMatch(/max-width:\s*96px/);
-    expect(statusPill).toMatch(/max-width:\s*none/);
+    expect(legacyCss).not.toMatch(/\.credential-row > \.credential-status-pill\s*\{/);
+    expect(unavailableStatusPill).toMatch(/max-width:\s*none/);
   });
 
   it("stacks narrow surface chrome before localized copy collapses", () => {
