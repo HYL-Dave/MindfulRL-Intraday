@@ -9,14 +9,18 @@
 > `superpowers:verification-before-completion` before any passing or complete
 > claim. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-> **Status: WRITTEN - INDEPENDENT PLAN REVIEW PENDING**
+> **Status: CLEARED FOR IMPLEMENTATION - REVIEW-READY HANDOFF REQUIRED**
 >
 > The design passed independent review and its required disclosure amendment
 > plus all three advisories are incorporated through `9da1a9c9`. A later
 > grounding pass found and closed the routine-capture/telemetry ordering
-> ambiguity in `c49a2417`. This plan has not received independent review.
-> Product edits, extension installation, merge, and production repair remain
-> unauthorized.
+> ambiguity in `c49a2417`. Independent full-plan review returned GREEN. Its
+> one required baseline correction and two grounding advisories are resolved
+> below with no product or test-accounting change. The docs-only commit that
+> contains this resolution is resolved with `git rev-parse HEAD` as
+> `PLAN_REVIEW_CLEARANCE_COMMIT` before worktree creation and recorded in the
+> first implementation evidence commit. Merge, extension installation, and
+> production repair remain separately unauthorized.
 
 **Goal:** Make the Seeking Alpha browser extension impossible to package with
 missing runtime dependencies, make partial capture failures durably visible,
@@ -92,6 +96,24 @@ but cannot become a durable healthy anchor until replay succeeds. Repair is
 stricter: a durable running audit row is a start precondition and durable
 finalization is required to complete the repair lifecycle.
 
+## Independent Plan-Review Resolution
+
+Independent full-plan review returned GREEN with one required docs fix and
+two advisories. All three were independently checked before clearance:
+
+1. The frontend full node-list hash was misrecorded. Re-running the same
+   relative-path normalization that reproduces the focused hash gives
+   `5f9a1624b31a47dc9b786f57fa5de77eca86dde269c68ada3787d7210b05fd13`
+   for all `1056` nodes. The incorrect `f6351647...` value is retired.
+2. Backend and frontend node-list recipes are now stated separately. Pytest
+   hashes its emitted `file::node` IDs as-is; Vitest normalizes absolute file
+   paths to web-app-relative paths before pairing them with node names.
+3. The review correctly found that the `10/50` recovery defaults lacked a
+   grounded pointer in this plan, but its suggestion that the defaults might
+   not exist is not adopted. `AgentConfig` owns both defaults and profile
+   overrides; `DataAccessLayer` consumes them and implements the parked-row
+   distinction. The exact symbols and locations are recorded below.
+
 ## Grounded Baseline
 
 The following values were reproduced on clean `c49a2417` on 2026-07-25.
@@ -105,11 +127,19 @@ The following values were reproduced on clean `c49a2417` on 2026-07-25.
 | Backend focused sorted node-list SHA-256 | `ca36c2cc8616982fa8dd2c2f386743751691de6bd4f9bf52134229d830740de8` |
 | Frontend full collection | `95 files / 1056` nodes |
 | Frontend focused health collection/run | `4 files / 62` nodes, green |
-| Frontend full sorted relative node-list SHA-256 | `f63516473fa857e6653f12ab6d29bec8400276a62bdd8558ac4b97bf7f2c248c` |
+| Frontend full sorted relative node-list SHA-256 | `5f9a1624b31a47dc9b786f57fa5de77eca86dde269c68ada3787d7210b05fd13` |
 | Frontend focused sorted relative node-list SHA-256 | `025e871755c356f0be89089e92d0241d06b335af52ae8a2ca0f66e06b187f643` |
 | i18n resource leaves per locale | Settings `681`; total `1781` |
 | i18n scanner | `36/20/0/20`, scope `src/**` |
 | Production incident observation | `25` runs / `450` records / `118` IDs / `30` currently body-missing |
+
+Alpha comment-recovery configuration is grounded as follows:
+
+| Contract | Canonical owner / consumer |
+| --- | --- |
+| Full additional recovery default `10` | `AgentConfig.sa_comments_backfill_per_full_scan` in `src/agents/config.py:136`; optional profile key `seeking_alpha.comments_backfill_per_full_scan` is applied at `src/agents/config.py:363-364`; `src/tools/data_access.py:1180-1184` consumes it with the same fallback. |
+| Backfill additional recovery default `50` | `AgentConfig.sa_comments_backfill_per_backfill_scan` in `src/agents/config.py:137`; optional profile key `seeking_alpha.comments_backfill_per_backfill_scan` is applied at `src/agents/config.py:365-366`; `src/tools/data_access.py:1175-1179` consumes it with the same fallback. |
+| Parked-row distinction | `src/tools/data_access.py:1208-1212` includes every pending row for `backfill` and excludes rows with `comment_recovery_parked_at` for `full`. |
 
 Backend focused distribution:
 
@@ -179,9 +209,12 @@ npx vitest run \
   src/i18n/resources.test.ts
 ```
 
-Node-list hashes always normalize to `relative-file<TAB>node-name`, sort with
-`LC_ALL=C`, include one final newline, then run `sha256sum`. A count or hash
-drift before product edits is a stop condition.
+Backend node-list hashes take every pytest collection line containing `::`
+as its emitted `file::node` ID, sort with `LC_ALL=C`, include one final
+newline, and run `sha256sum`. Frontend hashes pair the web-app-relative `.file`
+with `.name` as `relative-file<TAB>node-name`, apply the same sort/newline/hash
+steps, and never hash checkout-specific absolute paths. A count or hash drift
+before product edits is a stop condition.
 
 ## Consumer and Ownership Audit
 

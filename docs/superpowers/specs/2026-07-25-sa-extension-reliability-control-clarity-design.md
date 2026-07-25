@@ -1,12 +1,12 @@
 # ArkScope SA Extension Reliability and Control-Clarity Design
 
-> **Status: INDEPENDENT REVIEW GREEN - IMPLEMENTATION PLAN WRITTEN - PLAN REVIEW PENDING**
+> **Status: INDEPENDENT REVIEW GREEN - PLAN REVIEW GREEN - IMPLEMENTATION CLEARED**
 >
 > Written against clean `master` at `38178f65` on 2026-07-25. This document
 > is the design authority for the bounded Seeking Alpha browser-extension
 > reliability batch that follows the completed app-wide i18n line. Product
-> implementation remains unauthorized until a separate RED-first
-> implementation plan receives independent review. The plan is
+> implementation is authorized only on the isolated branch after the separate
+> RED-first implementation plan received independent GREEN. The plan is
 > `docs/superpowers/plans/2026-07-25-sa-extension-reliability-control-clarity.md`.
 
 ## Review Resolution (2026-07-25)

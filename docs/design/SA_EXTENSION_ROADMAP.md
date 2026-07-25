@@ -301,8 +301,10 @@ out of scope.
 
 The corresponding RED-first implementation plan is written at
 `docs/superpowers/plans/2026-07-25-sa-extension-reliability-control-clarity.md`.
-It is pending independent full-plan review; installer changes, product
-implementation, and production repair remain unauthorized.
+Independent full-plan review is GREEN and its required baseline correction
+plus two grounding advisories are resolved. Isolated product implementation is
+cleared; merge, extension installation, and production repair remain blocked
+on their later review and approval gates.
 
 Supporting analysis/tooling now lives in:
 
