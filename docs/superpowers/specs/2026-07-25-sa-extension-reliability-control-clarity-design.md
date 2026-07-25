@@ -31,6 +31,15 @@ recorded-ID repair rather than the 168-hour incident window, and the
 implementation plan must audit every consumer affected by mapping degraded
 extension runs to database `failed`.
 
+Implementation-plan grounding also closes one ordering ambiguity in the
+written draft: routine capture outcome and telemetry persistence are separate
+axes. The extension must derive capture truth before it can POST that truth,
+so telemetry delivery cannot be an input phase of the same derivation. A
+locally complete capture with pending telemetry is shown as exactly that and
+cannot become a durable healthy anchor until the row lands. Repair remains
+stricter: durable audit creation is a precondition to start and terminal audit
+finalization is part of repair completion.
+
 ## 1. Purpose and Authority
 
 The Firefox extension build loaded on 2026-07-19 omitted
@@ -319,9 +328,14 @@ not guess from English text.
 
 Required phases use `complete`, `failed`, or `skipped` with stable reason
 codes. For Market News these include list navigation, list scrape, metadata
-save, detail queue, detail fetch, and audit persistence. For Alpha Picks these
-include current picks, closed picks, article metadata, detail/comment work,
-and reconciliation readback.
+save, detail queue, detail fetch, and final capture readback. For Alpha Picks
+these include current picks, closed picks, article metadata, detail/comment
+work, and reconciliation readback.
+
+Routine telemetry delivery is not a capture-result phase: its persistence
+state is the separate contract in Section 5.5. Repair audit creation and
+finalization are lifecycle gates under Sections 6.1 and 6.4, not circular
+inputs to the pre-POST capture derivation.
 
 Review-required article links are not failures. A scheduled `not_due` event is
 `skipped`, not complete, and cannot advance the healthy anchor.
@@ -430,10 +444,11 @@ transactional contract cannot be provided by the active local store, this
 design stops for amendment rather than weakening idempotence or adding an
 unreviewed schema change.
 
-Outbox failure never rewrites a capture result as complete. The popup shows a
-warning, while the web health surface naturally remains stale until the
-record lands. The outbox has a bounded count/age policy recorded in the
-implementation plan; eviction is itself surfaced, never silent.
+Outbox failure never changes the derived capture outcome. The popup shows both
+facts, for example `capture complete / audit pending`; the run cannot become a
+durable healthy anchor, while the web health surface naturally remains stale
+until the record lands. The outbox has a bounded count/age policy recorded in
+the implementation plan; eviction is itself surfaced, never silent.
 
 Audited repair is stricter than routine capture: if a durable running
 `job_runs` row cannot be created, the repair does not start.
