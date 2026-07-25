@@ -1,6 +1,6 @@
 # SA Extension Reliability and Control-Clarity Evidence
 
-> **Status: POST-MERGE CONTRAST REPAIR REVIEW GREEN - MERGE APPROVED**
+> **Status: LIVE COMPLETE - 2026-07-25**
 >
 > This ledger contains redacted, reproducible engineering evidence only. It
 > must not contain licensed article content, raw repair target IDs, URLs,
@@ -482,6 +482,39 @@ pending.
   branch. Re-running that repair is neither necessary nor authorized by this
   review; only merged popup readback remains.
 
-Fast-forward merge is approved. LIVE status still requires merged-tree
+At that review checkpoint, fast-forward merge was approved while merged-tree
 verification, installed Chrome/Firefox readback, and the five-document
-closeout.
+closeout still remained. The LIVE closeout below records their completion.
+
+## LIVE Closeout
+
+- `master` fast-forwarded through merged review tip `2ef8bb69`. Merged-tree
+  verification reproduced backend collection `4711`, SA focused `328/328`,
+  frontend `95 files / 1063 tests`, typecheck/build, and scanner
+  `36/20/0/20` with scope `src/**`. The full backend comparison remains the
+  independently reviewed `4606 passed / 31 pre-existing failed / 74 skipped`
+  result; production data was not used to manufacture a cleaner rerun.
+- Firefox auto-sync was disabled before installed-browser deployment. The
+  merged installer rebuilt `build/firefox/` atomically with 15 files,
+  including `article_identity.js`, and re-registered the native host against
+  merged `src/sa_native_host.py`. Reserved-name residue was absent. Chrome was
+  reloaded from `extensions/sa_alpha_picks`; Firefox was reloaded from the
+  generated `build/firefox/manifest.json` artifact.
+- Read-only `job_runs` inspection showed the last extension run (`17495`)
+  completed at `2026-07-25T12:53:22.985Z`; browser reload produced no new run.
+  The operator opened both installed popups, expanded `What these actions do`
+  and `Advanced`, and confirmed that labels, descriptions, button boundaries,
+  and advanced controls are clear. The compact popup type remains legible and
+  is not a release blocker.
+- The historical manifest was not rerun during contrast closeout. Its already
+  approved terminal evidence remains `88 already_present / 30 repaired / 0
+  unavailable_at_source / 0 failed_retryable`, all 118 bodies present, with
+  the manifest and result hashes recorded above.
+- Firefox is the sole intended auto-sync owner because capture may activate
+  and scroll its working tab. Chrome is a manual fallback for daily-use
+  isolation and duplicate-schedule prevention. This is an operating choice,
+  not a browser capability limitation. An app-owned collector remains an
+  unadopted P2.6 Part 2 decision.
+- The temporary worktree was clean and fully merged before non-forced removal;
+  `git branch -d` removed `codex/sa-extension-reliability`. Only the main
+  worktree remains. No push was performed.
