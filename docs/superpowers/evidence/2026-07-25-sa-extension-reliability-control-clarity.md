@@ -29,7 +29,6 @@
 
 ## Pending Evidence
 
-- `PACKAGING_GATE_TIP` and deterministic package artifacts.
 - Structured run-protocol fixture parity and telemetry outbox bounds.
 - Derived-status consumer audit and native-host privacy gates.
 - Repair manifest/state-machine copied-DB proof and separately approved live
@@ -37,3 +36,25 @@
 - Popup accessibility, control disclosure, and browser runtime evidence.
 - Final node ledger, normalized hashes, protected boundaries, and canonical
   A/B verification.
+
+## Task 1 - Atomic Firefox Packaging
+
+- RED proof: `11 failed / 3 passed`. All ten new packaging nodes and the
+  renamed installer owner failed before the builder/delegation existed; the
+  three host-path parameter cases remained green.
+- GREEN proof: `14 passed` in the packaging/install-path suite.
+- `PACKAGING_GATE_TIP`:
+  `a2869f2ce7a2c2e603657593ef9534a438cd02a6`.
+- Backend checkpoint collection: `4631`; sorted raw node-list SHA-256:
+  `6a005572814a1c539e96b521b0a9cdb2984d47e8ec625f0dc6a696d6da3a635b`.
+- Focused checkpoint collection: `248`; sorted raw node-list SHA-256:
+  `46fcc1766e2e8301e75b7ce5cdb7089d5d98e81955a916f1f84c0e9c72f2a300`.
+- A fresh real Firefox build contains exactly `12` files, including
+  `article_identity.js`. Two separate output directories produced identical
+  file lists and per-file hashes. Normalized artifact hash-list SHA-256:
+  `089a379302cdd6cd7ada109675caae295b38450d88720d7010bab797cd5c8866`.
+- Adversarial fixture coverage rejects missing dependencies, dynamic
+  `importScripts`, variable/concatenated/computed/spread `executeScript`
+  dependencies, remote/traversing/query references, and final-swap failure.
+  Failure preserves the previous known-good directory; successful replacement
+  drops stale files.
