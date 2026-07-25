@@ -289,6 +289,16 @@ Operational follow-ups completed after SA-R1:
 - `backfill` is constrained to **known news published within the last 24 hours**
 - Market News auto-sync supports `Auto` cadence with ET windows derived from observed publish density
 
+The 24-hour bound remains the routine product contract. The reliability design
+at `docs/superpowers/specs/2026-07-25-sa-extension-reliability-control-clarity-design.md`
+does not widen routine catch-up. It adds two explicitly different recovery
+mechanisms: exact recorded-ID retry with no age predicate, and an audited
+incident operation over the actual gap since the latest derived-complete run,
+capped at 168 hours. The latter is a bounded attempted recovery, reports known
+detail repair separately from metadata rediscovery, and never claims complete
+historical coverage. Arbitrary date ranges and generic lifetime backfill remain
+out of scope.
+
 Supporting analysis/tooling now lives in:
 
 - `src/service/sa_market_news_density.py`
