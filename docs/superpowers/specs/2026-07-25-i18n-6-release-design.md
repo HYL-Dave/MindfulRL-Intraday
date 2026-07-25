@@ -1,19 +1,28 @@
 # ArkScope I18N-6 Release Design
 
-> **Status: IMPLEMENTATION COMPLETE — INDEPENDENT REVIEW PENDING**
+> **Status: INDEPENDENT REVIEW FINDINGS — BOUNDED REPAIR IN PROGRESS**
 >
 > Written against merged `master` at `cf7050ed` on 2026-07-25. This document
 > is the product and verification authority for the final app-wide i18n
 > release unit. Independent design and implementation-plan reviews returned
-> GREEN. Isolated implementation is complete at product tip `b5228e63` on
-> unmerged branch `codex/i18n-6-release`; exact frontend accounting is
-> `+11/-4` to `95/1055`, focused is `13/147`, resources are Settings `681` /
+> GREEN. The first review-ready product tip `b5228e63` passed correctness
+> review, but merge is withheld for a bounded durable-guard repair and a
+> measured English credential-status clipping repair. Revised accounting is
+> `+12/-4` to `95/1056`, focused `13/148`; resources remain Settings `681` /
 > total `1781`, and scanner remains `36/20/0/20`. The authority lifecycle,
 > `384/384` release matrix, targeted `24/24` 760px matrix, formatter freeze,
 > backend/no-PG, and production-read-only gates passed. Independent
 > implementation review, explicit approval, merge, and post-merge release
 > verification remain required. Production and merged master still expose no
 > public selector and contain no stored `ui_locale` value.
+
+The independent-review repair preserves the existing selector node ID while
+restoring repo-wide direct-`changeLanguage()` and kebab-selector guards. It also
+authorizes one RED-first Shell CSS node and one exact
+`.credential-row > .credential-status-pill { max-width: none; }` override;
+the generic masked-key `96px` cap remains unchanged. Both locales must pass an
+element-level visible-leaf clipping census at `390`, `760`, `1024`, and `1440`.
+No other product, CSS, resource, formatter, or behavior scope is reopened.
 
 ## 1. Purpose and Authority
 
