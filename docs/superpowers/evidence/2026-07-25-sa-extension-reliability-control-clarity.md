@@ -1,6 +1,6 @@
 # SA Extension Reliability and Control-Clarity Evidence
 
-> **Status: POST-MERGE CONTRAST REPAIR IMPLEMENTED - INDEPENDENT REVIEW PENDING**
+> **Status: POST-MERGE CONTRAST REPAIR REVIEW GREEN - MERGE APPROVED**
 >
 > This ledger contains redacted, reproducible engineering evidence only. It
 > must not contain licensed article content, raw repair target IDs, URLs,
@@ -462,6 +462,26 @@ apps/arkscope-web/src/credentialDisplay.test.ts 18ef4d9b5d338b97a1d35cfcb0fa5c7d
   update. Scrapers, protocol, native host, backend, web app, packages,
   databases, and all formatter owners are byte-identical to `4bf7a503`.
 
-This section is implementation evidence, not a LIVE declaration. Independent
-review, fast-forward merge, installed-browser readback, and the five-document
-closeout remain pending.
+This section is implementation evidence, not a LIVE declaration. Fast-forward
+merge, installed-browser readback, and the five-document closeout remain
+pending.
+
+## Post-Merge Contrast Review Outcome
+
+- Independent review returned GREEN with zero findings and one docs-only
+  advisory. It independently reproduced `328/328`, the RED mutations, and a
+  real Chromium sweep of `70` computed foreground/background/border pairs
+  with zero failures while all disclosures and conditional controls were
+  exposed.
+- The advisory is adopted: jsdom is the constant fast ratchet, while real
+  Chrome computed styles remain its paired CSS-engine release confirmation.
+  One does not replace the other.
+- The review closeout text repeated two stale pre-deployment values which are
+  not adopted: final backend collection is `4711`, not `4710`, and the
+  historical `118`-target repair already completed before this contrast-only
+  branch. Re-running that repair is neither necessary nor authorized by this
+  review; only merged popup readback remains.
+
+Fast-forward merge is approved. LIVE status still requires merged-tree
+verification, installed Chrome/Firefox readback, and the five-document
+closeout.
