@@ -151,9 +151,17 @@ rather than an absence inferred from byte gates.
 inside the Electron desktop shell. This is the surface the Settings locale
 selector governs.
 
-**Deliberately English operator surfaces, never in scope:** the Seeking Alpha
-browser extension (popup and content scripts), the CLI, logs, and sidecar
-diagnostics. Every i18n unit byte-gated `extensions/` for this reason.
+**Explicitly English, by decision:** the Seeking Alpha browser extension popup
+and content scripts. This is a positive ruling rather than an omission, because
+the popup is a user-facing GUI and would otherwise read as an unfinished surface.
+Every i18n unit byte-gated `extensions/` accordingly.
+
+**Outside the locale contract, with no guarantee in either direction:** the CLI,
+logs, and sidecar diagnostics. No scanner scope, key-parity gate, or resource
+requirement applies to them; they may be English or mixed as their own owners see
+fit. This line deliberately does not promise those surfaces are English, because
+nothing enforces it — 37 backend modules already carry Traditional Chinese in
+comments and docstrings, and an unenforced promise is not a contract.
 
 The boundary is load-bearing, not merely convenient. None of those surfaces can
 read `profile_settings.ui_locale`. An extension-local language toggle would
@@ -164,9 +172,17 @@ scanner is likewise scoped to the web app, so localizing a second codebase would
 either extend the scanner into an MV3 tree with no bundler or typed resources, or
 create a localized surface where untranslated copy can ship unnoticed.
 
-**Division of labor:** the extension reports machine-readable state; the web app
-owns the localized, human-facing rendering of that state. A condition must not be
-phrased as user-facing copy in both places.
+**Division of labor — one canonical prose owner per condition.** The extension may
+render immediate, ephemeral operational results in its own English strings; an
+operator acting in the popup must see what just happened. Durable, localized
+health belongs to the web app and must be derived from **structured state** — a
+stable code plus counts — never by duplicating or parsing the extension's prose.
+
+What is forbidden is therefore narrower than "the same condition appearing twice":
+it is two independently maintained sets of canonical prose for one condition,
+which is how the two drift apart. Immediate operator feedback in the popup and
+durable localized health in the web app are the intended shape, not a violation,
+and the degraded-observability work depends on exactly that split.
 
 Reworking extension popup copy is therefore English work in the professional
 register defined by `ARKSCOPE_TERMINOLOGY.md`. Should that ever change, it

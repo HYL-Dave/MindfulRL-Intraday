@@ -316,9 +316,11 @@ therefore defaults to defer until the hypothesis gate exists.
   **Design Kit locale synchronization is COMPLETE (sync #6, 2026-07-25), and the
   app-wide i18n line is CLOSED with no open unit.** The `codex/i18n-6-release`
   branch and its worktree are removed. Localized surfaces are the web app as
-  rendered in Electron; the SA browser extension, CLI, logs, and sidecar
-  diagnostics are deliberately English operator surfaces and were never in i18n
-  scope (see the decision doc's scope boundary).
+  rendered in Electron. The SA browser extension popup is **explicitly English by
+  decision**, while the CLI, logs, and sidecar diagnostics sit **outside the locale
+  contract with no guarantee either way** — see the decision doc's scope boundary,
+  which also fixes one canonical prose owner per condition so immediate popup
+  feedback and durable localized health can coexist.
   The first focused irritation slice, **Models Routing UX,
   is LIVE COMPLETE 2026-07-12 (merged through `2fb1c4f`)**.
 - **Authority correction (Sol, verified)**: `DESKTOP_APP_VISION_DRAFT.md` header itself says **"DRAFT — NOT a spec"** and parts are stale (written pre-Holdings). It is the *intent* source for triage — NOT implementation authority. The P2.8 phase-1 spec becomes the implementation authority.
