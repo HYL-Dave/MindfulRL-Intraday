@@ -1,6 +1,6 @@
 # SA Extension Reliability and Control-Clarity Evidence
 
-> **Status: IMPLEMENTATION REVIEW-READY - INDEPENDENT REVIEW NEXT**
+> **Status: INDEPENDENT IMPLEMENTATION REVIEW GREEN - MERGE APPROVED**
 >
 > This ledger contains redacted, reproducible engineering evidence only. It
 > must not contain licensed article content, raw repair target IDs, URLs,
@@ -185,15 +185,21 @@
   `5c3859c3c7db7fe90c13f3c46d49610eae64986ef0b89e558246ee0cf13c6cdf`.
 - The frontend removal is exactly
   `displaySAExtensionSegments > maps every known extension segment in both locales and preserves unknown ids`.
-- Virgin full backend A/B is `4510 -> 4599` passed with both sides retaining
-  `30 failed / 74 skipped / 18 warnings / 7 errors`; the normalized
-  failure/error ID sets are identical. Frontend is `1063/1063`; typecheck,
-  build, and the i18n scanner (`36/20/0/20`, `src/**`) pass.
-- A fresh final-tip archive, with the same repository-root `node_modules`
-  mounted as the canonical A/B, independently reproduced the head summary:
-  `30 failed / 4599 passed / 74 skipped / 18 warnings / 7 errors`. Running an
-  archive without that declared dependency predictably adds jsdom harness
-  failures and is not canonical evidence.
+- In the implementer archive environment (repository-root `node_modules`
+  mounted, no data tree), full backend A/B is `4510 -> 4599` passed with both
+  sides retaining `30 failed / 74 skipped / 18 warnings / 7 errors`; the
+  normalized failure/error ID sets are identical. A fresh final-tip archive
+  reproduced that head summary. Running without the declared Node dependency
+  predictably adds jsdom harness failures and is not evidence.
+- Independent review repeated both sides in its equally matched data-bearing
+  environment: base `31 failed / 4516 passed / 74 skipped`, tip
+  `31 failed / 4605 passed / 74 skipped`, with zero errors and byte-identical
+  31-ID failure sets. The `+89` passed delta equals the backend net node delta.
+  Absolute failure/error classification is therefore environment-dependent;
+  matched-environment node accounting and failure-set equivalence are the
+  regression authority.
+- Frontend is `1063/1063`; typecheck, build, and the i18n scanner
+  (`36/20/0/20`, `src/**`) pass.
 - The direct PG-unreachable smoke exits `0` with `ok: true` and
   `pg_attempts: []` across all 24 checks.
 
@@ -362,6 +368,22 @@ apps/arkscope-web/src/credentialDisplay.test.ts 18ef4d9b5d338b97a1d35cfcb0fa5c7d
   Snap test home, XPI, screenshots, private preview files, and all copied
   licensed databases were deleted. No `arkscope-sa-ext-*` or copied-DB A/B
   path remains in `/tmp`.
-- This evidence authorizes independent implementation review only. Merge,
-  production browser installation, production repair execution, and any
-  historical-manifest approval remain separate gates.
+- The captured runtime evidence initially authorized review only. Independent
+  GREEN now authorizes fast-forward merge; production browser installation,
+  production repair execution, and historical-manifest approval remain
+  distinct deployment gates.
+
+## Independent Review Outcome
+
+- Independent implementation review returned GREEN with zero required
+  changes and approved fast-forward merge.
+- The reviewer independently reproduced exact collection/accounting,
+  base-to-tip failure-set equivalence, packaging failure atomicity, four-state
+  reason validation, derived degraded status, protected boundaries, resources,
+  and static popup contracts.
+- The reviewer did not independently rerun the Task 8 browser/accessibility
+  matrix and explicitly accepted the isolated Chrome/Firefox evidence above
+  for that scope. This limitation does not broaden the claim.
+- Historical repair remains unapproved. A post-install fresh preview and an
+  explicit approval of its exact target count and manifest hash are still
+  required.
