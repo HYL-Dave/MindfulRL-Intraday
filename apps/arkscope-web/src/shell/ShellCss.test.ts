@@ -12,6 +12,7 @@ const primitiveCss = source("src/ui/primitives.css");
 const mainSource = source("src/main.tsx");
 const appSource = source("src/App.tsx");
 const holdingsSource = source("src/Holdings.tsx");
+const providerSectionSource = source("src/settings/ProviderSection.tsx");
 const shellSources = [
   "src/shell/ShellNavigation.tsx",
   "src/shell/ShellTopBar.tsx",
@@ -75,6 +76,17 @@ describe("responsive application shell CSS", () => {
     expect(select).toMatch(/width:\s*100%/);
     expect(select).toMatch(/min-width:\s*0/);
     expect(select).toMatch(/max-width:\s*100%/);
+  });
+
+  it("lets credential availability status use full localized copy without widening masked keys", () => {
+    const genericPill = cssBlock(legacyCss, ".credential-row > .key-pill");
+    const statusPill = cssBlock(legacyCss, ".credential-row > .credential-status-pill");
+
+    expect(providerSectionSource).toContain(
+      'className={`key-pill credential-status-pill ${cred.available ? "ok" : "missing"}`}',
+    );
+    expect(genericPill).toMatch(/max-width:\s*96px/);
+    expect(statusPill).toMatch(/max-width:\s*none/);
   });
 
   it("stacks narrow surface chrome before localized copy collapses", () => {
