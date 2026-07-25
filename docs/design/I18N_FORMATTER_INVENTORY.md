@@ -72,8 +72,11 @@ market/system timestamp behavior, source-currency append behavior, and
 boolean/JSON handling. The boundary is therefore the exact exception above,
 not a whole-formatter-code byte-identity claim.
 
-I18N-6 implementation at product tip `b5228e63` passed the complete formatter
-product-path and formatter-behavior byte gates against `cf7050ed`. Its isolated
+I18N-6 implementation at repaired product tip `7b9c13b2` passed the complete
+formatter product-path and formatter-behavior byte gates against `cf7050ed`.
+The post-review delta from `b5228e63` touches only foundation/Shell CSS tests,
+one exact `styles.css` hunk, and evidence docs; it contains no formatter owner
+or formatter behavior-test change. Its isolated
 locale-switch probe also kept representative rendered values byte-identical:
 Watchlist `88.25`, `+7.75%`, and `8`; History
 `07/25/2026, 04:00:00 PM` / `07/25/2026, 04:00:12 PM`; and duration `12.3s`.

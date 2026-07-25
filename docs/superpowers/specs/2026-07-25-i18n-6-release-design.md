@@ -1,20 +1,22 @@
 # ArkScope I18N-6 Release Design
 
-> **Status: INDEPENDENT REVIEW FINDINGS — BOUNDED REPAIR IN PROGRESS**
+> **Status: IMPLEMENTATION COMPLETE — INDEPENDENT REVIEW PENDING**
 >
 > Written against merged `master` at `cf7050ed` on 2026-07-25. This document
 > is the product and verification authority for the final app-wide i18n
 > release unit. Independent design and implementation-plan reviews returned
 > GREEN. The first review-ready product tip `b5228e63` passed correctness
-> review, but merge is withheld for a bounded durable-guard repair and a
-> measured English credential-status clipping repair. Revised accounting is
+> review, but merge was withheld for a bounded durable-guard repair and a
+> measured English credential-status clipping repair. Both repairs are complete
+> at product tip `7b9c13b2`; merge remains withheld pending independent
+> re-review and explicit user approval. Revised accounting is
 > `+12/-4` to `95/1056`, focused `13/148`; resources remain Settings `681` /
 > total `1781`, and scanner remains `36/20/0/20`. The authority lifecycle,
 > `384/384` release matrix, targeted `24/24` 760px matrix, formatter freeze,
 > backend/no-PG, and production-read-only gates passed. Independent
-> implementation review, explicit approval, merge, and post-merge release
-> verification remain required. Production and merged master still expose no
-> public selector and contain no stored `ui_locale` value.
+> re-review, explicit approval, merge, and post-merge release verification
+> remain required. Production and merged master still expose no public selector
+> and contain no stored `ui_locale` value.
 
 The independent-review repair preserves the existing selector node ID while
 restoring repo-wide direct-`changeLanguage()` and kebab-selector guards. It also

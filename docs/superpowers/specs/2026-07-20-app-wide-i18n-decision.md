@@ -7,7 +7,7 @@
 > LIVE COMPLETE AT PRODUCT `be89a9b5`, FAST-FORWARD MERGED THROUGH
 > `eb4dee7b`; COMBINED I18N-4/5 LIVE COMPLETE AT TRANCHE A `34ddf08f` AND
 > PRODUCT `20666d33`, FAST-FORWARD MERGED THROUGH `5f35e8b1`; I18N-6 RELEASE
-> INDEPENDENT REVIEW FINDINGS — BOUNDED REPAIR IN PROGRESS;
+> IMPLEMENTATION COMPLETE — INDEPENDENT REVIEW PENDING;
 > PRODUCTION SELECTOR AND STORED `ui_locale` REMAIN ABSENT.**
 > This document chooses the app-wide locale authority, runtime localization
 > mechanism, migration sequence, public-switch gate, and verification contract.
@@ -32,8 +32,10 @@
 > and its RED-first implementation plan passed independent full-plan review.
 > The first review-ready tip `b5228e63` passed correctness gates, but re-review
 > withheld merge for one durable-guard regression and one measured English
-> clipping repair. The branch is unmerged; integration remains blocked on
-> repaired independent implementation review GREEN and explicit user approval.
+> clipping repair. Both repairs are complete at product tip `7b9c13b2`, with
+> exact `+12/-4`, `95/1056`, and focused `13/148` evidence. The branch is
+> unmerged; integration remains blocked on repaired independent implementation
+> review GREEN and explicit user approval.
 
 ## 1. Purpose and Authority
 
@@ -773,8 +775,8 @@ At decision adoption:
 5. I18N-0, I18N-1, I18N-2 Settings, P2.8 Slice 5, I18N-3 Explore, and the
    combined I18N-4/5 remaining-surfaces unit are LIVE.
 6. The I18N-6 Release design and RED-first implementation plan passed
-   independent review. The first review-ready product tip `b5228e63` is under
-   one bounded guard/CSS repair; independent re-review is the sole next i18n gate.
+   independent review. The bounded guard/CSS repair is complete at product tip
+   `7b9c13b2`; independent re-review is the sole next i18n gate.
    The public selector remains absent from merged master and production until
    review, explicit approval, merge, and release gates pass.
 
