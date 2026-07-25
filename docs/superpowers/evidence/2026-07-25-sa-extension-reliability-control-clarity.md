@@ -88,3 +88,55 @@
   dependency graph. Two fresh Firefox builds were byte-identical and each
   contained exactly `13` files. Normalized artifact hash-list SHA-256:
   `f34e12aa153b054735ca133fcb918d682e4d52b9cd6a5481d39aecd5cd719522`.
+
+## Task 3 - Durable Telemetry
+
+- Task 3 product tip:
+  `df49d5b5369193c4bd94ef660cd90df0892d956e`.
+- The outbox/native/store/protocol suites are `8/8`, `14/14`, `63/63`, and
+  `12/12`; the Task 3 core is `105/105` and the canonical focused set is
+  `284/284`.
+- Backend checkpoint collection is `4667`; full/focused sorted node-list
+  SHA-256 values are
+  `51548195153e1f9e12a24fa5475d9de33b4afba9e813ae3a5ce5abd1a66ef085`
+  and
+  `2c3b4e302fff4c190ebbc3bb5a05db2b4ece2186a5c2d0430b41bab25217a717`.
+- Two independent Firefox builds contain the same `14` runtime files;
+  normalized artifact hash-list SHA-256 is
+  `951dc32c892a1d35f64fcb0b0d49eb31752536420f913aa8522a4850444dc7b5`.
+
+## Task 4 - Structured Durable Health
+
+- Task 4 product tip:
+  `1e52ed4e391d42ff9421b42308ba14a6fad15ed6`.
+- Backend collection is `4677`; the 12-file focused set is `294/294`.
+  Full/focused sorted node-list SHA-256 values are
+  `ec699e992433f5c2cabe612e5f609fad1ca64ae88915034bb8e56aa2bfcd7de9`
+  and
+  `d35c5155ed480f3495567ce172bc00b391b6e69d4768526d288d2b738a679a47`.
+- Frontend is `95 files / 1063 passed`; the four-file focused set is `69/69`.
+  Full/focused sorted relative node-list SHA-256 values are
+  `a93c02bc28d1924f23f7895338d723e968dcb389a494ff0e0f993e4c092019d4`
+  and
+  `5c3859c3c7db7fe90c13f3c46d49610eae64986ef0b89e558246ee0cf13c6cdf`.
+- Resources are `694/1794` per locale; scanner remains `36/20/0/20`.
+
+## Task 5 - Durable Market News Repair
+
+- Task 5 product tip:
+  `8b20e608765d2ef134a6249a2ebf0bccd400361f`.
+- Sixteen domain nodes cover canonical manifests, exact path admission,
+  recorded/incident previews, atomic start, resumable progress, reconciliation,
+  cancellation, and terminal hash idempotence. Five DAL nodes cover exact-ID
+  no-age reads, body readback, inclusive intervals, privacy projection, and
+  unavailable-DB fail-closed behavior.
+- Recovery is `16/16`; `test_sa_tools.py` is `102/102`; the four-file Task 5
+  execution set is `195/195`.
+- Backend collection is `4698`; the 13-file checkpoint collection is `315`.
+  Full/focused sorted node-list SHA-256 values are
+  `d7c35ad0fae96f6f0e4fd0211fdc9a1bdd8e51eeb63d616587f435dabff2f284`
+  and
+  `3f1b0a608ab2037c403e57eddb53c31dca47e10ef47977d2c10b6e1594375b48`.
+- Generic jobs history/status omit frozen target descriptors and expose only
+  kind, counts, lifecycle state, and bounded manifest-hash prefix. Fixed
+  recovery routes retain the full machine contract.
