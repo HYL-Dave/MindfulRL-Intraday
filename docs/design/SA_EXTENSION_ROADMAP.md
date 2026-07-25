@@ -1,6 +1,6 @@
 # Seeking Alpha Extension Roadmap
 
-Last updated: 2026-06-27
+Last updated: 2026-07-25
 
 ## Goal
 
@@ -298,6 +298,11 @@ capped at 168 hours. The latter is a bounded attempted recovery, reports known
 detail repair separately from metadata rediscovery, and never claims complete
 historical coverage. Arbitrary date ranges and generic lifetime backfill remain
 out of scope.
+
+The corresponding RED-first implementation plan is written at
+`docs/superpowers/plans/2026-07-25-sa-extension-reliability-control-clarity.md`.
+It is pending independent full-plan review; installer changes, product
+implementation, and production repair remain unauthorized.
 
 Supporting analysis/tooling now lives in:
 
