@@ -1,6 +1,6 @@
 # ArkScope I18N-6 Release Design
 
-> **Status: IMPLEMENTATION COMPLETE — INDEPENDENT REVIEW PENDING**
+> **Status: LIVE COMPLETE — FAST-FORWARD MERGED THROUGH `2997c926`**
 >
 > Written against merged `master` at `cf7050ed` on 2026-07-25. This document
 > is the product and verification authority for the final app-wide i18n
@@ -8,15 +8,19 @@
 > GREEN. The first review-ready product tip `b5228e63` passed correctness
 > review, but merge was withheld for a bounded durable-guard repair and a
 > measured English credential-status clipping repair. Both repairs are complete
-> at product tip `7b9c13b2`; merge remains withheld pending independent
-> re-review and explicit user approval. Revised accounting is
+> at product tip `7b9c13b2`; repaired independent re-review returned GREEN and
+> the user approved integration. `master` fast-forwarded through evidence tip
+> `2997c926`. Revised accounting is
 > `+12/-4` to `95/1056`, focused `13/148`; resources remain Settings `681` /
 > total `1781`, and scanner remains `36/20/0/20`. The authority lifecycle,
 > `384/384` release matrix, targeted `24/24` 760px matrix, formatter freeze,
-> backend/no-PG, and production-read-only gates passed. Independent
-> re-review, explicit approval, merge, and post-merge release verification
-> remain required. Production and merged master still expose no public selector
-> and contain no stored `ui_locale` value.
+> backend/no-PG, and production-read-only gates passed. Fresh merged-tree
+> verification repeated focused `13/148`, full `95/1056`, typecheck/build,
+> resources, scanner, backend/no-PG, byte/CSS, and diff gates. A semantic
+> production smoke found the single Settings selector at `zh-Hant` and did not
+> change it; production still contains no stored `ui_locale` value. The product
+> is LIVE. External Design Kit locale synchronization remains the explicit
+> post-LIVE follow-up.
 
 The independent-review repair preserves the existing selector node ID while
 restoring repo-wide direct-`changeLanguage()` and kebab-selector guards. It also

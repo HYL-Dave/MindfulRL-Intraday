@@ -1,7 +1,7 @@
 # I18N Formatter Inventory
 
-> Status: V1 UI-LOCALE BOUNDARY FROZEN BY REVIEWED I18N-6 DESIGN
-> (2026-07-25; IMPLEMENTATION COMPLETE — INDEPENDENT REVIEW PENDING)
+> Status: V1 UI-LOCALE BOUNDARY LIVE AND FROZEN BY I18N-6
+> (2026-07-25; product `7b9c13b2`, fast-forward merged through `2997c926`)
 >
 > This document records formatter ownership after the I18N-4/5 surface
 > migration. I18N-6 has now ruled that `ui_locale` controls interface copy
@@ -80,7 +80,9 @@ or formatter behavior-test change. Its isolated
 locale-switch probe also kept representative rendered values byte-identical:
 Watchlist `88.25`, `+7.75%`, and `8`; History
 `07/25/2026, 04:00:00 PM` / `07/25/2026, 04:00:12 PM`; and duration `12.3s`.
-This is review-ready evidence, not a LIVE or merged-state claim.
+Repaired independent review returned GREEN. `master` fast-forwarded through
+evidence tip `2997c926`, and fresh merged-tree byte gates retained the same
+frozen boundary. This is now the LIVE V1 formatter contract.
 
 ## Future Change Rule
 
