@@ -19,9 +19,12 @@
 The independent-review repair preserves the existing selector node ID while
 restoring repo-wide direct-`changeLanguage()` and kebab-selector guards. It also
 authorizes one RED-first Shell CSS node and one exact
-`.credential-row > .credential-status-pill { max-width: none; }` override;
-the generic masked-key `96px` cap remains unchanged. Both locales must pass an
-element-level visible-leaf clipping census at `390`, `760`, `1024`, and `1440`.
+`.credential-row > .credential-status-pill.missing { max-width: none; }`
+override. A mounted repair probe proved the same status span also renders an
+available credential's masked token, so the `missing` qualifier is required to
+keep that token under the generic `96px` cap. Both locales must pass an
+element-level unavailable-copy clipping census at `390`, `760`, `1024`, and
+`1440`, while the available masked credential remains capped.
 No other product, CSS, resource, formatter, or behavior scope is reopened.
 
 ## 1. Purpose and Authority
