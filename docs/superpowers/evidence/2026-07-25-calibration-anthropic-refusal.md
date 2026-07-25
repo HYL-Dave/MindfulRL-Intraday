@@ -1,6 +1,6 @@
 # Calibration Anthropic Refusal Evidence
 
-> **Status:** IMPLEMENTED - INDEPENDENT REVIEW PENDING
+> **Status:** LIVE COMPLETE - MERGED 2026-07-25
 > **Date:** 2026-07-25
 
 ## Boundary And Commits
@@ -11,11 +11,11 @@
   `5fa47c5b63c42bfa5cb88a5631b84bd2e43de028`.
 - Route/durable-state product tip:
   `1a634ced487fb997dfe8fbd606a4bdd453996ad2`.
-- Isolated branch/worktree: `codex/calibration-anthropic-refusal` at
+- Review-ready isolated branch/worktree: `codex/calibration-anthropic-refusal` at
   `/home/hyl/.config/superpowers/worktrees/ArkScope/calibration-anthropic-refusal`.
-- No merge, push, production database access, Provider call, prompt change,
-  frontend change, schema change, retry, fallback, or effort-policy change was
-  performed.
+- Before independent review, no merge, push, production database access,
+  Provider call, prompt change, frontend change, schema change, retry,
+  fallback, or effort-policy change was performed.
 
 ## RED-First Proof
 
@@ -135,3 +135,16 @@ The backend now records and returns `model_refusal`, but
 `InvestorProfilePanel.tsx` still maps every turn failure to the single generic
 localized title. EIR-004 records that bounded UX debt for the next Investor
 Profile-owned UI slice; this implementation does not authorize frontend work.
+
+## Independent Review And Merge Closeout
+
+Independent implementation review returned GREEN with zero findings. `master`
+fast-forwarded through this evidence tip,
+`8e73dba45127adf5ef8bbfdbceda45c775d7a295`.
+
+The merged tree then reproduced focused `48/48`, backend collection `4713`,
+and no-PG `ok:true` with `pg_attempts:[]`. Merge and closeout did not access a
+production database, call a Provider, or change prompts, frontend code, or
+schema. EIR-004 remains open. Coverage v2 follows only after a fresh inventory
+resolves the authority for per-day expected session length; this closeout does
+not preselect an authority or promote observed bar counts into constants.
