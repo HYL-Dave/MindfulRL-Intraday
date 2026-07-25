@@ -1,6 +1,6 @@
 # SA Extension Reliability and Control-Clarity Evidence
 
-> **Status: INDEPENDENT IMPLEMENTATION REVIEW GREEN - MERGE APPROVED**
+> **Status: POST-MERGE CONTRAST REPAIR IMPLEMENTED - INDEPENDENT REVIEW PENDING**
 >
 > This ledger contains redacted, reproducible engineering evidence only. It
 > must not contain licensed article content, raw repair target IDs, URLs,
@@ -387,3 +387,81 @@ apps/arkscope-web/src/credentialDisplay.test.ts 18ef4d9b5d338b97a1d35cfcb0fa5c7d
 - Historical repair remains unapproved. A post-install fresh preview and an
   explicit approval of its exact target count and manifest hash are still
   required.
+
+## Post-Merge Deployment and Contrast Repair
+
+### Production deployment and audited repair
+
+- The reviewed batch was fast-forwarded before this contrast deviation. Both
+  browser builds were reinstalled from the reviewed tree. Chrome source-load
+  initially exposed a reserved `__pycache__` packaging residue; regression
+  commit `4bf7a503ad10a1e59da18975967e4a64c2aa88b5` keeps that source tree
+  loadable and is the fixed base for the contrast repair.
+- Production routine run `17477` recorded a derived complete outcome with
+  zero retryable detail failures. Historical repair run `17478` used the
+  approved frozen manifest
+  `efe8848ea2d257108023ce9c083ca5229cc7ba245f5724d73ed910753a372159`.
+  Its terminal per-item totals are `88 already_present`, `30 repaired`,
+  `0 unavailable_at_source`, and `0 failed_retryable`; all `118` targets have
+  body content after repair. Terminal result SHA-256 is
+  `49395412e3cfee9470625e0798db0eef492120acee43ae91997ad2af877ab91f`.
+  Idempotent replay returned the same row and hash. SQLite integrity is `ok`
+  and FK violation count is `0` for both production stores.
+- The localized web health owner displayed the healthy structured state.
+  Firefox is the single auto-sync owner by operator choice because scrolling
+  capture may activate its working tab; Chrome remains the manual fallback so
+  daily browsing is not interrupted and duplicate schedules cannot run. This
+  is an operating choice, not a browser capability restriction. An app-owned
+  collector remains unadopted under the separate P2.6 Part 2 decision.
+
+### RED/GREEN accounting
+
+- Docs clearance: `9ef64673`; RED fixture/test commit: `0e19b0ae`; product
+  repair commit: `5ee4f00e`. Review base is `4bf7a503`.
+- The grounded RED node failed on the legacy normal-action fill before any
+  product edit. The base-to-tip node comm is exactly `+1/-0`; the sole added
+  ID is
+  `tests/test_sa_extension_popup.py::test_popup_all_states_use_contrast_safe_text_and_control_boundaries`.
+- Backend collection is `4711`; normalized sorted node SHA-256 is
+  `e6b41ef56cea3cfbfb2a67bda1b4ea2e96e968cbde161e30be297145f946e9a1`.
+  The SA focused set is `328/328` with SHA-256
+  `484725fa9ff541430ab143bdaa68e6eba728877c059c6d4de15eacbdb2806ba0`;
+  the popup/packaging pair is `23/23`.
+- Full backend is `4606 passed / 31 failed / 74 skipped / 18 warnings`. The
+  31 failures are the same pre-existing no-data-table/fixture family already
+  reproduced at the reviewed `4bf7a503` tip; the added contrast node accounts
+  for the single additional pass. Frontend remains `95 files / 1063 tests`,
+  focused `69/69`; typecheck and build pass. The scanner remains
+  `36/20/0/20`, scope `src/**`. The direct PG-unreachable smoke reports
+  `ok: true` and `pg_attempts: []` across all 24 checks.
+- Mutation probes independently restored a legacy action fill, the old
+  action border, the old review-control border, the orange manual fill, the
+  old toggle helper, the old resolved hint, and the old partial-status color.
+  Every mutation made the new node RED for its expected owner; the restored
+  reviewed product is GREEN.
+
+### Browser evidence
+
+- Chrome 150 loaded the source popup with every disclosure open and every
+  conditional control exposed. Actual computed values are: normal action and
+  review text `9.19:1`; outline boundary `3.18:1`; filled recovery/manual
+  controls `6.85:1`; helper/operator copy `5.74:1`; partial status `4.58:1`;
+  and settled disabled labels `4.89:1`. The element-level clipped-text census
+  is empty, all five legacy ID color rules are absent, and the shared tab
+  activation warning is visible. Lighthouse's color-contrast audit passes;
+  its lower aggregate accessibility score comes from pre-existing document
+  title/lang/landmark/select-label findings, not contrast.
+- Firefox 153 rendered a fresh dependency-complete build, not the old manual
+  artifact. The built popup passed the same all-state computed-style contract;
+  a real Firefox headless visual pass at the shipped `360px` width exposed all
+  disclosures, conditional recovery controls, and the manual control. The
+  outline and filled action hierarchy is legible, the warning is visible, and
+  no target text is clipped.
+- The post-merge repair diff contains only the two docs authorities, popup
+  HTML, mounted fixture runner, and popup pytest owner before this evidence
+  update. Scrapers, protocol, native host, backend, web app, packages,
+  databases, and all formatter owners are byte-identical to `4bf7a503`.
+
+This section is implementation evidence, not a LIVE declaration. Independent
+review, fast-forward merge, installed-browser readback, and the five-document
+closeout remain pending.
