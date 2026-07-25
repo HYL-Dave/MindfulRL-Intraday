@@ -142,6 +142,37 @@ This line does not:
   copy-layout fixes required by the second locale; or
 - promise that Developer Mode raw diagnostics are translated.
 
+### 2.3 Localized surface boundary
+
+Recorded 2026-07-25, after I18N-6 shipped, so the boundary is a stated decision
+rather than an absence inferred from byte gates.
+
+**Localized:** the web application in `apps/arkscope-web`, including as rendered
+inside the Electron desktop shell. This is the surface the Settings locale
+selector governs.
+
+**Deliberately English operator surfaces, never in scope:** the Seeking Alpha
+browser extension (popup and content scripts), the CLI, logs, and sidecar
+diagnostics. Every i18n unit byte-gated `extensions/` for this reason.
+
+The boundary is load-bearing, not merely convenient. None of those surfaces can
+read `profile_settings.ui_locale`. An extension-local language toggle would
+store a second preference for one concept and therefore contradict §4.1's single
+authority; plumbing the locale through the native-messaging host instead would
+add a new IPC failure surface to the ingestion component. The visible-literal
+scanner is likewise scoped to the web app, so localizing a second codebase would
+either extend the scanner into an MV3 tree with no bundler or typed resources, or
+create a localized surface where untranslated copy can ship unnoticed.
+
+**Division of labor:** the extension reports machine-readable state; the web app
+owns the localized, human-facing rendering of that state. A condition must not be
+phrased as user-facing copy in both places.
+
+Reworking extension popup copy is therefore English work in the professional
+register defined by `ARKSCOPE_TERMINOLOGY.md`. Should that ever change, it
+requires a new decision that first resolves the single-authority question above —
+not an incremental addition.
+
 ## 3. Locale and Copy Contract
 
 ### 3.1 Supported locales
@@ -183,6 +214,14 @@ words in a fixed source-language order.
 This is not a bilingual-display mode. One label must not repeat the same concept
 as `譯文 · Original`. English aliases belong in search metadata unless a
 specific visible exception is documented.
+
+Byte-preservation of existing Traditional Chinese chrome became an explicit,
+generally binding rule from I18N-3 onward, and a post-release audit confirmed it
+held there: of the pre-i18n literals whose owners survive, every divergence in
+the I18N-1/I18N-3-and-later surfaces traces to a named reviewed change. I18N-2
+Settings copy predates that rule and was rewritten inside its own reviewed
+ledger; those originals remain recoverable from the visible-literal debt snapshot
+at `ac578581` if any wording ever needs to be restored or re-justified.
 
 ### 3.3 Selector autonyms are one recorded exception
 
