@@ -25,8 +25,12 @@
     `2fb052384596275698973b3cf576276b3a2aa3cb`;
   - `COVERAGE_V2_BACKEND_TIP`:
     `742b2e1c47e6835654ad15b70104319df10dbbef`;
-  - frontend/presentation product tip:
-    `0b7197356e537b9d6114f566608611ea77312876`.
+  - initial frontend/presentation product tip:
+    `0b7197356e537b9d6114f566608611ea77312876`;
+  - post-evidence independent-review repair product tip:
+    `db410e096747ffd7f834c9231394fe2d041ec53a`;
+  - final optional-diagnostic isolation product tip:
+    `cb33a1937b22a593a7da69d096d17dccb2d89733`.
 - Isolated branch/worktree: `codex/coverage-v2-ground-truth` at
   `/home/hyl/.config/superpowers/worktrees/ArkScope/coverage-v2-ground-truth`.
 - No merge or push was performed. The main repository and its `8430` Vite
@@ -54,21 +58,21 @@ every removed node was maximum-relative.
 
 - Virgin base collection: `4713`; normalized SHA-256
   `a3b91ea6eed808afb7aa7dc860a9f5f8e30de9dd770a9f06245c35d0f04a5d6a`.
-- Virgin tip collection: `4744`; normalized SHA-256
-  `cba3b4501509498a452ed8e3e3b742f8fd4de03eba98d63158fe64325d6199e9`.
-- Exact comm: `+70/-39`; added-list SHA-256
-  `1fea3b33e4320b533b055f05a115f80706c77db6bcd47098af8f808338d5a1d5`;
+- Virgin final-tip collection: `4746`; normalized SHA-256
+  `7f1b2515af24dff3f9f00cb8304c4c2a4d63af59ec5567d53ff44c07e62040c4`.
+- Exact comm: `+72/-39`; added-list SHA-256
+  `5429aecdaaf8e4d80196af2da487eb0f3466dd54ab2c7e26810a94648a147495`;
   removed-list SHA-256
   `cfd051861d946f165490e3c1fc807c491d1d479be86c63da34d54da4557d4157`.
 - Additions by owner: scheduler `7`, boundaries `5`, calendar `10`,
-  classifier `18`, dependencies `6`, observations `10`, route `14`.
-- Focused tip: `8 files / 225`; `225 passed`; normalized SHA-256
-  `de132ad6e55e2c12d0b85f415de414d3d4bbbf61166feb5035d2cb870a125cfe`.
+  classifier `18`, dependencies `6`, observations `11`, route `15`.
+- Focused final tip: `8 files / 227`; `227 passed`; normalized SHA-256
+  `4fe4960dbb0b3c1eba08b507740a785c5bce7d68624d5aa4080f4832cac07b16`.
 - Explicit semantic set: `18 passed`.
 - `test_route_registered` exists unchanged on both sides and is not a removal
   or addition.
 
-The exact 70 additions are:
+The exact 72 additions are:
 
 ```text
 tests/test_data_scheduler.py::test_coverage_derived_price_backfill_is_deliberate_noop
@@ -119,6 +123,7 @@ tests/test_market_coverage_dependencies.py::test_xnys_matches_extraordinary_clos
 tests/test_market_coverage_dependencies.py::test_xnys_matches_reviewed_full_session_fixture
 tests/test_market_coverage_observations.py::test_missing_market_db_is_typed_unavailable
 tests/test_market_coverage_observations.py::test_missing_prices_schema_is_typed_unavailable
+tests/test_market_coverage_observations.py::test_optional_provider_diagnostic_corruption_is_quarantined_and_source_preserved
 tests/test_market_coverage_observations.py::test_query_only_rejects_accidental_writes
 tests/test_market_coverage_observations.py::test_readable_empty_prices_table_is_ok
 tests/test_market_coverage_observations.py::test_reader_assigns_rows_by_utc_session_window_not_date_prefix
@@ -129,6 +134,7 @@ tests/test_market_coverage_observations.py::test_reader_retains_in_window_off_gr
 tests/test_market_coverage_observations.py::test_unreadable_market_db_is_typed_unavailable
 tests/test_trading_day_coverage.py::test_calendar_unavailable_returns_unknown_days
 tests/test_trading_day_coverage.py::test_early_close_session_uses_derived_fourteen_slot_grid
+tests/test_trading_day_coverage.py::test_empty_active_universe_returns_honest_unknown_coverage
 tests/test_trading_day_coverage.py::test_low_fixture_horizon_degrades_health_without_erasing_reviewed_days
 tests/test_trading_day_coverage.py::test_missing_market_db_is_unavailable_not_empty
 tests/test_trading_day_coverage.py::test_provider_errors_remain_separate_diagnostics
@@ -187,13 +193,24 @@ tests/test_trading_day_coverage.py::test_universe_count_dedupes_aliases
 tests/test_trading_day_coverage.py::test_weekend_and_holiday_marked_non_trading
 ```
 
-Full-suite A/B in the same isolated environment retained the exact same
-72-node baseline failure/error set: base `4567 passed / 65 failed / 7 errors /
-74 skipped`, tip `4598 passed / 65 failed / 7 errors / 74 skipped`. The
-failure-node SHA-256 is
+Initial-product full-suite A/B in the same isolated environment retained the
+exact same 72-node baseline failure/error set: base `4567 passed / 65 failed /
+7 errors / 74 skipped`, initial tip `4598 passed / 65 failed / 7 errors / 74
+skipped`. The failure-node SHA-256 is
 `cd32e5ddffadd58cca836be15ea864857cdf0463534a1dda6477cf78aad4152b`
 on both sides; new failures `0`, disappeared failures `0`. These existing
-failures are not an allowlist.
+failures are not an allowlist. The post-evidence repair adds two focused nodes;
+the final replay therefore uses a new matched pair rather than rewriting this
+dated A/B checkpoint.
+
+Final-product virgin A/B explicitly changed into each extracted archive before
+running pytest. Clearance base produced `4572 passed / 60 failed / 7 errors /
+74 skipped`; final product tip `cb33a193` produced `4605 passed / 60 failed /
+7 errors / 74 skipped`. The 67 exact non-passing node IDs hash to
+`0a2aea1065f9837b7bf55b6eef9971e1474c339b1a0e292bb466b58ccf86da0b` on
+both sides; new non-passing IDs `0`, disappeared IDs `0`. The `+33` passing
+delta equals the final backend net node delta exactly. These environment-bound
+non-passing nodes remain evidence, not an allowlist.
 
 ### Frontend
 
@@ -243,6 +260,10 @@ marketDataDisplay.test.ts > renders unmatched RTH rows as a separate data-qualit
   classifier, and never fill a nearest slot.
 - SQLite reads use URI `mode=ro` plus query-only enforcement. Missing,
   unreadable, schema-invalid, and readable-empty stores remain distinct.
+- Optional provider-diagnostic schema, row, and UTF-8 corruption is
+  quarantined without changing valid price-observation health; valid
+  diagnostic source text, including surrounding whitespace, is retained
+  byte-for-byte at the text boundary.
 - Static boundaries prove the package has no provider, Gateway, PG, write, or
   repair runtime dependency.
 
@@ -287,9 +308,14 @@ marketDataDisplay.test.ts > renders unmatched RTH rows as a separate data-qualit
     `c22c7e784c6f1c25587a980ca7b441658f58632a004d117985e765cad70fb8da`.
 - TypeScript typecheck and Vite build exit zero; only the existing chunk-size
   advisory remains.
-- Exactly 35 authorized paths changed (`20 M / 13 A / 2 D`); unexpected paths
-  are zero. The 1,144-file non-authorized manifest is byte-identical with
-  recorded SHA-256 prefix `6a14b350`.
+- The clearance-to-initial-product range changed exactly 35 authorized paths
+  (`20 M / 13 A / 2 D`); unexpected paths were zero. The evidence commit then
+  changed six documentation paths, and the review repair modified eight
+  already-authorized product/test paths without introducing another path.
+  The clearance-to-final-product review packet therefore spans 40 paths
+  (`24 M / 14 A / 2 D`), all inside the reviewed maps. The initial
+  non-authorized manifest remained byte-identical with recorded SHA-256 prefix
+  `6a14b350`.
 - Schema/migrations, protected backend families, extensions/Electron, all CSS,
   package manifests/locks, and the existing formatter implementations are
   byte-identical. Only `requirements.txt` changes dependency metadata.
@@ -379,7 +405,8 @@ fixtures copied into tests.
   final node/resource totals and was rerun at the task boundary.
 - Task 6 review found four unsafe legacy seams and two misleading historical
   IDs. The fixes are recorded in the plan's Task 6 review resolution and
-  account for the final backend `+70/-39` composition.
+  account for the initial implementation checkpoint's backend `+70/-39`
+  composition.
 - Task 7 review required stronger compile-time enum-consumer proof,
   locale coverage for `non_trading`, normal-mode unknown-count privacy,
   exhaustive scope/session presentation, and a real accessible disclosure
@@ -388,6 +415,16 @@ fixtures copied into tests.
   same-version local Pydantic output is the DTO authority, and a frontend
   classifier would violate the locked presenter-only boundary.
 - No CSS change was needed, so the CSS-deviation protocol was not opened.
+- Post-evidence independent review found five bounded defects: empty valid
+  universes raised instead of yielding unknown coverage; malformed optional
+  provider diagnostics poisoned observation health; diagnostic source text
+  was trimmed; translated React keys remounted two nodes; and evidence path
+  wording did not name its comparison range. The RED tests failed on those
+  exact behaviors. Product tip `db410e09` fixed the original five; same-review
+  follow-up `cb33a193` additionally proved and quarantined invalid UTF-8 in the
+  optional diagnostic table. Together they retain backend `+2/-0`, an in-place
+  mounted frontend assertion, no resource/CSS/schema/dependency change, and
+  the same eight already-authorized modified paths.
 
 ## Cleanup And Review State
 
@@ -395,8 +432,8 @@ fixtures copied into tests.
 - The user's main `8430` Vite process remains reachable.
 - Browser test pages were closed; no Coverage worktree Vite, uvicorn, Gateway,
   or test process remains.
-- The product worktree was clean at the product tip before this evidence-only
-  closeout.
+- The product worktree was clean at each committed product tip before the
+  documentation update.
 - Integration remains blocked on independent implementation review. This
   packet does not authorize merge, LIVE status, provider work, planner repair,
   or any production write.
