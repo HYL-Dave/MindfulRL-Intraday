@@ -1,6 +1,6 @@
 # Coverage v2 Session-Truth Evidence
 
-> **Status: IMPLEMENTATION COMPLETE - INDEPENDENT REVIEW PENDING**
+> **Status: IMPLEMENTATION REVIEW GREEN - P3 TEST CLOSURE COMPLETE - INTEGRATION PENDING**
 >
 > This is a review ledger, not a LIVE declaration. The branch is not merged,
 > no production database was written, and no provider, Gateway, repair, or
@@ -31,6 +31,9 @@
     `db410e096747ffd7f834c9231394fe2d041ec53a`;
   - final optional-diagnostic isolation product tip:
     `cb33a1937b22a593a7da69d096d17dccb2d89733`.
+  - implementation-review follow-up and P3 test closure: verified in the
+    current isolated worktree and intentionally left uncommitted pending
+    integration authorization.
 - Isolated branch/worktree: `codex/coverage-v2-ground-truth` at
   `/home/hyl/.config/superpowers/worktrees/ArkScope/coverage-v2-ground-truth`.
 - No merge or push was performed. The main repository and its `8430` Vite
@@ -212,6 +215,11 @@ both sides; new non-passing IDs `0`, disappeared IDs `0`. The `+33` passing
 delta equals the final backend net node delta exactly. These environment-bound
 non-passing nodes remain evidence, not an allowlist.
 
+All absolute pass/fail/error totals above are dated environment observations,
+not acceptance constants. The load-bearing A/B invariant is equality of the
+normalized non-passing node-ID set between equally configured base and tip
+runs, plus the exact passing-node delta.
+
 ### Frontend
 
 - Virgin base: `95 files / 1063`, all passed; normalized node-list SHA-256
@@ -245,7 +253,16 @@ marketDataDisplay.test.ts > renders unmatched RTH rows as a separate data-qualit
 
 - The installed solution is pinned and mechanically checked:
   `exchange_calendars==4.13.2`, pandas `2.3.1`, NumPy `1.26.4`, with the
-  reviewed transitive solution in `requirements.txt`.
+  reviewed transitive solution in `requirements.txt`. The exact-solution test
+  passes. A repository-wide `python -m pip check` is not clean in this
+  environment because of a pre-existing unrelated constraint:
+
+  ```text
+  spacy 3.6.1 has requirement typer<0.10.0,>=0.3.0, but you have typer 0.21.1.
+  ```
+
+  That global conflict is recorded rather than misrepresented as a passing
+  Coverage dependency gate.
 - Official fixtures cover a normal session, every reviewed early close, and
   the extraordinary 2025-01-09 closure. Package output matches every fixture.
 - The fixture release horizon covers twelve calendar months; runtime health
@@ -276,11 +293,13 @@ marketDataDisplay.test.ts > renders unmatched RTH rows as a separate data-qualit
   separate closed enum axes.
 - Unknown tickers and provider issues cannot enter planner candidates or
   exclusions. The scheduler has no V2 `missing_tickers` feed.
-- Legacy, empty, malformed, or unreadable continuation state becomes
-  `legacy_unproven_gap`; it is never resumed as provider work.
-- The public schedule route bypasses provider readiness only for the deliberate
-  no-op retirement path, retains the write-permission boundary for terminal
-  telemetry, and clears legacy continuation state only after terminal audit.
+- Legacy, malformed, or unreadable continuation state becomes
+  `legacy_unproven_gap`; it is never resumed as provider work. A row with no
+  status, error, continuation, or result is neutral no-result history.
+- The public schedule route exposes no operator action for the deliberate
+  read-only no-op path. Its PUT and Run endpoints return typed HTTP 409 before
+  provider or write gates, while internal terminal telemetry remains available
+  for historical compatibility.
 - Four disposable mutations independently proved the boundary nodes are live:
   filtering off-grid reader rows failed the named reader test; sending an
   unknown ticker to the worker failed scheduler isolation; putting a
@@ -292,9 +311,11 @@ marketDataDisplay.test.ts > renders unmatched RTH rows as a separate data-qualit
 
 ## Resources, Scanner, And Static Gates
 
-- Per locale, Settings resources are `694 -> 713`; total resources are
-  `1794 -> 1813`; the Coverage subtree is `25 -> 44` with exact
-  `+32/-13`. Locale key parity drift is zero and empty leaves are zero.
+- Per locale, Settings resources are `694 -> 714`; total resources are
+  `1794 -> 1814`; the Coverage subtree is `25 -> 44`. The implementation
+  review follow-up adds one Data Sources leaf after the original exact
+  `+32/-13` Coverage migration. Locale key parity drift is zero and empty
+  leaves are zero.
 - Dynamic-key contracts are `3/3`.
 - Scanner ran twice with exact `36/20/0/20`, debt `0`, scope `src/**`.
 - Unchanged scanner hashes:
@@ -426,6 +447,74 @@ fixtures copied into tests.
   mounted frontend assertion, no resource/CSS/schema/dependency change, and
   the same eight already-authorized modified paths.
 
+## Independent Implementation Review Follow-Up
+
+The implementation review returned substantive GREEN and found two bounded
+presentation/control defects plus one evidence-accounting issue. The approved
+repair is RED-first and does not alter coverage classification:
+
+- `price_backfill` now reports `control_mode=read_only`; stale persisted
+  enablement cannot make it due, service and HTTP mutation paths reject it,
+  and Settings retains historical run telemetry while rendering no schedule,
+  interval, or Run control. Retired sources use `control_mode=retired`.
+- A production-shaped pre-V2 row with attempt/update metadata and null status,
+  error, continuation, and result remains neutral. Its first deliberate V2
+  no-op succeeds immediately. Non-empty legacy continuation/result shapes
+  remain `legacy_unproven_gap` and worker-free.
+- The bilingual description now states that Coverage v2 retains historical
+  run records only and does not schedule, backfill, or write price data. One
+  bilingual `Read-only` / `唯讀` label increases Settings resources
+  `713 -> 714`, total resources `1813 -> 1814`, and Data Sources
+  `162 -> 163` per locale.
+- Backend node accounting evolves from `+72/-39` to `+74/-40`: one new
+  blank-history contract and one honest rename of the obsolete all-sources Run
+  contract. Collection becomes `4747`; focused becomes `228`. Frontend becomes
+  `+12/-3` through one renamed mounted node, so collection remains `96/1072`
+  and focused remains `8/118`.
+- `requirements.txt` now distinguishes the shared NumPy/pandas stack from the
+  Coverage-specific calendar dependencies without changing any version.
+- Post-repair focused gates are backend `228/228` and frontend `8 files / 118`
+  green. Backend full collection is `4747`; this worktree environment observed
+  `4612 passed / 61 failed / 74 skipped`, with failures in the already-known
+  mounted-data/root-jsdom families. Frontend full is `96 files / 1072`, all
+  green. Typecheck/build pass; scanner is deterministic at `36/20/0/20` twice.
+- The no-PG smoke passes all 24 checks with `ok=true` and `pg_attempts=[]`.
+  `python -m pip check` reproduces only the documented existing
+  `spacy 3.6.1` versus `typer 0.21.1` conflict.
+- A production `mode=ro` query reproduced the exact blank `price_backfill`
+  shape. `profile_state.db` remained `(43180032, 1785050934183146442)` for
+  `(size, mtime_ns)` before and after; integrity is `ok`, FK violations are
+  zero. This section carries no merge, production-write, or LIVE authority.
+
+## Follow-Up Re-Review Test Closure
+
+Independent follow-up review returned GREEN on the three product/evidence
+findings and identified one P3 test-only gap. The product predicate correctly
+requires all four outcome fields to be `None`, but its existing tests did not
+make each field independently mutation-sensitive.
+
+- Before adding tests, removing `continuation` from the predicate left all four
+  relevant existing tests green (`4 passed, 95 deselected`), reproducing the
+  review finding rather than assuming it.
+- Two named tests now cover `last_status`-only, `continuation`-only,
+  `last_error`-only, and `last_result`-only legacy states. Each state must be
+  nonblank and project the fixed `legacy_unproven_gap` result without exposing
+  its raw continuation, error, or result.
+- Four independent mutation probes removed one decisive key at a time. Each
+  probe made its owning test fail at the blank-state assertion. The product
+  source was restored after every probe; its SHA-256 remains
+  `0a783f31ef67392158f991b4584f33a77f184bb817711bb6b994545eebf18039`.
+- Backend accounting therefore moves from the reviewed product-fix checkpoint
+  `+74/-40` to final `+76/-40`. Full collection is `4749`, with normalized
+  node-list SHA-256
+  `e7dc826f33c202789f8ad5f43787d1eedd8f288cc55aa4996d0a100761a21b20`.
+  The eight-file focused suite is `230/230`, with normalized node-list SHA-256
+  `e551d209062867d44bd88289f6e6c8b06d2f0822200ce1320aa8f966863f8330`.
+- Frontend, resources, scanner, dependency, product runtime, and production
+  evidence are unchanged by this test-only closure. The stable row title stays
+  `Price Gap Backfill`; the `Read-only` chip, description, and absent controls
+  carry current behavior.
+
 ## Cleanup And Review State
 
 - Isolated ports `8467` and `8477` refuse connections after verification.
@@ -433,7 +522,8 @@ fixtures copied into tests.
 - Browser test pages were closed; no Coverage worktree Vite, uvicorn, Gateway,
   or test process remains.
 - The product worktree was clean at each committed product tip before the
-  documentation update.
-- Integration remains blocked on independent implementation review. This
-  packet does not authorize merge, LIVE status, provider work, planner repair,
-  or any production write.
+  documentation update. The implementation-review follow-up and P3 closure
+  remain uncommitted pending integration authorization.
+- Independent implementation review is GREEN. Integration remains unperformed
+  and requires explicit authorization; this packet does not authorize LIVE
+  status, provider work, planner repair, or any production write.
