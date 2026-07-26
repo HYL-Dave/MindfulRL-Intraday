@@ -1,9 +1,11 @@
 # Legacy Scheduler Sources And IV Domain Retirement Evidence
 
-> **Status: IMPLEMENTATION IN PROGRESS - NO PRODUCTION WRITE**
+> **Status: IMPLEMENTED - INDEPENDENT REVIEW PENDING**
 >
-> Task 0 and Tranche 1 are complete. Tranche 2, production archive/apply,
-> provider calls, Gateway calls, PG calls, merge, and push have not occurred.
+> Task 0, both implementation tranches, the migration tool, copied-data proof,
+> canonical A/B, and isolated bilingual runtime gates are complete. No
+> production archive/apply, provider call, Gateway call, PG call, merge, push,
+> or production data deletion has occurred.
 
 ## Review And Worktree Boundary
 
@@ -322,3 +324,221 @@ full A/B invariants, resources, scanner, active source catalog, and protected
 runtime boundaries are frozen for the final two-segment review. Tranche 2 may
 now define its RED retirement contracts without modifying Tranche-1-owned
 product files.
+
+## Tranche 2 Result
+
+Tranche 2 was implemented RED-first after the named checkpoint. The product
+tip before review-ready documentation is `387e4a19`. It removes the old local
+IV domain end to end while retaining live option-chain, skew, pure Greeks,
+price, fundamentals, financial-cache, and historical telemetry contracts.
+
+Exact backend composition is:
+
+```text
+base -> TRANCHE_1_TIP    +6/-24  = -18
+TRANCHE_1_TIP -> final  +23/-63  = -40
+base -> final           +29/-87  = -58
+```
+
+The reviewed plan expected Tranche 2 `+22/-63`. Copied-production proof added
+one mutation-sensitive resource-bound node,
+`test_preview_digest_memory_is_bounded_for_large_tables`, making the actual
+composition `+23/-63` without changing product behavior.
+
+Frontend composition is exact:
+
+```text
+base -> TRANCHE_1_TIP   +3/-3
+TRANCHE_1_TIP -> final  +1/-1
+base -> final           +4/-4
+```
+
+Tranche 2 removes:
+
+- the 24-row SQLite `iv_history` table and four equivalent Parquet stores from
+  the active domain contract;
+- the history API, frontend DTO/helper, Ticker Detail IV panel, storage-health
+  projection, evidence-packet block, DAL/backend readers, and obsolete job
+  poller;
+- `get_iv_analysis`, `get_iv_history_data`, and `scan_mispricing` from the
+  registry and both agent bridges;
+- exactly two old-store-coupled scripts,
+  `compare_bs_vs_american.py` and `scan_option_mispricing.py`.
+
+The broader `scripts/` retirement is unchanged. Retained
+`calculate_greeks`, `get_option_chain`, `get_iv_skew_analysis`,
+`src/options_math`, price/fundamental payloads, and all `job_runs` history have
+explicit boundary coverage.
+
+Final non-node ledgers are:
+
+```text
+resources per locale: Settings 704 / Explore 379 / total 1782
+tools: central 53 / OpenAI bridge 54 / Anthropic bridge 54
+no-PG smoke: 23
+scanner: 36/20/0/20, global scope src/**, twice byte-identical
+```
+
+## Migration Tool And Mutation Proof
+
+`scripts/migration/retire_legacy_scheduler_iv.py` implements structured
+`preview`, `apply`, and `restore` operations. The final focused migration suite
+is `17/17` GREEN. Six independent mutations each turn its owning contract RED:
+
+1. remove preview source-fingerprint validation;
+2. permit an incomplete archive;
+3. omit archive artifact-hash verification;
+4. delete before the resumable phase marker is durable;
+5. rewrite on a second apply;
+6. restore over a nonempty target.
+
+The original logical database digest accumulated an entire table before
+hashing. Against the copied 3.3 GB market database it reached roughly 6 GiB
+RSS. The replacement is a deterministic length-framed streaming SHA-256. The
+added memory-bound test is RED against the original implementation; the
+production-shaped preview completed at approximately 124,912 KiB maximum RSS.
+
+No migration command was run against production paths.
+
+## Copied Production-Shaped Migration Proof
+
+The proof used private copies under
+`/tmp/arkscope-legacy-retirement-proof.fZnTtB`; it did not import or write the
+live files. Preview derived the targets rather than treating dated counts as
+acceptance constants:
+
+```text
+IV SQLite rows: 24 across AMD/NVDA/PLTR/PYPL
+IV ID bounds: min 1 / max 248, non-contiguous
+Parquet rows: 9/8/1/6, exact value multiset match with SQLite
+scheduler_state targets: 2
+profile setting targets: 1
+market_sync_meta IV targets: 1
+target job_runs: 1352 (1350 succeeded / 2 failed)
+```
+
+The frozen preview SHA-256 is
+`1ac1d1ab1216a67cfd31f63f14e49dd72e9cced9743b96ee81941194aded8e30`.
+The preserved `job_runs` digest is
+`8a120cf820863fd3c325a5ee4d95a9a8177300307fdc01b625e0428d7a297ecc`.
+
+The archive
+`backups/legacy_scheduler_iv_retirement_20260726T163737963939Z` has eight
+artifacts. Its directory and Parquet directory are mode `0700`; its manifest
+is mode `0600`; every artifact hash was verified before deletion. First apply
+completed, second and third apply returned `already_applied=true`, and the
+second apply left these bytes unchanged:
+
+```text
+profile DB  44904de1b54cb3bb1ff2cff2cf58ff815635b8b675b764674bf655054dc72713
+market DB   2d24e0de7c398e0421f24a42ebc6f934390900b1a1354f4efe1ea2fe4d82af7e
+manifest    e5290995a6a3c2425a732b5708b3c234d83d43957f84197bebaea495bd03517b
+```
+
+Restore ran with exact pre-retirement code from the existing detached base
+worktree. It restored all target rows/files, SQLite/Parquet equality, both DB
+health checks, and all `1352` historical job rows with matching digest. A
+temporary attempt to create another detached worktree stopped because the
+local git-crypt clean filter had no key; no fallback altered tracked or proof
+bytes.
+
+## Canonical Final A/B
+
+Normalized final collections are:
+
+| Gate | Base | Final | Final normalized SHA-256 |
+|---|---:|---:|---|
+| Backend full | 4749 | 4691 | `ed4b7da05db79204dd847d33d0d9f9bb8f6bbef6c756af48cf218a13f3525acf` |
+| Backend focused | 663 | 605 | `4b6e756532ec771c4cef9a43d781b04842621030fc03ed731aaa4bd8dde62121` |
+| Frontend full | 96 files / 1072 | 96 files / 1072 | `71e4785f75ace3d65e40a479ce823897ffbcae0bd27ff1855aef1504905e429e` |
+| Frontend focused | 9 files / 139 | 9 files / 139 | `9c14c42ec1b211e1e6dd8cb7294adbad20a97bad93271f323f540ad9c240ac21` |
+
+Equivalent-environment backend full observations were base
+`4644 passed / 31 failed / 74 skipped` and final
+`4592 passed / 27 failed / 72 skipped`. Final introduces zero new non-passing
+node IDs; the four disappeared failures are retired old-IV nodes. Absolute
+failure counts remain dated environment observations, never allowlists.
+Focused final is `560 passed / 26 failed / 19 skipped`; the original
+Tranche-1 23-file set rerun at final is
+`539 passed / 26 failed / 19 skipped`, proving Tranche 2 did not remove its
+surviving contracts.
+
+Additional final gates:
+
+- frontend full and focused GREEN; TypeScript and production build exit 0;
+- resource parity/counts, scanner, and foundation suites: `43/43` GREEN;
+- scanner hashes remain debt
+  `d6eaaf3e70bd344e8c3bd2d89dcc9818081e2735db9191d31dd5757246868cec`,
+  allowlist
+  `3b397a21ab7f8a1cd37819ae55d892e26f1946dc3c791aebf28d2eba2577c212`,
+  scopes
+  `02e335beec3754557da1d5f260c1fce48f503d5cc06f858dc92ee1134e3fed21`,
+  scanner
+  `c22c7e784c6f1c25587a980ca7b441658f58632a004d117985e765cad70fb8da`;
+- retained option suites: `90 passed / 1 skipped`;
+- no-PG: `23/23`, `ok=true`, no PG attempts;
+- protected N9, option-math, controller, CSS, desktop, extension, and package
+  owners are byte-identical except explicitly authorized files;
+- no new `skip`, `only`, or `todo` markers; `git diff --check` is clean.
+
+## Isolated Bilingual Runtime Gate
+
+An isolated API/Vite pair used copied proof data; the normal desktop/API ports
+were neither stopped nor reused. Settings Data Sources, Settings Data Storage,
+and NVDA Ticker Detail Data were exercised in `zh-Hant` and `en` at 390, 960,
+and 1440 px.
+
+Observed contracts:
+
+- exactly four schedule rows: Polygon, Finnhub, IBKR news, and IBKR prices;
+- no retired schedule label, control, chip, old-IV heading/content, empty IV
+  shell, `/options/NVDA/history` request, or stale IV column;
+- price, news, fundamentals, financial cache, and surviving data content stay
+  present;
+- zero document-level horizontal overflow; narrow schedule tables scroll only
+  inside their owning container;
+- a 390 px locale switch preserves selected Data/Sync tabs, node identity,
+  credential draft, focus, and the four-row schedule without data refetch;
+- screenshots were visually inspected and no CSS change was needed.
+
+The only console errors were expected `503` responses for active-universe and
+coverage data absent from the copied profile. Isolated ports closed after the
+gate; the user's existing app ports remained responsive.
+
+## Production Boundary
+
+The short `mode=ro` checkpoints recorded above prove that the inspection
+queries themselves did not alter live bytes. During the much longer copied
+migration proof, the already-running desktop legitimately advanced the live
+`profile_state.db`; therefore this packet does **not** claim whole-period live
+profile byte identity. `market_data.db` and all four Parquet files remained
+unchanged in that observation. No branch command invoked production migration
+preview/apply/restore, scheduler work, provider work, Gateway work, or PG.
+
+Production archive and deletion remain blocked on independent implementation
+GREEN, merge, explicitly stopped writers, a fresh production preview, and a
+second explicit user approval.
+
+## Review-Ready Result
+
+Both tranches, the migration tool, copied-data restore proof, final A/B,
+technical gates, bilingual runtime matrix, and current-state documentation are
+complete. The branch is intentionally **IMPLEMENTED - INDEPENDENT REVIEW
+PENDING**. It is not merged or pushed, and nothing in this packet authorizes a
+production migration.
+
+After the documentation-only closeout, a final targeted rerun produced:
+
+```text
+migration suite                         17 passed
+frontend focused                        9 files / 139 passed
+resources/scanner/foundation            3 files / 43 passed
+visible-literal scanner, two runs       36/20/0/20 both runs
+tool-count contract                     3 passed; central count 53
+no-PG inventory                         23
+```
+
+The Tranche-2 backend data-dependent subset produced its known fixture-bound
+shape, `370 passed / 26 failed / 19 skipped`; every failure is in the existing
+no-local-market/news-fixture family. This command is a subset of, and must not
+be confused with, the canonical 605-node focused A/B above.
