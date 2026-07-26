@@ -1,10 +1,10 @@
 # Coverage v2 Session-Truth Evidence
 
-> **Status: IMPLEMENTATION REVIEW GREEN - P3 TEST CLOSURE COMPLETE - INTEGRATION PENDING**
+> **Status: LIVE COMPLETE - 2026-07-26 - MERGED PRODUCT `3f0fb18f`**
 >
-> This is a review ledger, not a LIVE declaration. The branch is not merged,
-> no production database was written, and no provider, Gateway, repair, or
-> scheduler action was run.
+> This is the final review and closeout ledger. Product history was
+> fast-forward merged; no production database was written, and no provider,
+> Gateway, repair, or scheduler action was run.
 
 ## Review Boundary
 
@@ -31,13 +31,15 @@
     `db410e096747ffd7f834c9231394fe2d041ec53a`;
   - final optional-diagnostic isolation product tip:
     `cb33a1937b22a593a7da69d096d17dccb2d89733`.
-  - implementation-review follow-up and P3 test closure: verified in the
-    current isolated worktree and intentionally left uncommitted pending
-    integration authorization.
-- Isolated branch/worktree: `codex/coverage-v2-ground-truth` at
-  `/home/hyl/.config/superpowers/worktrees/ArkScope/coverage-v2-ground-truth`.
-- No merge or push was performed. The main repository and its `8430` Vite
-  process were not modified or stopped.
+  - implementation-review follow-up and P3 test closure:
+    `3f0fb18f68fe9218df88fe644a0e282a6fa629ab`.
+- Merged product tip:
+  `3f0fb18f68fe9218df88fe644a0e282a6fa629ab`.
+- At review capture, the isolated branch/worktree was
+  `codex/coverage-v2-ground-truth` at
+  `/home/hyl/.config/superpowers/worktrees/ArkScope/coverage-v2-ground-truth`;
+  no merge or push had yet occurred and the user's `8430` Vite process was not
+  modified or stopped.
 
 ## Plan-Review Accounting Corrections
 
@@ -515,6 +517,35 @@ make each field independently mutation-sensitive.
   `Price Gap Backfill`; the `Read-only` chip, description, and absent controls
   carry current behavior.
 
+## Merged-Tree Closeout
+
+The user authorized integration after independent P3 re-review returned GREEN
+with zero findings. `master` fast-forwarded from `f019f9fa` to reviewed product
+tip `3f0fb18f`; no merge commit was created and no push was performed.
+
+- Backend focused: `230/230` green. Full collection: `4749`, normalized
+  node-list SHA-256
+  `e7dc826f33c202789f8ad5f43787d1eedd8f288cc55aa4996d0a100761a21b20`.
+- Frontend focused: `8 files / 118` green. Frontend full: `96 files / 1072`
+  green.
+- TypeScript typecheck and production build exit zero; the only build message
+  is the existing chunk-size advisory.
+- Scanner ran twice with identical `36/20/0/20` results and `src/**` scope.
+- The no-PG smoke passes all 24 checks with `ok=true` and `pg_attempts=[]`.
+- The merged schedule owner, read against the production profile database,
+  projects `price_backfill` as `control_mode=read_only`, `enabled=false`, with
+  neutral null status/error. The underlying row remains all-null for status,
+  error, continuation, and result; integrity is `ok` and FK violations are
+  zero.
+- The production read compared profile DB `(size, mtime_ns)`
+  `(43196416, 1785065915858367945)` before and after and found it identical.
+  Market DB size and mtime also remained
+  `(3293126656, 1785065915819367768)`. No Settings control, scheduler, repair,
+  provider, or Gateway action was invoked.
+- `git diff --check` is clean. The merged tree is byte-identical to the
+  independently reviewed product tip; the only subsequent changes are these
+  five closeout documents.
+
 ## Cleanup And Review State
 
 - Isolated ports `8467` and `8477` refuse connections after verification.
@@ -522,8 +553,10 @@ make each field independently mutation-sensitive.
 - Browser test pages were closed; no Coverage worktree Vite, uvicorn, Gateway,
   or test process remains.
 - The product worktree was clean at each committed product tip before the
-  documentation update. The implementation-review follow-up and P3 closure
-  remain uncommitted pending integration authorization.
-- Independent implementation review is GREEN. Integration remains unperformed
-  and requires explicit authorization; this packet does not authorize LIVE
-  status, provider work, planner repair, or any production write.
+  documentation update.
+- The Superpowers-owned feature worktree was removed after merged verification;
+  `git branch -d` deleted `codex/coverage-v2-ground-truth` non-forcibly at
+  `3f0fb18f`.
+- Independent implementation and P3 follow-up reviews are GREEN. Coverage v2
+  is LIVE COMPLETE. Provider work, planner repair, and production writes remain
+  outside this unit.
