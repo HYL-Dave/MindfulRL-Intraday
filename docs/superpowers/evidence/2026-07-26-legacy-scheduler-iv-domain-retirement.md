@@ -342,7 +342,7 @@ base -> final           +29/-87  = -58
 
 The reviewed plan expected Tranche 2 `+22/-63`. Copied-production proof added
 one mutation-sensitive resource-bound node,
-`test_preview_digest_memory_is_bounded_for_large_tables`, making the actual
+`test_logical_database_digest_is_memory_bounded`, making the actual
 composition `+23/-63` without changing product behavior.
 
 Frontend composition is exact:
@@ -472,7 +472,7 @@ Additional final gates:
   allowlist
   `3b397a21ab7f8a1cd37819ae55d892e26f1946dc3c791aebf28d2eba2577c212`,
   scopes
-  `02e335beec3754557da1d5f260c1fce48f503d5cc06f858dc92ee1134e3fed21`,
+  `02e335bebcadfba523d502a7af86a5c184d1ac024230cfec9199dd19b4416c13`,
   scanner
   `c22c7e784c6f1c25587a980ca7b441658f58632a004d117985e765cad70fb8da`;
 - retained option suites: `90 passed / 1 skipped`;
