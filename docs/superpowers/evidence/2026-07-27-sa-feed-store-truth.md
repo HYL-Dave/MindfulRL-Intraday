@@ -1,6 +1,6 @@
 # SA Feed Store Truth Evidence
 
-> **Status: IMPLEMENTATION REVIEW GREEN - TEST-CLOSURE RE-REVIEW PENDING - NO PRODUCTION WRITE**
+> **Status: LIVE COMPLETE - MERGED AND READ-ONLY RELEASE GATES GREEN 2026-07-28**
 
 ## 1. Authority And Isolation
 
@@ -316,13 +316,14 @@ Browser runtime exceptions, console errors, and HTTP failures are all empty.
 The matrix summary SHA-256 is
 `3c8f6c881f713386e725f5a5749c5024474f115eed6e96c582a51f1a04f685a3`.
 
-## 12. Review Boundary
+## 12. Pre-Integration Review Boundary
 
-Product tip before this docs commit is `841d7241`. No production smoke,
-restart, capture, database read/write, merge, or push has occurred. The
-separate Alpha Picks availability-alignment follow-up remains open. Independent
-implementation review has returned GREEN; the one-node test-only closure in
-section 13 is the sole re-review gate before integration.
+At review-packet time, product tip before the docs commit was `841d7241`. No
+production smoke, restart, capture, database read/write, merge, or push had
+occurred. Independent implementation review had returned GREEN, and the
+one-node test-only closure in section 13 was the sole re-review gate before
+integration. Section 14 supersedes this historical boundary. The separate
+Alpha Picks availability-alignment follow-up remains open.
 
 ## 13. Independent Review And Test-Only Closure
 
@@ -359,5 +360,70 @@ fixture shape as the reviewed tip is `4623 passed / 27 failed / 72 skipped`;
 its normalized non-passing set remains exact `27/27`, SHA-256
 `236251b45d101896f8de6759dd4e30d4a7624dbc821387ca0e1d3bfde0db6670`,
 new `0`, gone `0`. Frontend and every resource/scanner/tool/no-PG/browser
-boundary remain unchanged. This one-node test/evidence delta is the only
-follow-up re-review scope before integration.
+boundary remain unchanged. At that point, this one-node test/evidence delta
+was the only follow-up re-review scope before integration.
+
+## 14. Merged Release Closeout
+
+Independent test-closure re-review returned GREEN with zero findings. It
+reproduced the final backend collection `4722` with SHA-256
+`fcdb1b7dc197c35d43684e7dde846ea82dc975ca6bb688162e88c5f312d43ff0`,
+focused `108` with SHA-256
+`b0ec2b6ff11187df092011fbbd576b6f004bc9bf077ce8ee1145ec7b970bb5b0`,
+and exact base-to-tip comm `+31/-0`. The matched full run remained
+`4623 passed / 27 failed / 72 skipped`; its `27/27` non-passing node-ID set was
+unchanged. Frontend remained `96/1074`, focused `27`, and every scanner,
+resource, tool, no-PG, build, typecheck, and protected-byte gate was green.
+
+`master` fast-forwarded to reviewed tip `aaee26b7` without a merge commit.
+Fresh merged-tree verification reproduced:
+
+| Gate | Merged result |
+|---|---|
+| Backend full/focused | `4722` / `108`; reviewed hashes exact |
+| Backend focused run | `108 passed` |
+| Frontend full/focused | `96/1074` / `27`; reviewed hashes exact |
+| Frontend focused run | `27 passed` |
+| Resources | Explore `380`, Settings `704`, total `1783` |
+| Scanner, twice | `36 / 20 / 0 / 20` |
+| Tool surfaces | `53/54/54` |
+| no-PG | `23/23`, `ok=true`, `pg_attempts=[]` |
+| Typecheck/build/protected bytes | green |
+
+The direct merged-code positive smoke opened both authorities read-only and
+returned a populated feed (`available=true`, `days=30`, observed `total=5990`,
+two requested rows of the expected feed types). This total is a dated live
+observation, not an acceptance constant. A separate merged-code process kept
+the real profile authority and used absent path
+`/tmp/arkscope-sa-feed-store-truth-20260728T0653Z/sa_capture.db`. It returned
+`available=false`, `empty_reason=store_missing`, normalized `days=3650` and
+`query="private query"`, exposed neither the path nor an `error` field, and
+left both the temporary file and parent absent.
+
+The bilingual semantic UI gate rendered the normal populated News surface:
+
+| Locale | Heading | Dated rendered observation |
+|---|---|---|
+| `zh-Hant` | `新聞·事件` | `共 2,142 筆 · 分析文章 1 · 市場新聞 2,141` |
+| `en` | `News · Events` | `Total 2,142 rows · Analysis article 1 · Market News 2,141` |
+
+Each locale rendered 50 rows, issued one `GET /sa/feed?days=7&limit=50`, issued
+no locale `PUT`, showed no unavailable or empty projection, and produced no
+runtime exception. These row counts are also dated live observations.
+
+During an earlier browser-permission wait, production facts changed because
+the enabled Firefox extension completed scheduled
+`sa_market_news_refresh`/`sa_alpha_picks_refresh` runs with
+`trigger_source='extension'`. They were external live ingestion, not release
+gate writes. After the next extension cycle completed, the final bounded
+pre/UI/post packets compared byte-for-byte equal. Final dated facts were:
+
+| Store | Read-only facts |
+|---|---|
+| `profile_state.db` | size `43757568`, `mtime_ns=1785194189672619832`, integrity `ok`, FK `0`, schema `124`, `job_runs=17864`, SA activity runs `14809`, table digest `5279a74a99c53d77efd03097cc90a71c9eecc3063e7c477b977ab43ba1e98d60` |
+| `sa_capture.db` | size `103309312`, `mtime_ns=1785193900604505383`, integrity `ok`, FK `0`, schema `84`, articles `401`, market news `27060`, ticker links `26568`, table digest `0c14594c8cfa57c762fd46055f1a1c330faff119f12aceb3c5b7cf2f39c16a90` |
+
+No production file was renamed, chmodded, corrupted, replaced, or opened for
+write by the release process. No refresh, recovery, scheduler, provider, or
+repair control was invoked. Alpha Picks availability alignment remains a
+separate open contract.
