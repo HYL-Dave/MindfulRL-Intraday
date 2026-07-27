@@ -1,11 +1,12 @@
 # Legacy Scheduler Sources And IV Domain Retirement Evidence
 
-> **Status: IMPLEMENTED - INDEPENDENT REVIEW PENDING**
+> **Status: MERGED - PRODUCTION RETIREMENT PENDING**
 >
 > Task 0, both implementation tranches, the migration tool, copied-data proof,
-> canonical A/B, and isolated bilingual runtime gates are complete. No
-> production archive/apply, provider call, Gateway call, PG call, merge, push,
-> or production data deletion has occurred.
+> canonical A/B, independent implementation review, fast-forward integration,
+> and merged-tree gates are complete. No production archive/apply,
+> scheduler-triggered provider collection, Gateway call, PG call, push, or
+> production data deletion has occurred.
 
 ## Review And Worktree Boundary
 
@@ -15,6 +16,8 @@
   `5f528475420c8de407125bceb32d94050cfa8e14`.
 - Task 0 authorization tip:
   `0bdd526112f7975ecf13064a96e2e8672fa16667`.
+- Reviewed and merged tip:
+  `28b136d15b6d7207fe592d530a1a8eaf5064b626`.
 - Implementation branch: `codex/legacy-scheduler-iv-retirement`.
 - Isolated worktree:
   `/home/hyl/.config/superpowers/worktrees/ArkScope/legacy-scheduler-iv-retirement`.
@@ -515,17 +518,21 @@ profile byte identity. `market_data.db` and all four Parquet files remained
 unchanged in that observation. No branch command invoked production migration
 preview/apply/restore, scheduler work, provider work, Gateway work, or PG.
 
-Production archive and deletion remain blocked on independent implementation
-GREEN, merge, explicitly stopped writers, a fresh production preview, and a
-second explicit user approval.
+Production archive and deletion remain blocked on explicitly stopped writers,
+a fresh merged-code production preview, and a second explicit user approval
+for that exact manifest.
 
-## Review-Ready Result
+## Merged Verification Result
 
 Both tranches, the migration tool, copied-data restore proof, final A/B,
 technical gates, bilingual runtime matrix, and current-state documentation are
-complete. The branch is intentionally **IMPLEMENTED - INDEPENDENT REVIEW
-PENDING**. It is not merged or pushed, and nothing in this packet authorizes a
-production migration.
+complete. Independent implementation review returned GREEN with zero product
+findings. F1 corrected the migrated-scopes SHA-256 to
+`02e335bebcadfba523d502a7af86a5c184d1ac024230cfec9199dd19b4416c13`;
+F2 corrected the memory-bound node ID to
+`test_logical_database_digest_is_memory_bounded`. Both corrections are
+docs-only. `master` then fast-forwarded from `0bdd5261` to the exact reviewed
+tip `28b136d1`; no merge commit or transformation was introduced.
 
 After the documentation-only closeout, a final targeted rerun produced:
 
@@ -542,3 +549,41 @@ The Tranche-2 backend data-dependent subset produced its known fixture-bound
 shape, `370 passed / 26 failed / 19 skipped`; every failure is in the existing
 no-local-market/news-fixture family. This command is a subset of, and must not
 be confused with, the canonical 605-node focused A/B above.
+
+Fresh merged-tree verification on 2026-07-27 produced:
+
+```text
+backend full environment observation    4629 passed / 9 failed / 53 skipped
+retirement/scheduler/options/no-PG       218 passed / 1 skipped
+frontend full                            96 files / 1072 passed
+frontend typecheck/build                 exit 0 / exit 0
+resources/scanner/foundation             3 files / 43 passed
+visible-literal scanner, two runs        36/20/0/20 both runs
+no-PG runtime smoke                      23 checks / ok=true / pg_attempts=[]
+```
+
+The backend-full absolute result is an environment observation, not an
+allowlist; its nine failures are in pre-existing data/config-dependent suites.
+The independently reviewed canonical base/head node-ID comparison above
+remains the regression authority.
+
+The full pytest command includes pre-existing public provider integration
+tests, so this merged closeout does not repeat the pre-merge claim of zero
+provider HTTP calls. It invoked no scheduler collection or Gateway path. Its
+only new filesystem residue was ignored
+`src/data/cache/risk_free_rate.json`; that generated cache and its empty
+directories were removed before the closeout commit.
+
+A short merged-code production smoke used SQLite URI `mode=ro`, never the
+migration tool. Before/after size and `mtime_ns` were identical for both DBs
+and all four Parquet files. Both DBs returned `integrity_check=ok` and zero FK
+violations. The merged schedule catalog is exactly
+`finnhub_news / ibkr_news / ibkr_prices / polygon_news`. The intentionally
+unmigrated production targets remain visible to the future approved preview:
+24 IV rows, one IV sync row, two scheduler-state rows, one setting row, four
+Parquet files, and preserved job telemetry of
+`collect.local_incremental=1350` plus `collect.price_backfill=2`.
+
+This merged state is **not LIVE COMPLETE** because production retirement has
+not run. Nothing in this packet authorizes preview while writers are active,
+archive creation, apply, or deletion.
