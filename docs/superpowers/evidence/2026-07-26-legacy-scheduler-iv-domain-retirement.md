@@ -1,12 +1,13 @@
 # Legacy Scheduler Sources And IV Domain Retirement Evidence
 
-> **Status: MERGED - PRODUCTION RETIREMENT PENDING**
+> **Status: LIVE COMPLETE - PRODUCTION RETIREMENT APPLIED 2026-07-27**
 >
 > Task 0, both implementation tranches, the migration tool, copied-data proof,
 > canonical A/B, independent implementation review, fast-forward integration,
-> and merged-tree gates are complete. No production archive/apply,
-> scheduler-triggered provider collection, Gateway call, PG call, push, or
-> production data deletion has occurred.
+> merged-tree gates, approval-gated production archive/apply, idempotence,
+> postchecks, restart, and UI smoke are complete. The production migration made
+> no provider, Gateway, or PG call and preserved all reviewed non-target and
+> historical-job digests.
 
 ## Review And Worktree Boundary
 
@@ -508,7 +509,7 @@ The only console errors were expected `503` responses for active-universe and
 coverage data absent from the copied profile. Isolated ports closed after the
 gate; the user's existing app ports remained responsive.
 
-## Production Boundary
+## Pre-Cutover Production Boundary
 
 The short `mode=ro` checkpoints recorded above prove that the inspection
 queries themselves did not alter live bytes. During the much longer copied
@@ -518,9 +519,11 @@ profile byte identity. `market_data.db` and all four Parquet files remained
 unchanged in that observation. No branch command invoked production migration
 preview/apply/restore, scheduler work, provider work, Gateway work, or PG.
 
-Production archive and deletion remain blocked on explicitly stopped writers,
-a fresh merged-code production preview, and a second explicit user approval
-for that exact manifest.
+At this checkpoint, production archive and deletion remained blocked on
+explicitly stopped writers, a fresh merged-code production preview, and a
+second explicit user approval for that exact manifest. The following section
+records the later execution of those gates; this paragraph remains the honest
+boundary of the earlier implementation-review evidence.
 
 ## Merged Verification Result
 
@@ -578,12 +581,88 @@ A short merged-code production smoke used SQLite URI `mode=ro`, never the
 migration tool. Before/after size and `mtime_ns` were identical for both DBs
 and all four Parquet files. Both DBs returned `integrity_check=ok` and zero FK
 violations. The merged schedule catalog is exactly
-`finnhub_news / ibkr_news / ibkr_prices / polygon_news`. The intentionally
-unmigrated production targets remain visible to the future approved preview:
+`finnhub_news / ibkr_news / ibkr_prices / polygon_news`. At that pre-cutover
+checkpoint, the intentionally unmigrated production targets remained visible
+to the future approved preview:
 24 IV rows, one IV sync row, two scheduler-state rows, one setting row, four
 Parquet files, and preserved job telemetry of
 `collect.local_incremental=1350` plus `collect.price_backfill=2`.
 
-This merged state is **not LIVE COMPLETE** because production retirement has
-not run. Nothing in this packet authorizes preview while writers are active,
-archive creation, apply, or deletion.
+## Production Cutover Result (2026-07-27)
+
+The user exited ArkScope desktop and disabled SA auto-sync. Immediately before
+preview and again before apply, process/open-file census found no ArkScope
+writer and no holder of `profile_state.db`, `market_data.db`, or the four IV
+Parquet targets. IBKR Gateway remained open but was never called.
+
+Merged code at `1142ac95ffe682100237b9ab8060b953a74e64e0` generated the
+read-only production preview at
+`/tmp/arkscope-legacy-retirement-production-preview-20260727.json`:
+
+```text
+preview_sha256              0ed0916d2cd165574e7ddbce1dbefe755526ced0aa105e82db34d452814aca0b
+profile targets             scheduler_state=2 / profile_settings=1
+market targets              iv_history=24 / market_sync_meta(iv)=1
+Parquet targets             AMD=9 / NVDA=8 / PLTR=1 / PYPL=6
+SQLite/Parquet multiset     exact match
+profile/market health       integrity=ok / FK violations=0
+preserved target job_runs   1352
+```
+
+The two scheduler rows were `local_incremental` and `price_backfill`; the one
+setting was `schedule.local_incremental.enabled=false`. The 24 non-contiguous
+IV IDs were `1-11,27,32,36,70,76,81,190,197,203,211,233,241,248`, covering
+AMD, NVDA, PLTR, and PYPL from 2026-01-30 through 2026-03-06. Preview left the
+size and `mtime` of both databases and all four Parquet files unchanged. The
+user then explicitly approved this exact SHA.
+
+Apply created the rollback archive:
+
+```text
+archive       data/backups/legacy_scheduler_iv_retirement_20260727T123347933126Z/
+manifest sha  30c01ea8fd009a3d47c5ac96ffd4dd9b0282a1adef03faafb91c3dd50dd92fad
+directory     mode 0700
+artifacts     mode 0600; every manifest SHA-256 independently verified
+```
+
+The first apply returned `phase=complete`; a second invocation returned
+`already_applied=true`, `resumed_from=complete`. Independent postchecks found
+the scheduler/settings targets absent, `iv_history` absent, IV sync metadata
+absent, and the Parquet directory empty. Both databases remained integrity
+clean with zero FK violations. The preserved target-job digest remained
+`8a120cf820863fd3c325a5ee4d95a9a8177300307fdc01b625e0428d7a297ecc`;
+profile and market non-target digests remained
+`07ce9321a512d6afa9e30c7a880e48012ea1a6009dbf549bfc8c21aff9d19817`
+and `de9478692e6f57915ebbf7d6ed9279c8cc20632fa313c73808020b902fd15706`.
+The runtime source catalog was exactly
+`polygon_news/finnhub_news/ibkr_news/ibkr_prices`; scheduler plus retained
+option/Greeks/skew suites passed `174 passed / 1 skipped`. After restart, the
+user confirmed the retired Settings rows and legacy IV surface were absent.
+
+Rollback requires all ArkScope writers stopped and code checked out at
+`7bb7cc29f70ca899a5b598f2322ce181daa17ebe`; invoke the merged migration tool
+in `restore` mode with the archive above, production DB/file paths, that old
+checkout as `--repo-root`, and the same commit as
+`--expected-current-commit`. The archive is rollback material only and must
+never seed a future IV design.
+
+Exact restore runbook, to be used only after an explicit rollback decision:
+
+```bash
+git worktree add --detach /tmp/arkscope-legacy-retirement-restore \
+  7bb7cc29f70ca899a5b598f2322ce181daa17ebe
+
+/home/hyl/.virtualenvs/llm_app/bin/python \
+  scripts/migration/retire_legacy_scheduler_iv.py restore \
+  --archive-dir data/backups/legacy_scheduler_iv_retirement_20260727T123347933126Z \
+  --profile-db data/profile_state.db \
+  --market-db data/market_data.db \
+  --iv-parquet-dir data/options/iv_history \
+  --repo-root /tmp/arkscope-legacy-retirement-restore \
+  --expected-current-commit 7bb7cc29f70ca899a5b598f2322ce181daa17ebe \
+  --output /tmp/arkscope-legacy-retirement-production-restore.json
+```
+
+After a successful restore, the runtime itself must use the reviewed old
+checkout; restoring the payload while continuing to run the retired product
+code is not a rollback.
