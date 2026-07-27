@@ -1,6 +1,6 @@
 # SA Feed Store Truth Evidence
 
-> **Status: IMPLEMENTATION REVIEW-READY - NO PRODUCTION WRITE - INDEPENDENT REVIEW PENDING**
+> **Status: IMPLEMENTATION REVIEW GREEN - TEST-CLOSURE RE-REVIEW PENDING - NO PRODUCTION WRITE**
 
 ## 1. Authority And Isolation
 
@@ -186,8 +186,8 @@ Normalized final collections and hashes:
 
 | Gate | Base | Review-ready tip | Comm |
 |---|---|---|---|
-| Backend full | `4691`; `ed4b7da05db79204dd847d33d0d9f9bb8f6bbef6c756af48cf218a13f3525acf` | `4721`; `7a5772f620b069ec120d3fb3979480a4895b22a1ad323f018363c33d738efa0a` | `+30/-0` |
-| Backend focused | `77`; `34a30e6d54c108fadfe4e0425d863c9a6fbfaf1b7f10a93ee82f53d380d3eb2a` | `107`; `e78346527e19ae66efcccf9b3705dee94990d08a64719b38dda0260ad69d6b1a` | `+30/-0` |
+| Backend full | `4691`; `ed4b7da05db79204dd847d33d0d9f9bb8f6bbef6c756af48cf218a13f3525acf` | `4722`; `fcdb1b7dc197c35d43684e7dde846ea82dc975ca6bb688162e88c5f312d43ff0` | `+31/-0` |
+| Backend focused | `77`; `34a30e6d54c108fadfe4e0425d863c9a6fbfaf1b7f10a93ee82f53d380d3eb2a` | `108`; `b0ec2b6ff11187df092011fbbd576b6f004bc9bf077ce8ee1145ec7b970bb5b0` | `+31/-0` |
 | Frontend full | `96/1072`; `71e4785f75ace3d65e40a479ce823897ffbcae0bd27ff1855aef1504905e429e` | `96/1074`; `e322e7a51e83eedb8b3c7b1fd99e6033f496031968c1a2cb3f59974bfd994f47` | `+2/-0` |
 | Frontend focused | `25`; `086cce183d540193a966a61148f6e7a9e6c2177a8ebecd49bb71c2c1cfc6d892` | `27`; `ac6bb12b93f3cb27ff84d534d3f3b88153b6bc935a3c5bd449395c751f95b286` | `+2/-0` |
 
@@ -224,6 +224,7 @@ tests/test_sa_feed.py::test_missing_store_without_profile_is_not_created_and_cre
 tests/test_sa_feed.py::test_post_validation_query_failure_is_typed_sanitized_and_preserves_request
 tests/test_sa_feed.py::test_route_returns_typed_200_for_every_unavailable_store_reason
 tests/test_sa_feed.py::test_sa_store_open_failure_is_unreadable_and_sanitized
+tests/test_sa_feed.py::test_unexpected_internal_failure_is_typed_sanitized_and_preserves_request
 ```
 
 The exact frontend additions are:
@@ -255,7 +256,7 @@ The reusable SQLite fixture retained exact size, `mtime_ns`, SHA-256,
 `schema_version`, table names, integrity, FK result, and relevant row counts.
 No absent parent or database appeared.
 
-Focused backend is `107 passed`; focused frontend is `27 passed`; frontend
+Focused backend is `108 passed`; focused frontend is `27 passed`; frontend
 full is `96 files / 1074 passed`. Typecheck and build exit `0` (the existing
 chunk-size warning remains informational). Scanner runs twice at exact
 `36/20/0/20`, scope `src/**`.
@@ -267,12 +268,14 @@ that sandbox reproduced both sides:
 | Tree | Passed | Failed | Skipped |
 |---|---:|---:|---:|
 | base | 4592 | 27 | 72 |
-| tip | 4622 | 27 | 72 |
+| tip | 4623 | 27 | 72 |
 
 The normalized non-passing node-ID set is byte-identical: `27/27`, SHA-256
 `236251b45d101896f8de6759dd4e30d4a7624dbc821387ca0e1d3bfde0db6670`,
 new `0`, gone `0`. Absolute failure totals are environment observations, not
-an allowlist. The exact passing delta is `+30`.
+an allowlist. Before the test-only review closure, the exact passing delta was
+`+30`; after the closure the exact passing delta and collection delta are both
+`+31`.
 
 Tool counts are `53/54/54`; no-PG inventory and runtime smoke are `23/23`,
 `ok=true`, `pg_attempts=[]`. The protected paths and directory families in
@@ -318,4 +321,43 @@ The matrix summary SHA-256 is
 Product tip before this docs commit is `841d7241`. No production smoke,
 restart, capture, database read/write, merge, or push has occurred. The
 separate Alpha Picks availability-alignment follow-up remains open. Independent
-implementation review is the sole next gate.
+implementation review has returned GREEN; the one-node test-only closure in
+section 13 is the sole re-review gate before integration.
+
+## 13. Independent Review And Test-Only Closure
+
+Independent implementation review of `664635a5` returned GREEN with zero
+required product changes. It independently reproduced all four collection
+hashes, exact `+30/-0` and `+2/-0` comm, the nine-row response contract,
+seven activity-name mutations, resource/scanner/tool/no-PG gates, and protected
+boundaries.
+
+The sole advisory identified a reachable but unpinned outer `get_sa_feed`
+catch-all. The inner post-validation query seam already had safe-fallback
+coverage; a failure while reading the backend `_sa_db` property reached the
+outer fallback, whose old implementation had owned both fixed `days=30` and
+raw `error=str(e)` behavior.
+
+One test-only node now drives that exact outer path:
+
+```text
+tests/test_sa_feed.py::test_unexpected_internal_failure_is_typed_sanitized_and_preserves_request
+```
+
+It requires normalized `days=3650`, `query="private query"`, typed
+`store_query_failed`, and no raw marker or `error` field. Two independent RED
+probes were observed before restoration:
+
+1. replacing normalized days with `30` failed at `30 != 3650`;
+2. adding `result["error"] = str(e)` failed the no-diagnostic assertion.
+
+The restored reviewed product source is byte-identical to `841d7241`; only
+`tests/test_sa_feed.py` changes. Focused backend is `108/108`. Final backend
+collection accounting is `4691 -> 4722`, exact `+31/-0`, with hashes recorded
+in section 9. A credential-free, network-denied full run in the same empty-data
+fixture shape as the reviewed tip is `4623 passed / 27 failed / 72 skipped`;
+its normalized non-passing set remains exact `27/27`, SHA-256
+`236251b45d101896f8de6759dd4e30d4a7624dbc821387ca0e1d3bfde0db6670`,
+new `0`, gone `0`. Frontend and every resource/scanner/tool/no-PG/browser
+boundary remain unchanged. This one-node test/evidence delta is the only
+follow-up re-review scope before integration.
