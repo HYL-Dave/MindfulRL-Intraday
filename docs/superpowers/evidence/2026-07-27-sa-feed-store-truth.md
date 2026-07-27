@@ -1,6 +1,6 @@
 # SA Feed Store Truth Evidence
 
-> **Status: IMPLEMENTATION IN PROGRESS - NO PRODUCTION WRITE - INDEPENDENT REVIEW PENDING**
+> **Status: IMPLEMENTATION REVIEW-READY - NO PRODUCTION WRITE - INDEPENDENT REVIEW PENDING**
 
 ## 1. Authority And Isolation
 
@@ -92,3 +92,230 @@ and `tokens.css`. Before product work, the plan was corrected to the current
 owners `src/ui/primitives.css`, `src/shell/shell.css`, and
 `src/ui/tokens.{ts,json}`; the nonexistent manifest path was removed. This is a
 docs-only gate repair with no product, node, resource, or scope change.
+
+## 5. Task 1 - No-Create History Reader
+
+The five named RED nodes failed because `read_job_activity_if_exists` did not
+exist, rather than because a fixture touched the real profile path. The
+implementation opens only an existing SQLite target using URI `mode=ro`,
+checks `sqlite_master`, parameterizes the activity names, and returns only
+`none | present | unknown`.
+
+The resulting `tests/test_job_runs.py` collection is `68/68`. Mutation probes
+proved both load-bearing properties:
+
+- replacing the primitive with `JobRunsLocalStore(db_path)` created evidence
+  and turned the missing-profile no-create node red; and
+- adding a succeeded-status or timestamp-style restriction turned the
+  relevant-row/history-contract coverage red.
+
+Task commit: `ec5e406e feat: add no-create SA activity history reader`.
+
+## 6. Task 2 - Ordered Missing-Store Classification
+
+One immutable owner now lists the seven reviewed SA activity job names. Seven
+separately named tests each seed `running`, `succeeded`, and `failed`, proving
+that activity status does not alter prior-activity truth. A separate
+completeness node derives the current union from extension operations,
+SA-enabled service jobs, and the audited repair owner.
+
+The checkpoint reached `69` job-history plus `25` feed nodes (`94/94`). The
+following independent mutations turned reviewed nodes red before restoration:
+
+- removing any one immutable owner name;
+- changing a named fixture to an unrelated activity;
+- filtering history to succeeded rows;
+- constructing the mutating local store in the feed path; and
+- moving history/filesystem inspection ahead of `requires_local_sa`.
+
+Task commit: `e5d919fc feat: classify absent SA feed storage honestly`.
+
+## 7. Task 3 - Read-Only Store Capability And Query
+
+The store classifier now owns one direct SQLite URI read-only connection for
+open, required-capability inspection, and the existing feed query. The global
+SA connector remains byte-identical. Required ordinary tables, both FTS
+tables, and required columns are capability-checked; additive schema remains
+valid. Directory, broken-symlink, malformed/open-race, missing-table,
+missing-column, and post-validation query failures each receive their reviewed
+typed reason without path or raw SQLite prose.
+
+The added FastAPI transport node proves every unavailable reason remains an
+HTTP `200` typed response. The evolved route node separately preserves
+feature-disabled `503` and populated behavior. Job-history plus feed tests are
+`107/107`.
+
+Independent mutation probes turned the intended nodes red for:
+
+- routing the missing/race path through the global connector;
+- omitting either FTS capability for a request without `q`;
+- treating additive columns as incompatible;
+- projecting a post-validation failure as valid empty; and
+- passing `str(exc)` into the feed response.
+
+Task commit:
+`ba6f2852 feat: derive SA feed truth from read-only store capability`.
+
+## 8. Task 4 - Closed Frontend Presentation
+
+Initial mounted RED produced exactly five failing assertions: the exhaustive
+reason classifier, neutral first-run copy, unavailable statistics/rows, and
+the two resource-count assertions. The final implementation uses a closed
+`SAFeedEmptyReason` union plus an exhaustive `switch` and
+`unreachableSAFeedReason(value: never)`; no `Set.has()` classifier or CSS was
+added.
+
+Adversarial unavailable fixtures carry positive totals, facets, rows, and
+pagination potential. Mounted tests prove that all four claim surfaces are
+suppressed by `feed.available`, while valid-empty and populated behavior stay
+visible. Bilingual copy and Data Sources recovery ownership are exact.
+
+Focused frontend verification is `27/27`. Resource inventories are Explore
+`380`, Settings `704`, total `1783`; the Explore News subtree is `44`. Both
+locales have exact key parity and no empty leaf.
+
+The four rendering-gate removals independently turned the mounted visibility
+node red. Adding a synthetic `future_reason` to the TypeScript union turned
+typecheck red at the `never` boundary. All mutations were restored.
+
+Task commit: `841d7241 fix: present unavailable SA feed states truthfully`.
+
+## 9. Canonical Final Accounting
+
+Normalized final collections and hashes:
+
+| Gate | Base | Review-ready tip | Comm |
+|---|---|---|---|
+| Backend full | `4691`; `ed4b7da05db79204dd847d33d0d9f9bb8f6bbef6c756af48cf218a13f3525acf` | `4721`; `7a5772f620b069ec120d3fb3979480a4895b22a1ad323f018363c33d738efa0a` | `+30/-0` |
+| Backend focused | `77`; `34a30e6d54c108fadfe4e0425d863c9a6fbfaf1b7f10a93ee82f53d380d3eb2a` | `107`; `e78346527e19ae66efcccf9b3705dee94990d08a64719b38dda0260ad69d6b1a` | `+30/-0` |
+| Frontend full | `96/1072`; `71e4785f75ace3d65e40a479ce823897ffbcae0bd27ff1855aef1504905e429e` | `96/1074`; `e322e7a51e83eedb8b3c7b1fd99e6033f496031968c1a2cb3f59974bfd994f47` | `+2/-0` |
+| Frontend focused | `25`; `086cce183d540193a966a61148f6e7a9e6c2177a8ebecd49bb71c2c1cfc6d892` | `27`; `ac6bb12b93f3cb27ff84d534d3f3b88153b6bc935a3c5bd449395c751f95b286` | `+2/-0` |
+
+The exact backend additions are:
+
+```text
+tests/test_job_runs.py::test_read_job_activity_if_exists_distinguishes_relevant_and_unrelated_rows
+tests/test_job_runs.py::test_read_job_activity_if_exists_missing_profile_is_none_and_no_create
+tests/test_job_runs.py::test_read_job_activity_if_exists_missing_table_is_none_and_no_mutation
+tests/test_job_runs.py::test_read_job_activity_if_exists_unreadable_or_malformed_is_unknown
+tests/test_job_runs.py::test_sa_store_activity_job_names_cover_all_current_authorities
+tests/test_job_runs.py::test_sa_store_history_contract_has_no_pruning_or_time_cutoff
+tests/test_sa_feed.py::test_backend_unavailable_precedes_store_and_history_checks
+tests/test_sa_feed.py::test_broken_symlink_sa_store_is_unreadable
+tests/test_sa_feed.py::test_directory_sa_store_is_unreadable
+tests/test_sa_feed.py::test_extra_feed_schema_remains_compatible
+tests/test_sa_feed.py::test_malformed_sa_store_is_unreadable
+tests/test_sa_feed.py::test_missing_required_feed_column_is_schema_incompatible
+tests/test_sa_feed.py::test_missing_required_feed_table_is_schema_incompatible[sa_articles]
+tests/test_sa_feed.py::test_missing_required_feed_table_is_schema_incompatible[sa_articles_fts]
+tests/test_sa_feed.py::test_missing_required_feed_table_is_schema_incompatible[sa_market_news]
+tests/test_sa_feed.py::test_missing_required_feed_table_is_schema_incompatible[sa_market_news_fts]
+tests/test_sa_feed.py::test_missing_required_feed_table_is_schema_incompatible[sa_market_news_tickers]
+tests/test_sa_feed.py::test_missing_store_history_extract_sa_comment_signals_is_missing
+tests/test_sa_feed.py::test_missing_store_history_sa_alpha_picks_refresh_is_missing
+tests/test_sa_feed.py::test_missing_store_history_sa_extension_manual_fetch_is_missing
+tests/test_sa_feed.py::test_missing_store_history_sa_market_news_incident_recovery_is_missing
+tests/test_sa_feed.py::test_missing_store_history_sa_market_news_refresh_is_missing
+tests/test_sa_feed.py::test_missing_store_history_sa_market_news_repair_is_missing
+tests/test_sa_feed.py::test_missing_store_history_sa_market_news_retry_recorded_is_missing
+tests/test_sa_feed.py::test_missing_store_with_empty_profile_is_not_created_without_mutation
+tests/test_sa_feed.py::test_missing_store_with_unreadable_history_fails_closed_as_missing
+tests/test_sa_feed.py::test_missing_store_without_profile_is_not_created_and_creates_nothing
+tests/test_sa_feed.py::test_post_validation_query_failure_is_typed_sanitized_and_preserves_request
+tests/test_sa_feed.py::test_route_returns_typed_200_for_every_unavailable_store_reason
+tests/test_sa_feed.py::test_sa_store_open_failure_is_unreadable_and_sanitized
+```
+
+The exact frontend additions are:
+
+```text
+src/News.test.tsx<TAB>News localization > hides all feed claims and controls for every unavailable SA reason
+src/News.test.tsx<TAB>News localization > renders typed SA store availability copy in both locales
+```
+
+No backend or frontend node was removed.
+
+## 10. Runtime And Full Verification
+
+The isolated no-create matrix returned `ok=true` for all reviewed states:
+
+```text
+no SA + no profile              -> store_not_created, no path created
+no SA + empty profile           -> store_not_created, profile preserved
+seven activities x three states -> store_missing
+malformed/directory profile     -> store_missing, fail closed
+directory/broken/malformed SA   -> store_unreadable
+missing table/column            -> store_schema_incompatible
+compatible additive empty       -> available=true/no_items_in_window
+compatible populated            -> one normal projected result
+injected post-validation error  -> store_query_failed
+```
+
+The reusable SQLite fixture retained exact size, `mtime_ns`, SHA-256,
+`schema_version`, table names, integrity, FK result, and relevant row counts.
+No absent parent or database appeared.
+
+Focused backend is `107 passed`; focused frontend is `27 passed`; frontend
+full is `96 files / 1074 passed`. Typecheck and build exit `0` (the existing
+chunk-size warning remains informational). Scanner runs twice at exact
+`36/20/0/20`, scope `src/**`.
+
+The sandboxed backend full run stalled symmetrically at the existing FastAPI
+`TestClient` portal boundary. A credential-free, network-denied run outside
+that sandbox reproduced both sides:
+
+| Tree | Passed | Failed | Skipped |
+|---|---:|---:|---:|
+| base | 4592 | 27 | 72 |
+| tip | 4622 | 27 | 72 |
+
+The normalized non-passing node-ID set is byte-identical: `27/27`, SHA-256
+`236251b45d101896f8de6759dd4e30d4a7624dbc821387ca0e1d3bfde0db6670`,
+new `0`, gone `0`. Absolute failure totals are environment observations, not
+an allowlist. The exact passing delta is `+30`.
+
+Tool counts are `53/54/54`; no-PG inventory and runtime smoke are `23/23`,
+`ok=true`, `pg_attempts=[]`. The protected paths and directory families in
+the plan are byte-identical to clearance. Scanner artifact hashes remain those
+in section 3.
+
+## 11. Isolated Browser Evidence
+
+Google Chrome `150.0.7871.128` ran against an isolated Vite instance. A
+browser-local closed fetch fixture intercepted every non-Vite request; no
+sidecar, production DB, extension, provider, scheduler, or repair action was
+reachable.
+
+The matrix covered both `zh-Hant` and `en`, four states
+(`not_created/degraded/empty/populated`), and `390/960/1440` CSS pixels: `24`
+cases and `25` screenshots including the locale-purity witness. Unavailable
+fixtures deliberately contained `total=9`, nonempty facets, two rows, and
+pagination potential. Every unavailable case rendered zero statistics, rows,
+valid-empty copy, and Load More controls. The neutral/degraded copy and Data
+Sources action were exact. Valid empty rendered its zero statistic and empty
+copy without a recovery action; populated rendered two rows unchanged. Every
+case had zero document/body horizontal overflow.
+
+An in-place initialized-i18next switch from `zh-Hant` to `en` preserved:
+
+```text
+SA feed calls       3 -> 3
+mode                sa -> sa
+query               retained query -> retained query
+ticker input        nvda -> nvda
+mode DOM identity   preserved
+first-row identity  preserved
+focus               preserved
+document lang       en
+```
+
+Browser runtime exceptions, console errors, and HTTP failures are all empty.
+The matrix summary SHA-256 is
+`3c8f6c881f713386e725f5a5749c5024474f115eed6e96c582a51f1a04f685a3`.
+
+## 12. Review Boundary
+
+Product tip before this docs commit is `841d7241`. No production smoke,
+restart, capture, database read/write, merge, or push has occurred. The
+separate Alpha Picks availability-alignment follow-up remains open. Independent
+implementation review is the sole next gate.
