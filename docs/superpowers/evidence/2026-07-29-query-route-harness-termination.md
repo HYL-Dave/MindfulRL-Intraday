@@ -1,10 +1,12 @@
 # Query Route Harness Lifespan-Exposure Reduction Evidence
 
-> **Status:** TASK 0 GROUNDED - STRUCTURAL RED NEXT
+> **Status:** REVIEW READY - INDEPENDENT IMPLEMENTATION REVIEW NEXT
 >
 > **Product base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 >
 > **Plan-review clearance:** `db7f2240399f8de31cab1bd4007ac995d213780b`
+>
+> **Implementation commit:** `31230232f09b39c966e21645b01637f28aa80e27`
 >
 > **Observed:** 2026-07-29 Asia/Taipei
 
@@ -92,6 +94,12 @@ The bounded repetition completed 20 iterations within the 120-second outer
 limit. Every iteration returned `2 passed` in approximately 1.85-1.93 seconds:
 `40/40` owned-node executions passed with no stall.
 
+After the implementation commit, the complete source/target/repetition gate
+was run again. The source gate exited `0`, the direct result was
+`2 passed in 1.87s`, and the second 20-iteration set passed `40/40` at
+approximately 1.85-1.99 seconds. Across the two bounded repetition gates,
+`80/80` repeated owned-node executions passed.
+
 Post-edit collection results are byte-identical to Section 2:
 
 | Collection | Count | SHA-256 | Base/tip `comm -3` |
@@ -155,12 +163,48 @@ The isolated `data/` directory contained no files before or after the run, so
 no fixture move was needed. No production path was read, moved, or compared by
 basename.
 
+The implementation-tip full suite used the same instrumented command. Both
+owned nodes passed in the captured transcript:
+
+```text
+tests/test_agents.py::TestQueryEndpoint::test_providers_endpoint PASSED
+tests/test_agents.py::TestQueryEndpoint::test_query_endpoint_bad_provider PASSED
+```
+
+The run then stopped at the next full-app lifespan family:
+
+```text
+tests/test_api.py::TestHealth::test_status
+```
+
+Its 120-second dump again placed the pytest thread in
+`starlette.testclient.TestClient.__enter__`, this time from
+`tests/test_api.py:41`, while the AnyIO portal thread remained in asyncio
+`select()`. The operator interrupted after the dump. No pytest process or
+worktree data file remained.
+
+Tip transcript identity:
+
+```text
+path: /tmp/query-harness-tip-full.txt
+lines: 204
+bytes: 18894
+SHA-256: 89f7435d6510d058061110481ba21bc5f377e40dde24610bfee141c901875cce
+```
+
+This is the spec-permitted different-node diagnostic stop. It proves the two
+owned nodes no longer expose the suite to the first observed lifespan stall;
+it also proves that full-suite termination remains globally unresolved. The
+tip transcript is partial, so no tip non-passing set or base/tip failure-set
+comparison is claimed.
+
 ## 7. Protected Boundaries
 
-Task 0 changed no product source, test, frontend, `conftest.py`, adjacent
-`TestClient` family, data file, provider, Gateway, scheduler, or production
-state. Protected-byte verification belongs to final Task 2 after the one
-authorized test edit.
+Final `git diff --quiet` checks returned `0` for all product paths and for
+`conftest.py` plus the five adjacent `TestClient` families. The complete
+branch delta from reviewed spec tip `3216c1b9` contains only the owned test and
+four authority documents. No frontend, data file, provider, Gateway,
+scheduler, browser, or production state changed.
 
 ## 8. Node Accounting
 
@@ -170,5 +214,6 @@ both directions.
 
 ## 9. Integration
 
-Not started. Merge, main-worktree changes, price-truth rebase, and price
-product RED remain unauthorized.
+The implementation is review-ready. Merge, main-worktree changes, price-truth
+rebase, and price product RED remain unauthorized pending independent
+implementation review and explicit user approval.
