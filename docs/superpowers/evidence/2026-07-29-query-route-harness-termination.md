@@ -58,13 +58,47 @@ the incident deterministic across environments.
 
 ## 4. Structural RED
 
-Not run yet. Product/test edits remain unauthorized until the plan-owned
-source-boundary command fails specifically because `TestQueryEndpoint` still
-contains `TestClient`.
+Before the test edit, the plan-owned source-boundary command inspected only the
+region between the unique API-endpoint and registry banners. It exited `1`
+with the exact expected failure:
+
+```text
+AssertionError: TestQueryEndpoint still enters the full-app harness via TestClient
+```
+
+There was no import, SQLite, profile, provider, or timeout failure. This is the
+required structural RED; the existing runtime nodes were not misrepresented as
+RED because their old harness was already intermittently capable of passing.
 
 ## 5. GREEN And Repetition
 
-Not started.
+The single owned test edit is `+39/-13` in `tests/test_agents.py`. It replaces
+the class's full-app fixture with the reviewed minimal FastAPI app, real query
+router, async DAL sentinel, deterministic personalization stub,
+`ASGITransport`, and synchronous `asyncio.run()` shell. Existing method names
+and assertions remain in place.
+
+The strengthened source gate requires the reviewed transport/router/override
+shape while forbidding `TestClient`, `create_app`, and `run_in_threadpool` in
+the owned region. It exited `0`.
+
+The two owned nodes then returned:
+
+```text
+2 passed in 1.92s
+```
+
+The bounded repetition completed 20 iterations within the 120-second outer
+limit. Every iteration returned `2 passed` in approximately 1.85-1.93 seconds:
+`40/40` owned-node executions passed with no stall.
+
+Post-edit collection results are byte-identical to Section 2:
+
+| Collection | Count | SHA-256 | Base/tip `comm -3` |
+|---|---:|---|---|
+| backend full | `4722` | `fcdb1b7dc197c35d43684e7dde846ea82dc975ca6bb688162e88c5f312d43ff0` | empty |
+| `tests/test_agents.py` | `31` | `78d7cdbebb60be09616fa13f3a8b85d42373fe46e4ac896d28d7c9900cf48f1e` | empty |
+| `TestQueryEndpoint` | `2` | `5e1e62ac3baf8d2d47558d3c43679ab4423cf6eb842e3c68edea447433adf4f7` | empty |
 
 ## 6. Full-Suite Diagnostics
 
@@ -130,8 +164,9 @@ authorized test edit.
 
 ## 8. Node Accounting
 
-Current accounting remains exact `+0/-0`. The three base streams in Section 2
-are the comparison authorities for the implementation tip.
+Accounting is exact `+0/-0`. Both owned IDs survive exactly once, no helper was
+collected, and the full/agents/owned normalized streams are byte-identical in
+both directions.
 
 ## 9. Integration
 
