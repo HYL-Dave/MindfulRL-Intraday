@@ -1,13 +1,17 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: TASK 0 BLOCKED - FULL-SUITE BASELINE HANG**
+> **Status: HARNESS HANDOFF COMPLETE - TASK 0 RESTART PENDING FOCUSED PLAN CONFIRMATION**
 >
-> **Product base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
+> **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
+> **Restart base:** `2edf12e11a8ff9299a9b65b900309c8ed218b717`
 > **Plan-review clearance:** `15933c316a68efd7e503f2778aba68affa2cb4c1`
 > **Observed:** 2026-07-29 Asia/Taipei
 
-Task 0 stopped under plan Stop Condition 11. No product file was edited and no
-partial full-suite output is accepted as an A/B baseline.
+The historical Task 0 attempt stopped under plan Stop Condition 11. No product
+file was edited and no partial full-suite output is accepted as an A/B
+baseline. The reviewed query-route harness is now merged and this branch is
+rebased, but Task 0 has not restarted: focused confirmation of the two-command
+diagnostic amendment is the next gate.
 
 ## 1. Scope And Authorities
 
@@ -16,9 +20,11 @@ partial full-suite output is accepted as an A/B baseline.
 - Implementation authority:
   `docs/superpowers/plans/2026-07-28-price-collection-partial-truth.md`.
 - Clearance branch: `codex/price-collection-truth`.
-- `542776c2` is an ancestor of the clearance commit.
-- The only paths changed from the product base at clearance were the design
-  spec, implementation plan, and priority map.
+- `542776c2` remains the historical blocked-run base.
+- Reviewed harness tip `2edf12e1` is the restart base and an ancestor of the
+  rebased branch.
+- The merged harness changes only `tests/test_agents.py` plus its authority
+  documents; the rebased price-truth delta from `2edf12e1` is docs-only.
 - Main-worktree drafts
   `docs/data/IBKR_PACING_AND_ERROR_SEMANTICS.md` and
   `docs/design/SCRIPTS_RETIREMENT_DECISION.md` remained untracked and were not
@@ -134,11 +140,24 @@ existing `Settings provider config authority` describe prefix, matching both
 predicted hashes. The 26-slot advisory now requires the exact temporary
 mutation diff in this packet when implementation eventually proceeds.
 
-The next decision must resolve the full-suite baseline hang or formally amend
-the A/B protocol through review. Silently excluding the node, accepting the
-partial transcript, or starting product RED is prohibited.
+Independent harness implementation review returned GREEN for
+`db7f2240..2edf12e1`; `master` then fast-forwarded to exact reviewed tip
+`2edf12e1`. Merged verification reproduced full `4722/fcdb1b7d...`, agents
+`31/78d7cdbe...`, owned `2/5e1e62ac...`, and `2 passed`. The price branch was
+rebased while preserving both reviewed priority-map histories.
+
+The historical blocker at `test_providers_endpoint` is structurally removed,
+but the instrumented harness tip later stopped at untouched
+`tests/test_api.py::TestHealth::test_status`. Therefore the plan does not claim
+global full-suite termination and does not waive Stop Condition 11. Exactly
+the Task 0 Step 5 and Task 5 Step 3 full-suite commands now set
+`faulthandler_timeout=120`; it emits thread stacks but does not terminate
+pytest. Focused plan confirmation must precede a complete Task 0 restart from
+Step 1. Silently excluding a node, accepting partial output, or starting
+product RED before that restart closes remains prohibited.
 
 ## 10. Integration And Read-Only Release Observation
 
-Not started. Merge, provider calls, production writes, repair, browser work,
-and release observation remain unauthorized.
+The harness prerequisite is merged; price-truth product integration is not
+started. Provider calls, production writes, repair, browser work, and release
+observation remain unauthorized.
