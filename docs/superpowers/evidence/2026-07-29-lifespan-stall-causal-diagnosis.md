@@ -1,6 +1,6 @@
 # Full-Suite Lifespan Stall Causal Diagnosis Evidence
 
-> **Status:** DIAGNOSIS REVIEW-READY - INDEPENDENT REVIEW NEXT
+> **Status:** DIAGNOSIS REVIEW GREEN - CLOSEOUT REVIEW NEXT
 >
 > **Observed:** 2026-07-29 Asia/Taipei
 >
@@ -308,9 +308,9 @@ Any later fix proposal must answer the approved four-question gate:
 4. **Ownership:** If product code remains, who owns the side effect and its
    revalidation trigger?
 
-The next gate is independent reconstruction and review of this diagnosis.
-Only after that review may a separate decision authorize more diagnosis or a
-fix.
+This packet's next gate was independent reconstruction from raw records. That
+review completed GREEN with zero findings; the post-review observations and
+the user's selected direction are partitioned in Section 13.
 
 ## 11. Deviations And Untested Questions
 
@@ -383,5 +383,123 @@ git -C /tmp/arkscope-price-collection-truth status --short
 find /tmp/arkscope-lifespan-stall-diagnosis/data -type f -o -type l
 ```
 
-The independent review must reconstruct from raw `record.json` files and not
-accept this prose as the primary evidence.
+The completed independent review reconstructed from raw `record.json` files
+rather than accepting this prose as primary evidence.
+
+## 13. Post-Review Addendum
+
+This section is not part of the frozen 80-trial matrix, its summaries, or its
+345-entry manifest. It records later observations without rewriting Sections
+5-8.
+
+### 13.1 Independent review
+
+The independent reviewer reported GREEN with zero findings after verifying the
+complete manifest, rerunning the pinned verifier, reconstructing both
+schedules, checking all eight cell totals and E0/E1 thread transitions, and
+reapplying the verdict precedence from raw records. The reviewer also inspected
+representative frame-level artifacts:
+
+- A0B0 and E0B0 stalled with two threads and no pyrate-limiter frame;
+- E1B0 contained the additional `PyrateLimiter's Leaker` thread and also
+  stalled; and
+- rule 7 therefore selected V6 mechanically after rules 1-6 did not apply.
+
+The reviewer separately reported three later A0B0 replays that terminated in
+approximately 2.7 seconds at the expected hermetic data assertion rather than
+stalling. The handoff did not include those runs' exact command, paths, or raw
+files, and no separately identifiable packet remained under `/tmp`; this report
+is therefore retained as a reviewer observation, not promoted into the frozen
+artifact set or treated as a test pass.
+
+### 13.2 Fresh closeout replay
+
+To give the addendum artifact-backed coordinates, Codex replayed the pinned
+controller's exact `_run_attempt(...)` path three times with:
+
+```text
+phase=phase1
+cell=A0B0
+blocks=1,2,3
+position=1
+attempt=0
+repo=/tmp/arkscope-lifespan-stall-diagnosis
+controller SHA-256=d069de2236851e89ac6271e24589ca00ab328ef35c338a5cd092be1970ddd200
+```
+
+The command imported the pinned controller by absolute frozen-artifact path and
+called:
+
+```python
+module._run_attempt(
+    Path("/tmp/arkscope-lifespan-stall-diagnosis"),
+    root,
+    "phase1",
+    block,
+    1,
+    "A0B0",
+    0,
+)
+```
+
+Reproducible invocation, with the interpreter identity read from the frozen
+preflight rather than duplicated as a user-specific path:
+
+```bash
+FROZEN_ROOT=/tmp/arkscope-lifespan-stall-diagnosis-20260729T143632Z
+ADDENDUM_ROOT=/tmp/arkscope-lifespan-post-review-addendum-20260730Tdl0Fu1
+REPO=/tmp/arkscope-lifespan-stall-diagnosis
+PYTHON="$(jq -r .python "$FROZEN_ROOT/preflight.json")"
+
+"$PYTHON" -c 'import importlib.util; from pathlib import Path; source=Path("'"$FROZEN_ROOT"'/scratch/diagnosis_controller.py"); spec=importlib.util.spec_from_file_location("diagnosis_controller_addendum", source); module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module); root=Path("'"$ADDENDUM_ROOT"'"); [module._run_attempt(Path("'"$REPO"'"), root, "phase1", block, 1, "A0B0", 0) for block in range(1, 4)]'
+```
+
+`ADDENDUM_ROOT` was absent before its initial creation. Re-execution must use a
+new empty root because `_run_attempt` refuses to overwrite a trial identity.
+The exact interpreter and pytest argument vectors are preserved in each
+`record.json`. Addendum root:
+
+```text
+/tmp/arkscope-lifespan-post-review-addendum-20260730Tdl0Fu1
+manifest entries: 9
+manifest SHA-256:
+ed2f1067a7691024d0609abc0f6d2ac3e2516f5aab8a24af908d0531280f9165
+```
+
+All three fresh trials were `stall_matching_portal_signature`, with all six
+signature flags true, return code `-9`, no worktree data before or after, and
+durations from `80.03243125206791` to `80.0326853278093` seconds.
+
+| Trial | Record SHA-256 | stderr SHA-256 |
+|---|---|---|
+| `phase1-b01-p1-A0B0-a0` | `38315f0a42b57cf0fe296211930a08457a74d936f1a26586891a74c0d5cc737d` | `de6ae7d133f3fb281162b3a3b769910bdb02975fff844ac0ef72d507d8e10b96` |
+| `phase1-b02-p1-A0B0-a0` | `f774f59fba88638ce37238dd0b6041c394a33150f3759078533b4ea98432b0f6` | `e16af62f69f0562b0207d6cfe88258e3d6cfeef6c51d509326c6f70df6b83ae1` |
+| `phase1-b03-p1-A0B0-a0` | `cc37cead0deb5f2a4656abacca27684e2c7a6425f33fd9a6a6667269714974ba` | `03af544b2aa3f097ce04f0394690fd4dd3fbe49fb33d825f251bc81bd38c760a` |
+
+Each dump again shows the pytest thread waiting in
+`Future.result -> _spawn_task_from_thread -> start_task_soon ->
+TestClient.__enter__`, while the portal thread remains in `select()`. No
+pyrate-limiter thread is present.
+
+The reviewer's non-stall observation and the later 3/3 stall reproduction can
+both be true. Together they show that the condition can change without a
+machine reboot and is not isolated by the three manipulated factors. They do
+not identify a recovery mechanism or establish that the current window is
+clean.
+
+### 13.3 User-selected direction
+
+The user selected a product-first correction to the prior sequencing:
+
+1. do not select an SEC, import, or TestClient-conversion seam from V6;
+2. do not make a machine-state observer a blocker for the known price-truth
+   defect;
+3. keep a monolithic full-suite attempt and its faulthandler evidence, but stop
+   treating this intermittent infrastructure stall as the price fix's sole
+   acceptance gate; and
+4. amend the price spec and plan with a reviewed tiered verification contract
+   before product implementation resumes.
+
+No fallback gate may call a partial full-suite transcript a pass. Real
+startup/shutdown coverage remains protected, and the unresolved stall transfers
+to EIR-005 with a separate observer owner.
