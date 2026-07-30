@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: RUNNER V3 HANDSHAKE SPEC AMENDMENT DRAFT - FOCUSED REVIEW NEXT**
+> **Status: RUNNER V3 EXACT-SOURCE PLAN DRAFT - FOCUSED REVIEW NEXT**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -10,6 +10,7 @@
 > **Runner-design clearance:** `1d08a9f30a87066ea0a2e3b3274a22210cdfa57d`
 > **V2 plan-review clearance:** `00d35376511b8bd28c16dd9c40415e0ddbc533ab`
 > **V2 blocker packet:** `18ab76f93e3aead749da00a52a9a539ba6a57876`
+> **V3 handshake-design clearance:** `6c89d4a1`
 > **Observed:** 2026-07-29 through 2026-07-31 Asia/Taipei
 
 The historical Task 0 attempt stopped under plan Stop Condition 11. No product
@@ -660,6 +661,85 @@ amended design is the sole next gate; only after it clears may the exact-source
 plan replace the appendix, update all identities and predicted hashes, and
 seek separate review.
 
+### 8.9 V3 exact-source plan construction
+
+Focused review of the complete v3 handshake amendment at `6c89d4a1` returned
+GREEN with zero findings. This section records plan-construction observations,
+not Task 0 runtime admission. The official `/tmp/price-truth-tier-v3` root
+does not exist; all work used separately named `*-plan-*` roots. Frozen v1/v2
+artifacts were not used as runtime inputs, changed, moved, or deleted.
+
+The final exact runner is `2,413` lines / `89,789` bytes with SHA-256
+`bb5d2245071aa48f8f0ad4e28a0966aa26744f213dcec65a69d947a383fd9de9`.
+Unchanged identities remain reporter `09d2bc52...` and builder `0f0421f8...`.
+New fixture identities are:
+
+```text
+probe_eof_handshake/conftest.py       6252ff7bec61796d20cfc0d2b3622ed05b73bf45220c251a9b9747a5f0faa74a
+probe_eof_handshake/test_handshake.py 3e2f09ac4d7652b2382e58fb11455e4c9584274b7b6debf03ededa9b1406efa6
+probe_eof_handshake.nodes             35a5e9ab7a9d38f9650d368ee1c09836dcdfb6aefd3c758ba4a674c66595b83c
+```
+
+RED preceded implementation. With the unchanged v2 transport rule, the new
+fixture emitted both required progress events and clean EOF but became
+`invalid/pipe_eof_while_child_running`; the parent injected SIGINT. Its RED
+record, transcript, progress, and preflight identities are preserved under
+`/tmp/price-truth-tier-v3-plan-construction/red-evidence/`.
+
+The pristine v3 suite then closed all six summary checks:
+
+```json
+{
+  "collection_identity": true,
+  "eof_exit_handshake": true,
+  "fd_fail_closed": true,
+  "pass": true,
+  "sigint": true,
+  "sigkill": true
+}
+```
+
+The deterministic summary SHA-256 is
+`9f664ea7608385edaf568ae7f35cc94fa5301fea7dd798ea0dd65b14881c1e87`.
+After the plan appendix and fixture markers were written, a fresh extraction
+into `/tmp/price-truth-tier-v3-plan-review-extract` reproduced all four blobs
+byte-for-byte, compiled the runner, and reran the six-check suite to the same
+summary SHA. That extraction, not the construction copy, validates the plan's
+executable source boundary.
+The handshake record was `complete_pass`, injected no signal, and recorded
+`leader_exit_after_eof -> process_group_drain_started -> group_drained`.
+Observed construction timings were about `0.534s` for EOF-to-leader
+convergence and `0.212s` for group drain, inside separate `1s` budgets.
+A non-admission reverse-order control also completed naturally and recorded
+`child_exit_observed_before_pipe_eof -> pipe_eof_after_leader_exit ->
+process_group_drain_started -> group_drained`, proving that group drain is not
+specific to the EOF-first order.
+
+All load-bearing controls were reconstructed from final pristine bytes:
+
+| Control | Owning observation |
+|---|---|
+| M1 delayed ready-event handling | invalid `partial_progress_event_at_eof`; zero admitted progress; transport-terminal priority retained |
+| M2 dump after deadline | both sleeping arms invalid without a current-window dump |
+| M3 ignore SIGINT | SIGINT arm required ordered SIGKILL; only `sigint` summary check failed |
+| M4 mutate runner after first child | fast pass remained; handshake launch was refused by renewed preflight |
+| M5 missing/garbled progress FD | both pytest children failed in `pytest_configure`; parent suite remained valid |
+| M6 seed prior invalid | side summary closed incomplete before T1 |
+| M7a zero stage-one bound | handshake invalid `pipe_eof_while_child_running`; stage two never started |
+| M7b zero stage-two bound | stage one succeeded; handshake invalid `pipe_eof_with_live_process_group` after drain timeout |
+
+M1/M2/M3/M4/M7a/M7b exact mutation-diff SHA-256 values are
+`1467fd65...`, `6405a626...`, `9232528b...`, `c6372e35...`,
+`aa15cc5f...`, and `9732466f...`. M4 separately preserved its pre-execution
+mutation diff and post-self-edit runtime drift (`fa1ee4f9...`).
+
+A fresh eight-node sequencer control under protocol v3 selected all eight
+first attempts, produced zero non-passing nodes, and completed without retry
+or signal. Its construction summary at
+`/tmp/price-truth-tier-v3-plan-sequence-v3/base-summary.json` has SHA-256
+`7f941eef5ba1b0df4be209bccbc23e07b8c4cb16dff6b101ef18f77ade49e4b1`.
+This remains a control-plane observation, not the 4,722-node base.
+
 ## 9. Review Resolution
 
 Plan F1 was resolved at `9d1e648a`: the mounted frontend node now includes the
@@ -694,15 +774,15 @@ amendment at `3863b3be`; the subsequent runtime controller failed its reviewed
 termination and process-identity protocol as recorded in Section 8.4. Focused
 review then cleared deterministic control-runner design at `1d08a9f3` and its
 exact source plan at `00d35376`. Deterministic-v2 Task 0 then stopped at the
-Section 8.7 EOF/exit invalid. Section 8.8 records the approved v3 design now
-submitted for focused spec review. Exact-source plan changes, product
-implementation, and an unchanged retry remain unauthorized.
+Section 8.7 EOF/exit invalid. Section 8.8 records the approved v3 design;
+Section 8.9 records its exact-source plan construction. Focused review of that
+plan remains required. Product implementation and another runtime attempt
+remain unauthorized.
 
 ## 10. Integration And Read-Only Release Observation
 
 The harness and diagnosis prerequisites are merged; price-truth product
-integration is not started. The tiered contract and deterministic runner
-v2 design/plan are reviewed but blocked, and deterministic-v2 Task 0 is
-incomplete with no admitted base side. The v3 handshake is design-only pending
-focused review. Provider calls, production writes, repair, browser work,
-product RED, and release observation remain unauthorized.
+integration is not started. Deterministic-v2 Task 0 is incomplete with no
+admitted base side. The v3 handshake design is approved and its exact-source
+plan is pending focused review. Provider calls, production writes, repair,
+browser work, product RED, and release observation remain unauthorized.
