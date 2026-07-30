@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: TIERED TASK 0 V2 BLOCKED - EOF/EXIT HANDSHAKE INVALID**
+> **Status: RUNNER V3 HANDSHAKE SPEC AMENDMENT DRAFT - FOCUSED REVIEW NEXT**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -9,6 +9,7 @@
 > **Tiered-contract clearance:** `3863b3be02034b3278f58d7090dcf0bc20445fe3`
 > **Runner-design clearance:** `1d08a9f30a87066ea0a2e3b3274a22210cdfa57d`
 > **V2 plan-review clearance:** `00d35376511b8bd28c16dd9c40415e0ddbc533ab`
+> **V2 blocker packet:** `18ab76f93e3aead749da00a52a9a539ba6a57876`
 > **Observed:** 2026-07-29 through 2026-07-31 Asia/Taipei
 
 The historical Task 0 attempt stopped under plan Stop Condition 11. No product
@@ -30,8 +31,9 @@ probe, and mutation control, then correctly stopped at its first runtime
 `invalid`: T3 closed its progress pipe after complete progress and reporter
 artifacts but before `Popen.poll()` observed process exit. The current runner
 cannot distinguish that final-exit handoff from an early invalid EOF. A
-separately reviewed EOF-to-process-exit amendment and a fresh complete
-deterministic-v2 Task 0 baseline are required before product RED.
+separately reviewed v3 EOF/leader/group-drain amendment, exact-source plan,
+and fresh complete deterministic-v3 Task 0 baseline are required before
+product RED.
 
 ## 1. Scope And Authorities
 
@@ -615,6 +617,49 @@ The amendment needs a deterministic EOF-before-`poll()` probe plus negative
 controls proving that early EOF and leaked descendants still fail closed.
 No grace duration or exact implementation is authorized by this blocker.
 
+### 8.8 Approved v3 handshake design; focused spec review next
+
+Independent review of blocker packet `18ab76f9` returned GREEN with zero
+findings. The review confirmed that v2 bounded three stalls correctly and that
+T3 exposed a transport-ordering ambiguity rather than an admissible pass. It
+also confirmed that every v2 artifact remains evidence only.
+
+The user then approved the following docs-only design amendment:
+
+- protocol identity advances to `price-truth-tier-v3`, using a fresh
+  `/tmp/price-truth-tier-v3`; v1 and v2 roots remain frozen and forbidden;
+- `EOF_LEADER_HANDSHAKE_SECONDS` is a complete one-second convergence budget
+  after the first clean EOF or natural leader-exit observation;
+- `PROCESS_GROUP_DRAIN_SECONDS` is a separate complete one-second budget after
+  both EOF and leader exit are observed;
+- observing EOF transfers control out of the 150-second no-progress machine,
+  so the no-progress and transport clocks cannot race;
+- the group-drain stage applies whether EOF or leader exit is observed first;
+- successful convergence injects no signal and still passes through every
+  unchanged terminal-summary, reporter, manifest, progress-count,
+  data-boundary, and Section 12.3 admission check; and
+- partial buffers, active/incomplete progress, either transport-stage timeout,
+  malformed final evidence, or a group that survives its complete bound
+  remain `invalid`.
+
+One pinned scratch probe must force both successful stages. Its
+`pytest_sessionfinish` hook starts a same-PGID short-lived descendant without
+the progress descriptor, closes that descriptor, and sleeps for 0.5 seconds.
+The descendant outlives the leader but drains within stage two. Admission
+requires `complete_pass`, no injected signal, and ordered
+`leader_exit_after_eof`, `process_group_drain_started`, and `group_drained`
+timeline events. M7a zeros only the stage-one bound; M7b zeros only the
+stage-two bound. Each mutation must independently turn this same probe
+`invalid` in its owning stage.
+
+This section records a reviewed user decision, not implementation evidence.
+No v3 runner, appendix, fixture, preflight identity, probe-summary SHA,
+mutation artifact, or runtime result exists yet. The current v2 exact-source
+plan remains blocked and cannot authorize another run. Focused review of the
+amended design is the sole next gate; only after it clears may the exact-source
+plan replace the appendix, update all identities and predicted hashes, and
+seek separate review.
+
 ## 9. Review Resolution
 
 Plan F1 was resolved at `9d1e648a`: the mounted frontend node now includes the
@@ -649,13 +694,15 @@ amendment at `3863b3be`; the subsequent runtime controller failed its reviewed
 termination and process-identity protocol as recorded in Section 8.4. Focused
 review then cleared deterministic control-runner design at `1d08a9f3` and its
 exact source plan at `00d35376`. Deterministic-v2 Task 0 then stopped at the
-Section 8.7 EOF/exit invalid. A reviewed EOF-to-process-exit amendment, not
-product implementation or an unchanged retry, is the next gate.
+Section 8.7 EOF/exit invalid. Section 8.8 records the approved v3 design now
+submitted for focused spec review. Exact-source plan changes, product
+implementation, and an unchanged retry remain unauthorized.
 
 ## 10. Integration And Read-Only Release Observation
 
 The harness and diagnosis prerequisites are merged; price-truth product
 integration is not started. The tiered contract and deterministic runner
-design/plan are reviewed, but deterministic-v2 Task 0 is incomplete and has
-no admitted base side. Provider calls, production writes, repair, browser
-work, product RED, and release observation remain unauthorized.
+v2 design/plan are reviewed but blocked, and deterministic-v2 Task 0 is
+incomplete with no admitted base side. The v3 handshake is design-only pending
+focused review. Provider calls, production writes, repair, browser work,
+product RED, and release observation remain unauthorized.
