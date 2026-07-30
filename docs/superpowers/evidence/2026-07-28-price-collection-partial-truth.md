@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: DETERMINISTIC TIER RUNNER PLAN REVIEW NEXT**
+> **Status: TIERED TASK 0 V2 BLOCKED - EOF/EXIT HANDSHAKE INVALID**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -8,7 +8,8 @@
 > **Restart clearance:** `5fecce6536f5d9f4a13903a6c1059e235ba15324`
 > **Tiered-contract clearance:** `3863b3be02034b3278f58d7090dcf0bc20445fe3`
 > **Runner-design clearance:** `1d08a9f30a87066ea0a2e3b3274a22210cdfa57d`
-> **Observed:** 2026-07-29 and 2026-07-30 Asia/Taipei
+> **V2 plan-review clearance:** `00d35376511b8bd28c16dd9c40415e0ddbc533ab`
+> **Observed:** 2026-07-29 through 2026-07-31 Asia/Taipei
 
 The historical Task 0 attempt stopped under plan Stop Condition 11. No product
 file was edited and no partial full-suite output is accepted as an A/B
@@ -23,8 +24,14 @@ at `3863b3be` with zero findings. The authorized Task 0 restart reproduced
 every collection and focused gate, but its runtime controller violated the
 reviewed termination protocol. The first two partial tiers and the following
 launch are therefore `invalid`, not baseline results. Product RED remains
-unauthorized pending review of the exact runner implementation plan and a
-complete deterministic-v2 tiered Task 0 baseline.
+unauthorized. Focused review later cleared exact runner plan `00d35376` and
+authorized deterministic-v2 Task 0. That run reproduced every baseline,
+probe, and mutation control, then correctly stopped at its first runtime
+`invalid`: T3 closed its progress pipe after complete progress and reporter
+artifacts but before `Popen.poll()` observed process exit. The current runner
+cannot distinguish that final-exit handoff from an early invalid EOF. A
+separately reviewed EOF-to-process-exit amendment and a fresh complete
+deterministic-v2 Task 0 baseline are required before product RED.
 
 ## 1. Scope And Authorities
 
@@ -42,6 +49,9 @@ complete deterministic-v2 tiered Task 0 baseline.
 - `3863b3be02034b3278f58d7090dcf0bc20445fe3` is the exact focused-reviewed
   tiered-contract clearance and the Git identity used by the invalid runtime
   attempts documented in Section 8.4.
+- `00d35376511b8bd28c16dd9c40415e0ddbc533ab` is the exact focused-reviewed
+  deterministic-v2 plan clearance and the Git identity used by the attempts
+  documented in Section 8.7.
 - The rebased price-truth delta from `e6d4b7fa` is docs-only.
 - Main-worktree drafts
   `docs/data/IBKR_PACING_AND_ERROR_SEMANTICS.md` and
@@ -74,6 +84,11 @@ Focused behavior also reproduced:
 These collections and focused results reproduced again at tiered-contract
 clearance `3863b3be`. They establish Steps 1-4 only. They do not repair or
 replace the invalid Step 5 runtime attempts.
+
+They reproduced a third time at deterministic-v2 clearance `00d35376`.
+The four node streams, focused behavior, scanners, tool counts, and no-PG
+smoke were unchanged. This establishes deterministic-v2 Steps 1-4, but the
+incomplete base summary in Section 8.7 is not a baseline.
 
 ### 2.1 Isolation correction before grounding
 
@@ -124,11 +139,18 @@ scratch control-runner discrimination performed while making its exact-source
 plan executable. Those observations authorize no product edit and must be
 reproduced from the reviewed appendix before Task 0 runtime.
 
+Deterministic-v2 Task 0 reproduced all mandatory runner probes and six
+negative controls before runtime. Their exact identities and outcomes are
+recorded in Section 8.7. They validate the reviewed controls but do not
+override the later runtime `invalid`.
+
 ## 7. Protected Boundaries
 
-Task 0 Step 6 was not run after any Stop Condition 11 event. The Git worktree
-was clean before this blocked evidence was authored, and no product or test
-path was edited.
+Task 0 Step 6 was not run after any Stop Condition 11 event. Deterministic-v2
+did not launch T4-T7, deferred retries, the monolithic diagnostic, protected
+boundary capture, or product RED after T3 became `invalid`. Isolated `data/`
+was empty after runner cleanup. The Git worktree was clean before this blocked
+evidence was authored, and no product or test path was edited.
 
 ## 8. Historical Full-Suite Diagnostics And Tier Prototype
 
@@ -478,9 +500,120 @@ exercise:
   named `base-T0-a1` as the invalid attempt.
 
 These are plan-construction observations. PID/timestamp/record hashes are not
-promoted to acceptance constants. After plan review, Task 0 must extract the
-appendix into fresh `/tmp/price-truth-tier-v2`, regenerate preflight, and
-repeat the probes and mutations before the first real tier launch.
+promoted to acceptance constants. Section 8.7 records the independently
+cleared Task 0 run that extracted the appendix into fresh
+`/tmp/price-truth-tier-v2`, regenerated preflight, and repeated the probes and
+mutations before the first real tier launch.
+
+### 8.7 Deterministic-v2 Task 0 EOF/exit blocker
+
+Focused review of plan tip `00d35376` returned GREEN with zero findings and
+authorized tiered Task 0 v2. Steps 1-4 reproduced every value in Section 2.
+The clearance transcript is:
+
+```text
+path: /tmp/price-truth-task0-clearance-20260731.txt
+SHA-256: e90c0f5313995a9b5659d05444fedf69be5b7e115359a3ebade6c72556db5c38
+branch/head: codex/price-collection-truth / 00d35376511b8bd28c16dd9c40415e0ddbc533ab
+```
+
+The focused gates created an ignored 143,360-byte
+`data/profile_state.db` with SHA-256 `fcfbadad...` in the isolated worktree.
+The runner refused before creating a child attempt because `data/` was not
+empty. The file was proven SQLite-integrity `ok` and moved reversibly, with
+its zero-byte WAL and 32,768-byte SHM companions, to:
+
+```text
+/tmp/price-truth-tier-v2/task0-preprobe-generated-data/
+```
+
+The integrity read created the WAL/SHM companions after the main file was
+inspected, so all three were archived before retrying. `data/` was then empty.
+This was a pre-launch setup rejection, not a runtime attempt or `invalid`.
+
+Exact v2 control identities were:
+
+```text
+runner:         35cda547ac8b1afaba1231d56cb04d703a284cdd81de978397ce7887ac51339e
+reporter:       09d2bc52c7706b49e5f363fa2c6bcfc93523038f1c805fef08bb98a409301928
+builder:        0f0421f86f46265427914bce7bbede694beaa8d04b5d3b2ea9562d27cd7c8d9c
+tier map:       3d7adb7e1db7b92b25b3ae83fe56ec182c6b070802cd45d95e091c673115994a
+base preflight: 5c8484deeb9188228e4bc730e283d3f67f00a91fd5cf3bcbb32558a1079ac320
+probe summary:  47564c644c95e54007d67e4b08ddaeb35ed8370f858b3f004f00f54ef9e1ad48
+```
+
+The mandatory probe suite returned all five checks true. M1-M4 retained exact
+mutation diffs with SHA-256 values
+`6a5d13b5.../7f463def.../bc7e8457.../27a064f7...`; each owning assertion
+matched. M5 reproduced the same all-true probe summary while both malformed-FD
+children failed in `pytest_configure`. M6 seeded one prior invalid record,
+returned nonzero, wrote `complete=false` with
+`invalid_attempt=base-T0-a1`, and created no T1 attempt. The pristine runner
+and fixture hashes were rechecked before runtime.
+
+Runtime then produced:
+
+| Tier | Outcome | Last active boundary | Progress | Duration / cleanup |
+|---|---|---|---:|---|
+| T0/a1 | `unresolved_stall` | `test_route_rejects_unreviewed_interval_with_typed_422` | 1173 | 172.969s; dump; SIGINT then SIGKILL; group gone |
+| T1/a1 | `unresolved_stall` | `test_scheduler_start_stop` | 549 | 158.503s; dump; SIGINT; group gone |
+| T2/a1 | `unresolved_stall` | `test_anthropic_calibration_raises_structured_refusal_before_text_extraction` | 769 | 164.864s; dump; SIGINT; group gone |
+| T3/a1 | `invalid` / `pipe_eof_while_child_running` | post-last-progress, no active node | 1180 | 20.334s; no dump; SIGINT; group returned 0 and was gone |
+
+The first three classifications are valid unresolved stalls. T3 is the first
+invalid and closes the side. Its decisive artifacts show:
+
+```text
+expected/collected/seen/non-passing: 590 / 590 / 590 / 0
+progress events: 1180 = 2 * 590
+report exitstatus: 0
+terminal summary: 580 passed, 10 skipped, 9 warnings in 18.86s
+active node at EOF: null
+deadline phase: post_last_progress
+record SHA-256: d89eb6a4ffaefca68d65f9969d2452a08af194ab786f14b7d81ce3f8db860385
+transcript SHA-256: 278b9827345f1ead84eca65304b38b1ba856a4627ec3587b014ba26cf1bef831
+progress SHA-256: b1110e5ad9747f44e8d1582be4b571931ce7828f53e24f6edeed73eadb1aa39a
+report SHA-256: 60190dc3405b48e1eb74199eeacbf2fcf49377f7aac7de96175087221c53c1b8
+```
+
+The progress writer closed after all node events and the reporter had already
+atomically written a complete result, while the parent still observed
+`process.poll() is None`. The reviewed runner therefore applied its closed
+EOF rule, marked the attempt invalid, and sent SIGINT. The process group
+reported return code `0` and disappeared about 10ms later. These facts do not
+permit retroactively calling T3 a natural pass because the runner injected a
+signal. They do prove that `EOF while child is running` conflates an
+observable final-exit handoff with malformed early EOF.
+
+The atomic side summary has SHA-256 `c7a252a3...`, `complete=false`,
+`invalid_attempt=base-T3-a1`, unresolved tiers `[0,1,2]`, and no selected
+attempts. T4-T7, all deferred retries, the monolithic diagnostic, protected
+Step 6, and product RED were not started.
+
+All pre-manifest non-`__pycache__` files in the v2 root are listed in:
+
+```text
+/tmp/price-truth-tier-v2/task0-v2-invalid-manifest.sha256
+lines/bytes: 1154 / 163262
+manifest SHA-256:
+a202dfd4fb160c15ca4a0e517dcc79641dec1ebfd25dba7b1439a4acc63fbb8e
+```
+
+After the stop, isolated `data/` was empty and the runner records
+`cleanup_complete=true` for every runtime attempt. The branch was clean before
+this evidence edit. The two protected main-worktree drafts retained SHA-256
+values `4921194a...` and `79d4eac9...`; neither was edited, staged, moved,
+deleted, or used as authority.
+
+Restarting the same v2 runner is unauthorized. The next gate is a separately
+reviewed amendment to Design Section 13.6 and the exact runner. It must retain
+immediate invalidation for partial buffers, unbalanced progress, incomplete
+node counts, malformed reporter evidence, or a live group beyond a fixed
+bound. It must separately decide a bounded post-EOF exit handshake for the
+fully complete shape above, without using transcript text for node accounting.
+The amendment needs a deterministic EOF-before-`poll()` probe plus negative
+controls proving that early EOF and leaked descendants still fail closed.
+No grace duration or exact implementation is authorized by this blocker.
 
 ## 9. Review Resolution
 
@@ -514,14 +647,15 @@ states explicitly that fresh-process tiered results are not directly
 comparable with historical monolithic runs. Focused review cleared that
 amendment at `3863b3be`; the subsequent runtime controller failed its reviewed
 termination and process-identity protocol as recorded in Section 8.4. Focused
-review then cleared deterministic control-runner design at `1d08a9f3`. Its
-exact source, probes, mutations, and commands are now the sole plan-review
-gate; product implementation remains blocked.
+review then cleared deterministic control-runner design at `1d08a9f3` and its
+exact source plan at `00d35376`. Deterministic-v2 Task 0 then stopped at the
+Section 8.7 EOF/exit invalid. A reviewed EOF-to-process-exit amendment, not
+product implementation or an unchanged retry, is the next gate.
 
 ## 10. Integration And Read-Only Release Observation
 
 The harness and diagnosis prerequisites are merged; price-truth product
 integration is not started. The tiered contract and deterministic runner
-design are reviewed, but Task 0 has no admitted runtime tier. The exact-source
-runner plan is awaiting focused review. Provider calls, production writes,
-repair, browser work, and release observation remain unauthorized.
+design/plan are reviewed, but deterministic-v2 Task 0 is incomplete and has
+no admitted base side. Provider calls, production writes, repair, browser
+work, product RED, and release observation remain unauthorized.
