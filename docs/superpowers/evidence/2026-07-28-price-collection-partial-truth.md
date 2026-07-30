@@ -1,12 +1,13 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: DETERMINISTIC TIER RUNNER AMENDMENT REVIEW NEXT**
+> **Status: DETERMINISTIC TIER RUNNER PLAN REVIEW NEXT**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
 > **Plan-review clearance:** `15933c316a68efd7e503f2778aba68affa2cb4c1`
 > **Restart clearance:** `5fecce6536f5d9f4a13903a6c1059e235ba15324`
 > **Tiered-contract clearance:** `3863b3be02034b3278f58d7090dcf0bc20445fe3`
+> **Runner-design clearance:** `1d08a9f30a87066ea0a2e3b3274a22210cdfa57d`
 > **Observed:** 2026-07-29 and 2026-07-30 Asia/Taipei
 
 The historical Task 0 attempt stopped under plan Stop Condition 11. No product
@@ -22,8 +23,8 @@ at `3863b3be` with zero findings. The authorized Task 0 restart reproduced
 every collection and focused gate, but its runtime controller violated the
 reviewed termination protocol. The first two partial tiers and the following
 launch are therefore `invalid`, not baseline results. Product RED remains
-unauthorized pending a separately reviewed runner correction and a complete
-tiered Task 0 baseline.
+unauthorized pending review of the exact runner implementation plan and a
+complete deterministic-v2 tiered Task 0 baseline.
 
 ## 1. Scope And Authorities
 
@@ -118,7 +119,10 @@ Only the unchanged base collections in Section 2 are established. Planned
 
 ## 6. Mutation Evidence
 
-Not started.
+Product-behavior mutation work is not started. Section 8.6 records only
+scratch control-runner discrimination performed while making its exact-source
+plan executable. Those observations authorize no product edit and must be
+reproduced from the reviewed appendix before Task 0 runtime.
 
 ## 7. Protected Boundaries
 
@@ -382,9 +386,101 @@ and unchanged collect-only identity. The environment allowlist, final
 reporter, four outcomes, immutable tier map, banking tuple, one deferred
 retry, and base/tip admission contract remain unchanged.
 
-This is a design proposal only. No runner source, implementation-plan command,
-runtime attempt, protected baseline, or product RED is authorized before
-focused spec review and a separate exact-source plan review.
+Focused review cleared this design at
+`1d08a9f30a87066ea0a2e3b3274a22210cdfa57d` with zero findings. That
+clearance authorizes the exact-source implementation plan, not Task 0 runtime
+or product RED.
+
+### 8.6 Exact-source plan-construction probes
+
+The plan appendix was built and exercised in scratch before being proposed as
+runtime authority:
+
+```text
+source root: /tmp/price-truth-runner-plan-final3-20260730
+runner lines/bytes: 2140 / 77040
+runner SHA-256:
+35cda547ac8b1afaba1231d56cb04d703a284cdd81de978397ce7887ac51339e
+reporter SHA-256:
+09d2bc52c7706b49e5f363fa2c6bcfc93523038f1c805fef08bb98a409301928
+builder SHA-256:
+0f0421f86f46265427914bce7bbede694beaa8d04b5d3b2ea9562d27cd7c8d9c
+probe summary SHA-256:
+47564c644c95e54007d67e4b08ddaeb35ed8370f858b3f004f00f54ef9e1ad48
+```
+
+The appendix extraction command reproduced the source byte-for-byte at
+`/tmp/runner-extracted-final3-check.py`; both files had the runner hash
+above and compiled under the pinned interpreter. The dual-role FD check lives
+in `pytest_configure`, so module-mode preflight succeeded without
+`PRICE_TRUTH_PROGRESS_FD`.
+
+The pristine probe suite completed with every check true:
+
+```text
+natural pass:       complete_pass; progress 2; EOF; no signal
+SIGINT arm:         unresolved_stall; dump true; SIGINT; killed false
+SIGKILL arm:        unresolved_stall; dump true; SIGINT then SIGKILL;
+                    descendant process group gone
+collection identity: control == plugin == 1 exact node; manifests share
+                     SHA-256 85e427423e6a...
+FD fail-closed:     missing and garbled values both exit 3 in pytest_configure
+```
+
+The short constants were probe-only `2/3/1`; the runner source retains
+immutable runtime `120/150/10`.
+
+A final authority check extracted the appendix again, without using the
+construction copy, into
+`/tmp/price-truth-runner-plan-final4-20260730`. It reproduced the exact
+`2140/77040/35cda547...` source identity, compiled, and reran all five probes
+in `13.48` seconds. The summary again had SHA-256 `47564c644...`; both
+collection manifests and `probe.nodes` had SHA-256 `85e427423...`, and the
+two malformed-FD children again exited `3` in `pytest_configure`.
+
+Six load-bearing controls were then exercised in separate scratch roots. Their
+mutated source bytes and records remain in those construction roots; the plan
+now supplies the exact rerun diffs and requires each Task 0 mutation root to
+retain `mutation.diff`:
+
+| Mutation | Reconstructed observation |
+|---|---|
+| M1 delay parent event handling beyond the already expired window | fast-pass became `invalid`, `deadline_breach_without_dump`; the late event could not revive the window |
+| M2 move dump beyond deadline | both sleeps became `invalid`, `deadline_breach_without_dump`, no false stall |
+| M3 ignore SIGINT | interruptible arm retained stall truth but recorded `killed=true` and SIGKILL |
+| M4 self-alter runner between child launches | the first child record remained; the second child was refused before launch by renewed preflight identity checking |
+| M5 missing/garbled FD | both child pytest processes exited `3` in `pytest_configure`; module mode remained usable |
+| M6 seed prior invalid record | `run-side` wrote incomplete summary and created no T1-or-later directory |
+
+M5 was repeated from a dedicated pristine root at
+`/tmp/price-truth-runner-final3-m5-20260730`; both child pytest arms exited `3`,
+the parent suite remained green, and its summary reproduced
+`47564c644c95e54007d67e4b08ddaeb35ed8370f858b3f004f00f54ef9e1ad48`.
+
+A separate valid eight-node sequencer probe mapped eight distinct safe
+repository test files to eight slots, passed the same partition verifier, and
+produced a complete side summary with eight selected first attempts at
+`/tmp/price-truth-runner-final3-sequence-20260730`. Its summary SHA-256 is
+`562fd1e646829bd4babb41de983477222cae1f9e76aa1589eddd04ec89340f39`.
+It is not the
+4,722-node collection proof or a Task 0 baseline; it proves runner sequencing,
+per-attempt admission, aggregation, and atomic completion mechanics.
+
+Two additional controls target state that ordinary one-tier probes cannot
+exercise:
+
+- `/tmp/price-truth-retry-probe-artifacts-20260730` began with simultaneous
+  T0/T1 stalls and proved that both tiers received their one deferred `a2`
+  retry before the side closed incomplete.
+- `/tmp/price-truth-bank-probe-artifacts-20260730` first completed all eight
+  tiers, then had one banked non-passing artifact altered. Reuse failed closed
+  with `banked non-passing artifact changed`, wrote an incomplete summary, and
+  named `base-T0-a1` as the invalid attempt.
+
+These are plan-construction observations. PID/timestamp/record hashes are not
+promoted to acceptance constants. After plan review, Task 0 must extract the
+appendix into fresh `/tmp/price-truth-tier-v2`, regenerate preflight, and
+repeat the probes and mutations before the first real tier launch.
 
 ## 9. Review Resolution
 
@@ -417,14 +513,15 @@ window. The contract preserves Stop Condition 11 at tier granularity and
 states explicitly that fresh-process tiered results are not directly
 comparable with historical monolithic runs. Focused review cleared that
 amendment at `3863b3be`; the subsequent runtime controller failed its reviewed
-termination and process-identity protocol as recorded in Section 8.4. The
-deterministic control-runner design in Section 13 of the spec is now the sole
-review gate; product implementation remains blocked.
+termination and process-identity protocol as recorded in Section 8.4. Focused
+review then cleared deterministic control-runner design at `1d08a9f3`. Its
+exact source, probes, mutations, and commands are now the sole plan-review
+gate; product implementation remains blocked.
 
 ## 10. Integration And Read-Only Release Observation
 
 The harness and diagnosis prerequisites are merged; price-truth product
-integration is not started. The tiered contract is reviewed, but Task 0 has no
-admitted runtime tier. Its deterministic runner amendment is awaiting focused
-review. Provider calls, production writes, repair, browser work, and release
-observation remain unauthorized.
+integration is not started. The tiered contract and deterministic runner
+design are reviewed, but Task 0 has no admitted runtime tier. The exact-source
+runner plan is awaiting focused review. Provider calls, production writes,
+repair, browser work, and release observation remain unauthorized.
