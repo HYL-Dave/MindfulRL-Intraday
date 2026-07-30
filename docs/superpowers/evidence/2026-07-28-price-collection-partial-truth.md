@@ -1,12 +1,12 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: TIERED VERIFICATION CONTRACT REVIEW NEXT**
+> **Status: TASK 0 BLOCKED - INVALID TIER RUNNER EXECUTION**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
 > **Plan-review clearance:** `15933c316a68efd7e503f2778aba68affa2cb4c1`
 > **Restart clearance:** `5fecce6536f5d9f4a13903a6c1059e235ba15324`
-> **Tiered-contract clearance:** pending focused review
+> **Tiered-contract clearance:** `3863b3be02034b3278f58d7090dcf0bc20445fe3`
 > **Observed:** 2026-07-29 and 2026-07-30 Asia/Taipei
 
 The historical Task 0 attempt stopped under plan Stop Condition 11. No product
@@ -17,9 +17,13 @@ findings and authorized a full Task 0 restart. That restart reproduced every
 collection and focused gate, then stopped under the same condition at the next
 untouched lifespan family, `tests/test_api.py::TestHealth::test_status`.
 The later causal diagnosis selected V6 without identifying a code seam and is
-merged at `e6d4b7fa`. A tiered verification amendment is now drafted; its
-prototype proves collection composition only. Product RED remains
-unauthorized pending focused review and a complete tiered Task 0 baseline.
+merged at `e6d4b7fa`. Focused review cleared the tiered verification contract
+at `3863b3be` with zero findings. The authorized Task 0 restart reproduced
+every collection and focused gate, but its runtime controller violated the
+reviewed termination protocol. The first two partial tiers and the following
+launch are therefore `invalid`, not baseline results. Product RED remains
+unauthorized pending a separately reviewed runner correction and a complete
+tiered Task 0 baseline.
 
 ## 1. Scope And Authorities
 
@@ -34,6 +38,9 @@ unauthorized pending focused review and a complete tiered Task 0 baseline.
   prerequisite within that lineage.
 - `5fecce6536f5d9f4a13903a6c1059e235ba15324` is the exact focused-reviewed
   restart clearance.
+- `3863b3be02034b3278f58d7090dcf0bc20445fe3` is the exact focused-reviewed
+  tiered-contract clearance and the Git identity used by the invalid runtime
+  attempts documented in Section 8.4.
 - The rebased price-truth delta from `e6d4b7fa` is docs-only.
 - Main-worktree drafts
   `docs/data/IBKR_PACING_AND_ERROR_SEMANTICS.md` and
@@ -62,6 +69,10 @@ Focused behavior also reproduced:
 - tool/no-PG focused gate: `16 passed`, retaining central/OpenAI/Anthropic
   counts `53/54/54`;
 - no-PG runtime smoke: `23/23`, `ok=true`, `pg_attempts=[]`.
+
+These collections and focused results reproduced again at tiered-contract
+clearance `3863b3be`. They establish Steps 1-4 only. They do not repair or
+replace the invalid Step 5 runtime attempts.
 
 ### 2.1 Isolation correction before grounding
 
@@ -111,9 +122,9 @@ Not started.
 
 ## 7. Protected Boundaries
 
-Task 0 Step 6 was not run after either Stop Condition 11 event. The Git
-worktree was clean before this blocked evidence was authored, and no product
-or test path was edited.
+Task 0 Step 6 was not run after any Stop Condition 11 event. The Git worktree
+was clean before this blocked evidence was authored, and no product or test
+path was edited.
 
 ## 8. Historical Full-Suite Diagnostics And Tier Prototype
 
@@ -274,6 +285,77 @@ space-containing node completed with exit 1, a terminal summary, and the same
 full node ID in collected, seen, and non-passing arrays. Neither probe touched
 isolated worktree `data/`, and neither is admitted as a Task 0 baseline.
 
+### 8.4 Tiered Task 0 invalid-runner blocker
+
+Focused review of contract tip `3863b3be` returned GREEN with zero findings
+and authorized tiered Task 0. Steps 1-4 then reproduced the exact collections
+and focused gates in Section 2. Runtime scratch identity was:
+
+```text
+root: /tmp/price-truth-tier-v1
+builder SHA-256: 0f0421f86f46265427914bce7bbede694beaa8d04b5d3b2ea9562d27cd7c8d9c
+reporter SHA-256: 09d2bc52c7706b49e5f363fa2c6bcfc93523038f1c805fef08bb98a409301928
+tier-map SHA-256: 3d7adb7e1db7b92b25b3ae83fe56ec182c6b070802cd45d95e091c673115994a
+runtime-fingerprint file SHA-256: d754856c368ae05668c6df075410e4e706cd4d1bab2e5b39b7740831db564b96
+pip-freeze SHA-256: cf3e80661ab59e43b291b7ed037159aee90248fff7c1d4e38bf79de264b6eec8
+```
+
+Collection-only reconstruction again proved all `4722` unique nodes with tier
+loads `591/591/590/590/590/590/590/590` and a sorted union byte-identical to
+`fcdb1b7d...`. The reporter also preserved all 11 space-containing node IDs.
+
+The runtime attempts are not admissible:
+
+| Tier | Observed partial boundary | Transcript | Classification |
+|---|---|---|---|
+| T0 | `test_route_rejects_unreviewed_interval_with_typed_422`; dump mtime `09:15:35 +08:00`; process ended `09:36:33` | 661 lines / 67097 bytes; `efe83d6a...` | `invalid` |
+| T1 | `test_scheduler_start_stop`; dump mtime `09:41:17 +08:00`; process ended `21:56:59` | 321 lines / 30414 bytes; `7fafeaf5...` | `invalid` |
+| T2 | control shell sampled child PID/PGID/SID as `145/1/1` before `setsid` completed; no runtime output | 0 bytes; `e3b0c442...` | `invalid` |
+
+For T0 and T1, faulthandler emitted the required 120-second dump, but the
+orchestrator did not enforce the 150-second no-progress termination boundary.
+The processes remained alive for materially longer than the reviewed bound.
+Both were initially described operationally as stalls, but the closed outcome
+table requires runner/protocol failures to be classified as `invalid`.
+Neither transcript has a terminal pytest summary or reporter JSON, so no
+partial node result is normalized or banked.
+
+T2 exposed a separate control-wrapper race. The reviewed command launches
+pytest through `setsid`; the operator added an immediate PID/PGID/SID
+assertion outside the reviewed command shape. That assertion sampled the
+background process before `setsid` completed, exited the shell, and left no
+terminal pytest result. An anchored host-namespace check confirmed that no T2
+pytest process survived. The extra assertion was not an authorized contract
+change and cannot be repaired by silently reusing the attempt path.
+
+The first invalid attempt required an immediate stop. T1 and T2 were started
+only because T0 was incorrectly classified before artifact sealing; they are
+retained as control-plane evidence, not as additional authorized tier results.
+T3-T7, deferred retries, the diagnostic monolithic run, protected Step 6, and
+product RED were not started.
+
+All 46 selected runtime-control artifacts are listed in:
+
+```text
+/tmp/price-truth-tier-v1/task0-invalid-manifest.sha256
+lines/bytes: 46 / 5407
+manifest SHA-256:
+1f3f5c6137fbd57da56e8cc7bd1dcf4e55e64fad8fe8896b419aab8882288c98
+```
+
+After the stop, isolated worktree `data/` was empty, no matching tier pytest
+process remained, and the branch had no tracked or untracked change before
+this evidence edit. The main worktree retained only the two protected
+untracked drafts, with SHA-256 values `4921194a...` and `79d4eac9...`; neither
+was edited, staged, moved, deleted, or cited as authority.
+
+This blocker identifies an execution-control defect, not a price product
+defect and not a test verdict. Restart requires a separately reviewed runner
+amendment that enforces the monotonic no-progress deadline inside the same
+control process, waits for a stable post-`setsid` process-group identity, and
+preserves the existing outcome, banking, and isolation rules. Re-running the
+same manually supervised wrapper is not authorized.
+
 ## 9. Review Resolution
 
 Plan F1 was resolved at `9d1e648a`: the mounted frontend node now includes the
@@ -303,12 +385,16 @@ transferred the unresolved behavior to `EIR-005`. The user then selected a
 tiered full-collection protocol instead of waiting for a clean monolithic
 window. The contract preserves Stop Condition 11 at tier granularity and
 states explicitly that fresh-process tiered results are not directly
-comparable with historical monolithic runs. Focused review of that amendment
-is the next gate.
+comparable with historical monolithic runs. Focused review cleared that
+amendment at `3863b3be`; the subsequent runtime controller failed its reviewed
+termination and process-identity protocol as recorded in Section 8.4. A
+reviewed control-runner correction, not product implementation, is the next
+gate.
 
 ## 10. Integration And Read-Only Release Observation
 
 The harness and diagnosis prerequisites are merged; price-truth product
-integration is not started. The tiered contract is awaiting focused review,
-and Task 0 is reset. Provider calls, production writes, repair, browser work,
-and release observation remain unauthorized.
+integration is not started. The tiered contract is reviewed, but Task 0 is
+blocked by invalid runner execution and has no admitted runtime tier.
+Provider calls, production writes, repair, browser work, and release
+observation remain unauthorized.
