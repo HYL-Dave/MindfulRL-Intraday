@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: TASK 0 BLOCKED - INVALID TIER RUNNER EXECUTION**
+> **Status: DETERMINISTIC TIER RUNNER AMENDMENT REVIEW NEXT**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -350,11 +350,41 @@ untracked drafts, with SHA-256 values `4921194a...` and `79d4eac9...`; neither
 was edited, staged, moved, deleted, or cited as authority.
 
 This blocker identifies an execution-control defect, not a price product
-defect and not a test verdict. Restart requires a separately reviewed runner
-amendment that enforces the monotonic no-progress deadline inside the same
-control process, waits for a stable post-`setsid` process-group identity, and
-preserves the existing outcome, banking, and isolation rules. Re-running the
-same manually supervised wrapper is not authorized.
+defect and not a test verdict. Re-running the same manually supervised wrapper
+is not authorized.
+
+### 8.5 Proposed deterministic runner amendment
+
+Independent review of blocker `fa42d44a` returned GREEN with zero findings and
+confirmed all three `invalid` classifications. The user selected the
+single-module structured-progress design for the replacement runner.
+
+Design Section 13 now requires one SHA-pinned Python file to act as both the
+parent controller and a pytest progress plugin using
+`pytest_runtest_logstart`/`pytest_runtest_logfinish`. Structured events travel
+over one inherited pipe and are persisted to `progress.jsonl`;
+the unchanged final reporter remains the sole node-accounting authority.
+`Popen(start_new_session=True)` gives the controller stable process-group
+ownership, while an in-process monotonic state machine owns the pre-first-node,
+active-node, and final-teardown deadlines.
+
+The breach distinction is explicit:
+
+```text
+150-second breach + 120-second per-item dump -> unresolved_stall
+150-second breach without that dump         -> invalid
+```
+
+The runner itself performs `SIGINT`, the complete 10-second grace, optional
+`SIGKILL`, atomic attempt recording, and first-invalid refusal. Four mandatory
+pre-runtime probes cover natural pass, SIGINT termination, SIGKILL fallback,
+and unchanged collect-only identity. The environment allowlist, final
+reporter, four outcomes, immutable tier map, banking tuple, one deferred
+retry, and base/tip admission contract remain unchanged.
+
+This is a design proposal only. No runner source, implementation-plan command,
+runtime attempt, protected baseline, or product RED is authorized before
+focused spec review and a separate exact-source plan review.
 
 ## 9. Review Resolution
 
@@ -387,14 +417,14 @@ window. The contract preserves Stop Condition 11 at tier granularity and
 states explicitly that fresh-process tiered results are not directly
 comparable with historical monolithic runs. Focused review cleared that
 amendment at `3863b3be`; the subsequent runtime controller failed its reviewed
-termination and process-identity protocol as recorded in Section 8.4. A
-reviewed control-runner correction, not product implementation, is the next
-gate.
+termination and process-identity protocol as recorded in Section 8.4. The
+deterministic control-runner design in Section 13 of the spec is now the sole
+review gate; product implementation remains blocked.
 
 ## 10. Integration And Read-Only Release Observation
 
 The harness and diagnosis prerequisites are merged; price-truth product
-integration is not started. The tiered contract is reviewed, but Task 0 is
-blocked by invalid runner execution and has no admitted runtime tier.
-Provider calls, production writes, repair, browser work, and release
+integration is not started. The tiered contract is reviewed, but Task 0 has no
+admitted runtime tier. Its deterministic runner amendment is awaiting focused
+review. Provider calls, production writes, repair, browser work, and release
 observation remain unauthorized.
