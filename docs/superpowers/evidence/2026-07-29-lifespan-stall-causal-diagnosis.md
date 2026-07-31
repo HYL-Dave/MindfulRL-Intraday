@@ -1,6 +1,6 @@
 # Full-Suite Lifespan Stall Causal Diagnosis Evidence
 
-> **Status:** DIAGNOSIS REVIEW GREEN - CLOSEOUT REVIEW NEXT
+> **Status:** CLOSED - MANAGED-SANDBOX EXECUTION BOUNDARY PROVEN
 >
 > **Observed:** 2026-07-29 Asia/Taipei
 >
@@ -503,3 +503,78 @@ The user selected a product-first correction to the prior sequencing:
 No fallback gate may call a partial full-suite transcript a pass. Real
 startup/shutdown coverage remains protected, and the unresolved stall transfers
 to EIR-005 with a separate observer owner.
+
+## 14. Execution-Boundary Closeout (2026-07-31)
+
+This section is a post-review closeout. It does not rewrite the frozen
+80-trial matrix or retroactively claim that its controller recorded the outer
+execution policy. It adds a smaller controlled A/B that identifies the
+boundary omitted from the earlier environment fingerprint.
+
+### 14.1 Exact probe and direct syscall
+
+The exact probe is
+`/tmp/eir005-sandbox-boundary-closeout-20260731/asyncio_wakeup_probe.py`:
+`942` bytes, SHA-256
+`10647c1e64c49fc2e082701d7a735e40782620314c125cd103a9a3f9bb37bc2e`.
+It starts one selector event loop in a daemon thread, invokes
+`call_soon_threadsafe()` from the parent thread, waits one second, and records
+whether the callback fired, the `_ready` length, and non-consuming
+`FIONREAD` bytes on `_ssock`.
+
+The identical bytes produced:
+
+| Boundary | Repetitions | Exact result |
+|---|---:|---|
+| Codex managed sandbox | `3/3` | `{"callback_fired": false, "ready_count": 1, "wake_bytes": 0}` |
+| native process | `3/3` | `{"callback_fired": true, "ready_count": 0, "wake_bytes": 0}` |
+
+A direct `socket.socketpair()` control sharpened the result:
+
+| Boundary | Exit | Result |
+|---|---:|---|
+| Codex managed sandbox | `1` | `sendall(b"x")` raised `PermissionError: [Errno 1] Operation not permitted` |
+| native process | `0` | peer received `b"x"` |
+
+The closeout manifest is
+`/tmp/eir005-sandbox-boundary-closeout-20260731/manifest.sha256`, SHA-256
+`4806f3d65fc81855c3cf8c1cb1c3d94d441f6e30bbe2f95f1190656ea96e8c34`.
+
+### 14.2 Causal binding
+
+Grounded CPython 3.10.12 source provides the missing binding:
+
+1. `BaseEventLoop.call_soon_threadsafe()` appends the handle to `_ready`;
+2. it then calls `_write_to_self()`;
+3. `_SelectorEventLoop._write_to_self()` sends one null byte through `_csock`;
+4. that method catches `OSError` and only logs it in debug mode.
+
+The managed sandbox therefore leaves the callback queued while silently
+losing the selector wakeup. The event-loop thread remains in `select()` and
+the caller waits in `Future.result()`. This is the exact state repeatedly
+captured in the historical dumps. Native execution delivers the wakeup and
+drains `_ready`.
+
+This establishes the managed sandbox's Unix-socket send policy as the cause
+of this stall class. It does not claim that every historical invocation used
+the same outer policy, because that policy was not part of the old records.
+It does explain why sandboxed runs stalled while native reviewer runs could
+complete without a reboot.
+
+### 14.3 Native full-suite controls
+
+Two native controls completed without a stall:
+
+- reviewer transcript `/tmp/fable-native-full-20260731.txt`, SHA-256
+  `dab9a0af...`: `27 failed / 4623 passed / 72 skipped` in `314.17s`;
+- the unchanged price-v3 native root completed all eight tiers on first
+  attempts, admitted all `4722` nodes, and derived the same 27-node
+  non-passing set at SHA-256 `7aafce5d...`.
+
+The separately reviewed observer campaign was not run. Its proposed C/O arms
+would both inherit one execution boundary, so after the direct A/B they no
+longer answer the active causal question. The observer spec and exact-source
+plan remain historical design records, not an authorized runtime requirement.
+
+EIR-005 closes here. EIR-002 remains open for the independent non-green data
+fixture baseline.

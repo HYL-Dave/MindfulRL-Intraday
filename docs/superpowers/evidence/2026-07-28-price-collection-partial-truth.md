@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: TIERED TASK 0 V3 BLOCKED - FIVE TIERS UNRESOLVED AFTER RETRY**
+> **Status: TASK 0 NATIVE BASE COMPLETE - PRODUCT RED NEXT AFTER REVIEW**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -45,6 +45,13 @@ tiers are not a full baseline and product RED remains unauthorized. The next
 gate is the already-owned `EIR-005` machine-state observer spec, not another
 unchanged retry or another runner amendment.
 
+That ordering was superseded on 2026-07-31 by a direct execution-boundary
+A/B. The Codex managed sandbox rejects the selector self-pipe send used by
+`asyncio.call_soon_threadsafe()`, while the native boundary delivers it. The
+observer campaign was therefore not run. The unchanged v3 protocol completed
+all eight base tiers natively on their first attempts; Section 8.11 is the
+current Task 0 authority.
+
 ## 1. Scope And Authorities
 
 - Design authority:
@@ -67,6 +74,9 @@ unchanged retry or another runner amendment.
 - `1a8379e72216e0c109f9498caf64abfa593b299c` is the exact focused-reviewed
   deterministic-v3 plan clearance and the Git identity used by the attempts
   documented in Section 8.10.
+- `5ff3608a979519b7aee8b68dc9863ca852ac1ce1` is the unchanged docs-only
+  product identity admitted by the fresh native-boundary base in Section
+  8.11.
 - The rebased price-truth delta from `e6d4b7fa` is docs-only.
 - Main-worktree drafts
   `docs/data/IBKR_PACING_AND_ERROR_SEMANTICS.md` and
@@ -918,6 +928,82 @@ receipt/response during the next matching window. This is diagnosis of a
 repeated test-runtime blocker, not a new product architecture or a claim that
 the price collector itself is defective in these five tests.
 
+### 8.11 Native execution-boundary Task 0 completion
+
+Before the reviewed observer campaign launched, a smaller controlled A/B
+identified the missing boundary variable. The exact 942-byte asyncio wakeup
+probe at SHA-256 `10647c1e...` produced queued but unfired work in `3/3`
+Codex managed-sandbox runs and normal callback delivery in `3/3` native
+runs. Direct `socketpair.sendall()` returned `EPERM` only in the managed
+sandbox. CPython 3.10.12 source confirms the causal order: enqueue into
+`_ready`, attempt the self-pipe send, and swallow `OSError` outside debug
+mode. The closeout packet is detailed in the lifespan diagnosis evidence
+Section 14.
+
+The original `/tmp/price-truth-tier-v3` remains frozen. Exact reviewed static
+inputs were copied byte-for-byte into a fresh, non-mixed root:
+
+```text
+/tmp/price-truth-tier-v3-native-boundary
+runner:   bb5d2245071aa48f8f0ad4e28a0966aa26744f213dcec65a69d947a383fd9de9
+reporter: 09d2bc52c7706b49e5f363fa2c6bcfc93523038f1c805fef08bb98a409301928
+builder:  0f0421f86f46265427914bce7bbede694beaa8d04b5d3b2ea9562d27cd7c8d9c
+tier map: 3d7adb7e1db7b92b25b3ae83fe56ec182c6b070802cd45d95e091c673115994a
+base preflight: dce06838645768d0e1a2f112fd46d60c4a2f1a88a05c32807c56f8fb0b2a9c1e
+```
+
+The pristine probe suite again closed all six checks. Its summary remains
+SHA-256 `9f664ea7608385edaf568ae7f35cc94fa5301fea7dd798ea0dd65b14881c1e87`.
+The unchanged `run-side` then completed every tier on its first attempt:
+
+| Tier | Outcome | Duration (s) |
+|---|---|---:|
+| T0 | `complete_pass` | `13.987` |
+| T1 | `complete_nonpassing` | `16.947` |
+| T2 | `complete_nonpassing` | `20.905` |
+| T3 | `complete_pass` | `20.304` |
+| T4 | `complete_pass` | `48.183` |
+| T5 | `complete_nonpassing` | `24.923` |
+| T6 | `complete_nonpassing` | `24.444` |
+| T7 | `complete_pass` | `30.100` |
+
+The atomic base summary is:
+
+```text
+complete: true
+selected attempts: base-T0-a1 through base-T7-a1
+unresolved tiers: []
+invalid attempt: null
+collected union: 4722 / fcdb1b7d...
+non-passing: 27 / 7aafce5d...
+base-summary SHA-256: f83ce823b09ea8fc16342e99ba164bb4ecedf21458125d17aa038f470b1f7a73
+```
+
+All 27 nodes are the existing EIR-002 families; no sandbox loopback-bind
+failures remain. The full regular-file evidence manifest at
+`/tmp/price-truth-tier-v3-native-boundary-manifest.sha256` contains `6655`
+entries and has manifest-file SHA-256 `eb8ed98d...`.
+
+The required monolithic diagnostic also naturally ran all `4722` nodes and
+printed `27 failed / 4623 passed / 72 skipped` in `275.56s`, with no signal
+or stall. It remains classified `invalid`, not pass, because v3's
+diagnostic-only terminal-summary regex accepts `... in 12.34s ...` but not
+pytest's longer-duration suffix `... in 275.56s (0:04:35) ...`.
+Transcript SHA-256 is `81bd1e56...`; report JSON SHA-256 is `aba2d230...`.
+This is a bounded diagnostic-classifier defect, not a missing node or an
+admission failure. The tiered base remains the sole admitted side.
+
+The run generated one untracked `src/data/cache/risk_free_rate.json`
+(SHA-256 `abf04d73...`). Its birth time `12:55:29 +0800` falls inside T6,
+whose `tests/test_rate_curve.py` is the only test caller of
+`get_risk_free_rate()`; T7 has no consumer. The monolithic diagnostic later
+updated the same cache. The side began without `src/data`, so this is a
+generated execution artifact rather than pre-run contamination. After all
+processes exited it was moved reversibly to
+`/tmp/price-truth-native-task0-src-data-20260731T1410`; the isolated worktree
+is clean and `data/` is empty. The tip side must begin with `src/data` absent
+and apply the same post-run quarantine.
+
 ## 9. Review Resolution
 
 Plan F1 was resolved at `9d1e648a`: the mounted frontend node now includes the
@@ -960,12 +1046,17 @@ their one retry. Product implementation and another unchanged runtime attempt
 remain unauthorized. The registered `EIR-005` observer spec is now the next
 review gate.
 
+Section 8.11 supersedes that historical blocker. EIR-005 is closed by the
+managed-sandbox/native causal A/B; no observer campaign ran. The exact v3
+base is complete under the native execution boundary, so focused review of
+this docs-only closeout is the only remaining gate before product RED.
+
 ## 10. Integration And Read-Only Release Observation
 
 The harness and diagnosis prerequisites are merged; price-truth product
-integration is not started. Deterministic-v3 Task 0 has three selected tiers
-but no complete admitted base side; five tiers remained unresolved after
-retry. The monolithic diagnostic was correctly withheld. Provider calls,
-production writes, repair, browser work, product RED, and release observation
-remain unauthorized pending the separately reviewed `EIR-005` machine-state
-observer line and a later complete same-protocol base.
+integration is not started. Deterministic-v3 now has a complete native base
+side with all eight first attempts selected and exact 27-node EIR-002
+non-passing union. The managed-sandbox observer line is closed without a
+campaign. Provider calls, production writes, repair, browser work, and
+release observation did not run. Product RED is next only after focused
+review accepts this execution-boundary closeout and Task 0 packet.
