@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: TASK 0 NATIVE BASE COMPLETE - PRODUCT RED AUTHORIZED**
+> **Status: TASK 1 DIRECT COLLECTOR GREEN - TASK 2 RED NEXT**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -151,16 +151,43 @@ after it was stopped.
 
 ## 3. RED Evidence
 
-Not started. Task 0 did not close, so product RED work is unauthorized.
+Task 1 added the seven exact direct-collector nodes and evolved the five
+existing nodes without renaming them. Before the product edit:
+
+```text
+command: python -m pytest -q tests/test_market_data_direct.py
+result: 12 failed / 58 passed
+```
+
+Eleven failures were the expected missing semantic envelope
+(`KeyError: 'status'`). The write-boundary node failed because
+`_unresolved_price_target_dates` did not exist. No failure came from provider
+access, calendar setup, SQL fixtures, imports, or the lock harness. This is
+the intended RED for missing post-write reconciliation and derived status.
 
 ## 4. GREEN Evidence
 
-Not started.
+Task 1 implemented only the locked direct-collector shape: stable reason
+codes, one parameterized day-presence query over the original target dates,
+post-insert reconciliation under `market_write_lock`, one issue rollup, and
+the documented three-value audit projection.
+
+```text
+command: python -m pytest -q tests/test_market_data_direct.py
+result: 70 passed in 1.28s
+tip collection: 70 nodes
+tip node SHA-256: 584cdd096455f7d86904d7f208e72c6cc597e4bf7f569c726aac16b199f618cb
+base -> tip: 63 -> 70, +7 / -0
+```
+
+All five evolved node IDs survived. Provider fetch remains outside
+`market_write_lock`; original-target reconciliation runs inside it.
 
 ## 5. Node And Resource Accounting
 
-Only the unchanged base collections in Section 2 are established. Planned
-`+17/-0` backend, `+2/-0` frontend, and resource deltas have not been applied.
+Task 1 accounts for the direct suite's planned `+7/-0`: `63 -> 70`.
+The remaining planned `+10/-0` backend, `+2/-0` frontend, and resource deltas
+have not yet been applied.
 
 ## 6. Mutation Evidence
 
