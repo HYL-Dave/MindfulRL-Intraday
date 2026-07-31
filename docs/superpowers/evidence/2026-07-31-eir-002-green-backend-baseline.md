@@ -1,6 +1,6 @@
 # EIR-002 Green Backend Baseline Evidence
 
-> **Status:** TASK 0 COMPLETE - INDEPENDENT GROUNDING REVIEW NEXT
+> **Status:** TASK 1 COMPLETE - NEWS FAMILY NEXT
 >
 > **Date:** 2026-07-31
 >
@@ -60,6 +60,7 @@
 |---|---:|---:|---:|---:|---|
 | `base-full-v2` | 4739 / 4739 | 4640 | 27 | 72 | `7aafce5d2cba923480cc1fb6221bce4f5a33e0bf61c06cf94227cafefe227f15` |
 | `base-focused` | 132 / 132 | 105 | 27 | 0 | `7aafce5d2cba923480cc1fb6221bce4f5a33e0bf61c06cf94227cafefe227f15` |
+| `after-retirement-focused` | 123 / 123 | 105 | 18 | 0 | `567ea435111078f45dee4c818e282997e1d562e72cf2ddc5a5101a09527cd225` |
 
 The two reporter `nonpassing_node_ids` streams are byte-equal. The accepted
 canonical stream is also byte-equal to the frozen EIR-005 native 27-node
@@ -125,15 +126,42 @@ before `base-focused`; focused execution created no repo-relative artifact.
 
 ## 5. RED And Mutation Evidence
 
-Task 0 records the pre-existing RED set only. No assertion, fixture, product
-file, test node, skip marker, or mutation was changed or executed. RED-first
-family work remains blocked until independent review clears this packet.
+Task 0 recorded the pre-existing RED set without changing an assertion,
+fixture, product file, test node, skip marker, or mutation. Independent review
+then authorized Tasks 1-5.
+
+Task 1 removed exactly the nine approved ambient-data nodes from
+`tests/test_data_access.py`:
+
+- the post-retirement canonical collection is
+  `4730 / c34de9a0fe53e400409d3ec26d75a8c907ee277b121279693ea9f69c8638aabb`;
+- the post-retirement focused collection is
+  `123 / 37386cd24fca323338fcb0fb2bbe5c42b7c471d2e9fde2e7c5f345b5ce631b8f`;
+- both collection streams are byte-equal to their preconstructed targets;
+- both `comm` proofs contain exactly the nine approved removals and no
+  additions;
+- the retained `tests/test_data_access.py` nodes returned `19 passed`; and
+- the native five-file checkpoint returned `105 passed / 18 failed /
+  123 collected`, with the exact planned non-passing SHA recorded in the
+  stage ledger.
+
+The Task 1 reporter and transcript are:
+
+- `/tmp/eir002-green-baseline/reports/after-retirement-focused.json`:
+  `2a8655090dd47ac59a21936f7ec6275ed16b2dd6fc6a302d63faf0b6e828253e`
+- `/tmp/eir002-green-baseline/reports/after-retirement-focused.txt`:
+  `3e6de85aadd29385d183168bd4aedc92cb09665e45fe570083d1df2ab90ca5dd`
+
+No Task 2-5 assertion, fixture, product file, skip marker, or mutation has
+been changed or executed yet.
 
 ## 6. Protected Boundaries
 
 - No file under `src/`, `data_sources/`, `apps/`, `config/`, `data/`, or
   `scripts/` changed.
-- No test file changed.
+- Task 1 changed only `tests/test_data_access.py`, deleting exactly the nine
+  approved ambient-data test functions. No retained node was renamed or
+  skipped.
 - No provider credential was supplied, and no production database, Gateway,
   scheduler, or product collection operation was used. Optional third-party
   client tests remained inside the blank-credential test environment and are
