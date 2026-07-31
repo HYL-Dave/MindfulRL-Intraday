@@ -1,6 +1,6 @@
 # EIR-002 Green Backend Baseline Evidence
 
-> **Status:** TASKS 1-5 COMPLETE - INDEPENDENT IMPLEMENTATION REVIEW NEXT
+> **Status:** TASK 6 COMPLETE - INDEPENDENT IMPLEMENTATION REVIEW NEXT
 >
 > **Date:** 2026-07-31
 >
@@ -65,6 +65,7 @@
 | `after-prices-focused` | 123 / 123 | 120 | 3 | 0 | `c072d5df09468496bb8fa26ade78cf38e1846be9b1dbe665502db60ae1e69664` |
 | `after-fundamentals-focused` | 123 / 123 | 122 | 1 | 0 | `71b6d959c36e1b7d8e9c92b4904a8e68c46c6c4d7992c0bdc939dc1b220798f0` |
 | `final-focused` | 123 / 123 | 123 | 0 | 0 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `final-full` | 4730 / 4730 | 4658 | 0 | 72 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
 
 The two reporter `nonpassing_node_ids` streams are byte-equal. The accepted
 canonical stream is also byte-equal to the frozen EIR-005 native 27-node
@@ -110,10 +111,10 @@ attempt was reinterpreted as an EIR-002 baseline.
 
 ## 4. Repository-Relative Artifact Boundary
 
-The pre-run Git status was empty, `data/` contained no files, and `src/data`
-did not exist. Each canonical full run created only
-`src/data/cache/risk_free_rate.json`; each exact path was recorded and moved
-to a distinct quarantine before any later admission run:
+Task 0 began with an empty Git status, no files under `data/`, and no
+`src/data`. It recorded that each canonical full run created only
+`src/data/cache/risk_free_rate.json`; each observed cache path was recorded
+and moved to a distinct quarantine:
 
 - Rejected run: inode `90595257`, 73 bytes, SHA-256
   `3a1bee06ad385aee524b17951a0878fc243fb49828020c37edb7c1018498edb9`,
@@ -124,9 +125,61 @@ to a distinct quarantine before any later admission run:
   quarantined under
   `/tmp/eir002-green-baseline/task0-base-full-v2-quarantine/src/data/cache/`.
 
-The now-empty generated directories were removed with exact `rmdir`
-operations. The restored status stream was byte-equal to the pre-run stream
-before `base-focused`; focused execution created no repo-relative artifact.
+**Task 6 erratum:** the Task 0 statement that those were the only generated
+files was false. The narrower Task 0 inventory did not capture
+`data/logs/sa_native_host.log`. The stricter Task 6 inventory found a
+pre-existing 924-byte file at that path whose entries date from the Task 0
+native runs. Therefore Task 0's risk-free-cache observations remain valid but
+were not exhaustive. This erratum corrects the evidence; it does not
+reinterpret or delete the historical run artifacts.
+
+Task 6 captured an empty pre-run Git status plus all 33 existing files under
+`data/` and `src/data`, including path, inode, size, modification time, and
+SHA-256. `final-full` then created exactly sixteen new files:
+
+- fifteen `data/agent_scratchpad/*.jsonl` files; and
+- `src/data/cache/risk_free_rate.json`, inode `90596688`, 73 bytes,
+  SHA-256
+  `1f548e4774e70354df87545faf3118c4da2f13b858f43dedc40098e3e2b9c700`.
+
+Their exact metadata and hashes are stored in
+`/tmp/eir002-green-baseline/final-quarantine/new-artifacts.manifest`
+(`b20b7485adc296db898eb002c43b1ccf1e4c11b2604c37b0d1da138bdfbefd33`).
+The pre-move and quarantined path streams are byte-equal at
+`8a841cf831de7aa08f2878a9560090f724ba4846190fff264e8b5c4e3526db0e`,
+and every quarantined SHA matches its source SHA.
+
+The same run appended 462 bytes to the existing
+`data/logs/sa_native_host.log`. The append contains only two run-window ping
+request/response pairs. Before any restoration:
+
+- the full 1,386-byte post-run file was preserved at
+  `/tmp/eir002-green-baseline/final-quarantine/modified/data/logs/sa_native_host.log.post-run`
+  with SHA-256
+  `4aa0a174bc73daf6b32c207f17ae7d8e89bd481f54000071956e85021d00b9d6`;
+- the exact 462-byte tail was preserved beside it as
+  `sa_native_host.log.appended-462`, SHA-256
+  `ad1b4e563f457865dcc2881db5f8b6ff816b78f7497ff408c9adc78e34663cb0`;
+  and
+- the first 924 bytes independently reproduced the pre-run SHA-256
+  `83d35003ddbc6b6979c83b9513ee4857d0fb83fbae9a113226614c2995281397`.
+
+With explicit approval, the isolated-worktree log was truncated to its exact
+924-byte prefix and its pre-run modification time restored. Its inode
+`95031007`, size, time, and SHA now match the pre-run manifest exactly.
+After moving all sixteen new files by exact path, the restored Git-status
+streams are both empty (`e3b0c442...`), the pre/restored 33-path inventories
+are byte-equal (`5bdb41a5...`), and the complete pre/restored metadata/hash
+manifests are byte-equal (`ef447109...`).
+
+Task 7 has one pre-authorized production safeguard. Before merged-full, it
+must snapshot the existing production `data/logs/sa_native_host.log` size,
+metadata, and SHA. Restoration is permitted only when the old file is an exact
+prefix and every appended line is a merged-run-window test ping. The full
+post-run file and append must be archived before truncation. If any production
+native host writes during the window, or the difference is not a pure
+test-ping append, the file must be preserved and execution must stop rather
+than truncate it.
 
 ## 5. RED And Mutation Evidence
 
@@ -314,21 +367,70 @@ The final focused reporter and transcript are:
 - Task 5 changed one call in `tests/test_app_records_store.py` to use the
   product's existing explicit clock seam. No assertion or product code
   changed.
+- Task 6 re-ran
+  `git diff --quiet 20d4e7e2 -- src data_sources apps config scripts`
+  successfully, and `git diff --name-only 20d4e7e2 -- data` was empty.
+  Protected current-shape anchors remained `94 passed / 18 skipped`.
 - No provider credential was supplied, and no production database, Gateway,
   scheduler, or product collection operation was used. Optional third-party
   client tests remained inside the blank-credential test environment and are
   not product-data admission evidence.
 - The main worktree's untracked
   `docs/design/SCRIPTS_RETIREMENT_DECISION.md` was not copied, edited, staged,
-  deleted, or cited.
+  deleted, or cited. It remains untracked at SHA-256
+  `79d4eac97d7692684d83f0a067f5987fe434bb76746b98af3e44f1c8ba4bf277`.
 
 ## 7. Native Final Admission
 
-The focused admission is complete: all 123 retained nodes pass under the same
-Node-pinned native wrapper, and the non-passing stream is empty. Canonical
-4,730-node native admission, protected-anchor reruns, final collection
-identity proofs, and EIR closeout belong to Task 6 and have not started.
+Task 6 reproduced both final collections:
+
+- canonical:
+  `4730 / c34de9a0fe53e400409d3ec26d75a8c907ee277b121279693ea9f69c8638aabb`;
+- focused:
+  `123 / 37386cd24fca323338fcb0fb2bbe5c42b7c471d2e9fde2e7c5f345b5ce631b8f`;
+- final collection JSON:
+  `ab6487af8fd731ae99f0c4dcec0147d9df0528487da24c5c74e5a7f5807822b9`
+  canonical and
+  `a3c7f6e7d6b4d139d9f068297610b82ea1a2ae8dc844b42c5ddc4cd498ecd5ae`
+  focused.
+
+Both node streams are byte-equal to the pre-edit Task 0 targets. The
+base-to-final removed stream is byte-equal to `retired.nodes`, the added
+stream is empty, all seventeen retained IDs and the app-record ID occur
+exactly once, and all nine retired IDs occur zero times.
+
+Immediately before full admission, the pinned 942-byte wakeup probe remained
+SHA-256
+`10647c1e64c49fc2e082701d7a735e40782620314c125cd103a9a3f9bb37bc2e`
+and returned
+`{"callback_fired": true, "ready_count": 0, "wake_bytes": 0}` in the native
+execution boundary.
+
+`/tmp/eir002-green-baseline/run_native.sh final-full` then terminated
+naturally with:
+
+```text
+4658 passed, 72 skipped, 0 failed
+4730 collected / 4730 seen
+exitstatus 0
+```
+
+The reporter's collected and seen streams are byte-equal to each other and
+to the final canonical collection. The non-passing stream is empty at
+`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+The final reporter and transcript are:
+
+- `/tmp/eir002-green-baseline/reports/final-full.json`:
+  `9babd7b9f24dda99594436dfa98d10c2af86b1b59b3ea5f19313489f4b1c5b9e`
+- `/tmp/eir002-green-baseline/reports/final-full.txt`:
+  `4df8765c1a414ff03343d8605d3046877b5ac1cf8057780233555a6676d241ff`
+
+Artifact restoration and quarantine then reproduced the exact pre-run status,
+path inventory, and complete metadata/hash manifest as recorded in Section 4.
+Task 6 admission is therefore complete and review-ready; no merge or EIR
+closure has occurred.
 
 ## 8. Reviewed Merge And Closeout
 
-Not started. Independent review of Tasks 1-5 is the next gate.
+Not started. EIR-002 remains `promoted`. Independent implementation review of
+the Task 6 tip is the next gate; Task 7 merge and closure remain unauthorized.
