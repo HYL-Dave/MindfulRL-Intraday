@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: TASK 2 WORKER BOUNDARY GREEN - TASK 3 RED NEXT**
+> **Status: TASK 3 SCHEDULER PROPAGATION GREEN - TASK 4 RED NEXT**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -178,6 +178,20 @@ collector results exiting zero, coerced malformed counts, absent semantic
 fields, and unsanitized non-retryable exception text. Argparse, fixtures, and
 provider configuration setup remained valid.
 
+Task 3 added six scheduler nodes and evolved the five existing price worker
+seams without renaming them:
+
+```text
+command: python -m pytest -q tests/test_data_scheduler.py
+result: 6 failed / 84 passed
+```
+
+Three outcome failures proved that return-code-zero partial was being
+reclassified as succeeded, failed payload audit used the generic worker
+message, and the partial-then-success history lacked its first failed audit
+projection. Three parser failures proved the new facts were neither preserved
+nor validated. The normalized-news audit pin remained green.
+
 ## 4. GREEN Evidence
 
 Task 1 implemented only the locked direct-collector shape: stable reason
@@ -210,11 +224,31 @@ worker base -> tip: 4 -> 8, +4 / -0
 The exact retryable lock-busy diagnostic remains available; other raw
 exception values and per-ticker provider messages do not cross stdout.
 
+Task 3 now treats the closed child payload as semantic authority, preserves
+lock-busy skip classification, stores price partial as durable `partial`
+without continuation, and projects only that price outcome to a failed
+three-value audit row:
+
+```text
+command: python -m pytest -q \
+  tests/test_market_data_direct.py \
+  tests/test_prices_runtime.py \
+  tests/test_data_scheduler.py
+result: 168 passed in 4.77s
+focused collection: 168 nodes
+focused node SHA-256: 9faa90281df39dddccf7bedf3ad2ad7304341560c00dea8ff8b9dd887f5e55a3
+focused base -> tip: 151 -> 168, +17 / -0
+```
+
+Normalized-news partial continues to write `job_runs.status=succeeded`; the
+new protection node proves this slice did not normalize that separate audit
+contract.
+
 ## 5. Node And Resource Accounting
 
-Tasks 1-2 account for planned backend `+11/-0`: direct `63 -> 70` and worker
-`4 -> 8`. The remaining planned `+6/-0` backend, `+2/-0` frontend, and
-resource deltas have not yet been applied.
+Tasks 1-3 account for the complete planned backend `+17/-0`: direct
+`63 -> 70`, worker `4 -> 8`, and scheduler `84 -> 90`. The planned `+2/-0`
+frontend and resource deltas have not yet been applied.
 
 ## 6. Mutation Evidence
 
