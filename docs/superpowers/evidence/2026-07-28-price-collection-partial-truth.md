@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: TASK 1 DIRECT COLLECTOR GREEN - TASK 2 RED NEXT**
+> **Status: TASK 2 WORKER BOUNDARY GREEN - TASK 3 RED NEXT**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -165,6 +165,19 @@ Eleven failures were the expected missing semantic envelope
 access, calendar setup, SQL fixtures, imports, or the lock harness. This is
 the intended RED for missing post-write reconciliation and derived status.
 
+Task 2 then added four worker-boundary nodes and evolved the two existing
+serialization nodes in place:
+
+```text
+command: python -m pytest -q tests/test_prices_runtime.py
+result: 6 failed / 2 passed
+```
+
+The failures were the intended contract gaps: hard-coded success, failed
+collector results exiting zero, coerced malformed counts, absent semantic
+fields, and unsanitized non-retryable exception text. Argparse, fixtures, and
+provider configuration setup remained valid.
+
 ## 4. GREEN Evidence
 
 Task 1 implemented only the locked direct-collector shape: stable reason
@@ -183,11 +196,25 @@ base -> tip: 63 -> 70, +7 / -0
 All five evolved node IDs survived. Provider fetch remains outside
 `market_write_lock`; original-target reconciliation runs inside it.
 
+Task 2 added strict status/count/ticker validation, bounded issue identities,
+sanitized non-retryable exceptions, and status-derived process exit:
+
+```text
+command: python -m pytest -q tests/test_prices_runtime.py tests/test_market_data_direct.py
+result: 78 passed in 1.32s
+worker collection: 8 nodes
+worker node SHA-256: 44138730587258f578358c58068359930abdd818d8da21511fa346795598f374
+worker base -> tip: 4 -> 8, +4 / -0
+```
+
+The exact retryable lock-busy diagnostic remains available; other raw
+exception values and per-ticker provider messages do not cross stdout.
+
 ## 5. Node And Resource Accounting
 
-Task 1 accounts for the direct suite's planned `+7/-0`: `63 -> 70`.
-The remaining planned `+10/-0` backend, `+2/-0` frontend, and resource deltas
-have not yet been applied.
+Tasks 1-2 account for planned backend `+11/-0`: direct `63 -> 70` and worker
+`4 -> 8`. The remaining planned `+6/-0` backend, `+2/-0` frontend, and
+resource deltas have not yet been applied.
 
 ## 6. Mutation Evidence
 
