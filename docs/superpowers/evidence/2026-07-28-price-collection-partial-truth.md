@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: TASK 3 SCHEDULER PROPAGATION GREEN - TASK 4 RED NEXT**
+> **Status: TASK 4 FRONTEND PRESENTATION GREEN - TASK 5 MUTATION NEXT**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -192,6 +192,23 @@ message, and the partial-then-success history lacked its first failed audit
 projection. Three parser failures proved the new facts were neither preserved
 nor validated. The normalized-news audit pin remained green.
 
+Task 4 added the two exact frontend nodes and evolved the resource ledger
+without renaming any existing node:
+
+```text
+command: npx vitest run \
+  src/marketDataDisplay.test.ts \
+  src/SettingsProviderConfig.test.ts \
+  src/i18n/resources.test.ts
+result: 3 failed / 85 passed
+```
+
+The display and mounted Settings failures showed the existing generic
+`partial` label instead of the bounded LCID fact. The resource inventory
+failed at `704` versus `706` Settings leaves and `1783` versus `1785` total
+leaves. No failure came from the schedule fixture, DOM mounting, locale
+switch, or DTO compilation.
+
 ## 4. GREEN Evidence
 
 Task 1 implemented only the locked direct-collector shape: stable reason
@@ -244,11 +261,44 @@ Normalized-news partial continues to write `job_runs.status=succeeded`; the
 new protection node proves this slice did not normalize that separate audit
 contract.
 
+Task 4 extends only the schedule-result DTO and the pure Settings presenter.
+Actionable continuation remains first; a source-exact, status-exact price
+branch displays the positive unresolved count and at most 25 non-empty ticker
+IDs without creating a Continue action:
+
+```text
+command: npx vitest run \
+  src/marketDataDisplay.test.ts \
+  src/SettingsProviderConfig.test.ts \
+  src/i18n/resources.test.ts
+result: 88 passed in 2.69s
+frontend full collection: 1076 nodes
+frontend full node SHA-256: de48671aa1d3f70cb87166e3f5b026804e206ac31f8e29fe7e74b38cde9448d5
+frontend focused collection: 88 nodes
+frontend focused node SHA-256: b6f01cae4038c5c94f51da05ad920e52b723c387c6f48938f7dce6a13b028e4f
+frontend base -> tip: 1074 -> 1076, +2 / -0
+```
+
+The existing pre-Slice-5 inventory node now explicitly excludes the two
+post-Slice Settings paths while asserting that both paths exist. This keeps
+its historical `614/637` claim intact rather than relabeling new resources as
+pre-Slice-5 content. The current resource ledger is Settings `706`, Explore
+`380`, total `1785` in both locales.
+
+The visible-literal scanner passed twice at `36/20/0/20`. TypeScript
+typecheck and the production build both exited zero. The mounted bilingual
+node retained the generic failed audit glyph, rendered the price partial
+facts, and exposed no Continue control. `DataSourcesSection.tsx` was not
+edited.
+
 ## 5. Node And Resource Accounting
 
 Tasks 1-3 account for the complete planned backend `+17/-0`: direct
-`63 -> 70`, worker `4 -> 8`, and scheduler `84 -> 90`. The planned `+2/-0`
-frontend and resource deltas have not yet been applied.
+`63 -> 70`, worker `4 -> 8`, and scheduler `84 -> 90`. Task 4 accounts for
+the complete frontend `+2/-0`: Settings `36 -> 37`, display `36 -> 37`, and
+resources remain `14`. Resource leaves changed only by the two bilingual
+price-partial keys: Settings `704 -> 706`, Explore `380`, total
+`1783 -> 1785`.
 
 ## 6. Mutation Evidence
 
