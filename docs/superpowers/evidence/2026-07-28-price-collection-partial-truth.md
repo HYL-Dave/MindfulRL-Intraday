@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: IMPLEMENTATION REVIEW-READY - INDEPENDENT REVIEW NEXT**
+> **Status: IMPLEMENTATION RE-REVIEW-READY - INDEPENDENT REVIEW NEXT**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -50,7 +50,9 @@ A/B. The Codex managed sandbox rejects the selector self-pipe send used by
 `asyncio.call_soon_threadsafe()`, while the native boundary delivers it. The
 observer campaign was therefore not run. The unchanged v3 protocol completed
 all eight base tiers natively on their first attempts; Section 8.11 is the
-current Task 0 authority.
+current Task 0 authority. Product implementation and its first independent
+review followed; Sections 3-7 now record the current `7948f68d` review-fix
+tip and complete fresh-root native verification.
 
 ## 1. Scope And Authorities
 
@@ -77,7 +79,9 @@ current Task 0 authority.
 - `5ff3608a979519b7aee8b68dc9863ca852ac1ce1` is the unchanged docs-only
   product identity admitted by the fresh native-boundary base in Section
   8.11.
-- The rebased price-truth delta from `e6d4b7fa` is docs-only.
+- `0075ba9ef49ff3cd4a71d1c6c42d89de7046f7d8` is the merged product base.
+- `7948f68dc0d8f5dc4b3268f1fa5e20a15b9dc3af` is the current product tip
+  after resolving initial independent-review findings.
 - Main-worktree drafts
   `docs/data/IBKR_PACING_AND_ERROR_SEMANTICS.md` and
   `docs/design/SCRIPTS_RETIREMENT_DECISION.md` remained untracked and were not
@@ -390,7 +394,7 @@ helper reached only after an already-empty target set:
 
 That mutation made
 `test_backfill_one_row_low_volume_day_stays_succeeded` RED at its
-`gaps_found == 0` assertion. Final restored product blobs are:
+`gaps_found == 0` assertion. Product blobs at the initial `fa0cade9` tip were:
 
 ```text
 src/market_data_direct.py: f84f125e1cf4f95b1841645136e87fec5f2ad7d9
@@ -399,12 +403,39 @@ src/service/data_scheduler.py: 7f395795538fe8c60e07b7232cf9fdd4ff456f41
 apps/arkscope-web/src/marketDataDisplay.ts: 86dc542e0204f7e4688e52a23f36bdc7a6af664c
 ```
 
+Independent review of `0075ba9e..41ea0ac4` found three product defects and
+three test/evidence gaps. Each product defect was reproduced before the fix:
+
+| Review finding | RED evidence |
+|---|---|
+| a message-less per-ticker `TimeoutError()` became success | the existing exception-isolation node observed `errors={}` instead of `{"BAD": "TimeoutError"}` |
+| provider meta treated `error=""` as success | the existing meta node observed `last_success` advance from the planted 2000 value |
+| an older observed bar could move the frontier backward | the existing upsert node observed `2026-06-16` instead of preserving `2026-06-18` |
+| scheduler accepted contradictory complete ticker facts | the malformed-payload node accepted `error_tickers=["AAPL"]` with unresolved `["LCID"]` |
+
+Fix commit `7948f68dc0d8f5dc4b3268f1fa5e20a15b9dc3af` makes only
+`None` mean no error, gives empty exception text a stable class-name reason,
+preserves detected target dates through per-ticker exceptions, computes the
+maximum fetched bar, prevents provider frontier regression, and requires
+unresolved tickers to be a subset of an untruncated error list. The existing
+all-issue node now uses two genuinely unresolved tickers. The existing
+frontend node now passes 30 tickers; removing the 25-item display bound made
+that node alone RED. No node was added, removed, or renamed. Current product
+blobs are:
+
+```text
+src/market_data_direct.py: 28605175a5ec6dac24642a1dc701dd8ea65e02cc
+src/prices_runtime.py: c068acee45f4e798d95643ac169a5e3d446e0c63
+src/service/data_scheduler.py: 403a26bb5589827bba824d869562a2eebadb9c5a
+apps/arkscope-web/src/marketDataDisplay.ts: 86dc542e0204f7e4688e52a23f36bdc7a6af664c
+```
+
 ## 7. Protected Boundaries
 
-### 7.1 Native tiered tip
+### 7.1 Initial native tiered tip
 
 The same reviewed native execution boundary and unchanged v3 runner admitted
-the tip. The external wakeup preflight returned:
+the initial `fa0cade9` tip. The external wakeup preflight returned:
 
 ```json
 {"callback_fired": true, "ready_count": 0, "wake_bytes": 0}
@@ -457,7 +488,62 @@ It was moved reversibly to
 `/tmp/price-truth-native-tip-src-data-20260731T1605`; `src/data` is absent
 again.
 
-### 7.2 Regression and static gates
+### 7.2 Review-fix native tiered tip
+
+The review-fix side did not reuse the initial bank. Its first preflight
+(`acf6c2dc...`) refused before pytest because the isolated worktree contained
+`data/profile_state.db` (inode `93323623`, 143360 bytes, SHA-256
+`fcfbadad164a67b48e4e94077ef8ceba15b8126b72403ac869f41a18baf2353d`).
+That side remains permanently incomplete with
+`invalid_attempt="tip-T0-a1:runner_error"` and no selected attempt. The file
+was moved reversibly to
+`/tmp/price-truth-review-fix-prelaunch-data-20260731T1631/`.
+
+A fresh root at `/tmp/price-truth-tier-v3-review-fix-native` retained the
+exact reviewed runner `bb5d2245...`, reporter `09d2bc52...`, builder
+`0f0421f8...`, and tier map `3d7adb7e...`. Its wakeup preflight again returned
+`true/0/0`; preflight SHA-256 is
+`f769ea737eeb6efba44ebf89a28ca2267fcead85a258dcd7658f71a15643d968`.
+The root is bound to product commit `7948f68d`, 253 mapped paths, and the
+unchanged `4739/a72bbd36...` collection. All selected attempts were first
+attempts:
+
+| Tier | Outcome | Duration (s) | Non-passing |
+|---|---|---:|---:|
+| T0 | `complete_pass` | `13.979` | 0 |
+| T1 | `complete_nonpassing` | `17.019` | 2 |
+| T2 | `complete_nonpassing` | `21.423` | 16 |
+| T3 | `complete_pass` | `20.227` | 0 |
+| T4 | `complete_pass` | `52.599` | 0 |
+| T5 | `complete_nonpassing` | `24.653` | 1 |
+| T6 | `complete_nonpassing` | `24.189` | 8 |
+| T7 | `complete_pass` | `30.593` | 0 |
+
+```text
+review-fix tip summary SHA-256: caba76e0a21189b7cfb969e324903b803335a15958e5d9d32f815db3c69e37b1
+review-fix tip non-passing: 27 / 7aafce5d2cba923480cc1fb6221bce4f5a33e0bf61c06cf94227cafefe227f15
+base non-passing: 27 / 7aafce5d2cba923480cc1fb6221bce4f5a33e0bf61c06cf94227cafefe227f15
+new IDs: 0
+gone IDs: 0
+```
+
+The fresh-root diagnostic naturally executed all `4739` nodes:
+`27 failed / 4640 passed / 72 skipped` in `280.09s (0:04:40)`. It remains
+diagnostic `invalid` only because the unchanged terminal-summary regex rejects
+the duration suffix. No signal was sent and all 9478 progress events arrived.
+Transcript SHA-256 is
+`feea0ef1137e8585e12b4a456f70eb9acbfa071118e5bff4863d86ca2b8d6a9b`;
+report SHA-256 is
+`cda36b333db66dc90d1faa8bcfa694448490f697f7cd03c67da26cd08ca48403`.
+
+T6 and the diagnostic created only
+`src/data/cache/risk_free_rate.json` (inode `93202653`, 74 bytes, SHA-256
+`b232553eeafcb72479141777212aee5eaf5d00e2a1f842defb16d5e5366dfae3`).
+The directory was moved reversibly to
+`/tmp/price-truth-review-fix-src-data-20260731T1650`; isolated `data/` is
+empty and `src/data` is absent again.
+
+### 7.3 Regression and static gates
 
 ```text
 backend focused: 168 passed
@@ -490,7 +576,7 @@ market_coverage/sql/scripts tree: cb538c0e6b5bedd2f4f8d2bae59f1e56895763191d5999
 
 No test or verification action contacted a provider, Gateway, browser, or
 production database. Product tip is
-`fa0cade9ec8a7547f6588ac194bcaf9134c798a6`. The two protected main-worktree
+`7948f68dc0d8f5dc4b3268f1fa5e20a15b9dc3af`. The two protected main-worktree
 drafts remain untracked and byte-identical at `4921194a...` and
 `79d4eac9...`.
 
@@ -1361,21 +1447,22 @@ Section 8.7 EOF/exit invalid. Section 8.8 records the approved v3 design;
 Section 8.9 records its exact-source plan construction. Focused review cleared
 that plan at `1a8379e7`; Section 8.10 records the authorized runtime. V3
 resolved the transport invalidation, but five tiers remained unresolved after
-their one retry. Product implementation and another unchanged runtime attempt
-remain unauthorized. The registered `EIR-005` observer spec is now the next
-review gate.
+their one retry. Those statements describe the historical sandbox-bound
+attempt and do not describe the later native execution boundary.
 
 Section 8.11 supersedes that historical blocker. EIR-005 is closed by the
 managed-sandbox/native causal A/B; no observer campaign ran. The exact v3
-base is complete under the native execution boundary, so focused review of
-this docs-only closeout is the only remaining gate before product RED.
+base completed under the native execution boundary. Product implementation
+then proceeded, and Sections 3-7 record its RED/GREEN work, initial review,
+review-fix commit, and complete fresh-root native tip.
 
 ## 10. Integration And Read-Only Release Observation
 
-The harness and diagnosis prerequisites are merged; price-truth product
-integration is not started. Deterministic-v3 now has a complete native base
-side with all eight first attempts selected and exact 27-node EIR-002
+The harness and diagnosis prerequisites are merged. Price-truth implementation
+is review-ready at product tip `7948f68d`; integration into `master` has not
+started. Deterministic-v3 has complete native base and review-fix tip sides,
+both with all eight first attempts selected and the same exact 27-node EIR-002
 non-passing union. The managed-sandbox observer line is closed without a
-campaign. Provider calls, production writes, repair, browser work, and
-release observation did not run. Product RED is next only after focused
-review accepts this execution-boundary closeout and Task 0 packet.
+campaign. Provider calls, production writes, repair, browser work, scheduler
+restart, and release observation did not run. Independent implementation
+re-review is the sole next gate.
