@@ -1,6 +1,6 @@
 # EIR-002 Green Backend Baseline Evidence
 
-> **Status:** TASK 3 COMPLETE - FUNDAMENTALS FAMILY NEXT
+> **Status:** TASK 4 COMPLETE - APP-RECORD CLOCK NEXT
 >
 > **Date:** 2026-07-31
 >
@@ -63,6 +63,7 @@
 | `after-retirement-focused` | 123 / 123 | 105 | 18 | 0 | `567ea435111078f45dee4c818e282997e1d562e72cf2ddc5a5101a09527cd225` |
 | `after-news-focused` | 123 / 123 | 112 | 11 | 0 | `e6d59e3ec3e24b3d8ef2d68c341af5dcbb8c3bd0f264e71a130a45713ad8203c` |
 | `after-prices-focused` | 123 / 123 | 120 | 3 | 0 | `c072d5df09468496bb8fa26ade78cf38e1846be9b1dbe665502db60ae1e69664` |
+| `after-fundamentals-focused` | 123 / 123 | 122 | 1 | 0 | `71b6d959c36e1b7d8e9c92b4904a8e68c46c6c4d7992c0bdc939dc1b220798f0` |
 
 The two reporter `nonpassing_node_ids` streams are byte-equal. The accepted
 canonical stream is also byte-equal to the frozen EIR-005 native 27-node
@@ -233,8 +234,49 @@ exact pre-mutation SHA
 `80438ed993f9c9cd22509655dcc54ae30b123a4d0f94673d5d8f1348b0c1e480`,
 then the owning node returned `1 passed`.
 
-No Task 4-5 assertion, fixture, product file, or skip marker has been changed
-or executed yet.
+Task 4 strengthened the two fundamentals assertions while keeping the ambient
+fixtures and installing spies at the SEC EDGAR and Financial Datasets
+fallback seams. Both nodes remained RED because both captured fallbacks were
+attempted; no unspied network or credential-dependent result occurred. After
+switching only those nodes to the stored IBKR-snapshot seam:
+
+- `fundamentals-green` returned `2 passed`;
+- `after-fundamentals-focused` returned
+  `122 passed / 1 failed / 123 collected`;
+- the only remaining node was
+  `tests/test_app_records_store.py::test_report_insert_query_roundtrip`; and
+- that one-node stream matched the planned
+  `71b6d959c36e1b7d8e9c92b4904a8e68c46c6c4d7992c0bdc939dc1b220798f0`.
+
+The Task 4 reporters and transcripts are:
+
+- `fundamentals-red.json` / `fundamentals-red.txt`:
+  `f572890ec1c6752544e05b62cb3ff88cfa3a52a42d4922432ef694a494147a57` /
+  `1e8af39255a81da5d86f0401ed8d6cacdaa976c9cf1af8fc843716c31e5998d6`
+- `fundamentals-green.json` / `fundamentals-green.txt`:
+  `778916978cba9424e9a20ad4440400e216bc7dc8aeb20689701f6767c868a54c` /
+  `809ca8ed3c30a0e63ca40cbe4bd4837b9db5383053c61d46ac665d0580149049`
+- `after-fundamentals-focused.json` /
+  `after-fundamentals-focused.txt`:
+  `76cf5255f104eff089d9983726a1a33cd9fe009d436e5497fc61904e42033fa6` /
+  `6c306184f576defbbdeb35de7d333a4cac9f270b261de2c3503634363fae8e5a`
+
+Fundamentals mutation:
+
+```diff
+-                "market_cap": 1_500_000_000_000.0,
++                "market_cap": None,
+```
+
+With that temporary snapshot change,
+`TestAnalysisTools.test_get_fundamentals_analysis` turned RED on the exact
+market-cap assertion after `provider_calls == []` had passed. The file was
+restored to its exact pre-mutation SHA
+`45b89dfce6e806c30cbb5a60b2a49460e1b749e46d16e49e5716987ee6fae717`,
+then the owning node returned `1 passed`.
+
+No Task 5 assertion, fixture, product file, or skip marker has been changed or
+executed yet.
 
 ## 6. Protected Boundaries
 
@@ -249,6 +291,9 @@ or executed yet.
 - Task 3 changed assertions and fixture parameters only for the eight named
   price/status nodes in those same test files. No helper data, module-wide
   ambient fixture, node identity, or product file changed.
+- Task 4 changed assertions and fixture parameters only for the two named
+  fundamentals nodes in `tests/test_api.py` and `tests/test_tools.py`.
+  Provider fallbacks remain product-owned and unmodified.
 - No provider credential was supplied, and no production database, Gateway,
   scheduler, or product collection operation was used. Optional third-party
   client tests remained inside the blank-credential test environment and are
