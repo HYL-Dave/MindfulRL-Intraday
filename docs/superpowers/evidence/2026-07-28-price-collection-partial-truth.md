@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: TASK 0 NATIVE BASE COMPLETE - PRODUCT RED NEXT AFTER REVIEW**
+> **Status: TASK 0 NATIVE BASE COMPLETE - PRODUCT RED AUTHORIZED**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -1003,6 +1003,21 @@ processes exited it was moved reversibly to
 `/tmp/price-truth-native-task0-src-data-20260731T1410`; the isolated worktree
 is clean and `data/` is empty. The tip side must begin with `src/data` absent
 and apply the same post-run quarantine.
+
+Focused closeout review cleared `73d5305e..0075ba9e` with zero findings.
+`master` and `codex/price-collection-truth` then fast-forwarded to exact
+reviewed tip `0075ba9ef49ff3cd4a71d1c6c42d89de7046f7d8`; product RED is
+authorized.
+
+The non-blocking review advisory about pytest's optional `(h:mm:ss)` suffix
+was explicitly ruled before tip execution. V3 remains unchanged because the
+defect is fail-closed and the planned product delta does not add nodes to the
+base's slowest tier, T4. If the suffix alone causes a naturally completed tip
+tier to be classified `natural_result_validation_failed`, the side must stop
+without reinterpretation or a speed-based retry. A separately reviewed v3.1
+regex amendment and a complete tip-side rebuild are then required. This
+ruling does not promote the invalid monolithic diagnostic above, weaken
+reporter/manifest admission, or authorize any other invalid result.
 
 ## 9. Review Resolution
 
