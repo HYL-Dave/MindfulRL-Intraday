@@ -1,6 +1,6 @@
 # EIR-002 Green Backend Baseline Evidence
 
-> **Status:** TASK 4 COMPLETE - APP-RECORD CLOCK NEXT
+> **Status:** TASKS 1-5 COMPLETE - INDEPENDENT IMPLEMENTATION REVIEW NEXT
 >
 > **Date:** 2026-07-31
 >
@@ -64,6 +64,7 @@
 | `after-news-focused` | 123 / 123 | 112 | 11 | 0 | `e6d59e3ec3e24b3d8ef2d68c341af5dcbb8c3bd0f264e71a130a45713ad8203c` |
 | `after-prices-focused` | 123 / 123 | 120 | 3 | 0 | `c072d5df09468496bb8fa26ade78cf38e1846be9b1dbe665502db60ae1e69664` |
 | `after-fundamentals-focused` | 123 / 123 | 122 | 1 | 0 | `71b6d959c36e1b7d8e9c92b4904a8e68c46c6c4d7992c0bdc939dc1b220798f0` |
+| `final-focused` | 123 / 123 | 123 | 0 | 0 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
 
 The two reporter `nonpassing_node_ids` streams are byte-equal. The accepted
 canonical stream is also byte-equal to the frozen EIR-005 native 27-node
@@ -275,8 +276,24 @@ restored to its exact pre-mutation SHA
 `45b89dfce6e806c30cbb5a60b2a49460e1b749e46d16e49e5716987ee6fae717`,
 then the owning node returned `1 passed`.
 
-No Task 5 assertion, fixture, product file, or skip marker has been changed or
-executed yet.
+Task 5 reproduced the remaining app-record RED: the fixed
+`2026-06-20T10:00:00` record fell outside the default moving 30-day window,
+so `df.iloc[0]` raised `IndexError`. Only the existing query clock seam was
+changed to `store.query_reports(today="2026-06-21")`; the inserted date,
+window, and round-trip assertions remained unchanged.
+
+- the owning node returned `1 passed`;
+- `tests/test_app_records_store.py` returned `20 passed`;
+- `final-focused` returned `123 passed / 0 failed / 123 collected`; and
+- its empty non-passing stream matched
+  `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+
+The final focused reporter and transcript are:
+
+- `/tmp/eir002-green-baseline/reports/final-focused.json`:
+  `4a688ba8ec085e9cbf0abcee6c3331f7cffbbe639d0a06ec160d4255b0a6bcd8`
+- `/tmp/eir002-green-baseline/reports/final-focused.txt`:
+  `1ec4da0160810d2fcee78f31a1f23eba19f6b14af4011ce5d33cec53fa248343`
 
 ## 6. Protected Boundaries
 
@@ -294,6 +311,9 @@ executed yet.
 - Task 4 changed assertions and fixture parameters only for the two named
   fundamentals nodes in `tests/test_api.py` and `tests/test_tools.py`.
   Provider fallbacks remain product-owned and unmodified.
+- Task 5 changed one call in `tests/test_app_records_store.py` to use the
+  product's existing explicit clock seam. No assertion or product code
+  changed.
 - No provider credential was supplied, and no production database, Gateway,
   scheduler, or product collection operation was used. Optional third-party
   client tests remained inside the blank-credential test environment and are
@@ -304,10 +324,11 @@ executed yet.
 
 ## 7. Native Final Admission
 
-Not started. Task 0 establishes only the reviewed base and target identities.
-Final zero-failure admission belongs to later tasks and must use the same
-Node-pinned native wrapper and exact target collection.
+The focused admission is complete: all 123 retained nodes pass under the same
+Node-pinned native wrapper, and the non-passing stream is empty. Canonical
+4,730-node native admission, protected-anchor reruns, final collection
+identity proofs, and EIR closeout belong to Task 6 and have not started.
 
 ## 8. Reviewed Merge And Closeout
 
-Not started. Independent Task 0 review is the next gate.
+Not started. Independent review of Tasks 1-5 is the next gate.
