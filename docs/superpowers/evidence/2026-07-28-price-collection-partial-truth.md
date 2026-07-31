@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: IMPLEMENTATION RE-REVIEW-READY - INDEPENDENT REVIEW NEXT**
+> **Status: LIVE COMPLETE - MERGED AND NATURAL-CYCLE VERIFIED**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -1458,11 +1458,93 @@ review-fix commit, and complete fresh-root native tip.
 
 ## 10. Integration And Read-Only Release Observation
 
-The harness and diagnosis prerequisites are merged. Price-truth implementation
-is review-ready at product tip `7948f68d`; integration into `master` has not
-started. Deterministic-v3 has complete native base and review-fix tip sides,
-both with all eight first attempts selected and the same exact 27-node EIR-002
-non-passing union. The managed-sandbox observer line is closed without a
-campaign. Provider calls, production writes, repair, browser work, scheduler
-restart, and release observation did not run. Independent implementation
-re-review is the sole next gate.
+Independent implementation re-review cleared `0075ba9e..66ef3bbc` with zero
+blocking findings. On 2026-07-31, `master` fast-forwarded from `0075ba9e` to
+the exact reviewed tip `66ef3bbcd39e2927cf39a23844fc1cb8e2328f00`
+without a merge commit.
+
+### 10.1 Merged verification
+
+- Backend focused: `168 passed`.
+- Canonical backend collection: `4739`,
+  `a72bbd36dfad3d36aee2e6630e6024ec9fb4e910bebaf1363d44df8a1aa204dd`.
+- Frontend: `96` files / `1076` tests passed.
+- Canonical frontend collection: `1076`,
+  `de48671aa1d3f70cb87166e3f5b026804e206ac31f8e29fe7e74b38cde9448d5`.
+- Typecheck/build exited zero. The visible-literal scanner returned
+  `36/20/0/20` twice.
+- The two protected untracked drafts remained byte-identical at
+  `4921194a...` and `79d4eac9...`.
+
+The independently reviewed native full-suite result at the exact merged tip
+remains `27 failed / 4640 passed / 72 skipped`, with the same exact
+`27/7aafce5d...` EIR-002 non-passing set as base and no new failures.
+
+### 10.2 Read-only pre-run facts
+
+The merged desktop first loaded with `ARKSCOPE_DISABLE_SCHEDULER=1`. This
+environment-only guard did not change the saved setting:
+`schedule.ibkr_prices.enabled=true` and
+`schedule.ibkr_prices.interval_minutes=600`.
+
+All observations used SQLite URI `mode=ro` plus `PRAGMA query_only=ON`.
+Before the merged natural cycle:
+
+- latest `collect.ibkr_prices` was historical job `18212`, started
+  `2026-07-31T00:21:24+00:00`, persisted `succeeded` by the pre-merge runtime;
+- LCID price meta reported `last_success=2026-07-31T00:24:18+00:00`,
+  `last_bar_datetime=2026-07-29T23:45:00+0000`, `last_error=null`, and
+  `rows_added=38`;
+- LCID had 60 / 59 / 64 stored 15-minute rows on July 27 / 28 / 29 and no
+  July 30 row;
+- Coverage v2 reported July 27 complete, while July 30 was
+  `indeterminate_tickers`: `149 complete / 0 partial / 1 unknown (LCID)`;
+- `market_data.db` was 3,409,027,072 bytes, inode `127284871`, mtime ns
+  `1785485926436141726`; `profile_state.db` was 44,650,496 bytes, inode
+  `127284276`, mtime ns `1785492173057373242`; and
+- both databases returned `integrity_check=ok` and zero rows from
+  `foreign_key_check`.
+
+### 10.3 Natural-cycle result
+
+The desktop then restarted normally. No Run control, provider/Gateway probe,
+cadence change, retry experiment, or LCID repair occurred. The unchanged
+scheduler created job `18329` at `2026-07-31T10:21:39+00:00` and completed it
+at `2026-07-31T10:24:36+00:00`:
+
+```json
+{
+  "status": "succeeded",
+  "tickers_scanned": 150,
+  "succeeded_ticker_count": 150,
+  "gaps_found": 1,
+  "rows_added": 62,
+  "error_count": 0,
+  "unresolved_after_fetch_count": 0,
+  "unresolved_after_fetch_tickers": []
+}
+```
+
+The corresponding `provider_sync_runs` row is `784`, status `succeeded`.
+LCID price meta now reports
+`last_success=2026-07-31T10:24:36+00:00`,
+`last_bar_datetime=2026-07-30T23:45:00+0000`, `last_error=null`, and
+`rows_added=62`. LCID has 62 July 30 rows from 08:00Z through 23:45Z.
+
+Coverage v2 then reported both July 27 and July 30 complete. July 30 changed
+to `150 complete / 0 partial / 0 unknown`, with no provider errors or
+unmatched RTH rows. This is a **Resolved** outcome under the approved contract.
+It proves only that the original local zero-row target became present after
+the natural fetch; it does not identify the successful upstream path or the
+reason for the earlier absence.
+
+After the cycle, `market_data.db` remained 3,409,027,072 bytes at inode
+`127284871`; `profile_state.db` was 44,658,688 bytes at inode `127284276`.
+Their mtimes advanced to `1785493476277478576` and
+`1785493476312478758` ns respectively. Both again returned
+`integrity_check=ok` and zero foreign-key violations.
+
+Merged verification and the bounded release observation are complete. This
+slice is LIVE. EIR-002 remains next, followed by root `scripts/` retirement;
+calendar-aware price scheduling, extended-hours capture, structured provider
+outcomes, and the pacing reference rewrite remain separate work.
