@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: TASK 4 FRONTEND PRESENTATION GREEN - TASK 5 MUTATION NEXT**
+> **Status: IMPLEMENTATION REVIEW-READY - INDEPENDENT REVIEW NEXT**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -300,33 +300,199 @@ resources remain `14`. Resource leaves changed only by the two bilingual
 price-partial keys: Settings `704 -> 706`, Explore `380`, total
 `1783 -> 1785`.
 
+Final collection identities are:
+
+```text
+backend full:    4739 / a72bbd36dfad3d36aee2e6630e6024ec9fb4e910bebaf1363d44df8a1aa204dd
+backend focused:  168 / 9faa90281df39dddccf7bedf3ad2ad7304341560c00dea8ff8b9dd887f5e55a3
+frontend full:   1076 / de48671aa1d3f70cb87166e3f5b026804e206ac31f8e29fe7e74b38cde9448d5
+frontend focused:  88 / b6f01cae4038c5c94f51da05ad920e52b723c387c6f48938f7dce6a13b028e4f
+```
+
+The exact backend additions are:
+
+```text
+tests/test_market_data_direct.py::test_backfill_partial_preserves_healthy_rows_and_marks_unresolved_target
+tests/test_market_data_direct.py::test_backfill_failed_when_every_ticker_has_issue
+tests/test_market_data_direct.py::test_backfill_resolved_zero_bar_target_stays_succeeded_and_clears_error
+tests/test_market_data_direct.py::test_backfill_one_row_low_volume_day_stays_succeeded
+tests/test_market_data_direct.py::test_backfill_non_target_rows_do_not_resolve_original_zero_bar_target
+tests/test_market_data_direct.py::test_backfill_rechecks_original_target_set_only_once
+tests/test_market_data_direct.py::test_backfill_exception_and_unresolved_tickers_share_one_issue_rollup
+tests/test_prices_runtime.py::test_prices_worker_prints_sanitized_partial_json_and_exits_zero
+tests/test_prices_runtime.py::test_prices_worker_prints_sanitized_failed_result_json_and_exits_nonzero
+tests/test_prices_runtime.py::test_prices_worker_rejects_unknown_status_and_malformed_counts
+tests/test_prices_runtime.py::test_prices_worker_bounds_sorts_and_sanitizes_ticker_lists
+tests/test_data_scheduler.py::test_prices_worker_stdout_parser_preserves_partial_truth_and_bounded_tickers
+tests/test_data_scheduler.py::test_prices_worker_stdout_parser_rejects_malformed_partial_payloads
+tests/test_data_scheduler.py::test_prices_partial_persists_durable_partial_failed_audit_and_no_continuation
+tests/test_data_scheduler.py::test_prices_failed_payload_persists_failed_without_partial
+tests/test_data_scheduler.py::test_prices_success_clears_prior_partial_and_preserves_audit_history
+tests/test_data_scheduler.py::test_price_partial_projection_does_not_change_normalized_news_audit_status
+```
+
+The exact frontend additions are:
+
+```text
+src/marketDataDisplay.test.ts	schedulerStateLabel > renders price unresolved count and bounded ticker list without continuation
+src/SettingsProviderConfig.test.ts	Settings provider config authority > renders price partial facts without a Continue control in both locales
+```
+
+Both full comms are exactly those additions with no removed ID. The twelve
+planned in-place backend nodes retained these exact IDs:
+
+```text
+tests/test_market_data_direct.py::test_backfill_per_ticker_exception_isolated
+tests/test_market_data_direct.py::test_backfill_meta_write_failure_in_error_path_does_not_abort_batch
+tests/test_market_data_direct.py::test_backfill_topup_idempotent_on_complete_day
+tests/test_market_data_direct.py::test_backfill_ibkr_empty_from_swallowed_request_error_falls_to_polygon
+tests/test_market_data_direct.py::test_backfill_fetches_provider_rows_outside_market_write_lock
+tests/test_prices_runtime.py::test_prices_worker_prints_sanitized_success_json
+tests/test_prices_runtime.py::test_prices_worker_prints_sanitized_error_json
+tests/test_data_scheduler.py::test_p0c1_ibkr_prices_runs_prices_worker_subprocess
+tests/test_data_scheduler.py::test_p0c_ibkr_prices_no_longer_uses_pg_sync
+tests/test_data_scheduler.py::test_price_scope_required
+tests/test_data_scheduler.py::test_prices_worker_retryable_lock_busy_is_skip_not_failure
+tests/test_data_scheduler.py::test_prices_worker_stdout_parse_preserves_retryable_and_counts
+```
+
+The existing resource-count node also retained its ID. No `def test_` or
+`it(...)` identity was removed or renamed.
+
 ## 6. Mutation Evidence
 
-Product-behavior mutation work is not started. Section 8.6 records only
-scratch control-runner discrimination performed while making its exact-source
-plan executable. Those observations authorize no product edit and must be
-reproduced from the reviewed appendix before Task 0 runtime.
+Each product mutation was applied alone, run only against its named owner,
+reversed exactly, and followed by a product-blob identity check:
 
-Deterministic-v2 Task 0 reproduced all mandatory runner probes and six
-negative controls before runtime. Their exact identities and outcomes are
-recorded in Section 8.7. They validate the reviewed controls but do not
-override the later runtime `invalid`.
+| Mutation | RED evidence |
+|---|---|
+| replace the reconciliation call with `unresolved = []` | partial sibling node observed `succeeded` instead of `partial` |
+| replace zero-row ticker targets with `[]` | partial sibling node observed `succeeded` instead of `partial` |
+| classify day presence as at least 26 stored rows | one-row low-volume node observed `gaps_found=1` instead of `0` |
+| pass `error=None` for an unresolved ticker | meta assertion observed advanced `last_success` and cleared `last_error` |
+| hard-code worker payload status to `succeeded` | worker partial node observed the wrong closed payload |
+| derive scheduler price status from return code zero | scheduler partial node observed `succeeded` instead of `partial` |
+| omit `price_partial` from `audit_failed` | scheduler node observed audit `succeeded` instead of `failed` |
+| remove the frontend price-label branch | both new frontend nodes observed the generic partial label |
 
-Deterministic-v3 Task 0 reproduced its six-check pristine probe summary and
-M1-M7b controls before runtime. Section 8.10 records their exact identities
-and owning outcomes. They validate the v3 control plane but cannot convert
-five twice-stalled tiers into a complete base.
+The load-bearing 26-row mutation changed the target classifier itself, not a
+helper reached only after an already-empty target set:
+
+```diff
+-                    "SELECT DISTINCT substr(datetime, 1, 10) FROM prices "
+-                    "WHERE ticker = ? AND interval = ?", (canon, db_interval)).fetchall()
++                    "SELECT substr(datetime, 1, 10) FROM prices "
++                    "WHERE ticker = ? AND interval = ? "
++                    "GROUP BY substr(datetime, 1, 10) HAVING COUNT(*) >= 26",
++                    (canon, db_interval),
++                ).fetchall()
+```
+
+That mutation made
+`test_backfill_one_row_low_volume_day_stays_succeeded` RED at its
+`gaps_found == 0` assertion. Final restored product blobs are:
+
+```text
+src/market_data_direct.py: f84f125e1cf4f95b1841645136e87fec5f2ad7d9
+src/prices_runtime.py: c068acee45f4e798d95643ac169a5e3d446e0c63
+src/service/data_scheduler.py: 7f395795538fe8c60e07b7232cf9fdd4ff456f41
+apps/arkscope-web/src/marketDataDisplay.ts: 86dc542e0204f7e4688e52a23f36bdc7a6af664c
+```
 
 ## 7. Protected Boundaries
 
-Task 0 Step 6 was not run after any Stop Condition 11 event. Deterministic-v2
-did not launch T4-T7, deferred retries, the monolithic diagnostic, protected
-boundary capture, or product RED after T3 became `invalid`.
-Deterministic-v3 launched all initial tiers and exactly one retry for each
-unresolved tier, then atomically closed incomplete. It did not launch the
-monolithic diagnostic, protected boundary capture, or product RED. Isolated
-`data/` was empty after runner cleanup. The Git worktree was clean before this
-blocked evidence was authored, and no product or test path was edited.
+### 7.1 Native tiered tip
+
+The same reviewed native execution boundary and unchanged v3 runner admitted
+the tip. The external wakeup preflight returned:
+
+```json
+{"callback_fired": true, "ready_count": 0, "wake_bytes": 0}
+```
+
+The tip preflight SHA-256 is
+`545b7ef6f85dc713b66de5733c388122e3499f7385ae88adec6062e5bc9d9b35`.
+Its immutable tier union was `4739/4739`, byte-equal to the canonical stream,
+with loads `591/591/600/590/590/590/590/597`. Every selected attempt was its
+first attempt:
+
+| Tier | Outcome | Duration (s) | Non-passing |
+|---|---|---:|---:|
+| T0 | `complete_pass` | `13.910` | 0 |
+| T1 | `complete_nonpassing` | `16.831` | 2 |
+| T2 | `complete_nonpassing` | `22.787` | 16 |
+| T3 | `complete_pass` | `20.265` | 0 |
+| T4 | `complete_pass` | `52.357` | 0 |
+| T5 | `complete_nonpassing` | `24.695` | 1 |
+| T6 | `complete_nonpassing` | `25.485` | 8 |
+| T7 | `complete_pass` | `31.028` | 0 |
+
+```text
+tip summary SHA-256: 5cac3072c0151eb863a2fc26b309564a322467c038d64f9f8f7b55014e66f9ca
+tip non-passing: 27 / 7aafce5d2cba923480cc1fb6221bce4f5a33e0bf61c06cf94227cafefe227f15
+base non-passing: 27 / 7aafce5d2cba923480cc1fb6221bce4f5a33e0bf61c06cf94227cafefe227f15
+new IDs: 0
+gone IDs: 0
+```
+
+Fresh-process tiers reset process-global, module, fixture, and teardown state
+between file groups and are not directly comparable with historical
+monolithic runs. Base and tip are comparable because both use this same
+tiered protocol and native execution boundary.
+
+The required diagnostic monolithic run naturally executed all `4739` nodes:
+`27 failed / 4640 passed / 72 skipped` in `280.00s (0:04:40)`. It remains
+diagnostic `invalid` because the unchanged v3 terminal-summary regex does not
+accept the optional duration suffix. Its transcript SHA-256 is
+`2c55255b5bf4844038f5b9cc672f9385da323ec5107e04602f3e93ab3138f576`;
+the report SHA-256 is
+`cda36b333db66dc90d1faa8bcfa694448490f697f7cd03c67da26cd08ca48403`.
+It does not replace or weaken the complete tiered A/B.
+
+The tip started without `src/data`. T6 created only
+`src/data/cache/risk_free_rate.json`; after the diagnostic it was 74 bytes,
+inode `92936726`, SHA-256
+`66d3d8bdf58de1ae18524c6bfa904f427ee9c2c6d1d7b4c14b5498564d096e74`.
+It was moved reversibly to
+`/tmp/price-truth-native-tip-src-data-20260731T1605`; `src/data` is absent
+again.
+
+### 7.2 Regression and static gates
+
+```text
+backend focused: 168 passed
+frontend full: 96 files / 1076 passed
+frontend typecheck: exit 0
+frontend build: exit 0
+visible-literal scanner twice: 36/20/0/20
+tool/no-PG focused: 16 passed; registry/OpenAI/Anthropic = 53/54/54
+no-PG runtime smoke: 23/23; ok=true; pg_attempts=[]
+protected schema/coverage/provider/Gateway/catalog tests: 47 passed
+```
+
+Diff from plan clearance `15933c316a68efd7e503f2778aba68affa2cb4c1`
+is empty for both provider adapters, Coverage, provider health, Gateway lock,
+market-data routes, provider config, `sql`, `scripts`, and
+`DataSourcesSection.tsx`. The active source catalog remains exactly four
+entries: Polygon/Finnhub news at 60 minutes, IBKR news at 120 minutes, and
+IBKR prices at 60 minutes. Protected blob/tree identities are:
+
+```text
+ibkr_source.py:  b8d65b364fc38fb86ef771cc560dc83819231b07
+polygon_source.py: 2816b39ea2773d85e39f12a40bbe554d0f4f8b9a
+provider_health.py: 74735caef55173527916e3d961e9598b20aa5310
+ibkr_gateway_lock.py: ddae2e5b4cd7a000bd065bd774d069f08c68e235
+market_data.py: 77a01ed086bb05397dae2b2d2063ca17732b9655
+data_provider_config.py: 1fb6524ba84c225d2e3e8b1bd47975a38113fc9c
+provider_config_runtime.py: 588a175da1ff0da8c9e3fe84a3609348c88e17fd
+market_coverage/sql/scripts tree: cb538c0e6b5bedd2f4f8d2bae59f1e56895763191d5999fa29aec6177f80f4f2
+```
+
+No test or verification action contacted a provider, Gateway, browser, or
+production database. Product tip is
+`fa0cade9ec8a7547f6588ac194bcaf9134c798a6`. The two protected main-worktree
+drafts remain untracked and byte-identical at `4921194a...` and
+`79d4eac9...`.
 
 ## 8. Historical Full-Suite Diagnostics And Tier Prototype
 
