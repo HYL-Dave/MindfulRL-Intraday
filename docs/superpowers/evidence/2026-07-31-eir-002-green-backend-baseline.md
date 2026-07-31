@@ -1,6 +1,6 @@
 # EIR-002 Green Backend Baseline Evidence
 
-> **Status:** TASK 2 COMPLETE - PRICE FAMILY NEXT
+> **Status:** TASK 3 COMPLETE - FUNDAMENTALS FAMILY NEXT
 >
 > **Date:** 2026-07-31
 >
@@ -62,6 +62,7 @@
 | `base-focused` | 132 / 132 | 105 | 27 | 0 | `7aafce5d2cba923480cc1fb6221bce4f5a33e0bf61c06cf94227cafefe227f15` |
 | `after-retirement-focused` | 123 / 123 | 105 | 18 | 0 | `567ea435111078f45dee4c818e282997e1d562e72cf2ddc5a5101a09527cd225` |
 | `after-news-focused` | 123 / 123 | 112 | 11 | 0 | `e6d59e3ec3e24b3d8ef2d68c341af5dcbb8c3bd0f264e71a130a45713ad8203c` |
+| `after-prices-focused` | 123 / 123 | 120 | 3 | 0 | `c072d5df09468496bb8fa26ade78cf38e1846be9b1dbe665502db60ae1e69664` |
 
 The two reporter `nonpassing_node_ids` streams are byte-equal. The accepted
 canonical stream is also byte-equal to the frozen EIR-005 native 27-node
@@ -194,7 +195,45 @@ and the owning node returned `1 passed`. A first context-free restore attempt
 hit the sibling source field; the pre-mutation SHA rejected it, and the
 contextual restore returned the exact expected bytes before GREEN admission.
 
-No Task 3-5 assertion, fixture, product file, or skip marker has been changed
+Task 3 likewise strengthened the eight retained price/status assertions before
+switching fixtures. All eight remained RED against the ambient fixtures,
+which returned zero tickers or bars. After switching only those eight nodes
+to the already reviewed hermetic seams:
+
+- `prices-green` returned `8 passed`;
+- `after-prices-focused` returned `120 passed / 3 failed / 123 collected`;
+- the three remaining nodes were exactly the two fundamentals consumers and
+  the app-record round-trip; and
+- their non-passing stream matched the planned
+  `c072d5df09468496bb8fa26ade78cf38e1846be9b1dbe665502db60ae1e69664`.
+
+The Task 3 reporters and transcripts are:
+
+- `prices-red.json` / `prices-red.txt`:
+  `f9b463d3139bb35d6943cc54403d72b0a0737ec37c685e5defc089beccb5f91a` /
+  `1994210ea89e612136d7c4cd3dd2fc3cdf78118c2df57f1083cee6d2af211990`
+- `prices-green.json` / `prices-green.txt`:
+  `5b0fa926ed17f519dd74e53b353fbfe9fe755d36d5c6684f4c0ab33e171aece0` /
+  `3240d3b51e55aff1c3a42f99da386d17aa12080e5f7883266defd98307495f74`
+- `after-prices-focused.json` / `after-prices-focused.txt`:
+  `4cbbe017e5ec34c6d839deba0a232e40d0372f0bef13265411365f847c356e6f` /
+  `08e492fc9ca447da6df78174e50632627e8a4898f22997292fedc0baeec4df9c`
+
+Price-math mutation:
+
+```diff
+-        ("2026-07-30T00:00:00+0000", 105.0, 112.0, 104.0, 110.0, 1200),
++        ("2026-07-30T00:00:00+0000", 105.0, 112.0, 104.0, 100.0, 1200),
+```
+
+With that temporary final-close change,
+`TestPriceTools.test_get_price_change` turned RED because the actual
+`change_pct` became `0.0` rather than `10.0`. The file was restored to its
+exact pre-mutation SHA
+`80438ed993f9c9cd22509655dcc54ae30b123a4d0f94673d5d8f1348b0c1e480`,
+then the owning node returned `1 passed`.
+
+No Task 4-5 assertion, fixture, product file, or skip marker has been changed
 or executed yet.
 
 ## 6. Protected Boundaries
@@ -207,6 +246,9 @@ or executed yet.
 - Task 2 changed only `tests/test_api.py`, `tests/test_tools.py`, and
   `tests/test_agents.py`, adding private hermetic helpers and switching the
   seven named news nodes. The module-wide ambient fixtures remain unchanged.
+- Task 3 changed assertions and fixture parameters only for the eight named
+  price/status nodes in those same test files. No helper data, module-wide
+  ambient fixture, node identity, or product file changed.
 - No provider credential was supplied, and no production database, Gateway,
   scheduler, or product collection operation was used. Optional third-party
   client tests remained inside the blank-credential test environment and are
