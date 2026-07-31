@@ -1,6 +1,6 @@
 # Price Collection Partial-Truth Evidence
 
-> **Status: RUNNER V3 EXACT-SOURCE PLAN DRAFT - FOCUSED REVIEW NEXT**
+> **Status: TIERED TASK 0 V3 BLOCKED - FIVE TIERS UNRESOLVED AFTER RETRY**
 >
 > **Historical blocked-run base:** `542776c2e00ae1737d5b424a3b8858b079a63e38`
 > **Restart base:** `e6d4b7fac7e91c59e855a7f543caac4f57094d86`
@@ -11,6 +11,7 @@
 > **V2 plan-review clearance:** `00d35376511b8bd28c16dd9c40415e0ddbc533ab`
 > **V2 blocker packet:** `18ab76f93e3aead749da00a52a9a539ba6a57876`
 > **V3 handshake-design clearance:** `6c89d4a1`
+> **V3 exact-source plan clearance:** `1a8379e72216e0c109f9498caf64abfa593b299c`
 > **Observed:** 2026-07-29 through 2026-07-31 Asia/Taipei
 
 The historical Task 0 attempt stopped under plan Stop Condition 11. No product
@@ -35,6 +36,14 @@ cannot distinguish that final-exit handoff from an early invalid EOF. A
 separately reviewed v3 EOF/leader/group-drain amendment, exact-source plan,
 and fresh complete deterministic-v3 Task 0 baseline are required before
 product RED.
+Focused review then cleared the exact v3 plan at `1a8379e7`. The authorized
+fresh v3 run fixed the prior EOF/exit invalidation and reproduced every
+control, but five of eight tiers remained `unresolved_stall` after their one
+pre-registered retry. Three tiers completed naturally; no attempt was
+`invalid`. The atomic side is nevertheless incomplete, so those selected
+tiers are not a full baseline and product RED remains unauthorized. The next
+gate is the already-owned `EIR-005` machine-state observer spec, not another
+unchanged retry or another runner amendment.
 
 ## 1. Scope And Authorities
 
@@ -55,6 +64,9 @@ product RED.
 - `00d35376511b8bd28c16dd9c40415e0ddbc533ab` is the exact focused-reviewed
   deterministic-v2 plan clearance and the Git identity used by the attempts
   documented in Section 8.7.
+- `1a8379e72216e0c109f9498caf64abfa593b299c` is the exact focused-reviewed
+  deterministic-v3 plan clearance and the Git identity used by the attempts
+  documented in Section 8.10.
 - The rebased price-truth delta from `e6d4b7fa` is docs-only.
 - Main-worktree drafts
   `docs/data/IBKR_PACING_AND_ERROR_SEMANTICS.md` and
@@ -92,6 +104,11 @@ They reproduced a third time at deterministic-v2 clearance `00d35376`.
 The four node streams, focused behavior, scanners, tool counts, and no-PG
 smoke were unchanged. This establishes deterministic-v2 Steps 1-4, but the
 incomplete base summary in Section 8.7 is not a baseline.
+
+They reproduced a fourth time at deterministic-v3 clearance `1a8379e7`.
+The four node streams, focused behavior, scanners, tool counts, and no-PG
+smoke were unchanged. This establishes deterministic-v3 Steps 1-4, but the
+incomplete base summary in Section 8.10 is not a baseline.
 
 ### 2.1 Isolation correction before grounding
 
@@ -147,13 +164,21 @@ negative controls before runtime. Their exact identities and outcomes are
 recorded in Section 8.7. They validate the reviewed controls but do not
 override the later runtime `invalid`.
 
+Deterministic-v3 Task 0 reproduced its six-check pristine probe summary and
+M1-M7b controls before runtime. Section 8.10 records their exact identities
+and owning outcomes. They validate the v3 control plane but cannot convert
+five twice-stalled tiers into a complete base.
+
 ## 7. Protected Boundaries
 
 Task 0 Step 6 was not run after any Stop Condition 11 event. Deterministic-v2
 did not launch T4-T7, deferred retries, the monolithic diagnostic, protected
-boundary capture, or product RED after T3 became `invalid`. Isolated `data/`
-was empty after runner cleanup. The Git worktree was clean before this blocked
-evidence was authored, and no product or test path was edited.
+boundary capture, or product RED after T3 became `invalid`.
+Deterministic-v3 launched all initial tiers and exactly one retry for each
+unresolved tier, then atomically closed incomplete. It did not launch the
+monolithic diagnostic, protected boundary capture, or product RED. Isolated
+`data/` was empty after runner cleanup. The Git worktree was clean before this
+blocked evidence was authored, and no product or test path was edited.
 
 ## 8. Historical Full-Suite Diagnostics And Tier Prototype
 
@@ -740,6 +765,159 @@ or signal. Its construction summary at
 `7f941eef5ba1b0df4be209bccbc23e07b8c4cb16dff6b101ef18f77ade49e4b1`.
 This remains a control-plane observation, not the 4,722-node base.
 
+### 8.10 Deterministic-v3 Task 0 unresolved-tier blocker
+
+Focused review of exact-source plan tip
+`1a8379e72216e0c109f9498caf64abfa593b299c` returned GREEN with zero
+findings and authorized Task 0 v3. Steps 1-4 reproduced every value in
+Section 2. The official root was created fresh at
+`/tmp/price-truth-tier-v3`; frozen v1/v2 roots were proven present but were
+not read, written, moved, deleted, or imported.
+
+Focused gates created an ignored 143,360-byte `data/profile_state.db` in the
+isolated worktree. It had inode `90843007`, SHA-256
+`fcfbadad164a67b48e4e94077ef8ceba15b8126b72403ac869f41a18baf2353d`,
+and SQLite integrity `ok`. It was moved reversibly to:
+
+```text
+/tmp/price-truth-task0-pre-v3-data-IPrLEYI6/profile_state.db
+```
+
+The first pristine probe invocation then refused before creating a child
+attempt because the corresponding WAL/SHM files had appeared after the main
+file was moved. No process held them. They were preserved in the same
+directory with their original identities:
+
+```text
+profile_state.db-wal  inode 90843008  size 0      SHA e3b0c442...
+profile_state.db-shm  inode 90843009  size 32768  SHA fd4c9fda...
+```
+
+This was a pre-launch data-boundary rejection, not a probe result or runtime
+`invalid`. The isolated `data/` directory was empty before the successful
+probe suite and every runtime launch.
+
+The exact v3 control identities were:
+
+```text
+runner:          bb5d2245071aa48f8f0ad4e28a0966aa26744f213dcec65a69d947a383fd9de9
+reporter:        09d2bc52c7706b49e5f363fa2c6bcfc93523038f1c805fef08bb98a409301928
+builder:         0f0421f86f46265427914bce7bbede694beaa8d04b5d3b2ea9562d27cd7c8d9c
+tier map:        3d7adb7e1db7b92b25b3ae83fe56ec182c6b070802cd45d95e091c673115994a
+probe preflight: 7362186a8a726fe1ca626178eb80cf439d2c9981cb6a1247aae20fb3018e9c4a
+probe summary:   9f664ea7608385edaf568ae7f35cc94fa5301fea7dd798ea0dd65b14881c1e87
+base preflight:  a50142ef8ac029be43250a886af1a7e0af3d120982a7b6c1221d481eb077e451
+```
+
+The builder produced the reviewed
+`591/591/590/590/590/590/590/590` distribution. All tier collections had
+4,722 total and 4,722 unique nodes; their sorted union was byte-equal to the
+canonical `fcdb1b7d...` stream. The pristine probe suite returned all six
+checks true. M1-M4 and M7a/M7b reproduced exact mutation-diff SHA-256 values
+`1467fd65...`, `6405a626...`, `9232528b...`, `c6372e35...`,
+`aa15cc5f...`, and `9732466f...`; every owning assertion matched. M5 proved
+both malformed progress descriptors fail in `pytest_configure`. M6 seeded a
+prior invalid record, wrote an incomplete side with no selected tier, and
+created no T1 attempt. The pristine runner and fixtures were re-hashed after
+all controls.
+
+The single official `run-side` invocation attempted all initial tiers, banked
+three natural completions, then gave each unresolved tier exactly one
+ascending retry. Its closed results were:
+
+| Tier | Attempt(s) | Closed outcome | Last active node / natural result | Progress | Duration(s) / cleanup |
+|---|---|---|---|---:|---|
+| T0 | a1, a2 | `unresolved_stall`, `unresolved_stall` | `test_route_rejects_unreviewed_interval_with_typed_422` both times | 1173, 1173 | 172.935, 173.140; dump; SIGINT then SIGKILL; group gone |
+| T1 | a1, a2 | `unresolved_stall`, `unresolved_stall` | `TestRunAgentQuery::test_successful_query` both times | 567, 567 | 158.727, 158.709; dump; SIGINT; group gone |
+| T2 | a1, a2 | `unresolved_stall`, `unresolved_stall` | `test_anthropic_calibration_raises_structured_refusal_before_text_extraction` both times | 769, 769 | 164.614, 164.581; dump; SIGINT; group gone |
+| T3 | a1 | `complete_pass` | 590 collected / 590 seen / 0 non-passing; 580 passed / 10 skipped | 1180 | 20.504; natural validation; no signal |
+| T4 | a1 | `complete_pass` | 590 collected / 590 seen / 0 non-passing; 586 passed / 4 skipped | 1180 | 27.426; natural validation; no signal |
+| T5 | a1, a2 | `unresolved_stall`, `unresolved_stall` | `test_get_activity_http_limit_uses_typed_400[0]` both times | 685, 685 | 166.604, 166.685; dump; SIGINT then SIGKILL; group gone |
+| T6 | a1, a2 | `unresolved_stall`, `unresolved_stall` | `TestHealth::test_status` both times | 31, 31 | 165.678, 165.657; dump; SIGINT then SIGKILL; group gone |
+| T7 | a1 | `complete_nonpassing` | 590 collected / 590 seen / 6 non-passing; 6 failed / 573 passed / 11 skipped | 1180 | 29.135; natural validation; no signal |
+
+All ten stalled attempts had a current-window 120-second dump,
+`deadline_phase=active_node`, `invalid_reason=null`, and an empty data boundary
+before launch. Each retry stopped at the same node as its initial attempt.
+The portal/request shape recurred in T0, T5, and T6. T1 stalled inside a bare
+`asyncio.run`; T2 stalled in a bare `asyncio.run` while the separately known
+pyrate-limiter thread was also present. These observations add trigger
+evidence to `EIR-005`; they do not identify one shared source seam or prove
+that the pyrate thread is causal.
+
+The unresolved record/transcript/progress SHA-256 triples are:
+
+```text
+T0/a1 e1b65581a30b0814b2b70e0b668d696a91fa6322b5d1e1d834f5770745eec1fd / 2836ff570baccaf9194ac32751515d133ca5fc453bc8700dd86441f1ab16a7d2 / 416b3090574ca2386696be4078f9ebf43124b42bab3189f9a4cd50333c9f6a73
+T0/a2 7fe70caf10cf4f70a821851964c91f04e79b7f92af5e122afcb0dbb84dc26dc9 / f3fe3496c53adaad454333d44cc99ae834f28ba3892786c712f49d9302d9f0c0 / 2e8dd364b79dbca6e4e9e343e23ba9938afc00076744c08c6e7f47f3380588c4
+T1/a1 e62f913a3c08f40e2ca90069eca0c32f5147c27b2a85ee0419af453c0d5e6819 / 8bde0643ae5e3c259cef25f282f3d4d5cec71a991a489eeb141ebe64bf71d3de / dcecc792b3b8a89c21c53a80efca21104fd1e0e60d31050b64f034df25dd32f1
+T1/a2 132a4c6f4bb0e9bcf2deffd2d6be4ab73bb6f06cf3eac3b9a2620c6f13fb2a2d / 789798371d7bf757ab4de15dfcb238cf73923dc97b6b141de82f86893a7ae740 / 90c56f312a2479545705ceaac9ff7a87fecdc6c09c98be7d0e193e479a448c7a
+T2/a1 97429de260b8c6b60166d5327de360b2ce59bd8eead28e599bdd1f4e73b3abcd / b42bc24d472f353865dc0e90506f3276bc2be2aeb2424a8c68127b8d5e55aea9 / 671948d1b39fca9e1e35ddf594173d513beecd4f1d8d2f21230e735af41e8723
+T2/a2 9f2b6a17f12a721971d223b77320fc527414b65bbdc2a5e4cdc4581b53a30820 / 74255b5696747fe96a72373109111b9245da8e5d328b8e27ccebe8f8c1ae1e60 / 572de51160a27354e7d49a8c9e091fc849e9b458b0528157a2dd576fbc9f4648
+T5/a1 d90c8677d50ad37c44d1f62310f1aaf6ed86e8ed476976d2719df4ed82a02651 / 5724800c8015f0f10228243dc9c664192026c0cf91e94fb732da364ab688a442 / 4d1e179312dcbba0835f86ea378113310bd6db5fb33149f92cb0520e70bda4fd
+T5/a2 69d7c6a14fef3d84d0b3f98e02b7f3e449f3cfd0f0c282c85ec2d1cc614a34c4 / 5091aff2d53dc0166c5555f8b4f9bf98e5a892690625feba154b54d3812d9ac5 / 69f20f251d57b633a3359750a1cf3df37b7d43ec5f94374b925ec67c030a2470
+T6/a1 45f4a4f559f3635a72d2fa4cc8e3a4f4af3da11abcba8a82e53fcb3fe23e3bc5 / 4264ba9fe645fa187acb6dc9e4cafb5fea80913bcde4eb0d93f0c4addbd48cf7 / 8fcbd5f675eecf56e4c2e8e36716e7d888ee3319544d49d96f6d629defda621f
+T6/a2 edc110b54581cbe279c72ce52130e50e925415c48312e10d7720a8f2523b2d04 / da7fdafedb97ff69d79ee586c60d8037aba91df90669c83218c456cf20f814ca / af95d651137d7c9a3970ca6f8a6ddfb94c1077df8b6a494d122935e00d025946
+```
+
+The selected attempts retain complete reporter-derived artifacts:
+
+| Selected attempt | Record | Transcript | Progress | Report | Non-passing |
+|---|---|---|---|---|---|
+| `base-T3-a1` | `ffc5cb4d...` | `7bf0ed47...` | `0298b383...` | `60190dc3...` | empty `e3b0c442...` |
+| `base-T4-a1` | `35c89093...` | `5103da50...` | `3dd4e6a9...` | `854db0c1...` | empty `e3b0c442...` |
+| `base-T7-a1` | `c8d89d54...` | `1eb77733...` | `1bf78fa6...` | `db6e0a03...` | six-node `b6c3c718...` |
+
+Their exact record/transcript/progress/report/non-passing SHA-256 tuples are:
+
+```text
+T3/a1 ffc5cb4d8255f6fa6ca8d56f17ff3ef532973fad6d5b6de5e3e15861c27bb51e / 7bf0ed477672b1958820f6409ae02c5f80f456d3c49c4c4f801bb7ba0685a4a5 / 0298b3830f1d11726285da9ea4c5011b6f5e6196d44c35d6801d0af9126e26a5 / 60190dc3405b48e1eb74199eeacbf2fcf49377f7aac7de96175087221c53c1b8 / e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+T4/a1 35c89093445ae418ce03d8f02e3c0b9055a2e8053e6e24ae3a400a06f473c6c3 / 5103da500bff65d07c4c1cec5492d78c5e84784f8b42cdbd0fae80e9eae9e6a1 / 3dd4e6a926fde77f62fcbedbef52e9585134bb1354b4a3e6415cbc8d5b3aa3ca / 854db0c11f2954cf631d09814a53dd10b6567aff9fc5319360b669d6ce0755e9 / e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+T7/a1 c8d89d546aede6e8eb6690613b78ac0bb74c16bf1c25af686d019927a8315fca / 1eb77733401e1ce1c7ad3f95ad612525ea559579c8d11d65781f90f125ee5cdf / 1bf78fa6c7f425a141bc4b049d830d0a04bd6caa06cf5fa6ac869cbc4a206578 / db6e0a03db7accdeac29e09b9d8fcf5b5125cf7cc41842da7cdd35fa92bd9f13 / b6c3c71819ca38a61ea6f969316b847836fa6f4a9e15cdb0ac73d47bc313a58b
+```
+
+T7's six nodes are all
+`tests/test_chatgpt_oauth_callback_server.py` failures caused by this
+sandbox's loopback-bind `PermissionError`. They are a valid selected
+non-passing artifact, but cannot become a base union while five tiers remain
+unresolved.
+
+The atomic side summary has SHA-256
+`a5686da09e1715e1ea81b618826c956b96649bf12075ccf230a387c87782b198`,
+`complete=false`, `invalid_attempt=null`, selected attempts
+`{3: base-T3-a1, 4: base-T4-a1, 7: base-T7-a1}`, and unresolved tiers
+`[0,1,2,5,6]`. The runner process itself returned zero because it emitted a
+closed incomplete summary; shell exit alone is not admission. No complete
+`base-nonpassing.nodes` was produced.
+
+Every runtime record has `cleanup_complete=true`. Generated worktree files
+were moved into the owning attempt's `data-after/` directory, and isolated
+`data/` was empty after the side closed. The 3,262 pre-manifest,
+non-`__pycache__` files are pinned by:
+
+```text
+path: /tmp/price-truth-tier-v3/task0-v3-incomplete-manifest.sha256
+lines/bytes: 3262 / 532402
+manifest SHA-256:
+ff189a4433b571c671ef7e4db82e63c94071d869e4ed48410f2a65c25e622f75
+validation: 3262/3262 sha256sum checks OK
+```
+
+The monolithic diagnostic, protected Step 6, product RED, provider calls,
+production writes, and repair did not run. The branch remained clean before
+this evidence edit. Main-worktree draft hashes remained `4921194a...` and
+`79d4eac9...`; neither draft was edited, staged, moved, deleted, or used as
+authority.
+
+Stop Condition 11 therefore applies at tier granularity. Re-running unchanged
+v3 or adding a third retry is unauthorized. The next gate is the separately
+reviewed `EIR-005` machine-state observer spec already named in the register:
+capture AnyIO wakeup-socket state, selector registrations,
+`asyncio.all_tasks`, system load/file descriptors, and SIGINT
+receipt/response during the next matching window. This is diagnosis of a
+repeated test-runtime blocker, not a new product architecture or a claim that
+the price collector itself is defective in these five tests.
+
 ## 9. Review Resolution
 
 Plan F1 was resolved at `9d1e648a`: the mounted frontend node now includes the
@@ -775,14 +953,19 @@ termination and process-identity protocol as recorded in Section 8.4. Focused
 review then cleared deterministic control-runner design at `1d08a9f3` and its
 exact source plan at `00d35376`. Deterministic-v2 Task 0 then stopped at the
 Section 8.7 EOF/exit invalid. Section 8.8 records the approved v3 design;
-Section 8.9 records its exact-source plan construction. Focused review of that
-plan remains required. Product implementation and another runtime attempt
-remain unauthorized.
+Section 8.9 records its exact-source plan construction. Focused review cleared
+that plan at `1a8379e7`; Section 8.10 records the authorized runtime. V3
+resolved the transport invalidation, but five tiers remained unresolved after
+their one retry. Product implementation and another unchanged runtime attempt
+remain unauthorized. The registered `EIR-005` observer spec is now the next
+review gate.
 
 ## 10. Integration And Read-Only Release Observation
 
 The harness and diagnosis prerequisites are merged; price-truth product
-integration is not started. Deterministic-v2 Task 0 is incomplete with no
-admitted base side. The v3 handshake design is approved and its exact-source
-plan is pending focused review. Provider calls, production writes, repair,
-browser work, product RED, and release observation remain unauthorized.
+integration is not started. Deterministic-v3 Task 0 has three selected tiers
+but no complete admitted base side; five tiers remained unresolved after
+retry. The monolithic diagnostic was correctly withheld. Provider calls,
+production writes, repair, browser work, product RED, and release observation
+remain unauthorized pending the separately reviewed `EIR-005` machine-state
+observer line and a later complete same-protocol base.
