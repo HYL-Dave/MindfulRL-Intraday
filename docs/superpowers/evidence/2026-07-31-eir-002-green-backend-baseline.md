@@ -1,6 +1,6 @@
 # EIR-002 Green Backend Baseline Evidence
 
-> **Status:** TASK 1 COMPLETE - NEWS FAMILY NEXT
+> **Status:** TASK 2 COMPLETE - PRICE FAMILY NEXT
 >
 > **Date:** 2026-07-31
 >
@@ -61,6 +61,7 @@
 | `base-full-v2` | 4739 / 4739 | 4640 | 27 | 72 | `7aafce5d2cba923480cc1fb6221bce4f5a33e0bf61c06cf94227cafefe227f15` |
 | `base-focused` | 132 / 132 | 105 | 27 | 0 | `7aafce5d2cba923480cc1fb6221bce4f5a33e0bf61c06cf94227cafefe227f15` |
 | `after-retirement-focused` | 123 / 123 | 105 | 18 | 0 | `567ea435111078f45dee4c818e282997e1d562e72cf2ddc5a5101a09527cd225` |
+| `after-news-focused` | 123 / 123 | 112 | 11 | 0 | `e6d59e3ec3e24b3d8ef2d68c341af5dcbb8c3bd0f264e71a130a45713ad8203c` |
 
 The two reporter `nonpassing_node_ids` streams are byte-equal. The accepted
 canonical stream is also byte-equal to the frozen EIR-005 native 27-node
@@ -152,8 +153,49 @@ The Task 1 reporter and transcript are:
 - `/tmp/eir002-green-baseline/reports/after-retirement-focused.txt`:
   `3e6de85aadd29385d183168bd4aedc92cb09665e45fe570083d1df2ab90ca5dd`
 
-No Task 2-5 assertion, fixture, product file, skip marker, or mutation has
-been changed or executed yet.
+Task 2 first strengthened the seven retained news-consumer assertions without
+changing their ambient fixtures. All seven remained RED because the old DAL
+returned zero articles rather than the fixed two-row dataset. No import,
+SQLite, lifespan, or other environment failure occurred. After the reviewed
+hermetic backends were added and only those seven nodes were switched:
+
+- `news-green` returned `7 passed`;
+- `after-news-focused` returned `112 passed / 11 failed / 123 collected`;
+- its non-passing stream matched the planned
+  `e6d59e3ec3e24b3d8ef2d68c341af5dcbb8c3bd0f264e71a130a45713ad8203c`;
+  and
+- no node was added, removed, renamed, or skipped.
+
+The Task 2 reporters and transcripts are:
+
+- `news-red.json` / `news-red.txt`:
+  `c757960fbba75095d7e06cbe6e7ba130818aec7b106f27e26a11e800f61b10a5` /
+  `2e71e53d67f07b7f57d1d174d3d027a48e4788c0b55a08cff8a2bcd201b30f47`
+- `news-green.json` / `news-green.txt`:
+  `bab836d1b073d2f75616f1519d3a37c994b22a240fb1090d00aa289a53eeb4fe` /
+  `97d7ad469831d364e8e46d5a452411ddd2ad4c2c8494ce578633bec1bcff1d18`
+- `after-news-focused.json` / `after-news-focused.txt`:
+  `38fe28606db7ec9f017f790b349b03d17e834372cba76a58cf0fde3b8e39f864` /
+  `aa301f7b3e81a14d503ddb685102b8126c4f4df1883fe398d03d8989d80d4b53`
+
+Source-breakdown mutation:
+
+```diff
+-        "source": "ibkr",
++        "source": "polygon",
+```
+
+With that temporary change in the second NVDA row,
+`TestNewsTools.test_get_ticker_news` turned RED because the actual breakdown
+became `{"polygon": 2}` instead of `{"polygon": 1, "ibkr": 1}`. The file was
+restored to its exact pre-mutation SHA
+`f68fead8fe41649b1630dc3f067320e24562cb7b6027ebd9a41f28487fc86137`
+and the owning node returned `1 passed`. A first context-free restore attempt
+hit the sibling source field; the pre-mutation SHA rejected it, and the
+contextual restore returned the exact expected bytes before GREEN admission.
+
+No Task 3-5 assertion, fixture, product file, or skip marker has been changed
+or executed yet.
 
 ## 6. Protected Boundaries
 
@@ -162,6 +204,9 @@ been changed or executed yet.
 - Task 1 changed only `tests/test_data_access.py`, deleting exactly the nine
   approved ambient-data test functions. No retained node was renamed or
   skipped.
+- Task 2 changed only `tests/test_api.py`, `tests/test_tools.py`, and
+  `tests/test_agents.py`, adding private hermetic helpers and switching the
+  seven named news nodes. The module-wide ambient fixtures remain unchanged.
 - No provider credential was supplied, and no production database, Gateway,
   scheduler, or product collection operation was used. Optional third-party
   client tests remained inside the blank-credential test environment and are
