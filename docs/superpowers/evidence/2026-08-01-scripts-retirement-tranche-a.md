@@ -73,13 +73,14 @@ roles and are intentionally both retained:
 |---|---:|---:|---|---|
 | Physical collect-only base | `+0/-0` | 4,730 | `c34de9a0fe53e400409d3ec26d75a8c907ee277b121279693ea9f69c8638aabb` | reproduced |
 | Paid probes retired / provider-safe base | `+0/-2` | 4,728 | `49e4a32b5f536cea97053578f2fba4456ffbbe0c10a4b66540c4f26d2b55329f` | admitted |
-| Diagnostics retired | `+0/-5` | 4,725 | `64ce4a619039fa586f065533b900416b1fd3fcbf6d78a99a43c9295a02a83e1d` | preconstructed |
+| Diagnostics retired | `+0/-5` | 4,725 | `64ce4a619039fa586f065533b900416b1fd3fcbf6d78a99a43c9295a02a83e1d` | reproduced |
 | Tranche A final | `+0/-177` | 4,553 | `69152591306a8dee5e66e2efeb2f1ec12720c8a1a1ffe36def613f4fe5a676ca` | preconstructed |
 
 The provider-safe reporter's 4,728-node collected stream is byte-identical to
 the preconstructed `stage-paid.nodes` stream. Its collected and seen streams
-are also byte-identical. The later stage identities are targets, not claims
-that implementation has occurred.
+are also byte-identical. The Task 3 collected stream is byte-identical to
+`stage-diagnostic.nodes`. The final-stage identity remains a target, not a
+claim that implementation has occurred.
 
 The physical collect-only reporter is
 `/tmp/scripts-retirement-tranche-a/task0-collect.json`, SHA-256
@@ -204,7 +205,8 @@ scripts/visualization/data_loader.py
 scripts/visualization/news_dashboard.py
 ```
 
-The fixed-ID `scripts/diagnostics/probe_ibkr_news_bodies.py` remains for Task 3.
+At the Task 2 checkpoint, the fixed-ID
+`scripts/diagnostics/probe_ibkr_news_bodies.py` remained for Task 3.
 
 Before the post-edit collection, the ignored
 `comparison_results/financial_datasets/` directory pair was present again but
@@ -237,6 +239,54 @@ isolated worktree lacks intentionally ignored documentation/data artifacts, so
 resolution used the main worktree only as a read-only fallback for those
 pre-existing ignored targets. All new and moved Task 2 links resolve inside
 the isolated worktree. `git diff --check` is clean.
+
+### 4.4 Task 3 fixed diagnostic retirement
+
+Before editing, the complete adapter file passed all 20 collected nodes. Static
+classification and the reviewed ledger agreed that exactly three nodes
+imported or verified the fixed diagnostic executable:
+
+```text
+tests/test_news_normalized_ibkr_adapter.py::test_probe_classifies_ibkr_unavailable_without_payload
+tests/test_news_normalized_ibkr_adapter.py::test_probe_has_five_reviewed_default_cases
+tests/test_news_normalized_ibkr_adapter.py::test_probe_output_never_contains_body_or_exception_payload
+```
+
+The structural deletion assertion returned non-zero while
+`scripts/diagnostics/probe_ibkr_news_bodies.py` still existed. Task 3 then
+deleted that 139-line executable, whose pre-delete SHA-256 was
+`665752160adb273bb89d334ed77fd156efb2d2e9290fc90d3923113d16f02187`,
+and removed only the three executable-only tests and their imports. No adapter
+implementation changed. The remaining adapter file passed all 17 nodes.
+
+The native collect-only result is:
+
+| Fact | Observation |
+|---|---|
+| Collected / executed / exit | `4725 / 0 / 0` |
+| Ordered collection | `64ce4a619039fa586f065533b900416b1fd3fcbf6d78a99a43c9295a02a83e1d` |
+| Reporter SHA-256 | `d727494d1fdf4f42bc56d7bc45bf15178cddaa6dd0ff40d18d2544fdb825d595` |
+| Transcript SHA-256 | `06dec15e2298343e50d1dae8c7e73625df67ecb354e6c3595192367ed68ef58a` |
+
+The collected stream is byte-identical to the preconstructed
+`stage-diagnostic.nodes` target. Relative to the 4,730-node physical base,
+`comm` reports exactly the two paid-probe IDs and the three diagnostic IDs
+missing, with no added ID. The first comparison command named a nonexistent
+`base.nodes` shorthand and therefore produced no comparison result; the
+recorded result was recomputed from the actual 4,730-node
+`task2/task1.nodes` artifact.
+
+Collection executed no test or provider operation, did not recreate
+`comparison_results/`, and left no untracked repository artifact.
+
+The pre-edit 20-node baseline import had created one ignored bytecode artifact
+for the diagnostic. Before physical cleanup it was recorded as inode
+`93465417`, size `4171`, mtime epoch `1785554210`, and SHA-256
+`946f82e960aefcbe2a5fad82ab21a4a8aa1fd5e0c09f8c3e0cd4eb0135612dec`.
+The exact `__pycache__` directory was moved, without changing that identity,
+to `/tmp/scripts-retirement-tranche-a/quarantine/task3-diagnostic/`; the
+resulting empty `scripts/diagnostics/` directory was removed. The worktree
+therefore contains no physical diagnostic executable or bytecode residue.
 
 ## 5. Native Admission And Artifact Transactions
 
@@ -329,18 +379,16 @@ After quarantine:
 
 ## 6. Independent Review And Merge
 
-Independent review reconstructed Tasks 0 and 1 and returned GREEN at each
-checkpoint. Task 2 is now review-ready. Its review must reconstruct:
+Independent review reconstructed Tasks 0, 1, and 2 and returned GREEN at each
+checkpoint. Task 3 is now review-ready. Its review must reconstruct:
 
-1. the static 29-attempt / 24-endpoint inventory without probe execution;
-2. the three evidence classes and deferred product-policy boundary;
-3. the two byte-identical provenance moves;
-4. the seven exact deletions while the Task 3 diagnostic remains;
-5. current-link and Markdown-link resolution;
-6. exact `-2/+0` collection to `4728/49e4a32b...`; and
-7. `comparison_results/` absence after collection.
+1. the pre-edit 20-node adapter baseline;
+2. the exact three diagnostic-only IDs and unchanged 17-node adapter contract;
+3. deletion of the single fixed diagnostic executable;
+4. exact `-5/+0` collection to `4725/64ce4a61...`; and
+5. `comparison_results/` absence after collection.
 
-Task 3 onward, merge, production interaction, provider requests, and any
+Task 4 onward, merge, production interaction, provider requests, and any
 Financial Datasets product-policy implementation remain blocked. The separate
 product slice must own endpoint classification, the metered-request toggle,
 billing-mode declaration, cache-first behavior, typed `402` handling,
