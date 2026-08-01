@@ -156,6 +156,88 @@ empty directories `comparison_results/financial_datasets/`. After proving
 that they contained no file or symlink, Task 1 removed those exact empty
 directories with `rmdir`. No request function or live smoke executed.
 
+### 4.3 Task 2 static extraction and research-utility retirement
+
+Task 2 parsed the two Financial Datasets probe sources without importing or
+executing either file. The static artifacts are:
+
+| Artifact | Observation |
+|---|---|
+| Source call-site stream | `29` attempts; SHA-256 `ba84146cf8e6152d50433baa1b154b63488f9a6b741b450dc920bd637ea59ab0` |
+| Sorted unique endpoint stream | `24` paths; SHA-256 `312584b67cc49eccff791832d0d2f54a51c90caf5f26305245d8f5bd1a8eec20` |
+| Public OpenAPI snapshot | OpenAPI `3.0.1`, `54` paths; SHA-256 `2f17263f7a960fca93cd7662cf1be583c6ecb68b090313139ed1aca6db702b5a` |
+
+The resulting
+`docs/design/FINANCIAL_DATASETS_CAPABILITY_SPEND_DECISION.md` separates:
+
+1. source-literal endpoint and query-key shapes;
+2. the rejected Task 0 network observation, which is not cost, entitlement,
+   availability, or spend evidence; and
+3. official pricing, terms, MCP, documentation-index, and OpenAPI observations
+   rechecked on 2026-08-01.
+
+No Financial Datasets provider request or credentialed operation occurred
+during Task 2. The document is a static decision input, not a capability
+registry or spend authorization. Product registry, enforcement, Settings,
+i18n, audit, typed `402`, and dashboard-link behavior remain a separate slice.
+
+The two HuggingFace provenance files moved byte-for-byte:
+
+| Historical owner | SHA-256 before and after |
+|---|---|
+| `docs/history/news-scoring/SCORING_PROMPTS.md` | `ac367ab76c4e9bc7e576316ebefb1e347f9f44c7b035f52af7b53c7bc5e0e8c0` |
+| `docs/history/news-scoring/column_mapping.md` | `94217713d3d6f43e4d718e19178dde2cbb1597da72ec2ba2322745cbd8eba4b2` |
+
+`docs/history/SCRIPTS_RETIREMENT_TRANCHE_A.md` now owns the migration,
+diagnostic, dashboard-gap, unusual-options, Financial Datasets, and
+news-scoring lineage. It does not promise to rebuild any retired executable.
+
+Exactly these seven Task 2 files were removed:
+
+```text
+scripts/analysis/scan_unusual_activity.py
+scripts/huggingface/merge_for_release.py
+scripts/testing/test_financial_datasets_api.py
+scripts/testing/test_financial_datasets_api_retry.py
+scripts/visualization/README.md
+scripts/visualization/data_loader.py
+scripts/visualization/news_dashboard.py
+```
+
+The fixed-ID `scripts/diagnostics/probe_ibkr_news_bodies.py` remains for Task 3.
+
+Before the post-edit collection, the ignored
+`comparison_results/financial_datasets/` directory pair was present again but
+contained no file or symlink. Task 2 made no attribution claim about which
+external review/collection recreated it. Both exact empty directories were
+removed with `rmdir`. After the paid probes were deleted, collect-only did not
+recreate `comparison_results/`.
+
+The post-edit collection result is:
+
+| Fact | Observation |
+|---|---|
+| Collected / executed / exit | `4728 / 0 / 0` |
+| Ordered collection | `49e4a32b5f536cea97053578f2fba4456ffbbe0c10a4b66540c4f26d2b55329f` |
+| Reporter SHA-256 | `ec52c4678e251bdf99b3dfc75c34e9bdd505a2e77d4f3430948112751e4c7333` |
+| Transcript SHA-256 | `05c64d5eed7603ed8fc00408fbf7f1f290f78841112e47d00f6328475e93ceba` |
+
+The collected stream is byte-identical to the preconstructed
+`stage-paid.nodes` target. Relative to Task 1, `comm` reports exactly the two
+Financial Datasets probe IDs removed and no added ID:
+
+```text
+scripts/testing/test_financial_datasets_api.py::test_all_endpoints
+scripts/testing/test_financial_datasets_api_retry.py::test_failed_endpoints
+```
+
+The repository Markdown-link scan checked 140 local links across 234 tracked
+or newly created Markdown files and found zero unresolved targets. The
+isolated worktree lacks intentionally ignored documentation/data artifacts, so
+resolution used the main worktree only as a read-only fallback for those
+pre-existing ignored targets. All new and moved Task 2 links resolve inside
+the isolated worktree. `git diff --check` is clean.
+
 ## 5. Native Admission And Artifact Transactions
 
 ### 5.1 Rejected unfiltered attempt
@@ -247,17 +329,18 @@ After quarantine:
 
 ## 6. Independent Review And Merge
 
-Independent review reconstructed Task 0 and returned GREEN. Task 1 is now
-review-ready. Its review must reconstruct:
+Independent review reconstructed Tasks 0 and 1 and returned GREEN at each
+checkpoint. Task 2 is now review-ready. Its review must reconstruct:
 
-1. the four Git moves and updated FRED references;
-2. the manual/non-collected/spend-warning README contract;
-3. static compilation and the `44 passed` FRED gate;
-4. zero `tests/live/` node IDs and exact unchanged
-   `4730/c34de9a0...` collection; and
-5. the rejected sandbox boundary plus exact empty-directory cleanup.
+1. the static 29-attempt / 24-endpoint inventory without probe execution;
+2. the three evidence classes and deferred product-policy boundary;
+3. the two byte-identical provenance moves;
+4. the seven exact deletions while the Task 3 diagnostic remains;
+5. current-link and Markdown-link resolution;
+6. exact `-2/+0` collection to `4728/49e4a32b...`; and
+7. `comparison_results/` absence after collection.
 
-Task 2 onward, merge, production interaction, provider requests, and any
+Task 3 onward, merge, production interaction, provider requests, and any
 Financial Datasets product-policy implementation remain blocked. The separate
 product slice must own endpoint classification, the metered-request toggle,
 billing-mode declaration, cache-first behavior, typed `402` handling,
