@@ -365,6 +365,35 @@ The exact directory was moved unchanged to
 the empty `scripts/migration/` directory was removed. Collection did not
 recreate `comparison_results/` and executed no provider operation.
 
+### 4.6 Task 5 pre-edit old-path census stop
+
+Independent review reconstructed Task 4 at `ff7027d7` and returned GREEN.
+Before any Task 5 owner edit, the reviewed raw old-path search at that commit
+returned 714 rows across 100 tracked files. The census exposed three current
+bindings omitted from the reviewed Task 5 file/staging lists:
+
+- `scripts/__init__.py` still described the removed `scripts.migration`
+  namespace as current;
+- `tests/test_db_backend.py` still required the nonexistent
+  `scripts/migrate_to_supabase.py`; and
+- the current workbench spec still presented unimplemented root
+  `scripts/profile_export.py`, `scripts/profile_import.py`, and
+  `scripts/migrate_pg_to_local.py` command shapes without a supersession.
+
+The census contract also searched generic `scripts/` while allowing only four
+old-path classifications. That shape could not honestly classify the retained
+Tranche A `scripts/scoring/` owner or lexical non-path matches. Treating either
+as historical would hide current truth.
+
+Execution therefore stopped before changing any Task 5 owner. The bounded
+docs-only amendment adds the three omitted files and requires two explicit
+side streams, `approved_tranche_a_survivor` and `lexical_non_path`, before the
+four-class old-path candidate verdict. No Task 5 implementation owner, product
+behavior, physical tree, provider, archive, secret, or production-data path
+changed. Further implementation is unauthorized until that amendment receives
+focused review. The candidate plan SHA-256 is
+`8165044f255177b3732363e672f2c3c536875f9365f9f5aa7f03b82a4d4c1601`.
+
 ## 5. Native Admission And Artifact Transactions
 
 ### 5.1 Rejected unfiltered attempt
