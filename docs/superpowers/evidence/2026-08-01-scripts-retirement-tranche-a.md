@@ -74,13 +74,14 @@ roles and are intentionally both retained:
 | Physical collect-only base | `+0/-0` | 4,730 | `c34de9a0fe53e400409d3ec26d75a8c907ee277b121279693ea9f69c8638aabb` | reproduced |
 | Paid probes retired / provider-safe base | `+0/-2` | 4,728 | `49e4a32b5f536cea97053578f2fba4456ffbbe0c10a4b66540c4f26d2b55329f` | admitted |
 | Diagnostics retired | `+0/-5` | 4,725 | `64ce4a619039fa586f065533b900416b1fd3fcbf6d78a99a43c9295a02a83e1d` | reproduced |
-| Tranche A final | `+0/-177` | 4,553 | `69152591306a8dee5e66e2efeb2f1ec12720c8a1a1ffe36def613f4fe5a676ca` | preconstructed |
+| Tranche A final | `+0/-177` | 4,553 | `69152591306a8dee5e66e2efeb2f1ec12720c8a1a1ffe36def613f4fe5a676ca` | reproduced |
 
 The provider-safe reporter's 4,728-node collected stream is byte-identical to
 the preconstructed `stage-paid.nodes` stream. Its collected and seen streams
 are also byte-identical. The Task 3 collected stream is byte-identical to
-`stage-diagnostic.nodes`. The final-stage identity remains a target, not a
-claim that implementation has occurred.
+`stage-diagnostic.nodes`. The Task 4 collected stream is byte-identical to
+both `stage-final.nodes` and the independently prepared
+`/tmp/scripts-a-final.nodes`.
 
 The physical collect-only reporter is
 `/tmp/scripts-retirement-tranche-a/task0-collect.json`, SHA-256
@@ -288,6 +289,82 @@ to `/tmp/scripts-retirement-tranche-a/quarantine/task3-diagnostic/`; the
 resulting empty `scripts/diagnostics/` directory was removed. The worktree
 therefore contains no physical diagnostic executable or bytecode residue.
 
+### 4.5 Task 4 spent migration-gate retirement
+
+The pre-delete consumer census covered all eleven migration CLIs, eight spent
+domain cores, and twelve whole test files. Its 31-path manifest and content
+manifest are:
+
+| Artifact | Rows | SHA-256 |
+|---|---:|---|
+| Exact target paths | 31 | `69fee0a654a46a4940c7e9c226a405c1fc4abd5a9ed178c3d43490c3d3b16681` |
+| Path-plus-content hashes | 31 | `c9573cffe1743a81649ede23fcac14796b422c04abf12fc93377b6de3f0678cf` |
+| Python reference census | 94 lines | `59e4c4f6fd1b54fbefe07c22d3665612319a11b35d51ae40a6077373c7ffd69a` |
+
+No current runtime module imported a target. Before deletion, imports were
+confined to target CLIs, target cores, and the twelve removed test files.
+`src/api/routes/app_records.py::migration_apply` was a same-name route
+function, not a module import. After deletion, the only Python text hit for a
+removed namespace was the historical `scripts.migration` wording in the
+retained package-marker comment; Task 5 owns final authority and old-path
+census wording.
+
+The structural RED proved that `scripts/migration/` still existed and that the
+twelve gate-only test files collected exactly 172 nodes. Task 4 then removed:
+
+- eleven migration CLIs;
+- eight spent domain migration cores; and
+- twelve complete migration-only test files.
+
+The retained `src/news_normalized/score_import.py`,
+`tests/test_news_score_import.py`, and
+`scripts/scoring/import_news_scores_local.py` remained present.
+
+Before deleting `retire_legacy_scheduler_iv.py`, the 2026-07-26 evidence
+reclassified rollback as unsupported and removed its executable restore
+runbook. Git history retains the retired executable. The ignored archive and
+`RESTORE.txt` are lineage-only pending their separately approved deletion, and
+the recorded manifest remains
+`30c01ea8fd009a3d47c5ac96ffd4dd9b0282a1adef03faafb91c3dd50dd92fad`.
+No ignored archive byte was inspected or modified.
+
+The native collect-only result is:
+
+| Fact | Observation |
+|---|---|
+| Collected / executed / exit | `4553 / 0 / 0` |
+| Ordered collection | `69152591306a8dee5e66e2efeb2f1ec12720c8a1a1ffe36def613f4fe5a676ca` |
+| Reporter SHA-256 | `582628ca1246f18ce0ab8a1f1cb0f2e0e0583b7773a928a6d07d77b823f7af2b` |
+| Transcript SHA-256 | `a4b3506566c68048a1a72388aa97c4c8da6eaf916d8380262b93c43aa9447562` |
+
+Relative to the 4,730-node physical base, the result removes exactly 177 IDs
+and adds none. The actual sorted removed set has SHA-256
+`ece749907dc3ed03faf3dcf382727d1ab2a40b7067466834226926db32b1d3a7`.
+The preconstructed `remove-final.nodes` artifact contains the same 177 IDs in
+a non-sorted construction order; sorting it produces the same SHA and a
+byte-identical set. The added stream is empty with SHA-256
+`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+
+Retained verification produced:
+
+```text
+scoring contracts                 36 passed
+IBKR normalized adapter           17 passed
+legacy-IV retirement boundaries    4 passed
+protected SQLite/DAL contracts    94 passed / 18 skipped
+python -m compileall              exit 0
+```
+
+The pre-delete imports had left four ignored bytecode files under
+`scripts/migration/__pycache__`. Their hash stream is
+`f30a2d3756693e8adc6c8463b9e7369a9eeeb1232904db2ee809dd3161e5dfd2`;
+their inode/size/time metadata stream is
+`b9c66a11e60b1013189cace639416cfc688f9a022bf4ee653772d2ec6f92c643`.
+The exact directory was moved unchanged to
+`/tmp/scripts-retirement-tranche-a/quarantine/task4-migration/`, after which
+the empty `scripts/migration/` directory was removed. Collection did not
+recreate `comparison_results/` and executed no provider operation.
+
 ## 5. Native Admission And Artifact Transactions
 
 ### 5.1 Rejected unfiltered attempt
@@ -379,16 +456,19 @@ After quarantine:
 
 ## 6. Independent Review And Merge
 
-Independent review reconstructed Tasks 0, 1, and 2 and returned GREEN at each
-checkpoint. Task 3 is now review-ready. Its review must reconstruct:
+Independent review reconstructed Tasks 0 through 3 and returned GREEN at each
+checkpoint. Task 4 is now review-ready. Its review must reconstruct:
 
-1. the pre-edit 20-node adapter baseline;
-2. the exact three diagnostic-only IDs and unchanged 17-node adapter contract;
-3. deletion of the single fixed diagnostic executable;
-4. exact `-5/+0` collection to `4725/64ce4a61...`; and
-5. `comparison_results/` absence after collection.
+1. the pre-delete consumer census and exact 31-path target manifest;
+2. rollback reclassification before tool removal, with no archive access;
+3. deletion of eleven migration CLIs, eight spent cores, and twelve whole
+   migration-only test files;
+4. exact `-177/+0` collection to `4553/69152591...`;
+5. the retained `36`, `17`, and `4` contract groups plus protected
+   `94 passed / 18 skipped`; and
+6. physical `scripts/migration/` and `comparison_results/` absence.
 
-Task 4 onward, merge, production interaction, provider requests, and any
+Task 5 onward, merge, production interaction, provider requests, and any
 Financial Datasets product-policy implementation remain blocked. The separate
 product slice must own endpoint classification, the metered-request toggle,
 billing-mode declaration, cache-first behavior, typed `402` handling,

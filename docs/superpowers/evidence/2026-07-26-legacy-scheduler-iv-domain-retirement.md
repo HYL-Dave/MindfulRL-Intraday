@@ -639,30 +639,22 @@ The runtime source catalog was exactly
 option/Greeks/skew suites passed `174 passed / 1 skipped`. After restart, the
 user confirmed the retired Settings rows and legacy IV surface were absent.
 
-Rollback requires all ArkScope writers stopped and code checked out at
-`7bb7cc29f70ca899a5b598f2322ce181daa17ebe`; invoke the merged migration tool
-in `restore` mode with the archive above, production DB/file paths, that old
-checkout as `--repo-root`, and the same commit as
-`--expected-current-commit`. The archive is rollback material only and must
-never seed a future IV design.
+## Rollback Reclassification (2026-08-01)
 
-Exact restore runbook, to be used only after an explicit rollback decision:
+Rollback is no longer supported. The retired executable remains recoverable
+through Git history, but this evidence is not a runnable restore instruction
+and no current checkout is expected to reconstruct the retired product.
 
-```bash
-git worktree add --detach /tmp/arkscope-legacy-retirement-restore \
-  7bb7cc29f70ca899a5b598f2322ce181daa17ebe
+The ignored archive at
+`data/backups/legacy_scheduler_iv_retirement_20260727T123347933126Z/` and its
+`RESTORE.txt` are lineage-only pending the separately approved archive
+deletion. The recorded manifest identity remains:
 
-/home/hyl/.virtualenvs/llm_app/bin/python \
-  scripts/migration/retire_legacy_scheduler_iv.py restore \
-  --archive-dir data/backups/legacy_scheduler_iv_retirement_20260727T123347933126Z \
-  --profile-db data/profile_state.db \
-  --market-db data/market_data.db \
-  --iv-parquet-dir data/options/iv_history \
-  --repo-root /tmp/arkscope-legacy-retirement-restore \
-  --expected-current-commit 7bb7cc29f70ca899a5b598f2322ce181daa17ebe \
-  --output /tmp/arkscope-legacy-retirement-production-restore.json
+```text
+30c01ea8fd009a3d47c5ac96ffd4dd9b0282a1adef03faafb91c3dd50dd92fad
 ```
 
-After a successful restore, the runtime itself must use the reviewed old
-checkout; restoring the payload while continuing to run the retired product
-code is not a rollback.
+Tracked aggregate and digest evidence above remains the durable record of the
+retired payload and production transaction. Scripts Retirement Tranche A did
+not inspect, execute, edit, move, hash again, or otherwise modify any ignored
+archive byte.
