@@ -88,6 +88,8 @@ It recorded 4,730 collected nodes and intentionally executed none.
 
 ## 4. Structural RED/GREEN
 
+### 4.1 Task 0 grounding
+
 Task 0 made no implementation edit and therefore did not manufacture a new
 product RED. It established the pre-edit safety gates:
 
@@ -103,9 +105,56 @@ The focused commands left ordinary Git status empty, did not create
 `comparison_results/`, left the required empty `data/` root empty, and did
 not create `src/data`.
 
-Tasks 1 onward remain unauthorized until independent review accepts this
-Task 0 packet. Their structural RED/GREEN and mutation evidence will be added
-to this document only after execution.
+Independent review accepted Task 0 at `b7000c2b` and authorized Task 1.
+
+### 4.2 Task 1 manual-smoke ownership
+
+Before the move, `tests/live` did not exist. The reviewed plan wrote
+`test ! -e tests/live` while also saying to expect a non-zero result. Those
+two statements cannot both hold: the command correctly returned zero for the
+missing directory. The intended positive owner assertion,
+`test -e tests/live`, returned one and supplied the structural RED. This
+command-level correction did not change the reviewed target or scope.
+
+Task 1 then moved, without executing:
+
+| Previous path | Current owner |
+|---|---|
+| `scripts/live/sdk_driver_smoke.py` | `tests/live/sdk_driver_smoke.py` |
+| `scripts/live/sdk_route_smoke.py` | `tests/live/sdk_route_smoke.py` |
+| `scripts/p1_2/smoke_fred.py` | `tests/live/smoke_fred.py` |
+| `scripts/live/README.md` | `tests/live/README.md` |
+
+The new README states that the files are manual, never default-collected,
+never run by automated admission, and can require real credentials, network,
+Gateway state, provider entitlement, and spend. It contains the three exact
+manual commands. No file in the directory is named `test_*.py`.
+
+Static compilation passed for all three files with bytecode redirected to
+`/tmp/scripts-retirement-tranche-a/task1-pycache`. The hermetic FRED test
+returned `44 passed`; no live smoke ran.
+
+The first collection-wrapper invocation remained inside the managed sandbox.
+Its wakeup probe returned `false/1/0`, so the wrapper rejected the boundary
+before creating a stage, report, transcript, or `comparison_results/`.
+The authorized native retry then produced:
+
+- report:
+  `/tmp/eir002-green-baseline/reports/scripts-a-task1-collect.json`,
+  SHA-256
+  `ab6487af8fd731ae99f0c4dcec0147d9df0528487da24c5c74e5a7f5807822b9`;
+- transcript SHA-256:
+  `4ced6c491ae59b5f4d1a944c2502ddcbc645443db0da795eab5dc48313c94cb8`;
+- `4730` collected, `0` executed, exit status `0`;
+- ordered collection
+  `c34de9a0fe53e400409d3ec26d75a8c907ee277b121279693ea9f69c8638aabb`;
+- zero node IDs under `tests/live/`; and
+- a report byte-identical to the Task 0 physical collect-only report.
+
+Collection imported the legacy Financial Datasets probe and created only the
+empty directories `comparison_results/financial_datasets/`. After proving
+that they contained no file or symlink, Task 1 removed those exact empty
+directories with `rmdir`. No request function or live smoke executed.
 
 ## 5. Native Admission And Artifact Transactions
 
@@ -198,19 +247,18 @@ After quarantine:
 
 ## 6. Independent Review And Merge
 
-Task 0 is review-ready, not implementation-cleared. Independent review must
-reconstruct:
+Independent review reconstructed Task 0 and returned GREEN. Task 1 is now
+review-ready. Its review must reconstruct:
 
-1. both the 4,730 physical and 4,728 provider-safe collection identities;
-2. the 159-row and 54-row disposition identities;
-3. the rejected-attempt separation and provider-status qualification;
-4. the admitted reporter facts and absence of `comparison_results/`;
-5. the 72-file exact quarantine and byte-identical restoration; and
-6. the protected authority, secret-metadata, and main-draft boundaries.
+1. the four Git moves and updated FRED references;
+2. the manual/non-collected/spend-warning README contract;
+3. static compilation and the `44 passed` FRED gate;
+4. zero `tests/live/` node IDs and exact unchanged
+   `4730/c34de9a0...` collection; and
+5. the rejected sandbox boundary plus exact empty-directory cleanup.
 
-Tasks 1-5, merge, production interaction, provider requests, and any
-Financial Datasets product-policy implementation remain blocked until that
-review is GREEN. The separate product slice must own endpoint classification,
-the metered-request toggle, billing-mode declaration, cache-first behavior,
-typed `402` handling, fail-closed unknown endpoints, local usage disclosure,
-and Settings UI.
+Task 2 onward, merge, production interaction, provider requests, and any
+Financial Datasets product-policy implementation remain blocked. The separate
+product slice must own endpoint classification, the metered-request toggle,
+billing-mode declaration, cache-first behavior, typed `402` handling,
+fail-closed unknown endpoints, local usage disclosure, and Settings UI.
