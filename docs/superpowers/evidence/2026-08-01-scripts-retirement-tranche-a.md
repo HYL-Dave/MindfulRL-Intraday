@@ -502,3 +502,111 @@ Financial Datasets product-policy implementation remain blocked. The separate
 product slice must own endpoint classification, the metered-request toggle,
 billing-mode declaration, cache-first behavior, typed `402` handling,
 fail-closed unknown endpoints, local usage disclosure, and Settings UI.
+
+## 7. Task 5 Authority Reconciliation
+
+The preceding block is the historical Task 4 checkpoint. Independent review
+accepted the bounded census amendment at `9b1173ac` and authorized Task 5.
+No product behavior, provider call, archive byte, production-data path, or
+Tranche B score contract changed.
+
+### 7.1 Current authority corrections
+
+Eighteen reviewed owners now agree on the Tranche A end state:
+
+- the top-level layout names only the transitional scoring owner and assigns
+  final root removal to Tranche B;
+- the package marker no longer claims a removed namespace;
+- the PostgreSQL test prerequisite no longer requires a nonexistent importer;
+- the workbench capability spec preserves portability and explicit import
+  requirements while rejecting its three never-implemented command shapes as
+  runnable instructions;
+- historical provider, migration, density-analysis, OAuth, and RL references
+  are explicitly labeled historical, upstream, or rejected rather than
+  presented as local operators; and
+- incomplete RL artifacts must be re-exported or retrained with required
+  schema metadata; retained telemetry is TensorBoard plus `monitor.csv`.
+
+### 7.2 Physical root and ignored residue
+
+The final tracked path manifest is:
+
+| Artifact | Rows | SHA-256 |
+|---|---:|---|
+| `task5/tranche-a-scripts.paths` | 9 | `5557a08b373d6d3b2c4e7c7da83739af8e41d94c8bb1e669ace4819f779bf76d` |
+
+It is byte-identical to the reviewed nine-path list. No retired subdirectory,
+wrapper, tombstone, symlink, or compatibility module remains. The only
+remaining ignored bytecode directories belong to the current root marker and
+transitional scoring owner.
+
+Two ignored bytecode files from the retired paid-provider probes were recorded
+before exact-path quarantine:
+
+| Artifact | Rows | SHA-256 |
+|---|---:|---|
+| `task5/retired-pycache.metadata.tsv` | 2 | `daf025edb251d8f2e4ebc4cfe295997712f700148b393615e6fb4c122b370f51` |
+| `task5/retired-pycache.sha256` | 2 | `940ae01f1ef23726e09267ab015ef0afd741b12688a6c7d635b201f304154554` |
+
+Hash-only comparison after the move was byte-identical. Only then were the
+now-empty retired directories removed.
+
+### 7.3 Closed old-path census
+
+The census used a generated fail-closed classifier, SHA-256
+`67573a58cd3974917bc4d7eeaee93fd3bbfda12f6bfc31f97795de945cef341e`.
+An unknown owner aborts classification. The exact artifacts are:
+
+| Stream | Rows | SHA-256 |
+|---|---:|---|
+| Raw discovery superset | 726 | `018fb4ceb225c8222b918639bb1deca3f790ef14faac19e27a9adef724f24fa2` |
+| Approved Tranche A survivor | 103 | `800ed7c283ab8802b750dca224710e080561924bd47a16d291b57a506d50fab4` |
+| Lexical non-path | 2 | `c0a250f3ba87ae31aabf0479f1e803626a32cc3ca5519c7f219943ce847165c8` |
+| Old-path candidates | 621 | `fa7b3fc5c65f84fa32010ec829ab1682670a50c92884768291a23f2cb62a0ce4` |
+| Complete partition | 726 | `613c50cbc88bc8412119fe9428e2c97cca50516dc39382171e7155ead3063702` |
+
+Candidate verdicts are closed:
+
+```text
+historical_record      558
+non_root_owner          35
+rejected_old_path       25
+upstream_provenance      3
+current_runnable         0
+```
+
+Removing the partition verdict column reproduces the raw superset
+byte-for-byte. The raw stream has no duplicate row, and
+`103 + 2 + 621 = 726`; no match was silently omitted.
+
+### 7.4 Verification
+
+Fresh structured collection produced:
+
+```text
+4553
+69152591306a8dee5e66e2efeb2f1ec12720c8a1a1ffe36def613f4fe5a676ca
+```
+
+Its reporter is byte-identical to Task 4 at
+`582628ca1246f18ce0ab8a1f1cb0f2e0e0583b7773a928a6d07d77b823f7af2b`.
+Focused verification produced:
+
+```text
+retained scoring contracts                 36 passed
+RL inference/state and OAuth probe          25 passed / 8 skipped
+protected SQLite/DAL contracts              94 passed / 18 skipped
+Python compilation                          exit 0
+RL shell syntax                             exit 0
+```
+
+The six score implementations, daily-update owner, local score importer, Tool
+Catalog, and Desktop carry-over authority are byte-identical to the Task 0
+base. The scoring README differs only by the reviewed Task 2 provenance-link
+move.
+
+The local scoring credential was checked only through metadata: present, mode
+`0600`, and ignored by Git. Its contents, byte count, and digest were not read.
+
+Task 5 is review-ready. Task 6 admission, merge, provider interaction,
+production interaction, archive deletion, and Tranche B remain blocked.
