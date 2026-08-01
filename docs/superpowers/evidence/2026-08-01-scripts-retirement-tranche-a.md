@@ -1,6 +1,6 @@
 # Scripts Retirement Tranche A Evidence
 
-> **Status:** IMPLEMENTATION IN PROGRESS
+> **Status:** IMPLEMENTATION REVIEW READY
 >
 > **Date:** 2026-08-01
 >
@@ -610,3 +610,133 @@ The local scoring credential was checked only through metadata: present, mode
 
 Task 5 is review-ready. Task 6 admission, merge, provider interaction,
 production interaction, archive deletion, and Tranche B remain blocked.
+
+## 8. Task 6 Canonical Admission
+
+Independent review accepted Task 5 at `c68b8225` and authorized canonical
+admission. Task 6 did not change product, test, provider, scheduler, archive,
+secret, production-data, or Tranche B score-contract bytes.
+
+### 8.1 Final collection and focused gates
+
+A fresh structured collection produced a reporter byte-identical to the Task 5
+report:
+
+| Evidence | Rows or result | SHA-256 |
+|---|---:|---|
+| Fresh collect reporter | 4,553 collected / 0 executed | `582628ca1246f18ce0ab8a1f1cb0f2e0e0583b7773a928a6d07d77b823f7af2b` |
+| Fresh ordered node stream | 4,553 | `69152591306a8dee5e66e2efeb2f1ec12720c8a1a1ffe36def613f4fe5a676ca` |
+| Precomputed `stage-final.nodes` | 4,553 | `69152591306a8dee5e66e2efeb2f1ec12720c8a1a1ffe36def613f4fe5a676ca` |
+| Independent `/tmp/scripts-a-final.nodes` | 4,553 | `69152591306a8dee5e66e2efeb2f1ec12720c8a1a1ffe36def613f4fe5a676ca` |
+
+All three node streams are byte-identical. Focused verification produced:
+
+```text
+retained scoring contracts                 36 passed
+normalized IBKR score adapter              17 passed
+protected SQLite/DAL contracts             94 passed / 18 skipped
+Python compilation                          exit 0
+diff check from 24202182                     exit 0
+```
+
+The implementation worktree remained clean after these gates.
+
+### 8.2 Fresh native boundary
+
+The first direct detached-worktree checkout stopped before materialization at
+the repository's known linked-worktree `git-crypt` smudge boundary. It left no
+registered worktree and no directory. The clean retry used the established
+repository procedure: `--no-checkout`, only the existing key copied with mode
+`0600` into linked Git metadata, then `git read-tree -mu HEAD`. No key content,
+size, or digest was recorded.
+
+The resulting detached worktree was exact `c68b8225`, with:
+
+- no `config/.env` or `config/scoring_keys.txt`;
+- an existing empty `data/`;
+- no `src/data`, project database, historical dataset, provider credential,
+  or production-root symlink;
+- only the pinned
+  `/mnt/md0/PycharmProjects/ArkScope/node_modules` toolchain symlink; and
+- unchanged wrapper, reporter, wakeup probe, Node `v22.14.0`, and both
+  lockfile identities.
+
+The pre-run ordinary-status stream was empty. The pre-run ignored stream
+contained only `node_modules`; the symlink inventory contained only that
+pinned link.
+
+### 8.3 Native final result
+
+The sole native final command was:
+
+```text
+/tmp/eir002-green-baseline/run_native.sh scripts-a-final-full
+```
+
+It completed naturally in `248.36s`:
+
+| Fact | Observation |
+|---|---|
+| Collected / seen | `4553 / 4553` |
+| Passed / skipped / failed | `4481 / 72 / 0` |
+| Errors / exit status | `0 / 0` |
+| Collected and seen stream | `69152591306a8dee5e66e2efeb2f1ec12720c8a1a1ffe36def613f4fe5a676ca` |
+| Non-passing stream | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| Reporter JSON | `2e94c3af06b7ada6596fb4068a5ca237d7c70edc11d806a370f91166a6f0c174` |
+| Transcript | `41e1e5a57a67b544657ca82a0b5c92f1bf1aacfb976eaf88711001ff693cd4d9` |
+
+Reporter `collected_node_ids` and `seen_node_ids` are byte-identical to each
+other and to the precomputed final target. No partial transcript is used as
+admission evidence.
+
+### 8.4 Generated-artifact transaction
+
+The native run created 575 repository-relative files:
+
+```text
+552 Python bytecode files
+  4 pytest-cache files
+ 15 agent scratchpad files
+  2 hermetic Financial Datasets cache fixtures
+  1 native-host test log
+  1 risk-free-rate cache
+```
+
+The exact transaction evidence is:
+
+| Evidence | Rows | SHA-256 |
+|---|---:|---|
+| Exact relative paths | 575 | `6c451b866c54971448330685035f303752fec07d03086249ad5532b5a5804ffa` |
+| Path/inode/size/mtime/mode/content metadata | 575 | `b649b6cbdf4c83ea70bf2347cf2adcb5a09cad5e08d344ce8ba1cc8eecb76037` |
+| Post-run `data` / `src/data` file list | 19 | `7758868c4c9e5dd271aaafdf15c7f34fa71e635b0ccf04b54341f997bcccac6c` |
+| Removed generated empty directories | 42 | `9fafa1f6273ed52e91c04aa3a35735eed5aa891413388abb384b694411ff34ef` |
+
+Every file was moved by exact relative path to
+`/tmp/scripts-retirement-tranche-a/quarantine/task6-final-full/`. Recomputed
+quarantine metadata is byte-identical to the pre-move 575-row stream at
+`b649b6cb...`; each original path was absent before generated empty
+directories were removed.
+
+Restoration is byte-identical:
+
+| Boundary | Pre / restored SHA-256 |
+|---|---|
+| Ordinary status | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| Ignored path list | `16d30e4462189fb14dd611bdb708c510630c576a1f35b9383e89a4352da36c97` |
+| Symlink inventory | `3ddb95019fa533ceddd7502fe69d40ee6100388be7042c420270c0808bdf6452` |
+| Empty `data/` file list | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| Toolchain hashes | `2ed4198921e0424b1c9e223db5e000828f354f53f558744fe385cd62b8ae7a4d` |
+
+`src/data` is absent again, the empty `data/` precondition and pinned
+`node_modules` symlink remain, and no pre-existing file was modified or moved.
+The main worktree's protected untracked predecessor remains
+`79d4eac97d7692684d83f0a067f5987fe434bb76746b98af3e44f1c8ba4bf277`.
+
+### 8.5 Review gate
+
+Tranche A is implementation-review ready. Independent review must reproduce
+the exact `+0/-177` collection, nine-path physical tree, retained gates,
+closed old-path census, native reporter, and artifact transaction before
+merge. Task 7, final root `scripts/` retirement, Tranche B, provider-policy
+implementation, production interaction, archive deletion, and EIR-006 remain
+unauthorized.
