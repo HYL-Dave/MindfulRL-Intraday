@@ -1,6 +1,6 @@
 # EIR-002 Green Backend Baseline Evidence
 
-> **Status:** TASK 6 COMPLETE - INDEPENDENT IMPLEMENTATION REVIEW NEXT
+> **Status:** TASK 7 BLOCKED - BOUNDED AMENDMENT REVIEW NEXT
 >
 > **Date:** 2026-07-31
 >
@@ -432,5 +432,53 @@ closure has occurred.
 
 ## 8. Reviewed Merge And Closeout
 
-Not started. EIR-002 remains `promoted`. Independent implementation review of
-the Task 6 tip is the next gate; Task 7 merge and closure remain unauthorized.
+Independent implementation review returned GREEN, and `master` fast-forwarded
+linearly from `3092fb41` to exact reviewed tip `99bc071e`; the untracked
+scripts-retirement decision remained untouched at SHA-256 `79d4eac9...`.
+Merged collection reproduced `4730/c34de9a0...`, byte-equal to the target, and
+`merged-focused` completed `123 collected / 123 seen / 0 non-passing`.
+
+The first merged window, `2026-08-01T08:07:00+08:00` through
+`08:09:39+08:00`, stopped before full admission because a real extension sync
+appended non-test actions (`get_market_news_recent_ids`, `save_market_news`,
+and `record_extension_job`) and changed `profile_state.db` and
+`sa_capture.db`. No production byte was reverted. The 42,402,455-byte
+post-focused log and its exact 1,505-byte append are preserved under
+`/tmp/eir002-green-baseline/merged-quarantine/blocked-focused/`; their SHA-256
+values are `a38d3e37...` and `85319396...`.
+
+After the user paused extension sync, two native-host and three-file
+stability samples matched. A fresh resume baseline then ran the unused
+`merged-full` stage. It terminated naturally with all 4,730 nodes seen:
+
+```text
+4676 passed / 53 skipped / 1 failed
+non-passing:
+tests/test_db_backend.py::TestFundamentalsDB::test_fundamentals_via_dal
+```
+
+Reporter SHA-256 is `95aa3549...`; transcript SHA-256 is `240bcb66...`.
+The failure reproduces in 0.45 seconds in the main worktree and skips in the
+reviewed worktree. The main root's ignored `config/.env` directly enables the
+PostgreSQL integration class; `FundamentalsResult` has never exposed the
+asserted `.found` field. Its current typed absence value is
+`data_source="none"`.
+
+The failed full run appended only two test pings (486 bytes) to the production
+native-host log. The full post-run file and append are archived at SHA-256
+`d904740f...` and `7171820a...`; exact-prefix proof reproduced the pre-run
+`209c0ed9...`, after which the log's inode, size, nanosecond mtime, and SHA were
+restored exactly under the pre-authorized rule. Eighteen new paths were moved
+by exact path to
+`/tmp/eir002-green-baseline/merged-quarantine/resume-failed-full/new/`;
+manifest SHA-256 is `6ba4278e...`. Pre/restored Git-status and path inventories
+are byte-equal.
+
+The production `profile_state.db` change was preserved. A read-only query
+attributes its run-window update to real scheduler job `18436`,
+`collect.ibkr_news`, which finished successfully at
+`2026-08-01T00:18:38+00:00`. This independently proves that the production
+main root cannot provide a frozen canonical data boundary.
+
+EIR-002 remains `promoted`. No test or product edit is authorized until the
+LD 9 / Task 7 bounded amendment receives independent review.
