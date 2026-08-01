@@ -1,6 +1,6 @@
 # EIR-002 Green Backend Baseline Evidence
 
-> **Status:** TASK 7 BLOCKED - BOUNDED AMENDMENT REVIEW NEXT
+> **Status:** COMPLETE - FINAL CLOSEOUT REVIEW NEXT
 >
 > **Date:** 2026-07-31
 >
@@ -480,5 +480,85 @@ attributes its run-window update to real scheduler job `18436`,
 `2026-08-01T00:18:38+00:00`. This independently proves that the production
 main root cannot provide a frozen canonical data boundary.
 
-EIR-002 remains `promoted`. No test or product edit is authorized until the
-LD 9 / Task 7 bounded amendment receives independent review.
+At this gate EIR-002 remained `promoted`, and no test or product edit was
+authorized until the LD 9 / Task 7 bounded amendment received independent
+review.
+
+## 9. Bounded Amendment And Canonical Admission
+
+Independent review returned GREEN for amendment commit `038f0c21`. The only
+test edit then changed
+`tests/test_db_backend.py::TestFundamentalsDB::test_fundamentals_via_dal`
+from `result.found is False` to `result.data_source == "none"` without
+renaming the node, changing its fixture, adding a skip, or touching product
+code. In the data-bearing main worktree the exact node changed from the
+frozen RED evidence to `1 passed in 0.36s`. Test-fix commit is
+`c18f8eb0b3b5cb7524049f063b81846ee83456e2`.
+
+A fresh detached worktree at that exact commit was created at
+`/tmp/arkscope-eir002-merged-v2`. Because git-crypt stores worktree-specific
+key lookup state, the first ordinary checkout failed closed before creating
+the path. The successful construction used `git worktree add --no-checkout`,
+linked only that worktree's git-crypt lookup to the already-unlocked common
+gitdir, loaded the exact `HEAD` tree with `read-tree`, and populated it with
+`checkout-index`. Final Git status was clean and
+`tests/test_db_backend.py` was byte-identical to `c18f8eb0`.
+
+The canonical input boundary contained no `config/.env`, no copied database
+or historical data, and an existing empty `data/`. Its only production-root
+link was `node_modules`, pinned before and after admission as:
+
+- target `/mnt/md0/PycharmProjects/ArkScope/node_modules`;
+- tracked `package-lock.json` SHA-256 `5322cb03...`;
+- installed `.package-lock.json` SHA-256 `4dd5182f...`;
+- Node `v22.14.0`; and
+- `jsdom` `29.1.1`.
+
+Canonical results were:
+
+```text
+collection: 4730 / c34de9a0fe53e400409d3ec26d75a8c907ee277b121279693ea9f69c8638aabb
+focused:    123 passed
+full:       4658 passed / 72 skipped / 0 failed
+protected:  94 passed / 18 skipped
+nonpassing: 0 / e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+```
+
+The full reporter recorded `4730 collected / 4730 seen / exitstatus 0`.
+Artifact SHA-256 values are:
+
+- collect reporter `ab6487af...`;
+- focused reporter/transcript `4a688ba8...` / `80994bfe...`; and
+- full reporter/transcript `9babd7b9...` / `632178ef...`.
+
+Post-run accounting found 638 repo-relative ignored or untracked files:
+273 under `src`, 259 under `tests`, 30 under `comparison_results`, 21 under
+`data_sources`, 18 each under `scripts` and `data`, 15 under `training`, and
+4 under `.pytest_cache`. The `data` plus `src/data` inventory contained 19
+files, including the isolated native-host log, two Financial Datasets cache
+fixtures, fifteen scratchpad files, and the risk-free-rate cache.
+
+Every generated file was recorded by exact NUL-delimited Git path with inode,
+size, nanosecond mtime, and SHA-256, then moved by exact path under
+`/tmp/eir002-green-baseline/merged-v2-quarantine/`. Evidence identities are:
+
+- generated path stream `1ef1c651...`;
+- original metadata manifest `564b62bc...`;
+- quarantined manifest `fbdf4367...`; and
+- original/quarantined path-plus-SHA streams both `6ca72947...`.
+
+An initial comparison selected field 3 (size) rather than field 5 (SHA) from
+the richer original manifest and correctly failed. The corrected field
+selection produced the byte-identical `6ca72947...` streams above; no file
+was recopied or regenerated.
+
+After exact quarantine and removal of generated empty directories, the
+pre/restored ordinary status, ignored status, data inventory, and symlink
+inventory were byte-identical. Ordinary status and data inventory remained
+empty; ignored status contained only the pinned `node_modules` link. The main
+worktree remained clean except for the protected untracked
+`SCRIPTS_RETIREMENT_DECISION.md`, still at SHA-256 `79d4eac9...`.
+
+EIR-002 is closed by this evidence. The repository now has a canonical green
+backend baseline; later non-passing nodes are regressions unless separately
+classified through the issue register.
