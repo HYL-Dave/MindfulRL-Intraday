@@ -1,6 +1,6 @@
 # Scripts Retirement Tranche A Evidence
 
-> **Status:** IMPLEMENTATION REVIEW READY
+> **Status:** TRANCHE A MERGED; CLOSEOUT REVIEW REQUIRED
 >
 > **Date:** 2026-08-01
 >
@@ -740,3 +740,137 @@ closed old-path census, native reporter, and artifact transaction before
 merge. Task 7, final root `scripts/` retirement, Tranche B, provider-policy
 implementation, production interaction, archive deletion, and EIR-006 remain
 unauthorized.
+
+## 9. Task 7 Reviewed Merge And Merged Verification
+
+Independent implementation review reconstructed the complete
+`d89d433c..d6ef3b97` range and returned GREEN. The reviewed implementation
+checkpoint is:
+
+```text
+SCRIPTS_TRANCHE_A_TIP=d6ef3b9726c00d1ffbbeb70ea11a74aa8ae24678
+```
+
+### 9.1 Protected-draft transaction and fast-forward
+
+Before merge, main `master` and `origin/master` were both exact `24202182`.
+The sole main-worktree difference was the protected untracked predecessor at
+`docs/design/SCRIPTS_RETIREMENT_DECISION.md`.
+
+Its pre-move facts were:
+
+```text
+SHA-256: 79d4eac97d7692684d83f0a067f5987fe434bb76746b98af3e44f1c8ba4bf277
+inode:   127730122
+size:    26932
+mtime:   2026-07-27 22:41:00.742118107 +0800
+mode:    0664
+```
+
+It moved by exact path to
+`/tmp/scripts-retirement-tranche-a/quarantine/task7-main-untracked-draft/`.
+The quarantined SHA, size, mtime, and mode are identical. The destination inode
+is `97523871`; the inode change is recorded rather than hidden because the move
+crossed from `/mnt` to `/tmp`. The committed authority became the sole current
+file.
+
+`git merge --ff-only codex/scripts-retirement-decision` then advanced
+`master` linearly from `24202182` to exact `d6ef3b97`; no merge commit was
+created.
+
+### 9.2 Fresh exact-master verification
+
+Merged verification used a new detached exact-`d6ef3b97` worktree with no
+`.env`, local scoring secret, project database, historical dataset, provider
+credential, or production-root symlink; `data/` was empty and the sole
+toolchain link was the pinned root `node_modules`.
+
+Fresh collection remained byte-identical:
+
+| Evidence | Result | SHA-256 |
+|---|---:|---|
+| Merged collect reporter | 4,553 collected / 0 executed | `582628ca1246f18ce0ab8a1f1cb0f2e0e0583b7773a928a6d07d77b823f7af2b` |
+| Merged ordered node stream | 4,553 | `69152591306a8dee5e66e2efeb2f1ec12720c8a1a1ffe36def613f4fe5a676ca` |
+
+Merged focused gates reproduced:
+
+```text
+retained scoring contracts                 36 passed
+normalized IBKR score adapter              17 passed
+protected SQLite/DAL contracts             94 passed / 18 skipped
+Python compilation                          exit 0
+diff check from 24202182                     exit 0
+```
+
+The pre-full gates generated 555 files: 551 Python bytecode files and four
+pytest-cache files. Their exact path stream is `e12ad5c6...`; the 555-row
+path/inode/size/mtime/mode/content stream and its quarantined reconstruction
+are byte-identical at `589b10f9...`. The worktree was restored before native
+admission.
+
+### 9.3 Merged native admission
+
+The new single-use native stage was:
+
+```text
+/tmp/eir002-green-baseline/run_native.sh scripts-a-merged-full
+```
+
+It completed naturally in `270.44s`:
+
+| Fact | Observation |
+|---|---|
+| Collected / seen | `4553 / 4553` |
+| Passed / skipped / failed | `4481 / 72 / 0` |
+| Errors / exit status | `0 / 0` |
+| Collected and seen stream | `69152591306a8dee5e66e2efeb2f1ec12720c8a1a1ffe36def613f4fe5a676ca` |
+| Non-passing stream | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| Reporter JSON | `2e94c3af06b7ada6596fb4068a5ca237d7c70edc11d806a370f91166a6f0c174` |
+| Transcript | `442efc5bdfafbabfeb8e981cceb3a100163615bb1882086035881ba4d97e3f68` |
+
+The merged reporter is byte-identical to the pre-merge reporter. No
+`comparison_results/` path exists.
+
+### 9.4 Merged artifact transaction
+
+The native run generated the same closed 575-file shape as Task 6:
+
+```text
+552 Python bytecode files
+  4 pytest-cache files
+ 15 agent scratchpad files
+  2 hermetic Financial Datasets cache fixtures
+  1 native-host test log
+  1 risk-free-rate cache
+```
+
+| Evidence | Rows | SHA-256 |
+|---|---:|---|
+| Exact relative paths | 575 | `00761d6a9791b09f9084aa5d3637a26015687962776ea6cf6cb1119d42a5bc26` |
+| Path/inode/size/mtime/mode/content metadata | 575 | `486e056c8fa4a167f656c94cf0edd79943ba9106edcf584048ebe29a8e94f481` |
+| Quarantined metadata reconstruction | 575 | `486e056c8fa4a167f656c94cf0edd79943ba9106edcf584048ebe29a8e94f481` |
+| Removed generated empty directories | 42 | `9fafa1f6273ed52e91c04aa3a35735eed5aa891413388abb384b694411ff34ef` |
+
+All 575 files moved by exact relative path to
+`/tmp/scripts-retirement-tranche-a/quarantine/task7-merged-full/`.
+Pre/restored ordinary status, ignored paths, symlink inventory, empty `data/`,
+absent `src/data`, and toolchain hashes are byte-identical:
+
+```text
+ordinary status: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+ignored paths:   16d30e4462189fb14dd611bdb708c510630c576a1f35b9383e89a4352da36c97
+symlinks:        3ddb95019fa533ceddd7502fe69d40ee6100388be7042c420270c0808bdf6452
+data files:      e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+toolchain:       2ed4198921e0424b1c9e223db5e000828f354f53f558744fe385cd62b8ae7a4d
+```
+
+No pre-existing file was modified or moved.
+
+### 9.5 Tranche checkpoint
+
+Tranche A is complete at `SCRIPTS_TRANCHE_A_TIP`. Tranche B has not started.
+Root `scripts/` intentionally remains only for `scripts/scoring/` and the
+package marker. No production score data, local scoring secret, ignored archive
+byte, EIR-006 owner, or provider-policy implementation changed. The docs-only
+closeout commit requires focused review of this section and the matching
+authority/priority-map changes.
