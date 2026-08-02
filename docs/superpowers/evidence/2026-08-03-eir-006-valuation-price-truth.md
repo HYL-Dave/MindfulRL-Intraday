@@ -86,8 +86,8 @@ SHA-256:
 
 | Collection | Files | Nodes | SHA-256 | Status |
 |---|---:|---:|---|---|
-| Base full | 96 | 1,076 | `de48671aa1d3f70cb87166e3f5b026804e206ac31f8e29fe7e74b38cde9448d5` | reproduced |
-| Target full | 97 | 1,077 | `8a88600623ff985d24f20fab85ba8375c574f230a1a964c09667a1184b2ceea2` | preconstructed |
+| Base full | 96 | 1,076 | `ef7f106054745c137ff70fe6ef2043bb7655185379de1f0a6ec3b1b2997b9396` | reproduced |
+| Target full | 97 | 1,077 | `3f5e9f5bbe88d5ac48015a8c9e9d669dcd649a53a2ac868fc8a98d21f8d7e4eb` | preconstructed |
 | Base focused | 4 | 45 | `09a2b4ef080a5badab79fb674b5c5c6b85a0eb7c639c2fe9534616eff2b5bb84` | reproduced |
 | Target focused | 5 | 46 | `5d64841ccdd943eb81f1cea50870115ed60dffe57ff6fc9867179552a4a7f127` | preconstructed |
 
@@ -95,9 +95,21 @@ Normalization authority:
 
 ```text
 vitest list --json
+JSON decode through the pinned plan normalizer
 relative_file<TAB>full_test_name
-LC_ALL=C sort
+UTF-8 byte-order sort
+normalizer: 62 lines / 2,233 bytes
+normalizer SHA-256:
+955dca592d243505ced622a84e88a35160a3fa787ffb954f38a6a43e1a72fcac
+raw JSON text extraction: forbidden
+jq @tsv re-escaping: forbidden
 ```
+
+Plan-review correction: the first plan checkpoint retained an extra JSON/TSV
+escape layer for the two `src/sse.test.ts` names containing literal `\n\n`.
+Counts and focused identities were unaffected. The full base/target identities
+above are rebuilt from decoded runtime names and supersede only those two
+earlier full-stream SHAs.
 
 ## 3. Task 0 Grounding
 
