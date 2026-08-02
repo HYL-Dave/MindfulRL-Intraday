@@ -1,6 +1,6 @@
 # EIR-006 Valuation Price Truth Evidence
 
-> **Status:** TASK 0 REVIEW READY - TASK 1 NOT STARTED
+> **Status:** TASK 1 REVIEW READY - TASK 2 NOT STARTED
 >
 > **Date:** 2026-08-03
 >
@@ -252,12 +252,40 @@ were static.
 
 ```text
 structural/product RED:
-wrong-RED corrections:
-GREEN:
+  tests/test_valuation_price.py: 10 failed, all at function-level imports
+  because src.market_sessions/src.valuation_price did not exist
+  TestDetailedFinancialsSchema: 3 failed because valuation_price_basis did
+  not exist
+wrong-RED corrections: none
+intermediate product correction:
+  Python 3.10 rejected the real stored +0000 timestamp suffix; the selector
+  parser normalized that suffix to +00:00 without changing test expectations
+GREEN: 83 passed in 1.40s
+  tests/test_valuation_price.py
+  tests/test_market_data_direct.py
+  tests/test_detailed_financials.py::TestDetailedFinancialsSchema
 stage collection:
+  RED and GREEN both 4,563 nodes
+  5fdc93f3dc78548048d7269d8088715028a57b1e2c54fe1ac422154d187f3986
+  both streams byte-identical to the preconstructed Task 1 target
 market_data_direct existing nodes:
+  70 passed; 70 IDs byte-identical to base
+  584cdd096455f7d86904d7f208e72c6cc597e4bf7f569c726aac16b199f618cb
 no-create artifact witness:
-commit:
+  each missing nested path, directory, broken symlink, junk DB, missing table,
+  and missing-column fixture captured the complete tmp_path tree before and
+  after lookup; every pair was byte-identical, the missing parent remained
+  absent, and no database, -journal, -wal, or -shm path appeared
+compile witness:
+  py_compile passed for all four product and both test owners
+commit: 33a628b0912cac89ad1afde8ba96d049b7329125
+file SHA-256:
+  src/market_sessions.py = 4b34b351da0c617637059f113d11890bcabc63b52a1b9a2df7c65b06feb5dc41
+  src/market_data_direct.py = 412865670c39feff84d9d2216dfd2a727ecc505be250c8de6d7bd3c0fb3ea735
+  src/valuation_price.py = f0dcb02ee0826bda533cd09d2308b24b4739bd6b1204a5084453d3b9f63ac8be
+  src/tools/schemas.py = 7249e18bcfa9349086a876d60ca75e8246afc2338b06defdc9790a9bb9a50fbd
+  tests/test_valuation_price.py = 7d3408042aef72fca1244443e817e91d932de4a71dbf62bc8cfb5156f813e643
+  tests/test_detailed_financials.py = 3caacdc4ae94c46e4163768598223b8aa1b4db998ec3cdd7469228fd0bea3ed3
 ```
 
 ### 4.2 Task 2 - static/dynamic split
