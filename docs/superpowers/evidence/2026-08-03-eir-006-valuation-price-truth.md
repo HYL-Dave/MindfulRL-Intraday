@@ -65,7 +65,7 @@ physical data movement/deletion during plan construction: none
 | Task 1 target | `+10/-0` | 4,563 | `5fdc93f3dc78548048d7269d8088715028a57b1e2c54fe1ac422154d187f3986` | Task 0 preconstructed |
 | Task 2 target | `+19/-1` | 4,571 | `b247d173d3520668a5d475b0ed02f948d117c1097ed5ad86063a2dbf76d07b68` | Task 0 preconstructed |
 | Task 3 target | `+21/-1` | 4,573 | `e0ee195eb90bc9172dae36680b15b3285b3d82013c7c762e1989c955be6ea3b1` | Task 0 preconstructed |
-| Task 4 target | `+27/-1` | 4,579 | `6672d3df26b7c420d3253e4826b7104bfd0e564ae16a1616ea75dd605b38639` | Task 0 preconstructed |
+| Task 4 target | `+27/-1` | 4,579 | `6672d3df26b7c420d3253e4826b7104bfd0e5640ae16a1616ea75dd605b38639` | Task 0 preconstructed |
 | Final target | `+29/-1` | 4,581 | `6e4994bb664501cff75cb06dbad18db82ba68cbbe4b2b26c4d480250d7c4699f` | Task 0 preconstructed |
 
 Focused base:
