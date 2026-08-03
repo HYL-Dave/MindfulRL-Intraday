@@ -292,14 +292,72 @@ file SHA-256:
 
 ```text
 RED:
+  pytest tests/test_detailed_financials.py \
+    tests/test_financial_metrics_calculator.py -q
+  -> 10 failed / 10 passed / 1 skipped
+  expected causes only: old semantic cache key and legacy snapshot path remained,
+  no closed v2 static payload or pure formula existed, cache hits could not
+  reselect price, unavailable price did not null all nine dynamic fields, and
+  the calculator still reached repository files
+RED correction:
+  the first helper draft passed " test ", which made ticker normalization a
+  competing failure. The helper was changed to "test" before accepting RED;
+  no product byte changed, and the accepted 10-failure run exercised only the
+  reviewed missing behavior
 old key read calls:
+  the replacement node observed the legacy metrics_TEST_annual_y2 read before
+  implementation; GREEN observes only
+  detailed_financials:v2:sec_edgar:TEST:annual:y2
 static cache forbidden-field witness:
+  one GREEN write has the exact nine top-level v2 keys, source sec_edgar,
+  ttl_days 90, and recursively contains no price, timestamp, market_date,
+  valuation_price_basis, product dynamic field, or calculator dynamic field;
+  each forbidden spelling injected under a nested object is rejected
 cache-hit price recomputation witness:
+  the same valid static payload served prices 10 and 20 as market caps
+  20,000,000 and 40,000,000; the selector ran twice, the SEC calculator was
+  forbidden from construction, no cache write occurred, and both earnings
+  seams still ran twice
 base-unit calculation witness:
+  price 10 * 2,000,000 shares = 20,000,000 market cap exactly; dependent
+  missing inputs null only their dependent fields, while price=None nulls all
+  nine dynamic fields through calculator, convenience, snapshot, and CLI seams
 GREEN:
+  pytest tests/test_detailed_financials.py \
+    tests/test_financial_metrics_calculator.py \
+    tests/test_fundamentals_cache.py tests/test_agents.py tests/test_tools.py -q
+  -> 81 passed / 1 skipped
+GREEN environment note:
+  the first affected-suite invocation produced five FileBackend setup errors
+  because this isolated worktree lacked the established empty data/ project-root
+  marker. After creating only that empty directory, the identical command gave
+  81/1/0; the directory was removed afterward and no repository-relative
+  artifact remained. This was a harness precondition, not a product correction.
+compile witness:
+  py_compile passed for all three product and both test owners
 stage collection:
+  4,571 / b247d173d3520668a5d475b0ed02f948d117c1097ed5ad86063a2dbf76d07b68
+  byte-identical to the preconstructed Task 2 target
 removed/replacement node identity:
-commit:
+  exactly -1: TestGetDetailedFinancials::test_ibkr_enrichment_overrides
+  exactly +9: the six reviewed TestGetDetailedFinancials nodes plus the three
+  reviewed test_financial_metrics_calculator.py nodes; no other ID changed
+pre/post source SHA-256:
+  src/fundamentals/cache.py
+    f2797b59537e53c72cd8f68e01b6bccc267069aaa7a341b299615e7a680e8ad6
+    -> 63356388650de6f4cc5cdfc9eacb6f0da97b32980bfa740dd49b75f061b3644d
+  data_sources/financial_metrics_calculator.py
+    29cf804d4b1c58484dc9e5401bc18dc3961c8a32650e37f8c455a7806e1fd588
+    -> 5faac9ea76f5ac74d91a69e2d161a9ace4d4dc25e1e654dfb81ee8e78159dcb4
+  src/tools/analysis_tools.py
+    6fb024266a4476560de49d6e939b99c40b77465b069dcc77bfc239c453081399
+    -> 6bcf3701930e3f64cd8758b04af9ca218a1850c37f474823d39a770c2d75380b
+  tests/test_detailed_financials.py
+    3caacdc4ae94c46e4163768598223b8aa1b4db998ec3cdd7469228fd0bea3ed3
+    -> 2d33afa9f2055c4ef2d8972e7317f7df5a063b629e87733bc33c1e6f098d4ae7
+  tests/test_financial_metrics_calculator.py (new)
+    70fa3e132b9f16a0d55eb8617e1895e7051b69bc4283a97e3c5c41289b838c70
+commit: b9efcd33954dd1f73658e2164cfdb00bc155492d
 ```
 
 ### 4.3 Task 3 - annual analysis and peer absence
