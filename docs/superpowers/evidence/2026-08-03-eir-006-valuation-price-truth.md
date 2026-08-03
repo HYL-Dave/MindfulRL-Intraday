@@ -1,6 +1,6 @@
 # EIR-006 Valuation Price Truth Evidence
 
-> **Status:** TASK 5 REVIEW READY - TASK 6 NOT STARTED
+> **Status:** TASK 6 BLOCKED - BOUNDED TEST-SEAM AMENDMENT REVIEW
 >
 > **Date:** 2026-08-03
 >
@@ -575,16 +575,48 @@ and restored GREEN.
 
 | Mutation | Owning node/set | Expected RED | Diff SHA | Result | Restored SHA |
 |---|---|---|---|---|---|
-| M1 older-day fallback | `test_missing_required_date_does_not_fallback_to_older_bar` | yes | | | |
-| M2 26-slot rule | `test_one_row_qualifies_without_slot_completeness` | yes | | | |
-| M3 raw UTC date | `test_et_market_date_not_raw_utc_date_owns_selection` | yes | | | |
-| M4 old cache key | `test_old_metrics_cache_key_is_ignored` | yes | | | |
-| M5 dynamic cache payload | `test_v2_static_cache_excludes_price_and_dynamic_fields` | yes | | | |
-| M6 `1e6` unit error | `test_explicit_price_uses_base_unit_shares_without_million_scaling` | yes | | | |
-| M7 legacy snapshot override | `test_legacy_ibkr_snapshot_cannot_override_sec_or_price_basis` | yes | | | |
+| M1 older-day fallback | `test_missing_required_date_does_not_fallback_to_older_bar` | yes | `62ca09dc8b7c876efcdeaf1d81c6868086fb759f3277d3693ea69e9416c2d2d2` | RED on stale row becoming available; restored GREEN | `f0dcb02ee0826bda533cd09d2308b24b4739bd6b1204a5084453d3b9f63ac8be` |
+| M2 26-slot rule | `test_one_row_qualifies_without_slot_completeness` | yes | `8b008f1b91a9e8e002b7b8d90dc92b2a4af5bfe5778f65625bceb753e8dccb40` | RED on one-row day becoming unavailable; restored GREEN | `f0dcb02ee0826bda533cd09d2308b24b4739bd6b1204a5084453d3b9f63ac8be` |
+| M3 raw UTC date | `test_et_market_date_not_raw_utc_date_owns_selection` | yes | `f47dd33f286a5d4716687e711c1a436fb9bf7b82f60ab2b28e2d6cb5971eb0e0` | RED on the 999 UTC-date sentinel; restored GREEN | `f0dcb02ee0826bda533cd09d2308b24b4739bd6b1204a5084453d3b9f63ac8be` |
+| M4 old cache key | `test_old_metrics_cache_key_is_ignored` | yes | `fb4faa547588dbb918b2981206b0c78766aebdb0426eea6d4ade574a1b99a7ed` | RED on the extra old-key read; restored GREEN | `a4e8a10db1db889efca4b38edafda57da0602a1d762e5fa9fa0227306c6ac01e` |
+| M5 dynamic cache payload | `test_v2_static_cache_excludes_price_and_dynamic_fields` | yes | `4ef0f7a615fe158daf5f131881f0f1b309e16fdd96997c9dbab4c7949913c134` | RED because contaminated payload was rejected and not written; restored GREEN | `a4e8a10db1db889efca4b38edafda57da0602a1d762e5fa9fa0227306c6ac01e` |
+| M6 `1e6` unit error | `test_explicit_price_uses_base_unit_shares_without_million_scaling` | yes | `0877880c9473e4d05d24dae0c90d7ea783ca3312fb062ad9b973cf25a0ff4e1c` | RED on million-scaled valuation outputs; restored GREEN | `5faac9ea76f5ac74d91a69e2d161a9ace4d4dc25e1e654dfb81ee8e78159dcb4` |
+| M7 legacy snapshot override | `test_legacy_ibkr_snapshot_cannot_override_sec_or_price_basis` | yes | `601ff5e07a27981d198a6d4e4cce142fbd6a57750fcdc2286fa9ddd3b936d10d` | RED on legacy market cap 349866.1 overriding 20000000.0; restored GREEN | `a4e8a10db1db889efca4b38edafda57da0602a1d762e5fa9fa0227306c6ac01e` |
 | M8 FileBackend CSV read | FileBackend owning node | yes | | | |
 | M9 daily directory scan | daily-update owning node | yes | | | |
 | M10 legacy fundamentals projection | stored-SEC owning set | yes | | | |
+
+### 5.1 Task 6 stop before M8
+
+The first seven cycles used independent mutation directories under
+`/tmp/eir006-valuation-price-truth/mutations/`. Before M8, the owning node was
+run unmodified as a GREEN precondition. It failed before reaching product code:
+
+```text
+tests/test_db_backend_retired_prices.py::
+  test_file_backend_prices_and_fundamentals_are_empty_without_path_probes
+AttributeError: 'FileBackend' object has no attribute '_prices_dir'
+```
+
+Grounded identities at the stop:
+
+```text
+test file:
+  b231f655ff5526a7b769791170357497f5d8fc8a5ff9aed497be432c010a7a99
+FileBackend product:
+  c923f08814dedd48f5ec04e052d072c6e30755357aadf8390deeb8b2359ddc2f
+all M1-M7 product files restored to HEAD: yes
+ordinary worktree status before docs amendment: clean
+M8-M10 executed: no
+focused/protected/native admission executed: no
+```
+
+Task 5 deliberately removed the inert private path attributes; its approved
+product behavior remains direct empty compatibility. The stale test fixture,
+not FileBackend behavior, caused this wrong-RED. The bounded plan amendment
+authorizes only the stronger unconditional post-construction no-probe guards.
+No product, node identity, collection, census, provider, production data, or
+deletion scope changes at this gate.
 
 ## 6. Product Verification
 
