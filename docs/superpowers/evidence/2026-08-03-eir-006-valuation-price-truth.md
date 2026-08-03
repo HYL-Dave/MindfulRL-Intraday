@@ -1,6 +1,6 @@
 # EIR-006 Valuation Price Truth Evidence
 
-> **Status:** TASK 6 BLOCKED - FRONTEND SEARCH-COMPATIBILITY AMENDMENT REVIEW
+> **Status:** TASK 6 BLOCKED - PROTECTED-HASH AMENDMENT REVIEW
 >
 > **Date:** 2026-08-03
 >
@@ -697,6 +697,75 @@ similarly labeled `settingsCopy.test.ts` baseline row to its actual frozen
 pre-I18N-2 values. Current visible copy, English copy, node IDs, collection
 identities, backend bytes, and every M1-M10 artifact remain unchanged. No later
 Task 6 gate has run.
+
+### 5.3 Search correction and protected-hash stop
+
+The bounded Settings correction was implemented in commit `b2b05f65`. Before
+the product correction, both frozen owners failed on the exact prior zh-Hant
+sentence:
+
+```text
+artifact:
+  /tmp/eir006-valuation-price-truth/task6-frontend-search-dual-red.json
+bytes: 10214
+SHA-256:
+  a33188be0941868a0a9d6bc170780f5649a8987cbb14a9c28716d5a90884f1d7
+RED: 23 passed / 2 failed
+post-fix owners: 25 passed
+```
+
+The old sentence is now a hidden alias only; current visible and English copy
+did not revert. Subsequent frontend gates completed:
+
+```text
+full Vitest: 97 files / 1077 passed
+full identity:
+  1077 / 3f5e9f5bbe88d5ac48015a8c9e9d669dcd649a53a2ac868fc8a98d21f8d7e4eb
+focused identity:
+  46 / 5d64841ccdd943eb81f1cea50870115ed60dffe57ff6fc9867179552a4a7f127
+typecheck: exit 0
+build: exit 0
+i18n scanner: 36 / 20 / 0 / 20
+```
+
+The build repeated only the existing non-blocking `>500 kB` chunk warning
+(`914.36 kB`, gzip `271.97 kB`).
+
+The next static protected-byte gate compared all 31 Task 0 rows. Thirty still
+matched exactly. The only mismatch was `src/market_data_direct.py`:
+
+```text
+Task 0:
+  blob 28605175a5ec6dac24642a1dc701dd8ea65e02cc
+  SHA-256 8d6ee8ab36e9d7a1185b2aeb66aa5376f5205981bc562b53acefc5b7ec2549f4
+  bytes 41111
+current / reviewed Task 1 post-extraction:
+  blob b516fcf6d55ffe8b2af76091bb1cebafdbdca458
+  SHA-256 412865670c39feff84d9d2216dfd2a727ecc505be250c8de6d7bd3c0fb3ea735
+  bytes 39517
+```
+
+Commit `33a628b0` intentionally moved the completed-session calendar authority
+to `src/market_sessions.py`; Task 1 evidence pins the current SHA and proves all
+70 market-data-direct IDs remained unchanged and GREEN. This is therefore a
+stale Task 0 protection manifest, not later product drift.
+
+The original Task 0 manifest is retained unchanged. A Task 6 adjusted manifest
+was constructed by replacing exactly that one row:
+
+```text
+path:
+  /tmp/eir006-valuation-price-truth/protected/task6-protected-after-task1.tsv
+rows: 31
+SHA-256:
+  5408aabaf89661c429e17c5e68f3db4b4a6dd945a57a1125384f47fb6017e609
+diff from Task 0 manifest: exactly src/market_data_direct.py
+current tuple verification: 31 / 31
+```
+
+Stop-and-amend was applied before consumer-census reconstruction,
+production-state comparison, or native canonical admission. No product/test
+change is authorized at this stop.
 
 ## 6. Product Verification
 
