@@ -1,6 +1,6 @@
 # EIR-006 Valuation Price Truth Evidence
 
-> **Status:** TASK 6 BLOCKED - PROTECTED-HASH AMENDMENT REVIEW
+> **Status:** IMPLEMENTATION REVIEW READY
 >
 > **Date:** 2026-08-03
 >
@@ -772,51 +772,142 @@ change is authorized at this stop.
 ### 6.1 Final collections
 
 ```text
+implementation execution range: e261abc2..4d8acead
+last product/test commit: b2b05f65
 backend full:
+  4581 / 6e4994bb664501cff75cb06dbad18db82ba68cbbe4b2b26c4d480250d7c4699f
 backend focused:
+  335 / 58230b548925b29035cff401520e0948b01dcaed8da2deed41149bea6b4a5ae1
 frontend full:
+  97 files / 1077 / 3f5e9f5bbe88d5ac48015a8c9e9d669dcd649a53a2ac868fc8a98d21f8d7e4eb
 frontend focused:
-exact backend delta:
-exact frontend delta:
+  5 files / 46 / 5d64841ccdd943eb81f1cea50870115ed60dffe57ff6fc9867179552a4a7f127
+exact backend delta: +29 / -1
+exact frontend delta: +1 / -0
+pre-existing node identity loss beyond the one reviewed removal: none
 ```
 
 ### 6.2 Focused and protected gates
 
 ```text
-backend focused:
-price collection truth:
-current quote:
-Financial Datasets policy/cache/client:
-stored-only provider-free:
-earnings doubles:
-coverage v2:
-scheduler price outcomes:
-Tranche B protected bytes:
-provider counters:
-PG attempts:
+backend focused: 333 passed / 2 skipped (335 total)
+protected collection:
+  314 / 31072af5426e14d52976dc702d2d5b9e3d8a3e55dd43f5974ae0fa1498d701f2
+protected runtime: 313 passed / 1 skipped
+price collection truth: included in protected set; GREEN
+current quote: included in protected set; GREEN and Task 0 bytes preserved
+Financial Datasets policy/cache/client: focused/protected GREEN; bytes preserved
+stored-only provider-free: shared projection owners GREEN
+earnings doubles: GREEN; no live provider seam
+coverage v2: protected GREEN
+scheduler price outcomes: protected GREEN; Task 0 bytes preserved
+Tranche B protected bytes: Task 0 bytes preserved
+adjusted protected source manifest:
+  31 / 5408aabaf89661c429e17c5e68f3db4b4a6dd945a57a1125384f47fb6017e609
+  31/31 current path/blob/SHA/size tuples verified
+provider counters: 0 external requests in EIR-006 owners; all provider seams are doubles
+PG attempts: 0 from price/fundamentals projection owners; PG sentinels remained unhit
 ```
 
 ### 6.3 Frontend gates
 
 ```text
-full Vitest:
-typecheck:
-build:
-i18n scanner:
+dual-owner RED artifact:
+  23 passed / 2 failed
+  a33188be0941868a0a9d6bc170780f5649a8987cbb14a9c28716d5a90884f1d7
+post-fix owners: 25 passed
+full Vitest: 97 files / 1077 passed
+typecheck: exit 0
+build: exit 0
+build warning: existing >500 kB chunk; 914.36 kB / gzip 271.97 kB
+i18n scanner: 36 candidates / 20 signatures / 0 debt / 20 allowlisted
 ```
 
 ### 6.4 Native canonical tip
 
 ```text
+fresh worktree: /tmp/arkscope-eir006-task6-native-tip-4d8acead
+stage: eir006-task6-native-tip-4d8acead
 report path:
+  /tmp/eir002-green-baseline/reports/eir006-task6-native-tip-4d8acead.json
 report SHA:
-4581 collected == seen:
-4509 passed / 72 skipped / 0 failed / 0 errors:
-exit 0:
+  14550e6ab8661816d3d30d369bcfb77121ec9a8f4afe54def97b1d29516e8375
+transcript SHA:
+  1a58178bb249a111cce25637521b53c9b3ba0c367068e9705bff578bb3d57a7a
+4581 collected == seen: yes
+collected/seen stream SHA:
+  6e4994bb664501cff75cb06dbad18db82ba68cbbe4b2b26c4d480250d7c4699f
+4509 passed / 72 skipped / 0 failed / 0 errors: yes
+warnings: 18 existing collection/deprecation/return-value warnings
+duration: 253.86 seconds (0:04:13)
+exit 0: yes
 empty non-passing SHA:
-artifact manifest/quarantine:
+  e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+wakeup probe: {"callback_fired":true,"ready_count":0,"wake_bytes":0}
+generated artifacts:
+  581 / a487f4e8a3c3e83c79b1b4632a26842c590173c31625e4b74fa54b4fb07c4965
+quarantine:
+  /tmp/eir006-valuation-price-truth/artifacts/task6-native-tip-quarantine
 pre/post boundary equality:
+  tracked diff empty; data/ empty; src/data absent; only pinned node_modules link remains
 ```
+
+The fresh worktree had no `config/.env`; the unchanged native wrapper used
+`env -i`, fixture database overrides, `ARKSCOPE_DISABLE_SCHEDULER=1`, and no
+provider credential. The structured reporter independently reproduced the
+preconstructed final node stream. The terminal pass/skip total comes from the
+complete transcript, not from a partial console sample.
+
+### 6.5 Census and production no-write boundary
+
+```text
+post-cutover consumer census:
+  128 / a08e7f683b426c10090f1cb7f6e4f4104f22678147a46639ceaece0bcb088c64
+  byte-identical to Task 5
+  44 historical / 6 low-level compatibility / 3 retired current /
+  22 rewired current / 47 test fixture / 6 unrelated / 0 unknown
+behavior propagation:
+  4 / 613024acc6568296cb798a2832fb8ca1e67fba05a9857c4e4bd5629755c556ba
+  byte-identical to Task 0
+consumer owner node:
+  test_current_runtime_consumer_census_is_closed_and_exact -> 1 passed
+```
+
+The first external census replay incorrectly fed the three self-referential
+EIR-006 authority files into the dated Task 0 classifier; it stopped on the
+current evidence path. A second replay applied that authority exclusion but
+still used the dated classifier and stopped on the newer
+`tests/test_daily_update_wrapper.py` owner. Neither attempt is admitted. The
+admitted stream calls the current closed owner test's structured
+`_discover_consumers()` and fail-closed `_verdict()` functions, including its
+exact `_EIR006_AUTHORITIES` exclusion, then reproduces the Task 5 stream
+byte-for-byte.
+
+Production reads used SQLite URI `mode=ro` plus `PRAGMA query_only=ON`:
+
+```text
+market_data.db pre/post SHA:
+  7516178876c7f8bbeb69007cf7464bf22362fe280e073157736d58d67258e6e2
+market_data.db inode/size:
+  127284871 / 3428466688 bytes
+retired file metadata pre/post:
+  301 paths / 3f353d120b5054dd43406ea85694b5c3f804dc4cd4559398134d307de957b344
+old cache / fundamentals / retired sync counts: 19 / 130 / 1
+market counts/frontier, schedule settings, scheduler state: byte-identical
+normalized snapshot pre/post SHA:
+  b42ec9d123d9cb9507c2dd907b95f7fd9d8cc7b538ce10cbb272b6c4c0f8fece
+old-data movement/deletion: none
+```
+
+`profile_state.db` changed concurrently, from SHA `91995f27...` to
+`1bd24a9e...`, while retaining inode and size. Read-only attribution from the
+pre-snapshot cutoff found exactly two recent rows, job IDs `18851` and `18852`,
+both successful `sa_market_news_refresh` runs with
+`trigger_source=extension`; no other time-aware table had a row in the window.
+The fresh native wrapper pointed `ARKSCOPE_PROFILE_DB` at its isolated runtime
+database. These external extension writes are preserved and are not presented
+as EIR-006 activity or rolled back. Attribution artifact SHA:
+`93b43f7f69351447d3ab3bce8d99e11b0989ef28faa71fb985aa0e427df64a79`.
 
 ## 7. Independent Implementation Review
 
