@@ -364,13 +364,65 @@ commit: b9efcd33954dd1f73658e2164cfdb00bc155492d
 
 ```text
 RED:
+  pytest \
+    tests/test_fundamentals_sec_cache.py::test_annual_analysis_ignores_legacy_snapshot_and_preserves_sec_fd_order \
+    tests/test_peer_comparison.py::TestDataQuality::test_unavailable_valuation_prices_are_counted_named_and_excluded \
+    -q
+  -> 2 failed
+  annual failed only because the contradictory legacy snapshot returned before
+  the positive SEC cache; peer failed only because the three reviewed
+  valuation-price data-quality fields were absent. No provider or fixture error.
 SEC/FD call-order spy:
+  positive SEC cache -> no SEC constructor and no FD gate
+  SEC miss with positive fixture ->
+    sec:init, sec:income, sec:balance, sec:cashflow, build:sec_edgar
+    (FD gate absent)
+  SEC empty + FD disabled -> fd:disabled only; typed empty result
+  SEC empty + FD enabled ->
+    fd:enabled, fd:init, fd:income, fd:balance, fd:cashflow,
+    build:financial_datasets
 legacy snapshot spy:
+  a contradictory ibkr result (snapshot_date 2025-09-30, roe 9.99,
+  market_cap 999, private marker) was installed on dal.get_fundamentals;
+  cache-hit, SEC-positive, FD-disabled, and FD-enabled paths all recorded zero
+  legacy calls
 peer absence closed payload:
+  three static peers remain in peer_count/comparison_matrix; GAMMA keeps its
+  static gross margin but has null valuation. PE statistics/rankings use only
+  ALPHA/BETA (count/of 2), while data_quality is exactly:
+    valuation_price_unavailable_count = 1
+    valuation_price_unavailable_tickers = [GAMMA]
+    valuation_price_empty_reason_counts = {no_qualified_price: 1}
 behavior-propagation owners:
+  full reviewed ledger executed Anthropic schema, OpenAI schema, default API,
+  stored API modes, direct tool, and both evidence-packet owners against local
+  positive SEC cache/provider spies
 GREEN:
+  full Task 3 propagation command -> 32 passed / 1 skipped
+  py_compile passed for the product owner and all five test owners
 stage collection:
-commit:
+  4,573 / e0ee195eb90bc9172dae36680b15b3285b3d82013c7c762e1989c955be6ea3b1
+  byte-identical to the preconstructed Task 3 target; exactly +2/-0 from Task 2
+pre/post source SHA-256:
+  src/tools/analysis_tools.py
+    6bcf3701930e3f64cd8758b04af9ca218a1850c37f474823d39a770c2d75380b
+    -> 00d966a2120822a8ec61be08eb835edcc90ceb3d26a3034e54a6636dd6fd2044
+  tests/test_fundamentals_sec_cache.py
+    29ec832c5baf21c8a7367790574e2c8fe262b22ab462131efd9633aac4beda3c
+    -> a4b18614a6549e4919932c98b42767ca8f329c452ba0ef38ddf590689918147c
+  tests/test_peer_comparison.py
+    2cafa4fcdd3d128ae279ba5956f669295d4bfcd80d6c7952f2f0a5d30fc89be5
+    -> 426fea9292933cd20b4827d665a52a2e4b133deac028d6c01b656b07f6e56c3f
+  tests/test_api.py
+    6a60ca1bc95c514222c508adac5a40b978704b345a3aa9f0181d4fb11f568bf2
+    -> 4075d5ef20345fea6878bfb8f0f43a1db6fa5a9543e6e6abfcf9922a057fbfa2
+  tests/test_tools.py
+    45b89dfce6e806c30cbb5a60b2a49460e1b749e46d16e49e5716987ee6fae717
+    -> 3cde92cd1c6805dacae5739c730a3f018135479f6d86a145aa0a0ba84278f976
+  tests/test_evidence_packet.py
+    495214bf83f9fa01739b9014f1a9064d455f2bc0663fa9342e145d59eef58148
+    -> 4c0a7ff395979ccedc9191f50803111356a207f4854d421c7d34b831b067720a
+commit: 56574530a2a2a356c04f0f05de16d7ca64746019
 ```
 
 ### 4.4 Task 4 - stored SEC projection and retired files
