@@ -1,6 +1,6 @@
 # EIR-006 Valuation Price Truth Evidence
 
-> **Status:** TASK 6 BLOCKED - BOUNDED TEST-SEAM AMENDMENT REVIEW
+> **Status:** TASK 6 BLOCKED - FRONTEND SEARCH-COMPATIBILITY AMENDMENT REVIEW
 >
 > **Date:** 2026-08-03
 >
@@ -582,9 +582,9 @@ and restored GREEN.
 | M5 dynamic cache payload | `test_v2_static_cache_excludes_price_and_dynamic_fields` | yes | `4ef0f7a615fe158daf5f131881f0f1b309e16fdd96997c9dbab4c7949913c134` | RED because contaminated payload was rejected and not written; restored GREEN | `a4e8a10db1db889efca4b38edafda57da0602a1d762e5fa9fa0227306c6ac01e` |
 | M6 `1e6` unit error | `test_explicit_price_uses_base_unit_shares_without_million_scaling` | yes | `0877880c9473e4d05d24dae0c90d7ea783ca3312fb062ad9b973cf25a0ff4e1c` | RED on million-scaled valuation outputs; restored GREEN | `5faac9ea76f5ac74d91a69e2d161a9ace4d4dc25e1e654dfb81ee8e78159dcb4` |
 | M7 legacy snapshot override | `test_legacy_ibkr_snapshot_cannot_override_sec_or_price_basis` | yes | `601ff5e07a27981d198a6d4e4cce142fbd6a57750fcdc2286fa9ddd3b936d10d` | RED on legacy market cap 349866.1 overriding 20000000.0; restored GREEN | `a4e8a10db1db889efca4b38edafda57da0602a1d762e5fa9fa0227306c6ac01e` |
-| M8 FileBackend CSV read | FileBackend owning node | yes | | | |
-| M9 daily directory scan | daily-update owning node | yes | | | |
-| M10 legacy fundamentals projection | stored-SEC owning set | yes | | | |
+| M8 FileBackend CSV read | FileBackend owning node | yes | `b1b0226866f950d553c8602cc3be668affbb224f7e97bbafc66e5149182451e6` | RED at the unconditional retired-path sentinel; restored GREEN | `c923f08814dedd48f5ec04e052d072c6e30755357aadf8390deeb8b2359ddc2f` |
+| M9 daily directory scan | daily-update owning node | yes | `aeed516bd4b26de4fc881912685a044b18581e38511eaaa83627aa8572c454d9` | RED at `data/prices` scan sentinel; restored GREEN | `d159ee2b07c33dbd531639d5c234967567dab0df4153ab880f454f6339bea36a` |
+| M10 legacy fundamentals projection | stored-SEC owning set | yes | `59b53cdf5e3e52c2f0a0d62f199c2ccff2aa96ca78426d0e2cf89f85890e9cc1` | both owners RED on legacy coverage/count projection; restored `2 passed` | `9a05e95ec7552b74fb79bd38571df53e5ca0d8913344f11d71e46cec49b734ea` |
 
 ### 5.1 Task 6 stop before M8
 
@@ -617,6 +617,86 @@ not FileBackend behavior, caused this wrong-RED. The bounded plan amendment
 authorizes only the stronger unconditional post-construction no-probe guards.
 No product, node identity, collection, census, provider, production data, or
 deletion scope changes at this gate.
+
+### 5.2 Post-review continuation and frontend-runtime stop
+
+Focused review cleared the preceding amendment. The context-scoped no-probe
+fixture is now:
+
+```text
+commit: 1c45e52e
+test SHA:
+fc32a4bba59ad921f3fa406dddde4856f66adc4381d282f0ffe6ebbdb0df42f2
+backend full identity after fix: 4581 / 6e4994bb...
+backend focused identity after fix: 335 / 58230b54...
+post-cutover census after fix: 128 / a08e7f68...
+```
+
+M8-M10 then completed with the tabled exact artifacts and restored product
+SHAs. Native-context verification completed:
+
+```text
+18-file backend focused: 333 passed / 2 skipped (335 total)
+pinned protected set: 314 nodes / 31072af5426e14d52976dc702d2d5b9e3d8a3e55dd43f5974ae0fa1498d701f2
+protected runtime: 313 passed / 1 skipped
+```
+
+Immediately before the focused gate, the isolated worktree's `data/` path was
+absent. The focused/protected runs created exactly five files under a new
+`data/` root: two hermetic Financial Datasets cache fixtures, two zero-byte lock
+files, and one test profile database. Before this review handoff, every path
+received type/inode/mode/size/mtime/SHA evidence and the entire newly created
+root was moved reversibly by exact path to:
+
+```text
+quarantine:
+  /tmp/eir006-valuation-price-truth/artifacts/task6-pre-amendment-data
+manifest:
+  /tmp/eir006-valuation-price-truth/artifacts/task6-pre-amendment-data-manifest.tsv
+manifest bytes: 1004
+manifest SHA-256:
+  cc69d01ed2b5ffb7ef8944262c7fc0bd1659ebb2dc94a4d6964fef149fd94596
+post-transaction worktree data/: absent
+pre-existing file changed: no
+```
+
+The initial sandbox focused attempt stopped after 32 nodes with no further
+progress and was interrupted with exit 130. It is not admission evidence. The
+identical focused command completed in the already established native boundary
+and is the result above.
+
+The first full frontend runtime gate then produced exactly one deterministic
+failure:
+
+```text
+97 files: 96 passed / 1 failed
+1077 tests: 1076 passed / 1 failed
+owner:
+  src/settings/settingsRegistry.test.ts > settings workspace registry >
+  keeps bilingual search metadata independent from rendered locale
+failed query:
+  zh-Hant / data_storage / 查看價格、基本面與交易日資料覆蓋。
+standalone owner: 14 passed / 1 failed
+JSON artifact: /tmp/eir006-valuation-price-truth/task6-frontend-search-red.json
+bytes: 5835
+SHA-256:
+d77daef893c8aeb211e3bdea67008919d14301ae9145632132816fcffd6e360f
+```
+
+Direct code/history inspection proves the failure is a Task 5 search-continuity
+regression. The current visible description was intentionally updated, but its
+prior pre-I18N-2 full sentence was omitted from zh-Hant `searchAliases` even
+though the frozen I18N-2 contract requires that sentence to remain searchable.
+Task 5 executed the 46-node focused frontend set and reproduced the 1,077-node
+full collection identity; it did not execute full Vitest, so the new runtime
+failure does not contradict its recorded gates.
+
+Stop-and-amend is applied before any product correction. The reviewed proposal
+adds the exact old sentence only as a hidden search alias and restores the
+similarly labeled `settingsCopy.test.ts` baseline row to its actual frozen
+pre-I18N-2 values. Current visible copy, English copy, node IDs, collection
+identities, backend bytes, and every M1-M10 artifact remain unchanged. No later
+Task 6 gate has run.
 
 ## 6. Product Verification
 
