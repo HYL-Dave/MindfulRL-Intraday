@@ -1,6 +1,6 @@
 # EIR-006 Valuation Price Truth Evidence
 
-> **Status:** TASK 1 REVIEW READY - TASK 2 NOT STARTED
+> **Status:** TASK 5 REVIEW READY - TASK 6 NOT STARTED
 >
 > **Date:** 2026-08-03
 >
@@ -516,16 +516,57 @@ commit: 8bd65a722d47d611384f242793bc9ee8df460b74
 
 ```text
 backend RED:
+  2 failed; both failures were the reviewed stale-current-authority contract
 frontend RED:
+  46 collected / 37 passed / 9 failed
+  every failure was an absent stored-SEC/source-label/current-copy contract;
+  there was no import, jsdom, route, network, or collection failure
 backend GREEN:
+  static-boundary owners -> 2 passed
+  owners plus tests/test_agents.py and tests/test_tools.py -> 58 passed
+  the first combined invocation lacked the known empty data/ harness marker and
+  produced five FileBackend setup errors; it was not admitted. With an empty
+  data/ marker the exact gate passed, generated no data bytes, and the marker
+  was removed.
 frontend focused GREEN:
+  5 files / 46 passed
+backend collection:
+  full -> 4,581 / 6e4994bb664501cff75cb06dbad18db82ba68cbbe4b2b26c4d480250d7c4699f
+  focused -> 335 / 58230b548925b29035cff401520e0948b01dcaed8da2deed41149bea6b4a5ae1
 frontend collection:
-typecheck:
+  full -> 97 files / 1,077 / 3f5e9f5bbe88d5ac48015a8c9e9d669dcd649a53a2ac868fc8a98d21f8d7e4eb
+  focused -> 5 files / 46 / 5d64841ccdd943eb81f1cea50870115ed60dffe57ff6fc9867179552a4a7f127
+typecheck: exit 0
 i18n scanner:
-post-cutover census rows/SHA:
-current-copy file list:
-commit:
+  candidateCount 36 / signatureCount 20 / debtSignatureCount 0 /
+  allowlistCount 20
+post-cutover census:
+  128 rows / a08e7f683b426c10090f1cb7f6e4f4104f22678147a46639ceaece0bcb088c64
+  44 historical_reference / 6 low_level_empty_compatibility /
+  3 retired_current_consumer / 22 rewired_current_consumer /
+  47 test_fixture_reference / 6 unrelated_lexical_hit / 0 unknown
+current-copy owners:
+  four current data/formula/workbench documents; two training data-prep files;
+  registry, Anthropic, OpenAI, analysis-tool, schema, and FileBackend copy;
+  Dashboard, Ticker Detail, Settings storage, API source type, both locales,
+  and their exact owning tests
+implementation commit:
+  5229b402c1606c5492c4fddec4b46188b510e348
 ```
+
+One RED collection command used Vitest's optional `--json [path]` form with a
+focused test path as the next argument. Vitest therefore wrote JSON over the
+new untracked `Dashboard.test.tsx`. No product or tracked file was affected.
+The test was reconstructed from the reviewed contract, the intended
+`37 passed / 9 failed` RED was reproduced, and all four final collection
+streams above were then rebuilt byte-for-byte. Subsequent commands used the
+unambiguous `--json=<output-path>` form; the invalid scratch outputs remain
+outside the repository and are not evidence.
+
+Task 5 does not add fundamentals ingestion, scheduling, provider selection, or
+Financial Datasets spend policy. It exposes the current stored-SEC projection
+and completed-session valuation contract without claiming those separate
+capabilities are complete.
 
 ## 5. Mutation Evidence
 
