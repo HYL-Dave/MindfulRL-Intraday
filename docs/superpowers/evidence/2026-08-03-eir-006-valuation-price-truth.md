@@ -429,13 +429,87 @@ commit: 56574530a2a2a356c04f0f05de16d7ca64746019
 
 ```text
 RED:
+  exact six-node command -> 6 failed
+  every failure was the reviewed contract: the legacy fundamentals table still
+  projected as stored, projection consumers disagreed, fundamentals sync was
+  non-null, daily-update scanned data/prices, and FileBackend probed retired
+  price/fundamentals paths. There was no fixture, provider, PG, route-lifespan,
+  or collection error.
 shared projection multi-consumer witness:
+  one market_data.db fixture contains one positive annual SEC v1 cache row plus
+  legacy, negative, expired, malformed, quarterly, Financial Datasets,
+  old-metrics, v2-detailed-financials, no-snapshot, and ticker-mismatch decoys
+  stats -> {row_count: 1, ticker_count: 1, latest_date: 2025-12-31}
+  admin coverage -> true; SQLite/local DAL ticker lists -> [AAPL]
+  coverage tool -> one row with the same 2025-12-31 bounds
+  /status -> fundamentals_tickers 1
+  /fundamentals/AAPL?stored=true -> local_cache / 2025-12-31
+  PG fallback sentinel was untouched
 sync price/news preservation witness:
+  both admin and coverage projections return the fixture price/news objects
+  byte-for-byte by value while retaining fundamentals: null
 FileBackend no-probe witness:
+  Path.exists/glob/rglob and pandas read_csv/read_parquet raise on retired roots;
+  prices retain the exact six-column empty frame, fundamentals {}, and both
+  ticker lists [] without touching any sentinel
 daily-update no-scan witness:
+  injected SQLite stats map to the unchanged closed keys exists/total_bars/
+  latest_date/tickers while every retired repository scan primitive raises
 GREEN:
+  six RED owners -> 6 passed
+  projection owner set -> 113 passed in the native execution boundary
+  projection owner set plus existing fundamentals-cache contracts ->
+    118 passed in 6.20s
+  the first sandbox invocation stopped after one node at the already established
+  EIR-005 asyncio wakeup boundary; it was interrupted with exit 130 and no
+  partial result was admitted. The identical owner gate completed natively.
+  py_compile and git diff --check passed; the retired private price loaders are
+  absent and the SEC cache-key grammar remains owned only by fundamentals/cache.py
 stage collection:
-commit:
+  4,579 / 6672d3df26b7c420d3253e4826b7104bfd0e5640ae16a1616ea75dd605b38639
+  byte-identical to the preconstructed Task 4 target; exactly +6/-0 from Task 3
+  reporter JSON SHA:
+    10cdb1d17ebe8b33a62a4a1704663900d9362592570a8b72fe9f258327e782bf
+pre/post source SHA-256:
+  src/fundamentals/cache.py
+    63356388650de6f4cc5cdfc9eacb6f0da97b32980bfa740dd49b75f061b3644d
+    -> 9a05e95ec7552b74fb79bd38571df53e5ca0d8913344f11d71e46cec49b734ea
+  src/market_data_admin.py
+    90cfc938f5a3d5db1ecc50c7f1e81fb6d793357a8a276db93c8a51f7161751b5
+    -> f4ae17f7e8d277030015b9aedbdbc835ae95758213c234d6486d532735c3ce3c
+  src/tools/data_coverage_tools.py
+    db663139355f0eb8cdd27fa375293bfaccbb7bb65e9934d277e1e910c325d913
+    -> 4db1e45d15c681fa53879db5124f1ae948d2f9872e33a814ffdc99cf95f4d95d
+  src/tools/backends/sqlite_backend.py
+    b8572be50a0c4d3fb88ca1ed36be75b9bd419cf5c148fcce62afd5ff2e388b35
+    -> 328a33c06bc65b545988a2ef1cfd666a264e02aebabf5c38277bdd7518a2c09c
+  src/tools/backends/local_market_backend.py
+    d96f551f99086dcac83d095fe6b65627f25442cbd79792a9f20146725da483de
+    -> 4262cf1d46860b86091e80fe99af9649d473b166a67050f453cb649cc813664b
+  src/tools/backends/file_backend.py
+    08ba230ba0b6706bb5142c8f6074546e413c849bfb07283eb06f79001458601a
+    -> 322c6bc0efe05bb47e73aba935e95938a3dd0b2606c1920f5e3b170d3632338c
+  src/daily_update.py
+    3bfd28f7c12e37bcca18bf7624f3dfb5da75e7f1e2861b7497d8b1c20604b51e
+    -> d159ee2b07c33dbd531639d5c234967567dab0df4153ab880f454f6339bea36a
+  tests/test_stored_sec_projection.py (new)
+    eeae21c05cfd51fc71b094ebc3b4d5516e98c6cdbc573e14d69fffc8f4cad45d
+  tests/test_market_data_admin.py
+    5cdff94373821f38a942ee576d46671e6dff90fcd1777f56125a1269d210e16b
+    -> e1747b2249ef3994e85d56165aed36f1c4c46edc2741cbff3bcfd290c93cee1c
+  tests/test_data_coverage_tools.py
+    2faf2a6cca23f7b08f30205e573f1b7fc7a35f90aa70bc02b4d1f892f43964ef
+    -> d011cac6ec66425cecefca4cc8e2bb2b00a8c714942805e2acb8f15a39c22671
+  tests/test_sqlite_backend.py
+    68459f4c16a829a436694d55a07d1a054bcdfc8a035ed6a6e655c45941dd7dc7
+    -> b6e34506dd1cc0a57de987488516702694d9d0541e423b2e83a8dd109cc00a1e
+  tests/test_daily_update_wrapper.py
+    257e391d3f08c74236691c52889725311a0671007601646a5e9b3595b8c7168c
+    -> 04dae5f1785661805798360ea60ed1cb5d3456634f6a625a2c1c6bbe1f7d6a50
+  tests/test_db_backend_retired_prices.py
+    2122ec8d262f9b0fe326928abbabb960e2568d59bedab46edba45831b47ceab9
+    -> b231f655ff5526a7b769791170357497f5d8fc8a5ff9aed497be432c010a7a99
+commit: 8bd65a722d47d611384f242793bc9ee8df460b74
 ```
 
 ### 4.5 Task 5 - frontend/current copy/static census
