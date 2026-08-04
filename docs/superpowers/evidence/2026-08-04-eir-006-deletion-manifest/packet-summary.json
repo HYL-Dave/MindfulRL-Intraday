@@ -1,0 +1,70 @@
+{
+  "authority_id": "6096b988428a94d053baddd18493eb29077bc627d725a95fd53f75c4755b0dce",
+  "behavior_propagation": {
+    "rows": 4,
+    "sha256": "613024acc6568296cb798a2832fb8ca1e67fba05a9857c4e4bd5629755c556ba"
+  },
+  "canonical_comparison": {
+    "conflicting_duplicate_keys": 176,
+    "db_value_diffs": 43,
+    "duplicate_rows": 248984,
+    "keys_absent_from_db": 0,
+    "ohlc_diffs": 20,
+    "unique_keys": 2298763,
+    "volume_only_diffs": 23
+  },
+  "consumer_census": {
+    "old_current_consumers": 0,
+    "old_current_writers": 0,
+    "rows": 128,
+    "sha256": "a08e7f683b426c10090f1cb7f6e4f4104f22678147a46639ceaece0bcb088c64",
+    "unknown_verdicts": 0
+  },
+  "controller": {
+    "approval_environment": "ARKSCOPE_EIR006_DESTRUCTIVE_APPROVED",
+    "bytes": 41423,
+    "lines": 1110,
+    "path": "destructive_controller.py",
+    "sha256": "cd8980e891b4fb8713d008762d7740fd9f91009a37f501d0ee993557bd9933af"
+  },
+  "db_delete_authority": {
+    "cache_classification_rows": 46,
+    "cache_classification_sha256": "62e56fc02f5b8a15aaea9f360eee8bd875e10d6a10c7a017c8d568652beef323",
+    "current_cache_keys_in_delete_manifest": 0,
+    "delete_parameter_count": 150,
+    "legacy_fundamentals_rows": 130,
+    "legacy_fundamentals_sha256": "6b845506f9fce54ac4dba78ebd96bacc20113a7aefef651b877f62892418c219",
+    "legacy_sync_rows": 1,
+    "legacy_sync_sha256": "5b3736ba19e66b2e427b149b143771fb5625eab426e8af7a6317c29461cd15ff",
+    "old_cache_rows": 19,
+    "old_cache_sha256": "a4a8d829eb08553a1223f5240de260955fc48a564f8232b943206e0bf88b39bd"
+  },
+  "file_delete_authority": {
+    "15min_files": 225,
+    "15min_rows": 2547747,
+    "hourly_files": 75,
+    "hourly_rows": 129575,
+    "manifest_sha256": "842c3e08ff8ed9cb11c92033cf67ad5950d357cb8cd1e0662b74683ba554b0fc",
+    "summary_files": 1,
+    "total_files": 301
+  },
+  "product_cutover_tip": "ce88f72d9f9d710903533505371789d18cce953e",
+  "quarantine_root": "/mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/6096b988428a94d053baddd18493eb29077bc627d725a95fd53f75c4755b0dce",
+  "raw_comparison": {
+    "apparent_db_value_diffs": 161,
+    "conflicting_duplicate_keys": 58,
+    "duplicate_rows": 233454,
+    "physical_rows": 2547747,
+    "unique_keys": 2314293
+  },
+  "rollback_snapshot": {
+    "bytes": 875857,
+    "format": "canonical JSON Lines with complete row payloads; payload bytes are not tracked",
+    "path_under_quarantine": "db/legacy-rows.jsonl",
+    "records": 150,
+    "sha256": "1e3578344dfcac0e445900358265c6606150007a496a71284d87e5ae5821697c"
+  },
+  "schema_version": 1,
+  "status": "READ_ONLY_MANIFEST_COMPLETE__TASK9_NOT_APPROVED",
+  "task8_base": "657b4aa2c8d67a6e659cba4d0d4c6cd90c8d36f3"
+}

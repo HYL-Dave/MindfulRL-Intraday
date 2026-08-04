@@ -1,0 +1,65 @@
+{
+  "current_cache_keys_in_delete_manifest": 0,
+  "database": {
+    "logical_snapshot": {
+      "current_sec_v1_rows": 18,
+      "data_version": 2,
+      "financial_cache_rows": 46,
+      "fundamentals_rows": 130,
+      "fundamentals_sync_rows": 1,
+      "market_sync_meta_rows": 3,
+      "old_cache_rows": 19,
+      "other_retained_cache_rows": 9,
+      "query_only": 1
+    },
+    "path": "/mnt/md0/PycharmProjects/ArkScope/data/market_data.db",
+    "stat_after": {
+      "device": 2304,
+      "inode": 127284871,
+      "mode": "0644",
+      "mtime_ns": 1785802854231894409,
+      "size": 3477532672
+    },
+    "stat_before": {
+      "device": 2304,
+      "inode": 127284871,
+      "mode": "0644",
+      "mtime_ns": 1785802854231894409,
+      "size": 3477532672
+    }
+  },
+  "delete_parameter_count": 150,
+  "manifests": {
+    "cache_classification": {
+      "path": "cache-classification.tsv",
+      "rows": 46,
+      "sha256": "62e56fc02f5b8a15aaea9f360eee8bd875e10d6a10c7a017c8d568652beef323"
+    },
+    "legacy_fundamentals": {
+      "path": "legacy-fundamentals-rows.tsv",
+      "primary_key": "id",
+      "rows": 130,
+      "sha256": "6b845506f9fce54ac4dba78ebd96bacc20113a7aefef651b877f62892418c219"
+    },
+    "legacy_sync": {
+      "path": "legacy-sync-rows.tsv",
+      "primary_key": "domain",
+      "rows": 1,
+      "sha256": "5b3736ba19e66b2e427b149b143771fb5625eab426e8af7a6317c29461cd15ff"
+    },
+    "old_cache": {
+      "path": "old-cache-rows.tsv",
+      "primary_key": "cache_key",
+      "rows": 19,
+      "sha256": "a4a8d829eb08553a1223f5240de260955fc48a564f8232b943206e0bf88b39bd"
+    }
+  },
+  "repo_head": "657b4aa2c8d67a6e659cba4d0d4c6cd90c8d36f3",
+  "schema_version": 1,
+  "source_identity": {
+    "bytes": 11030,
+    "lines": 304,
+    "path": "/tmp/eir006-deletion-manifest-657b4aa2/task8_db_row_manifest.py",
+    "sha256": "27c9dee61a6f7f04ed8fc4226f15c6892478bd63cef94f5df1fcfb2b8ffabc29"
+  }
+}

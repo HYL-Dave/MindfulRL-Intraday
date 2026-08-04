@@ -1,0 +1,102 @@
+{
+  "alias_input": {
+    "path": "ticker-aliases.tsv",
+    "rows": 3,
+    "sha256": "0a8fbbf845b73bab1740d04ffb77ab1e935884f417c2bece20395187f83d9220"
+  },
+  "canonical_differences": {
+    "path": "canonical-db-differences.tsv",
+    "rows": 43,
+    "sha256": "4cb6ea50e90c032c6781ca954534683588a09599b3152c086d234cab6c3f546c"
+  },
+  "comparison": {
+    "alias_conflicts": {
+      "HAPN->LC": 118
+    },
+    "alias_overlap": {
+      "HAPN->LC": 15530
+    },
+    "canonical": {
+      "conflicting_duplicate_keys": 176,
+      "db_value_diffs": 43,
+      "duplicate_rows": 248984,
+      "keys_absent_from_db": 0,
+      "ohlc_diffs": 20,
+      "physical_rows": 2547747,
+      "unique_keys": 2298763,
+      "volume_only_diffs": 23
+    },
+    "raw": {
+      "apparent_db_value_diffs": 161,
+      "conflicting_duplicate_keys": 58,
+      "duplicate_rows": 233454,
+      "keys_absent_from_db": 0,
+      "physical_rows": 2547747,
+      "unique_keys": 2314293
+    }
+  },
+  "database": {
+    "logical_snapshot": {
+      "data_version": 2,
+      "prices_15min_max_datetime": "2026-08-03T19:45:00+0000",
+      "prices_15min_min_datetime": "2024-01-02T14:30:00+0000",
+      "prices_15min_rows": 2410324,
+      "prices_15min_tickers": 152,
+      "query_only": 1
+    },
+    "path": "/mnt/md0/PycharmProjects/ArkScope/data/market_data.db",
+    "stat_after": {
+      "device": 2304,
+      "inode": 127284871,
+      "mode": "0644",
+      "mtime_ns": 1785853327356305263,
+      "size": 3477532672
+    },
+    "stat_before": {
+      "device": 2304,
+      "inode": 127284871,
+      "mode": "0644",
+      "mtime_ns": 1785853327356305263,
+      "size": 3477532672
+    }
+  },
+  "file_manifest": {
+    "15min_files": 225,
+    "15min_rows": 2547747,
+    "hourly_files": 75,
+    "hourly_rows": 129575,
+    "path": "legacy-price-files.tsv",
+    "sha256": "842c3e08ff8ed9cb11c92033cf67ad5950d357cb8cd1e0662b74683ba554b0fc",
+    "summary_files": 1,
+    "total_files": 301
+  },
+  "observed_counts": {
+    "canonical_conflicting_duplicate_keys": 176,
+    "canonical_db_value_diffs": 43,
+    "canonical_duplicate_rows": 248984,
+    "canonical_keys_absent_from_db": 0,
+    "canonical_ohlc_diffs": 20,
+    "canonical_unique_keys": 2298763,
+    "canonical_volume_only_diffs": 23,
+    "lc_hapn_alias_conflicts": 118,
+    "lc_keys_overlapped_by_hapn": 15530,
+    "physical_rows": 2547747,
+    "raw_apparent_db_value_diffs": 161,
+    "raw_conflicting_duplicate_keys": 58,
+    "raw_duplicate_rows": 233454,
+    "raw_unique_keys": 2314293
+  },
+  "raw_differences": {
+    "path": "raw-db-differences.tsv",
+    "rows": 161,
+    "sha256": "60385e1a8856f8cc4404a9f3b7aa8b87ad4adfd608041b8a68890c7e1569c18c"
+  },
+  "repo_head": "657b4aa2c8d67a6e659cba4d0d4c6cd90c8d36f3",
+  "schema_version": 1,
+  "source_identity": {
+    "bytes": 26509,
+    "lines": 669,
+    "path": "/tmp/eir006-deletion-manifest-657b4aa2/task8_price_manifest.py",
+    "sha256": "e4acb819f6a32c05d7d756b1a9e106bba105e1c22d6cd273513d6bf27df2e759"
+  }
+}

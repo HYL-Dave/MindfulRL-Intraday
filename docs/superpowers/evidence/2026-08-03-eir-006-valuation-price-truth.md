@@ -1000,29 +1000,83 @@ Physical old data remains present at this checkpoint. EIR-006 remains
 
 ## 9. Fresh Deletion Manifest
 
-> Blocked until Section 8 is merged and reviewed. Manifest construction is
-> read-only.
+> Task 8 read-only construction is complete on branch
+> `codex/eir-006-deletion-manifest`. Physical mutation remains blocked pending
+> independent packet review and separate user approval of the exact authority.
 
 ```text
-manifest commit:
-manifest SHA:
-comparison implementation SHA:
-alias input SHA:
-exact file rows/count/SHA:
-raw-view summary:
-canonical-view summary:
-canonical keys absent from SQLite:
-exact cache keys/count:
-exact fundamentals rows/count:
-exact sync rows/count:
-consumer census SHA:
-writer/process census:
-saved scheduler state:
-DB identity:
-independent manifest review:
-bounded exact-source amendment:
-separate user approval:
+Task 8 base: 657b4aa2c8d67a6e659cba4d0d4c6cd90c8d36f3
+product cutover tip: ce88f72d9f9d710903533505371789d18cce953e
+packet root: docs/superpowers/evidence/2026-08-04-eir-006-deletion-manifest/
+packet SHA256SUMS SHA: af5c090a4da72aa1204c6b8ffc13607b392e49d87acf38098a90f4bd2e24e4b6
+authority ID: 6096b988428a94d053baddd18493eb29077bc627d725a95fd53f75c4755b0dce
+comparison implementation: 669 lines / 26,509 bytes / e4acb819f6a32c05d7d756b1a9e106bba105e1c22d6cd273513d6bf27df2e759
+alias input: 3 rows / 0a8fbbf845b73bab1740d04ffb77ab1e935884f417c2bece20395187f83d9220
+exact files: 225 15min + 75 hourly + 1 summary / 842c3e08ff8ed9cb11c92033cf67ad5950d357cb8cd1e0662b74683ba554b0fc
+raw view: 2,547,747 physical / 2,314,293 unique / 233,454 duplicate / 58 conflict / 161 DB differences
+canonical view: 2,298,763 unique / 248,984 duplicate / 176 conflict / 43 DB differences (23 volume-only + 20 OHLC)
+canonical keys absent from SQLite: 0
+LC/HAPN overlap/conflict: 15,530 / 118
+exact cache keys: 19 / a4a8d829eb08553a1223f5240de260955fc48a564f8232b943206e0bf88b39bd
+exact fundamentals rows: 130 / 6b845506f9fce54ac4dba78ebd96bacc20113a7aefef651b877f62892418c219
+exact sync rows: 1 / 5b3736ba19e66b2e427b149b143771fb5625eab426e8af7a6317c29461cd15ff
+current cache keys selected for deletion: 0
+consumer census: 128 / a08e7f683b426c10090f1cb7f6e4f4104f22678147a46639ceaece0bcb088c64
+behavior propagation: 4 / 613024acc6568296cb798a2832fb8ca1e67fba05a9857c4e4bd5629755c556ba
+controller: 1,110 lines / 41,423 bytes / cd8980e891b4fb8713d008762d7740fd9f91009a37f501d0ee993557bd9933af
+rollback snapshot: 150 records / 875,857 bytes / 1e3578344dfcac0e445900358265c6606150007a496a71284d87e5ae5821697c
+quarantine root: /mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/6096b988428a94d053baddd18493eb29077bc627d725a95fd53f75c4755b0dce
+saved price schedule: enabled=true / interval_minutes=720
+observed owners: desktop 4041681 / Electron 4041708 / sidecar+scheduler 4041764
+market DB identity: device 2304 / inode 127284871
+profile DB identity: device 2304 / inode 127284276
+independent manifest review: pending
+separate user approval: pending
 ```
+
+Both file/comparison runs, both DB-row runs, and both census runs produced
+byte-identical fresh-root artifacts. The controller's read-only payload
+snapshot also reproduced byte-identically. Its scratch probe copied only the
+four relevant SQLite tables through a `mode=ro`/`query_only=ON` connection,
+then proved exact 19/130/1 delete and restore counts plus file move/restore; it
+never invoked the production mutation entry point.
+
+Self-review found that the first controller treated every nonzero `lsof` result
+as an empty holder set. The final pinned controller instead bounds each probe at
+15 seconds and fail-closes stderr, timeout, ambiguous exit/output pairs, and
+unknown exits. A separate scratch probe proved no-holder, active-holder, and
+invalid-path behavior before the final packet identity was generated.
+
+The preliminary census producer also failed when rerun against the completed
+branch because the new packet truthfully contains retired-path strings. The
+final pinned producer requires the exact ten matching packet files as
+self-authority before invoking the unchanged product census owner. Two fresh
+completed-worktree runs were byte-identical and retained the original
+`128/a08e7f68...` census and `4/613024ac...` behavior ledger.
+
+The owning test itself first failed on the new packet README, proving the
+classification boundary was visible rather than hidden in the producer. A
+bounded test-only amendment added those exact ten files to its authority set;
+the existing two nodes then passed `2/2` with no ID change. The final controller
+pins that file at `de6e192b...` while every other product/test path remains
+cutover-tip exact.
+
+A final read-only data recomputation retained every authority TSV byte-for-byte.
+Only allowed live SQLite observations advanced: 15-minute prices grew from
+2,406,398 to 2,410,324 rows and the frontier moved from 2026-07-31 to
+2026-08-03; DB device/inode/size and all 301 old-file identities, 150 target
+rows, aliases, canonical differences, and retained cache identities stayed
+unchanged.
+
+The dated operational census found the live sidecar as the only writable
+`market_data.db` holder and found no holder of `data/prices/`. The admitted
+static census and owner gates were `2 passed`, 113 projection-owner tests, and
+six behavior-propagation owner tests. This means the sidecar must be stopped
+for Task 9, not that an old-data writer remains.
+
+No archived row payload is tracked. The complete rollback JSONL exists only as
+a reproducible Task 9 quarantine artifact; tracked TSVs contain keys,
+metadata, payload lengths, and payload hashes.
 
 ## 10. Physical Closeout
 
