@@ -1,6 +1,6 @@
 # EIR-006 Valuation Price Truth Evidence
 
-> **Status:** IMPLEMENTATION REVIEW READY
+> **Status:** MERGED ROLLOUT REVIEW READY
 >
 > **Date:** 2026-08-03
 >
@@ -912,33 +912,88 @@ as EIR-006 activity or rolled back. Attribution artifact SHA:
 ## 7. Independent Implementation Review
 
 ```text
-reviewed range:
-review verdict:
+reviewed range: e261abc2..ce88f72d
+review verdict: GREEN, zero findings
 reviewer collection reconstruction:
+  backend 4581/6e4994bb... and focused 335/58230b54...
+  frontend 97 files/1077/3f5e9f5b... and focused 5 files/46/5d64841c...
 reviewer mutation reconstruction:
+  M1-M10 each killed its owning contract and restored exact product SHA/GREEN
 reviewer native control:
-findings/fixes:
-exact cleared tip:
+  fresh detached exact-tip worktree
+  4581 collected == 4581 seen
+  4509 passed / 72 skipped / 0 failed / exit 0 in 249.27 seconds
+  collected stream == reviewed target == implementation report
+findings/fixes: none
+exact cleared tip: ce88f72d9f9d710903533505371789d18cce953e
 ```
 
 ## 8. Merge And Read-Only Rollout
 
 ```text
-pre-merge master:
-reviewed product tip:
-ff-only proof:
-merged master:
-merged backend/frontend collections:
+pre-merge master: fd6d1b86383df2a98f97b235d9796d4bcaaa7a58
+pre/post origin/master: fd6d1b86383df2a98f97b235d9796d4bcaaa7a58 (not pushed)
+reviewed product tip: ce88f72d9f9d710903533505371789d18cce953e
+ff-only proof: fd6d1b86 is an ancestor; 22 linear commits; zero merge commits
+merged master: ce88f72d9f9d710903533505371789d18cce953e
+merged backend collections:
+  full 4581/6e4994bb664501cff75cb06dbad18db82ba68cbbe4b2b26c4d480250d7c4699f
+  focused 335/58230b548925b29035cff401520e0948b01dcaed8da2deed41149bea6b4a5ae1
+  focused runtime 333 passed / 2 skipped
+  protected runtime 313 passed / 1 skipped
+merged frontend collections:
+  full 97 files/1077/3f5e9f5bbe88d5ac48015a8c9e9d669dcd649a53a2ac868fc8a98d21f8d7e4eb
+  focused 5 files/46/5d64841ccdd943eb81f1cea50870115ed60dffe57ff6fc9867179552a4a7f127
+merged frontend runtime:
+  97 files / 1077 passed; typecheck/build/scanner exit 0
+  existing build warning 914.36 kB / gzip 271.97 kB
+  scanner 36 candidates / 20 signatures / 0 debt / 20 allowlisted
 merged canonical admission:
-read-only qualified selector observation:
-fixture unavailable observation:
-old-cache-ignore fixture witness:
-daily-update/SQLite equality:
+  report 14550e6ab8661816d3d30d369bcfb77121ec9a8f4afe54def97b1d29516e8375
+  transcript 50bb1b960690344e6df9d6e1331cb185277db286524c4fd16d3602a257f2a20b
+  4581 collected == seen; 4509 passed / 72 skipped / 0 non-passing; exit 0
+  collected/seen 6e4994bb...; non-passing e3b0c442...
+merged artifact transactions:
+  runtime gates 548/2581297515ee29bbe7bf3215d9373edd9220002a2bede0d583c2142b04147d0a
+  native 581/2eefa0f4278d89a8e3f0b4766f4e4fe2339b0385e1b08a4946ecedcb9c207437
+  both worktrees restored to empty ordinary status, empty data, absent src/data,
+  and only the pinned ignored node_modules symlink
+read-only current selector observation:
+  NVDA required 2026-08-03 while SQLite frontier was 2026-07-31
+  typed no_qualified_price; no fallback to the older close
+read-only frontier-aligned witness:
+  NVDA available from local_market_db/15min for 2026-07-31
+  timestamp 2026-07-31T19:45:00+00:00; observed price is not a test constant
+fixture unavailable observation: missing and unreadable stores remained typed/no-create
+old-cache-ignore fixture witness: metrics_*_annual_y2 remained ignored with provider doubles
+rollout fixture report: 3 passed / dbf7f7c85061d1b8eab3bf9f0d8f72a1ae9508906b56834f70d124bfe665a3bf
+daily-update/SQLite equality: exact prices row/ticker/latest mapping matched
 stored-SEC projection equality:
-production writes:
-provider calls:
-EIR006_PRODUCT_CUTOVER_TIP:
+  shared projection == local stats == coverage; 6 current tickers; NVDA present
+  fundamentals sync is null in admin and coverage projections
+physical old rows still present: 19 old cache / 130 fundamentals / 1 retired sync
+production writes: zero EIR-006 writes; URI mode=ro and PRAGMA query_only witnesses
+provider calls: zero; rollout called only local selectors/status/projections and fixture doubles
+EIR006_PRODUCT_CUTOVER_TIP: ce88f72d9f9d710903533505371789d18cce953e
 ```
+
+The first native artifact enumeration admitted only ignored files and therefore
+listed 580 rows (`978465fc...`) while omitting the unignored
+`src/data/cache/risk_free_rate.json`. Its non-equal restored boundary rejected
+that attempt; an erroneous shell `PASS` line after failed `cmp` commands is not
+admission evidence. The corrected `set -euo pipefail` transaction included the
+missing path, produced the 581-row manifest above, quarantined every exact
+path, and made all pre/restored comparisons pass.
+
+Rollout artifacts are
+`3f5e648ed5058950bd798785ac0c2d62c77c69ba8e90e49930e3bde955c4d61c`
+for the current production observation,
+`dd75ca7c3bcaf4e128844f50d306b409d8dfe76d44f3fc874194113fe9853803`
+for the frontier-aligned selector witness, and
+`785578c968ee0fae799da92effecccba1f8b17a745e1f1ee63a5f7b18fd253d9`
+for the retired-row readback. The production scheduler remained active, so
+this section claims only that every EIR-006 connection was read-only; it does
+not claim all production files were globally frozen.
 
 Physical old data remains present at this checkpoint. EIR-006 remains
 `promoted`; deletion is not authorized by product merge.
