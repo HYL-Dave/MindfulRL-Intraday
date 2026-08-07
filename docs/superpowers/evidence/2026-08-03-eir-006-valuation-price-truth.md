@@ -1,6 +1,6 @@
 # EIR-006 Valuation Price Truth Evidence
 
-> **Status:** TASK 9 EXECUTED; CLOSEOUT REVIEW READY
+> **Status:** COMPLETE; EIR-006 CLOSED
 >
 > **Date:** 2026-08-03
 >
@@ -1219,8 +1219,10 @@ read-only production truth:
   GET /market-data/status returned 200, fundamentals projection 6 rows/6 tickers,
   financial_cache 27 rows, fundamentals sync null, and prices authority local
 durable rollback archive: none
-closeout review: pending
-EIR closure commit: pending independent closeout review
+closeout review:
+  GREEN on 518ea76b..ef00f7f7 with one bounded git-crypt census finding;
+  focused GREEN on ef00f7f7..68dfc1e5 after that correction
+EIR closure transition: this docs-only commit, parent 68dfc1e512288eb6d4a8dbf72e51a23d82a335b3
 ```
 
 The user's direct approval repeated the three unique V3 prefixes from the
