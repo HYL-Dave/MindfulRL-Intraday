@@ -1,6 +1,6 @@
 # EIR-006 Valuation Price Truth Evidence
 
-> **Status:** TASK 8 V3 MANIFEST REVIEW READY; TASK 9 BLOCKED
+> **Status:** TASK 9 EXECUTED; CLOSEOUT REVIEW READY
 >
 > **Date:** 2026-08-03
 >
@@ -1167,35 +1167,79 @@ controller: 1,138 lines / 42,740 bytes / 891edbe1fe0c8005f609fee2ed97403180f3498
 controller probe: 189 lines / 7,688 bytes / e200d63b951fa7b44e8b9e49a3b0b81207a025923c69d827b90b7d8afe2ee981
 quarantine root: /mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/9bfb3f2a3e377752d3105c07cf55aceb986ea094314dea8616763046a5e656c7
 observed owners: desktop 2887595 / Electron 2887650 / sidecar+scheduler 2887713
-independent v3 review: pending
-separate v3 user approval: pending
+independent v3 review: GREEN on 25f061b7..27191f05 except one docs-only ordering pin;
+  focused GREEN on 27191f05..518ea76b after that pin
+separate v3 user approval: received 2026-08-08 by uniquely named reviewed V3
+  prefixes; execution expanded and enforced all three complete identities
 ```
 
-V1 and V2 approvals are superseded. Task 9 remains blocked until independent
-review reconstructs V3 and the user separately names its complete authority,
-packet, and controller identities.
+V1 and V2 approvals are superseded. The V3 review and focused re-review both
+cleared before the separate user approval and execution recorded below.
 
 ## 10. Physical Closeout
 
-> V1 and V2 rolled back without a DB delete. V3 is blocked until the rebuilt
-> exact manifest and controller receive independent review plus separate user
-> approval.
+> V1 and V2 rolled back without a DB delete. V3 received independent review,
+> separate user approval, and completed the exact forward path on 2026-08-08.
 
 ```text
-approval reference: v1 6096b988...d0dce and v2 4b1d9083...e656c7 superseded after fail-closed rollbacks; v3 pending
+approval reference:
+  v1 6096b988...d0dce and v2 4b1d9083...e656c7 superseded after fail-closed rollbacks
+  v3 user wording named unique reviewed prefixes 9bfb3f2a... / 99a813e8... / 891edbe1...
+  controller CLI and environment both used complete authority 9bfb3f2a3e377752d3105c07cf55aceb986ea094314dea8616763046a5e656c7
+merged execution tip: 518ea76b94bba67a2c9b6e091fa5ef7bf3a80e5e
+packet SHA256SUMS: 99a813e8311a639af3a45b9d1e6f37b0a97a6e40b620fcb92f42a6e96b18bd22; 22/22 OK
+controller: 891edbe1fe0c8005f609fee2ed97403180f3498da53668da6175645c97214d37
 quiesced writer proof:
+  exact desktop/sidecar /proc commands matched dated owners 2887595/2887713
+  SIGTERM to desktop owner retired desktop 2887595, Electron 2887650, and sidecar 2887713 within five seconds; no SIGKILL
+preflight: authority 9bfb3f2a... / status preflight_pass / exit 0
 file quarantine proof:
+  execute exit 0 after exact 301-path same-filesystem movement
 DB row snapshot proof:
-transaction affected rows:
-pre-final verification:
-rollback or success disposition:
+  exact 150-record / 875,857-byte / 1e357834... temporary snapshot existed through post-restart
+transaction affected rows: exact 19 old cache / 130 legacy fundamentals / 1 retired sync
+pre-final verification: authority 9bfb3f2a... / status verified_deleted / exit 0
+runtime restoration:
+  desktop 2928518 / Electron 2928573 / sidecar 2928635
+  healthz 200 OK at 127.0.0.1:40163
+post-restart verification: authority 9bfb3f2a... / status runtime_restored / exit 0
+rollback or success disposition: forward success; rollback not invoked
 temporary rollback assets removed:
-scheduler state restored:
+  exact non-symlink authority root removed only after post-restart; root absent; parent has no remaining child
+final exact readback:
+  225 15-minute files + 75 hourly files + one summary absent
+  19 old cache keys + 130 legacy fundamentals IDs + one retired sync key absent
+  fundamentals table row count 0
+  18 current SEC-v1 + 9 other retained cache rows match every field and payload SHA
+  DB device/inodes, ticker aliases, and all seven schedule key/value pairs match
 canonical admission:
+  product cutover remains 4581 seen / 4509 passed / 72 skipped / 0 non-passing
+  Task 9 changed no tracked product/test bytes; the reviewed Task 8 census owner remains 2 passed
 read-only production truth:
-closeout review:
-EIR closure commit:
+  GET /market-data/status returned 200, fundamentals projection 6 rows/6 tickers,
+  financial_cache 27 rows, fundamentals sync null, and prices authority local
+durable rollback archive: none
+closeout review: pending
+EIR closure commit: pending independent closeout review
 ```
+
+The user's direct approval repeated the three unique V3 prefixes from the
+immediately preceding full-identity review. It did not retype all 64 hex
+characters. The executor did not silently substitute a different packet: the
+packet check returned `22/22`, and the controller required the complete
+authority value independently in both its CLI token and environment variable.
+
+One additional pre-stop check incorrectly assumed Electron stored `electron .`
+as two argv entries. It failed before any signal or mutation. Direct `/proc`
+inspection showed the reviewed process stored that text as one argv entry; the
+plan's exact desktop and sidecar checks both passed, and only those reviewed
+checks were used for admission.
+
+The successful `execution.json` was temporary by design and lived inside the
+approved quarantine root. It was intentionally destroyed with the rollback
+snapshot after successful `post-restart`; no durable receipt SHA is claimed.
+The controller's four exit-zero states plus the independent exact-path and
+exact-row readback above are the closeout admission evidence.
 
 ## 11. Honesty Ledger
 
