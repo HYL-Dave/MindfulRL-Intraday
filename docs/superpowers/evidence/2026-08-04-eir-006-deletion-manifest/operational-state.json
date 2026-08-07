@@ -1,58 +1,45 @@
 {
-  "database_holders": [
-    {
-      "command": "python",
-      "fds": [
-        "27ur",
-        "28u:market_data.db-wal",
-        "29ur:market_data.db-shm",
-        "36rr",
-        "mem-r:market_data.db-shm"
-      ],
-      "path": "/mnt/md0/PycharmProjects/ArkScope/data/market_data.db",
-      "pid": 4041764
-    }
-  ],
+  "database_holders": [],
   "desktop_owner": {
     "command": "node apps/arkscope-desktop/dev.js",
-    "pid": 4041681,
-    "started": "2026-08-02T15:55:47+08:00"
+    "pid": 2847946,
+    "started": "2026-08-07T21:43:50+08:00"
   },
   "electron_owner": {
     "command": "electron .",
-    "pid": 4041708,
-    "started": "2026-08-02T15:55:47+08:00"
+    "pid": 2848002,
+    "started": "2026-08-07T21:43:51+08:00"
   },
   "market_data_files": {
     "db": {
       "device": 2304,
       "inode": 127284871,
       "mode": "0644",
-      "mtime": "2026-08-04T08:28:05.392666771+08:00",
+      "mtime": "2026-08-07T20:46:19.024634570+08:00",
       "size": 3477532672
     },
     "shm": {
       "device": 2304,
-      "inode": 127283832,
+      "inode": 127283827,
       "mode": "0644",
-      "mtime": "2026-08-04T08:35:29.728059554+08:00",
+      "mtime": "2026-08-07T21:50:14.943776156+08:00",
       "size": 32768
     },
     "wal": {
       "device": 2304,
       "inode": 127283763,
       "mode": "0644",
-      "mtime": "2026-08-04T08:35:29.738059589+08:00",
-      "size": 16442952
+      "mtime": "2026-08-07T21:43:59.720521885+08:00",
+      "size": 0
     }
   },
-  "observed_at": "2026-08-04T08:35:25.516515843+08:00",
+  "observed_at": "2026-08-07T21:50:25.256573259+08:00",
   "profile_state_db": {
     "device": 2304,
     "inode": 127284276,
     "mode": "0600",
-    "mtime": "2026-08-04T08:34:49.407919250+08:00",
-    "size": 46170112
+    "mtime": "2026-08-07T21:46:35.232263470+08:00",
+    "size": 46886912
   },
   "retired_price_file_holders": [],
   "saved_schedule_settings": {
@@ -66,15 +53,15 @@
   },
   "scheduler_owner": {
     "kind": "in-process sidecar scheduler",
-    "pid": 4041764
+    "pid": 2848089
   },
   "sidecar_owner": {
     "command": "python -m src.api",
-    "pid": 4041764,
-    "started": "2026-08-02T15:55:47+08:00"
+    "pid": 2848089,
+    "started": "2026-08-07T21:43:51+08:00"
   },
   "writer_ruling": {
-    "current_market_db_writer": "sidecar PID 4041764",
+    "current_market_db_writer": "sidecar PID 2848089",
     "old_data_consumer_count": 0,
     "old_data_writer_count": 0,
     "statement": "The live sidecar writes current SQLite domains; no current process or product path reads or repopulates the 301 retired files or the legacy fundamentals rows."

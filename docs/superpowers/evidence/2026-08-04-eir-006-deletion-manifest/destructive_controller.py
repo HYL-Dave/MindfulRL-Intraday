@@ -10,15 +10,16 @@ import sqlite3
 import stat
 import subprocess
 import sys
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Iterator
 
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 PRODUCT_CUTOVER_TIP = "ce88f72d9f9d710903533505371789d18cce953e"
-TASK8_BASE = "657b4aa2c8d67a6e659cba4d0d4c6cd90c8d36f3"
-AUTHORITY_ID = "6096b988428a94d053baddd18493eb29077bc627d725a95fd53f75c4755b0dce"
+TASK8_BASE = "4955e6249f7758b136f4526c02ceecaa726535f4"
+AUTHORITY_ID = "4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e"
 APPROVAL_ENV = "ARKSCOPE_EIR006_DESTRUCTIVE_APPROVED"
 EXPECTED_REPO_ROOT = Path("/mnt/md0/PycharmProjects/ArkScope")
 PACKET_RELATIVE = Path(
@@ -229,14 +230,17 @@ def _load_authorities(packet_root: Path) -> dict[str, list[dict[str, str]]]:
     return authorities
 
 
-def _connect_ro(path: Path) -> sqlite3.Connection:
+@contextmanager
+def _connect_ro(path: Path) -> Iterator[sqlite3.Connection]:
     connection = sqlite3.connect(f"file:{path.resolve(strict=True)}?mode=ro", uri=True)
-    connection.row_factory = sqlite3.Row
-    connection.execute("PRAGMA query_only=ON")
-    if connection.execute("PRAGMA query_only").fetchone()[0] != 1:
+    try:
+        connection.row_factory = sqlite3.Row
+        connection.execute("PRAGMA query_only=ON")
+        if connection.execute("PRAGMA query_only").fetchone()[0] != 1:
+            raise Refusal(f"query_only did not engage for {path}")
+        yield connection
+    finally:
         connection.close()
-        raise Refusal(f"query_only did not engage for {path}")
-    return connection
 
 
 def _connect_rw(path: Path) -> sqlite3.Connection:

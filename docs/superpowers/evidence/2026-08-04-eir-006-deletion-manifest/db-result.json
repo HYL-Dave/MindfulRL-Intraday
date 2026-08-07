@@ -17,14 +17,14 @@
       "device": 2304,
       "inode": 127284871,
       "mode": "0644",
-      "mtime_ns": 1785802854231894409,
+      "mtime_ns": 1786106779024634570,
       "size": 3477532672
     },
     "stat_before": {
       "device": 2304,
       "inode": 127284871,
       "mode": "0644",
-      "mtime_ns": 1785802854231894409,
+      "mtime_ns": 1786106779024634570,
       "size": 3477532672
     }
   },
@@ -54,12 +54,12 @@
       "sha256": "a4a8d829eb08553a1223f5240de260955fc48a564f8232b943206e0bf88b39bd"
     }
   },
-  "repo_head": "657b4aa2c8d67a6e659cba4d0d4c6cd90c8d36f3",
+  "repo_head": "4955e6249f7758b136f4526c02ceecaa726535f4",
   "schema_version": 1,
   "source_identity": {
     "bytes": 11030,
     "lines": 304,
-    "path": "/tmp/eir006-deletion-manifest-657b4aa2/task8_db_row_manifest.py",
+    "path": "/tmp/arkscope-eir006-manifest/docs/superpowers/evidence/2026-08-04-eir-006-deletion-manifest/task8_db_row_manifest.py",
     "sha256": "27c9dee61a6f7f04ed8fc4226f15c6892478bd63cef94f5df1fcfb2b8ffabc29"
   }
 }

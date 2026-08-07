@@ -1,9 +1,9 @@
 # EIR-006 Exact Deletion Manifest
 
-> Status: **READ-ONLY MANIFEST COMPLETE; TASK 9 NOT APPROVED**
+> Status: **V2 READ-ONLY MANIFEST COMPLETE; TASK 9 NOT APPROVED**
 >
 > Authority ID:
-> `6096b988428a94d053baddd18493eb29077bc627d725a95fd53f75c4755b0dce`
+> `4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e`
 
 This packet was built from Task 8 of the reviewed EIR-006 plan. It identifies
 the obsolete file and SQLite rows selected by the user's product ruling. It
@@ -16,7 +16,7 @@ packet identity, and controller identity.
 - Product cutover authority:
   `ce88f72d9f9d710903533505371789d18cce953e`.
 - Task 8 base:
-  `657b4aa2c8d67a6e659cba4d0d4c6cd90c8d36f3`.
+  `4955e6249f7758b136f4526c02ceecaa726535f4`.
 - Exact file authority: 225 15-minute CSVs, 75 hourly CSVs, and one collection
   summary; 301 files total.
 - Exact SQLite authority: 19 `metrics_*_annual_y2` cache keys, 130 legacy
@@ -51,7 +51,7 @@ CSV value is imported. `LC -> HAPN` accounts for 15,530 overlapping keys and
 
 | Artifact | Role | SHA-256 |
 |---|---|---|
-| `authority-input.json` | approval identity input | `6096b988428a94d053baddd18493eb29077bc627d725a95fd53f75c4755b0dce` |
+| `authority-input.json` | approval identity input | `4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e` |
 | `legacy-price-files.tsv` | exact file paths and identities | `842c3e08ff8ed9cb11c92033cf67ad5950d357cb8cd1e0662b74683ba554b0fc` |
 | `ticker-aliases.tsv` | exact canonicalization input | `0a8fbbf845b73bab1740d04ffb77ab1e935884f417c2bece20395187f83d9220` |
 | `old-cache-rows.tsv` | exact old cache keys and payload identities | `a4a8d829eb08553a1223f5240de260955fc48a564f8232b943206e0bf88b39bd` |
@@ -72,13 +72,15 @@ byte counts and hashes, not payload contents.
 | `task8_price_manifest.py` | 669 | 26,509 | `e4acb819f6a32c05d7d756b1a9e106bba105e1c22d6cd273513d6bf27df2e759` |
 | `task8_db_row_manifest.py` | 304 | 11,030 | `27c9dee61a6f7f04ed8fc4226f15c6892478bd63cef94f5df1fcfb2b8ffabc29` |
 | `task8_consumer_census.py` | 191 | 7,999 | `eefa4091683d7fd3ff8d91e40b77cc0a2498b56bd576cbf487f355b514679c2f` |
-| `destructive_controller.py` | 1,110 | 41,423 | `cd8980e891b4fb8713d008762d7740fd9f91009a37f501d0ee993557bd9933af` |
-| `controller_probe.py` | 167 | 6,486 | `2225fd9de62405c90009c745861c740848780ee763ab3b3d12242dcf50d77ba1` |
+| `destructive_controller.py` | 1,114 | 41,538 | `0ddb451f203a274ec08c5dbba79439971f2cd073e1ec8af2bb27398d974f5d2c` |
+| `controller_probe.py` | 174 | 6,951 | `9c3caca64841bbb39236d3d76fbf89f5b244f01f217d64c29a5e07bbee355bd4` |
 
 The controller probe used a scratch SQLite fixture populated through a
 production read-only connection. It proved 19/130/1 exact deletes, 19/130/1
 exact restores, same-filesystem file move/restore, and the rollback snapshot
-identity. It did not invoke the production mutation path.
+identity. It also proves that every reviewed read-only connection has no lsof
+record after its context exits. It did not invoke the production mutation
+path.
 
 A separate holder-probe check exercised the controller's bounded `lsof`
 contract against an unheld file, a file held by the probe process, and an
@@ -102,7 +104,7 @@ every other product/test path remains locked to the product cutover tip.
 The exact same-filesystem quarantine root is:
 
 ```text
-/mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/6096b988428a94d053baddd18493eb29077bc627d725a95fd53f75c4755b0dce
+/mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e
 ```
 
 The rollback snapshot will be written before any move or delete to:
@@ -130,8 +132,8 @@ Discovery is accepted only when its exact set equals the reviewed manifests.
 ## Operational Owner
 
 `operational-state.json` records the dated state. At observation time the
-desktop owner was PID 4041681, Electron PID 4041708, and sidecar/scheduler PID
-4041764. The price schedule was enabled at 720 minutes. The exact stop owner is
+desktop owner was PID 2847946, Electron PID 2848002, and sidecar/scheduler PID
+2848089. The price schedule was enabled at 720 minutes. The exact stop owner is
 the desktop dev launcher; its reviewed SIGTERM handler terminates Electron,
 the sidecar, and the Vite process group.
 
@@ -140,6 +142,27 @@ alias input, product byte, or retained cache row changes before Task 9, this
 approval packet expires and Task 8 must be rebuilt. Unrelated current
 price/news growth is not a reason to copy legacy values, but mutation may not
 start until the sidecar is quiesced and all DB/file holders are absent.
+
+## Superseded Task 9 Attempt
+
+The user approved v1 authority
+`6096b988428a94d053baddd18493eb29077bc627d725a95fd53f75c4755b0dce`
+on 2026-08-07. The first execution moved all 301 files, then failed before any
+database delete because the controller's own read-only SQLite handle remained
+open after a `with sqlite3.Connection` block. The holder gate rejected the
+controller itself with `exit=1, records=5`.
+
+The automatic pre-commit recovery moved all 301 files back with
+`restore_error=null`. Reviewed rollback then verified every file and all 150
+rows in place, restored `0/0/0` rows, and the exact temporary quarantine was
+destroyed. Desktop, sidecar, and the six saved scheduler settings were restored.
+No forward deletion from that authority remains.
+
+V2 changes the read-only helper to a real context manager that closes in
+`finally`; the probe first reproduced the old self-holder RED, then proved zero
+self-holder records after both fixture reads. Schema version 2 and the new Task
+8 base deliberately produce a new authority ID, so the superseded approval
+cannot authorize another execution.
 
 ## Review Boundary
 

@@ -38,9 +38,9 @@
   "database": {
     "logical_snapshot": {
       "data_version": 2,
-      "prices_15min_max_datetime": "2026-08-03T19:45:00+0000",
+      "prices_15min_max_datetime": "2026-08-06T19:45:00+0000",
       "prices_15min_min_datetime": "2024-01-02T14:30:00+0000",
-      "prices_15min_rows": 2410324,
+      "prices_15min_rows": 2422098,
       "prices_15min_tickers": 152,
       "query_only": 1
     },
@@ -49,14 +49,14 @@
       "device": 2304,
       "inode": 127284871,
       "mode": "0644",
-      "mtime_ns": 1785853327356305263,
+      "mtime_ns": 1786106779024634570,
       "size": 3477532672
     },
     "stat_before": {
       "device": 2304,
       "inode": 127284871,
       "mode": "0644",
-      "mtime_ns": 1785853327356305263,
+      "mtime_ns": 1786106779024634570,
       "size": 3477532672
     }
   },
@@ -91,12 +91,12 @@
     "rows": 161,
     "sha256": "60385e1a8856f8cc4404a9f3b7aa8b87ad4adfd608041b8a68890c7e1569c18c"
   },
-  "repo_head": "657b4aa2c8d67a6e659cba4d0d4c6cd90c8d36f3",
+  "repo_head": "4955e6249f7758b136f4526c02ceecaa726535f4",
   "schema_version": 1,
   "source_identity": {
     "bytes": 26509,
     "lines": 669,
-    "path": "/tmp/eir006-deletion-manifest-657b4aa2/task8_price_manifest.py",
+    "path": "/tmp/arkscope-eir006-manifest/docs/superpowers/evidence/2026-08-04-eir-006-deletion-manifest/task8_price_manifest.py",
     "sha256": "e4acb819f6a32c05d7d756b1a9e106bba105e1c22d6cd273513d6bf27df2e759"
   }
 }

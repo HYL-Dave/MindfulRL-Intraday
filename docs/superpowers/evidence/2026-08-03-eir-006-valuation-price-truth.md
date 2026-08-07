@@ -1078,13 +1078,56 @@ No archived row payload is tracked. The complete rollback JSONL exists only as
 a reproducible Task 9 quarantine artifact; tracked TSVs contain keys,
 metadata, payload lengths, and payload hashes.
 
-## 10. Physical Closeout
+### 9.1 V2 Rebuild After Fail-Closed Rollback
 
-> Blocked until the exact manifest and destructive amendment receive
-> independent review plus separate user approval.
+The v1 manifest received independent review and the user separately approved
+authority `6096b988...d0dce` on 2026-08-07. Its first execution stopped after
+moving the 301 files and before any DB delete. The controller's own read-only
+SQLite handle remained open because `with sqlite3.Connection` does not close
+the connection; the post-move lsof gate therefore refused with
+`exit=1, records=5`.
+
+The execution receipt recorded `moved_before_failure=301` and
+`restore_error=null`. Reviewed rollback then verified all files and 150 target
+rows in their original locations, restored `0/0/0` rows, and emitted receipt
+SHA `5a27b331c0279b00f5d43ac5d72547a6183bd60fc3d3285658d73105677cc454`.
+The exact temporary snapshot retained its reviewed
+`1e357834...` identity until the rollback was verified, then the whole v1
+quarantine was destroyed. Desktop, sidecar, and all six schedule settings were
+restored; no v1 forward deletion remains.
+
+The v2 controller makes `_connect_ro` a real context manager with an explicit
+`finally: connection.close()`. A new probe first reproduced the old self-holder
+RED, then proved no lsof record remained after either read context while still
+proving exact `19/130/1` scratch delete/restore and file move/restore. All three
+Task 8 producers were rerun after rollback: the 301-file manifest, aliases,
+raw/canonical differences, 19/130/1 row manifests, 128-row census, and four-row
+behavior ledger remain byte-identical.
 
 ```text
-approval reference:
+Task 8 v2 base: 4955e6249f7758b136f4526c02ceecaa726535f4
+packet SHA256SUMS SHA: 7c887ae6908b1087003f0d2990adbf5757f672b63ae4525dcbb9461969ef60dd
+authority ID: 4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e
+controller: 1,114 lines / 41,538 bytes / 0ddb451f203a274ec08c5dbba79439971f2cd073e1ec8af2bb27398d974f5d2c
+controller probe: 174 lines / 6,951 bytes / 9c3caca64841bbb39236d3d76fbf89f5b244f01f217d64c29a5e07bbee355bd4
+quarantine root: /mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e
+observed owners: desktop 2847946 / Electron 2848002 / sidecar+scheduler 2848089
+independent v2 review: pending
+separate v2 user approval: pending
+```
+
+The v1 approval is superseded and cannot authorize v2. Task 9 remains blocked
+until independent review reconstructs the v2 packet/controller and the user
+separately names the complete v2 authority ID, packet SHA, and controller SHA.
+
+## 10. Physical Closeout
+
+> V1 rolled back without a DB delete. V2 is blocked until the rebuilt exact
+> manifest and controller receive independent review plus separate user
+> approval.
+
+```text
+approval reference: v1 6096b988...d0dce superseded after fail-closed rollback; v2 pending
 quiesced writer proof:
 file quarantine proof:
 DB row snapshot proof:

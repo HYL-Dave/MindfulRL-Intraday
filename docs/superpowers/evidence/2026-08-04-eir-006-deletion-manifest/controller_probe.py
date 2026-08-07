@@ -17,63 +17,68 @@ def _load_controller(path: Path):
     return module
 
 
+def _assert_not_held(module, path: Path) -> None:
+    records = module._lsof_records([str(path)])
+    if records:
+        raise AssertionError(f"read-only connection remained open: {records}")
+
+
 def _create_fixture(module, production_db: Path, fixture_db: Path) -> None:
-    source = module._connect_ro(production_db)
     target = sqlite3.connect(fixture_db)
     try:
-        target.executescript(
-            """
-            CREATE TABLE financial_cache (
-                cache_key TEXT PRIMARY KEY,
-                source TEXT NOT NULL,
-                ticker TEXT NOT NULL,
-                data TEXT NOT NULL,
-                fetched_at TEXT NOT NULL,
-                expires_at TEXT NOT NULL
-            );
-            CREATE TABLE fundamentals (
-                id INTEGER PRIMARY KEY,
-                ticker TEXT NOT NULL,
-                snapshot_date TEXT NOT NULL,
-                data TEXT NOT NULL
-            );
-            CREATE TABLE market_sync_meta (
-                domain TEXT PRIMARY KEY,
-                last_success TEXT,
-                last_error TEXT,
-                rows_added INTEGER DEFAULT 0,
-                updated_at TEXT NOT NULL
-            );
-            CREATE TABLE ticker_aliases (
-                alias TEXT PRIMARY KEY,
-                canonical TEXT NOT NULL
-            );
-            """
-        )
-        copies = (
-            (
-                "financial_cache",
-                "cache_key, source, ticker, data, fetched_at, expires_at",
-                6,
-            ),
-            ("fundamentals", "id, ticker, snapshot_date, data", 4),
-            (
-                "market_sync_meta",
-                "domain, last_success, last_error, rows_added, updated_at",
-                5,
-            ),
-            ("ticker_aliases", "alias, canonical", 2),
-        )
-        for table, columns, width in copies:
-            rows = list(source.execute(f"SELECT {columns} FROM {table}"))
-            placeholders = ",".join("?" for _ in range(width))
-            target.executemany(
-                f"INSERT INTO {table} ({columns}) VALUES ({placeholders})",
-                [tuple(row) for row in rows],
+        with module._connect_ro(production_db) as source:
+            target.executescript(
+                """
+                CREATE TABLE financial_cache (
+                    cache_key TEXT PRIMARY KEY,
+                    source TEXT NOT NULL,
+                    ticker TEXT NOT NULL,
+                    data TEXT NOT NULL,
+                    fetched_at TEXT NOT NULL,
+                    expires_at TEXT NOT NULL
+                );
+                CREATE TABLE fundamentals (
+                    id INTEGER PRIMARY KEY,
+                    ticker TEXT NOT NULL,
+                    snapshot_date TEXT NOT NULL,
+                    data TEXT NOT NULL
+                );
+                CREATE TABLE market_sync_meta (
+                    domain TEXT PRIMARY KEY,
+                    last_success TEXT,
+                    last_error TEXT,
+                    rows_added INTEGER DEFAULT 0,
+                    updated_at TEXT NOT NULL
+                );
+                CREATE TABLE ticker_aliases (
+                    alias TEXT PRIMARY KEY,
+                    canonical TEXT NOT NULL
+                );
+                """
             )
+            copies = (
+                (
+                    "financial_cache",
+                    "cache_key, source, ticker, data, fetched_at, expires_at",
+                    6,
+                ),
+                ("fundamentals", "id, ticker, snapshot_date, data", 4),
+                (
+                    "market_sync_meta",
+                    "domain, last_success, last_error, rows_added, updated_at",
+                    5,
+                ),
+                ("ticker_aliases", "alias, canonical", 2),
+            )
+            for table, columns, width in copies:
+                rows = list(source.execute(f"SELECT {columns} FROM {table}"))
+                placeholders = ",".join("?" for _ in range(width))
+                target.executemany(
+                    f"INSERT INTO {table} ({columns}) VALUES ({placeholders})",
+                    [tuple(row) for row in rows],
+                )
         target.commit()
     finally:
-        source.close()
         target.close()
 
 
@@ -129,6 +134,7 @@ def _run(repo_root: Path, scratch_root: Path) -> None:
     with module._connect_ro(fixture_db) as connection:
         module._verify_db(connection, authorities)
         snapshot = module._snapshot_bytes(connection, authorities)
+    _assert_not_held(module, fixture_db)
     if module._sha256_bytes(snapshot) != module.EXPECTED_SNAPSHOT_SHA256:
         raise AssertionError("fixture snapshot differs from pinned snapshot")
     deleted = module._delete_rows(fixture_repo, authorities)
@@ -140,6 +146,7 @@ def _run(repo_root: Path, scratch_root: Path) -> None:
         raise AssertionError(f"unexpected restore counts: {restored}")
     with module._connect_ro(fixture_db) as connection:
         module._verify_db(connection, authorities)
+    _assert_not_held(module, fixture_db)
     _probe_file_transport(module, scratch_root)
     result = {
         "authority_id": module.AUTHORITY_ID,

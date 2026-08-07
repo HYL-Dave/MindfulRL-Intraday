@@ -24,12 +24,12 @@
   },
   "old_current_consumers": 0,
   "old_current_writers": 0,
-  "repo_head": "657b4aa2c8d67a6e659cba4d0d4c6cd90c8d36f3",
+  "repo_head": "4955e6249f7758b136f4526c02ceecaa726535f4",
   "schema_version": 1,
   "source_identity": {
     "bytes": 7999,
     "lines": 191,
-    "path": "/tmp/eir006-deletion-manifest-657b4aa2/task8_consumer_census.py",
+    "path": "/tmp/arkscope-eir006-manifest/docs/superpowers/evidence/2026-08-04-eir-006-deletion-manifest/task8_consumer_census.py",
     "sha256": "eefa4091683d7fd3ff8d91e40b77cc0a2498b56bd576cbf487f355b514679c2f"
   },
   "unknown_verdicts": 0
