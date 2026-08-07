@@ -1,9 +1,9 @@
 # EIR-006 Exact Deletion Manifest
 
-> Status: **V2 READ-ONLY MANIFEST COMPLETE; TASK 9 NOT APPROVED**
+> Status: **V3 READ-ONLY MANIFEST COMPLETE; TASK 9 NOT APPROVED**
 >
 > Authority ID:
-> `4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e`
+> `9bfb3f2a3e377752d3105c07cf55aceb986ea094314dea8616763046a5e656c7`
 
 This packet was built from Task 8 of the reviewed EIR-006 plan. It identifies
 the obsolete file and SQLite rows selected by the user's product ruling. It
@@ -16,7 +16,7 @@ packet identity, and controller identity.
 - Product cutover authority:
   `ce88f72d9f9d710903533505371789d18cce953e`.
 - Task 8 base:
-  `4955e6249f7758b136f4526c02ceecaa726535f4`.
+  `25f061b7781cdc9f738a4858aa331dd10a3ef9d2`.
 - Exact file authority: 225 15-minute CSVs, 75 hourly CSVs, and one collection
   summary; 301 files total.
 - Exact SQLite authority: 19 `metrics_*_annual_y2` cache keys, 130 legacy
@@ -51,7 +51,7 @@ CSV value is imported. `LC -> HAPN` accounts for 15,530 overlapping keys and
 
 | Artifact | Role | SHA-256 |
 |---|---|---|
-| `authority-input.json` | approval identity input | `4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e` |
+| `authority-input.json` | approval identity input | `9bfb3f2a3e377752d3105c07cf55aceb986ea094314dea8616763046a5e656c7` |
 | `legacy-price-files.tsv` | exact file paths and identities | `842c3e08ff8ed9cb11c92033cf67ad5950d357cb8cd1e0662b74683ba554b0fc` |
 | `ticker-aliases.tsv` | exact canonicalization input | `0a8fbbf845b73bab1740d04ffb77ab1e935884f417c2bece20395187f83d9220` |
 | `old-cache-rows.tsv` | exact old cache keys and payload identities | `a4a8d829eb08553a1223f5240de260955fc48a564f8232b943206e0bf88b39bd` |
@@ -72,15 +72,18 @@ byte counts and hashes, not payload contents.
 | `task8_price_manifest.py` | 669 | 26,509 | `e4acb819f6a32c05d7d756b1a9e106bba105e1c22d6cd273513d6bf27df2e759` |
 | `task8_db_row_manifest.py` | 304 | 11,030 | `27c9dee61a6f7f04ed8fc4226f15c6892478bd63cef94f5df1fcfb2b8ffabc29` |
 | `task8_consumer_census.py` | 191 | 7,999 | `eefa4091683d7fd3ff8d91e40b77cc0a2498b56bd576cbf487f355b514679c2f` |
-| `destructive_controller.py` | 1,114 | 41,538 | `0ddb451f203a274ec08c5dbba79439971f2cd073e1ec8af2bb27398d974f5d2c` |
-| `controller_probe.py` | 174 | 6,951 | `9c3caca64841bbb39236d3d76fbf89f5b244f01f217d64c29a5e07bbee355bd4` |
+| `destructive_controller.py` | 1,138 | 42,740 | `891edbe1fe0c8005f609fee2ed97403180f3498da53668da6175645c97214d37` |
+| `controller_probe.py` | 189 | 7,688 | `e200d63b951fa7b44e8b9e49a3b0b81207a025923c69d827b90b7d8afe2ee981` |
 
 The controller probe used a scratch SQLite fixture populated through a
 production read-only connection. It proved 19/130/1 exact deletes, 19/130/1
 exact restores, same-filesystem file move/restore, and the rollback snapshot
 identity. It also proves that every reviewed read-only connection has no lsof
-record after its context exits. It did not invoke the production mutation
-path.
+record after its context exits. Its file fixture now proves the phase-specific
+holder sequence: source tree before movement, quarantine tree after movement,
+and both existing trees after rollback. An absent post-move source tree is a
+typed refusal rather than an `lsof` invocation. It did not invoke the
+production mutation path.
 
 A separate holder-probe check exercised the controller's bounded `lsof`
 contract against an unheld file, a file held by the probe process, and an
@@ -104,7 +107,7 @@ every other product/test path remains locked to the product cutover tip.
 The exact same-filesystem quarantine root is:
 
 ```text
-/mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e
+/mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/9bfb3f2a3e377752d3105c07cf55aceb986ea094314dea8616763046a5e656c7
 ```
 
 The rollback snapshot will be written before any move or delete to:
@@ -132,8 +135,8 @@ Discovery is accepted only when its exact set equals the reviewed manifests.
 ## Operational Owner
 
 `operational-state.json` records the dated state. At observation time the
-desktop owner was PID 2847946, Electron PID 2848002, and sidecar/scheduler PID
-2848089. The price schedule was enabled at 720 minutes. The exact stop owner is
+desktop owner was PID 2887595, Electron PID 2887650, and sidecar/scheduler PID
+2887713. The price schedule was enabled at 720 minutes. The exact stop owner is
 the desktop dev launcher; its reviewed SIGTERM handler terminates Electron,
 the sidecar, and the Vite process group.
 
@@ -143,7 +146,7 @@ approval packet expires and Task 8 must be rebuilt. Unrelated current
 price/news growth is not a reason to copy legacy values, but mutation may not
 start until the sidecar is quiesced and all DB/file holders are absent.
 
-## Superseded Task 9 Attempt
+## Superseded Task 9 Attempts
 
 The user approved v1 authority
 `6096b988428a94d053baddd18493eb29077bc627d725a95fd53f75c4755b0dce`
@@ -155,7 +158,7 @@ controller itself with `exit=1, records=5`.
 The automatic pre-commit recovery moved all 301 files back with
 `restore_error=null`. Reviewed rollback then verified every file and all 150
 rows in place, restored `0/0/0` rows, and the exact temporary quarantine was
-destroyed. Desktop, sidecar, and the six saved scheduler settings were restored.
+destroyed. Desktop, sidecar, and the seven saved scheduler settings were restored.
 No forward deletion from that authority remains.
 
 V2 changes the read-only helper to a real context manager that closes in
@@ -164,10 +167,34 @@ self-holder records after both fixture reads. Schema version 2 and the new Task
 8 base deliberately produce a new authority ID, so the superseded approval
 cannot authorize another execution.
 
+The user separately approved V2 authority
+`4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e`
+on 2026-08-07. V2 preflight passed. Execution moved all 301 files and removed
+the empty source directories, then its second holder check called `lsof +D`
+on the now-absent `data/prices` path. `lsof` returned a usage error and the
+controller refused before opening the write transaction. Automatic recovery
+moved all 301 files back with `restore_error=null`; all 19/130/1 target rows
+were still present. Reviewed rollback restored `0/0/0` rows and emitted
+failure/rollback receipt SHAs `923c2a7c...` / `e1a43aea...`. The snapshot kept
+its exact `1e357834...` identity until verification, after which the whole V2
+temporary root was destroyed. A final native V2 preflight passed, and desktop,
+sidecar, database identities, health, and all seven saved schedule settings
+were restored. No V2 forward deletion remains.
+
+V3 requires every quiescence call to name one or more existing price trees.
+Preflight names the source tree; post-move execution and pre-restart verify name
+the quarantine tree; rollback checks every existing source/quarantine tree and
+refuses symlinks, duplicates, missing roots, or holders. The V2 source was
+replayed against a scratch post-move tree and reproduced the exact `lsof` usage
+RED. The V3 probe then passed source, quarantine, and rollback phases. Schema
+version 3 and Task 8 base `25f061b7...` create another authority; neither prior
+approval may be reused.
+
 ## Review Boundary
 
 Before separate approval, the reviewer must reconstruct every tracked SHA,
-rerun all three read-only producers, rerun `controller_probe.py`, inspect the
-controller, and verify the exact stop/start and rollback procedure in the plan
-amendment. A partial reconstruction or a matching row count without matching
-keys is not approval evidence.
+rerun all three read-only producers, reproduce the V2 post-move RED, rerun
+`controller_probe.py`, inspect all four phase-specific quiescence call sites,
+and verify the exact stop/start and rollback procedure in the plan amendment.
+A partial reconstruction or a matching row count without matching keys is not
+approval evidence.

@@ -1,6 +1,6 @@
 # EIR-006 Valuation Price Truth Evidence
 
-> **Status:** MERGED ROLLOUT REVIEW READY
+> **Status:** TASK 8 V3 MANIFEST REVIEW READY; TASK 9 BLOCKED
 >
 > **Date:** 2026-08-03
 >
@@ -1093,7 +1093,7 @@ rows in their original locations, restored `0/0/0` rows, and emitted receipt
 SHA `5a27b331c0279b00f5d43ac5d72547a6183bd60fc3d3285658d73105677cc454`.
 The exact temporary snapshot retained its reviewed
 `1e357834...` identity until the rollback was verified, then the whole v1
-quarantine was destroyed. Desktop, sidecar, and all six schedule settings were
+quarantine was destroyed. Desktop, sidecar, and all seven schedule settings were
 restored; no v1 forward deletion remains.
 
 The v2 controller makes `_connect_ro` a real context manager with an explicit
@@ -1112,22 +1112,77 @@ controller: 1,114 lines / 41,538 bytes / 0ddb451f203a274ec08c5dbba79439971f2cd07
 controller probe: 174 lines / 6,951 bytes / 9c3caca64841bbb39236d3d76fbf89f5b244f01f217d64c29a5e07bbee355bd4
 quarantine root: /mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e
 observed owners: desktop 2847946 / Electron 2848002 / sidecar+scheduler 2848089
-independent v2 review: pending
-separate v2 user approval: pending
+independent v2 review: GREEN, zero findings
+separate v2 user approval: granted with all three exact identities
 ```
 
-The v1 approval is superseded and cannot authorize v2. Task 9 remains blocked
-until independent review reconstructs the v2 packet/controller and the user
-separately names the complete v2 authority ID, packet SHA, and controller SHA.
+The v1 approval was superseded and did not authorize V2. V2 passed those two
+gates before its separately recorded execution below.
+
+### 9.2 V3 Rebuild After The Post-Move Holder-Root Refusal
+
+The user approved V2 authority `4b1d9083...e656c7`, packet SHA
+`7c887ae6...60dd`, and controller SHA `0ddb451f...5d2c` on 2026-08-07.
+Packet checksums and exact dated PIDs matched, the desktop owner stopped the
+reviewed three-process family without SIGKILL, and native preflight passed.
+
+V2 execution wrote the exact 150-record / 875,857-byte / `1e357834...`
+snapshot and moved all 301 files. It then refused before opening the DB write
+transaction. `_move_to_quarantine()` had removed the now-empty source
+`data/prices` directories, but the second `_assert_quiesced()` still called
+`lsof +D` on that absent source path. `lsof` returned its usage text on stderr,
+which the controller correctly treated as a refusal. The failure receipt says
+`moved_before_failure=301` and `restore_error=null`.
+
+Automatic recovery returned all 301 files. A direct read-only check found all
+19/130/1 rows still present. Reviewed rollback verified every file and all 150
+rows, restored `0/0/0`, and emitted failure/rollback receipt SHAs
+`923c2a7c13f014dee2198ce8a591c1290849b14b8c944df8face915019bb61a7` /
+`e1a43aead8efc4e3c4a2601ab96300ee0c70649ca2f9efef159c6cb0f1bc4321`.
+The snapshot retained its exact SHA until verification, then the exact V2
+temporary root was destroyed. A final native V2 preflight passed. The desktop
+was restarted normally; `/healthz` returned `ok`, DB identities matched, and
+all seven schedule key/value pairs matched the saved authority. No V2 forward
+deletion remains.
+
+The V2 source was then replayed against a scratch post-move fixture and
+reproduced the same usage-error RED. V3 requires an explicit nonempty tuple of
+existing price trees for every quiescence check. Preflight uses the source
+tree; execution after movement and pre-restart verify use the quarantine tree;
+rollback checks every existing source/quarantine tree and refuses symlinks,
+duplicates, missing roots, or holders. The V3 probe passed exact `19/130/1`
+scratch delete/restore, source-to-quarantine-to-source file transport, and all
+three holder phases while retaining the exact snapshot identity.
+
+All three read-only producers were rerun at V3 base `25f061b7`. Their 301-file,
+alias, raw/canonical difference, 19/130/1 row, 46-row classification, 128-row
+census, and four-row behavior authority streams are byte-identical to V2.
+Only dated result metadata and the current operational owner facts advanced.
+
+```text
+Task 8 v3 base: 25f061b7781cdc9f738a4858aa331dd10a3ef9d2
+packet SHA256SUMS SHA: 99a813e8311a639af3a45b9d1e6f37b0a97a6e40b620fcb92f42a6e96b18bd22
+authority ID: 9bfb3f2a3e377752d3105c07cf55aceb986ea094314dea8616763046a5e656c7
+controller: 1,138 lines / 42,740 bytes / 891edbe1fe0c8005f609fee2ed97403180f3498da53668da6175645c97214d37
+controller probe: 189 lines / 7,688 bytes / e200d63b951fa7b44e8b9e49a3b0b81207a025923c69d827b90b7d8afe2ee981
+quarantine root: /mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/9bfb3f2a3e377752d3105c07cf55aceb986ea094314dea8616763046a5e656c7
+observed owners: desktop 2887595 / Electron 2887650 / sidecar+scheduler 2887713
+independent v3 review: pending
+separate v3 user approval: pending
+```
+
+V1 and V2 approvals are superseded. Task 9 remains blocked until independent
+review reconstructs V3 and the user separately names its complete authority,
+packet, and controller identities.
 
 ## 10. Physical Closeout
 
-> V1 rolled back without a DB delete. V2 is blocked until the rebuilt exact
-> manifest and controller receive independent review plus separate user
+> V1 and V2 rolled back without a DB delete. V3 is blocked until the rebuilt
+> exact manifest and controller receive independent review plus separate user
 > approval.
 
 ```text
-approval reference: v1 6096b988...d0dce superseded after fail-closed rollback; v2 pending
+approval reference: v1 6096b988...d0dce and v2 4b1d9083...e656c7 superseded after fail-closed rollbacks; v3 pending
 quiesced writer proof:
 file quarantine proof:
 DB row snapshot proof:

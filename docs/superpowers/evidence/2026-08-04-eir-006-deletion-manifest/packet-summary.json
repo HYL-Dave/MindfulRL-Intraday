@@ -1,5 +1,5 @@
 {
-  "authority_id": "4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e",
+  "authority_id": "9bfb3f2a3e377752d3105c07cf55aceb986ea094314dea8616763046a5e656c7",
   "behavior_propagation": {
     "rows": 4,
     "sha256": "613024acc6568296cb798a2832fb8ca1e67fba05a9857c4e4bd5629755c556ba"
@@ -22,10 +22,10 @@
   },
   "controller": {
     "approval_environment": "ARKSCOPE_EIR006_DESTRUCTIVE_APPROVED",
-    "bytes": 41538,
-    "lines": 1114,
+    "bytes": 42740,
+    "lines": 1138,
     "path": "destructive_controller.py",
-    "sha256": "0ddb451f203a274ec08c5dbba79439971f2cd073e1ec8af2bb27398d974f5d2c"
+    "sha256": "891edbe1fe0c8005f609fee2ed97403180f3498da53668da6175645c97214d37"
   },
   "db_delete_authority": {
     "cache_classification_rows": 46,
@@ -49,7 +49,7 @@
     "total_files": 301
   },
   "product_cutover_tip": "ce88f72d9f9d710903533505371789d18cce953e",
-  "quarantine_root": "/mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e",
+  "quarantine_root": "/mnt/md0/PycharmProjects/.arkscope-eir006-quarantine/9bfb3f2a3e377752d3105c07cf55aceb986ea094314dea8616763046a5e656c7",
   "raw_comparison": {
     "apparent_db_value_diffs": 161,
     "conflicting_duplicate_keys": 58,
@@ -64,7 +64,7 @@
     "records": 150,
     "sha256": "1e3578344dfcac0e445900358265c6606150007a496a71284d87e5ae5821697c"
   },
-  "schema_version": 2,
-  "status": "READ_ONLY_MANIFEST_REBUILT_AFTER_ROLLBACK__TASK9_NOT_APPROVED",
-  "task8_base": "4955e6249f7758b136f4526c02ceecaa726535f4"
+  "schema_version": 3,
+  "status": "READ_ONLY_MANIFEST_REBUILT_AFTER_SECOND_ROLLBACK__TASK9_NOT_APPROVED",
+  "task8_base": "25f061b7781cdc9f738a4858aa331dd10a3ef9d2"
 }

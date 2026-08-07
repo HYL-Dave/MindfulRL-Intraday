@@ -102,13 +102,27 @@ def _probe_file_transport(module, scratch_root: Path) -> None:
     original_quarantine = module.QUARANTINE_ROOT
     module.QUARANTINE_ROOT = quarantine
     moved: list[str] = []
+    source_price_tree = repo / "data" / "prices"
+    quarantine_price_tree = quarantine / "files" / "data" / "prices"
     try:
+        module._assert_price_trees_unheld((source_price_tree,))
         module._move_to_quarantine(repo, rows, moved)
         if moved != list(files):
             raise AssertionError(f"unexpected move ledger: {moved}")
-        if (repo / "data" / "prices").exists():
+        if source_price_tree.exists():
             raise AssertionError("source price root remained after move")
+        try:
+            module._assert_price_trees_unheld((source_price_tree,))
+        except module.Refusal as error:
+            if "price-file holder root is unavailable" not in str(error):
+                raise
+        else:
+            raise AssertionError("absent post-move source root did not fail closed")
+        module._assert_price_trees_unheld((quarantine_price_tree,))
         module._move_back(repo, moved)
+        module._assert_price_trees_unheld(
+            (source_price_tree, quarantine_price_tree)
+        )
         for relative, payload in files.items():
             if (repo / relative).read_bytes() != payload:
                 raise AssertionError(f"restored file differs: {relative}")
@@ -154,6 +168,7 @@ def _run(repo_root: Path, scratch_root: Path) -> None:
         "db_delete_counts": deleted,
         "db_restore_counts": restored,
         "file_transport": "move_and_restore_pass",
+        "price_holder_phases": "source_then_quarantine_then_both_pass",
         "snapshot_bytes": len(snapshot),
         "snapshot_records": len(records),
         "snapshot_sha256": module._sha256_bytes(snapshot),

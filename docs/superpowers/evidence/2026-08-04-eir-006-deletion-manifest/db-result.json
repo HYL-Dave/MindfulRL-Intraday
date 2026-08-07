@@ -17,14 +17,14 @@
       "device": 2304,
       "inode": 127284871,
       "mode": "0644",
-      "mtime_ns": 1786106779024634570,
+      "mtime_ns": 1786112633346052027,
       "size": 3477532672
     },
     "stat_before": {
       "device": 2304,
       "inode": 127284871,
       "mode": "0644",
-      "mtime_ns": 1786106779024634570,
+      "mtime_ns": 1786112633346052027,
       "size": 3477532672
     }
   },
@@ -54,7 +54,7 @@
       "sha256": "a4a8d829eb08553a1223f5240de260955fc48a564f8232b943206e0bf88b39bd"
     }
   },
-  "repo_head": "4955e6249f7758b136f4526c02ceecaa726535f4",
+  "repo_head": "25f061b7781cdc9f738a4858aa331dd10a3ef9d2",
   "schema_version": 1,
   "source_identity": {
     "bytes": 11030,

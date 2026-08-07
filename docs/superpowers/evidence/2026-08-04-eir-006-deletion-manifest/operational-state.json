@@ -2,44 +2,44 @@
   "database_holders": [],
   "desktop_owner": {
     "command": "node apps/arkscope-desktop/dev.js",
-    "pid": 2847946,
-    "started": "2026-08-07T21:43:50+08:00"
+    "pid": 2887595,
+    "started": "2026-08-07T23:00:27+08:00"
   },
   "electron_owner": {
     "command": "electron .",
-    "pid": 2848002,
-    "started": "2026-08-07T21:43:51+08:00"
+    "pid": 2887650,
+    "started": "2026-08-07T23:00:28+08:00"
   },
   "market_data_files": {
     "db": {
       "device": 2304,
       "inode": 127284871,
       "mode": "0644",
-      "mtime": "2026-08-07T20:46:19.024634570+08:00",
+      "mtime": "2026-08-07T22:23:53.346052027+08:00",
       "size": 3477532672
     },
     "shm": {
       "device": 2304,
       "inode": 127283827,
       "mode": "0644",
-      "mtime": "2026-08-07T21:50:14.943776156+08:00",
+      "mtime": "2026-08-07T23:30:19.671831486+08:00",
       "size": 32768
     },
     "wal": {
       "device": 2304,
       "inode": 127283763,
       "mode": "0644",
-      "mtime": "2026-08-07T21:43:59.720521885+08:00",
+      "mtime": "2026-08-07T23:00:34.620349020+08:00",
       "size": 0
     }
   },
-  "observed_at": "2026-08-07T21:50:25.256573259+08:00",
+  "observed_at": "2026-08-07T23:30:30.782353203+08:00",
   "profile_state_db": {
     "device": 2304,
     "inode": 127284276,
     "mode": "0600",
-    "mtime": "2026-08-07T21:46:35.232263470+08:00",
-    "size": 46886912
+    "mtime": "2026-08-07T23:11:35.663754541+08:00",
+    "size": 46915584
   },
   "retired_price_file_holders": [],
   "saved_schedule_settings": {
@@ -53,15 +53,15 @@
   },
   "scheduler_owner": {
     "kind": "in-process sidecar scheduler",
-    "pid": 2848089
+    "pid": 2887713
   },
   "sidecar_owner": {
     "command": "python -m src.api",
-    "pid": 2848089,
-    "started": "2026-08-07T21:43:51+08:00"
+    "pid": 2887713,
+    "started": "2026-08-07T23:00:28+08:00"
   },
   "writer_ruling": {
-    "current_market_db_writer": "sidecar PID 2848089",
+    "current_market_db_writer": "sidecar PID 2887713",
     "old_data_consumer_count": 0,
     "old_data_writer_count": 0,
     "statement": "The live sidecar writes current SQLite domains; no current process or product path reads or repopulates the 301 retired files or the legacy fundamentals rows."

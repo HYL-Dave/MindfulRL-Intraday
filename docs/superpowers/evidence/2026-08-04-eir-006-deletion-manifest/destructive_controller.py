@@ -16,10 +16,10 @@ from pathlib import Path
 from typing import Iterable, Iterator
 
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 PRODUCT_CUTOVER_TIP = "ce88f72d9f9d710903533505371789d18cce953e"
-TASK8_BASE = "4955e6249f7758b136f4526c02ceecaa726535f4"
-AUTHORITY_ID = "4b1d9083ed054387cd00ae253ab055641fc18e55a7a4e718534fb25a23cf413e"
+TASK8_BASE = "25f061b7781cdc9f738a4858aa331dd10a3ef9d2"
+AUTHORITY_ID = "9bfb3f2a3e377752d3105c07cf55aceb986ea094314dea8616763046a5e656c7"
 APPROVAL_ENV = "ARKSCOPE_EIR006_DESTRUCTIVE_APPROVED"
 EXPECTED_REPO_ROOT = Path("/mnt/md0/PycharmProjects/ArkScope")
 PACKET_RELATIVE = Path(
@@ -539,15 +539,26 @@ def _lsof_records(arguments: list[str]) -> list[str]:
     )
 
 
-def _assert_quiesced(repo_root: Path) -> None:
+def _assert_price_trees_unheld(price_trees: tuple[Path, ...]) -> None:
+    if not price_trees:
+        raise Refusal("no price-file holder root was provided")
+    if len(set(price_trees)) != len(price_trees):
+        raise Refusal("duplicate price-file holder root")
+    for price_tree in price_trees:
+        if price_tree.is_symlink() or not price_tree.is_dir():
+            raise Refusal(f"price-file holder root is unavailable: {price_tree}")
+        price_holders = _lsof_records(["+D", str(price_tree)])
+        if price_holders:
+            raise Refusal(f"legacy price-file holders remain: {price_holders}")
+
+
+def _assert_quiesced(repo_root: Path, *, price_trees: tuple[Path, ...]) -> None:
     database = repo_root / "data" / "market_data.db"
     profile = repo_root / "data" / "profile_state.db"
     holders = _lsof_records([str(database), str(profile)])
     if holders:
         raise Refusal(f"database holders remain: {holders}")
-    price_holders = _lsof_records(["+D", str(repo_root / "data" / "prices")])
-    if price_holders:
-        raise Refusal(f"legacy price-file holders remain: {price_holders}")
+    _assert_price_trees_unheld(price_trees)
     processes = subprocess.run(
         ["ps", "-eo", "pid=,args="],
         check=True,
@@ -695,7 +706,7 @@ def _preflight(repo_root: Path, *, require_quarantine_absent: bool) -> dict[str,
     packet_root = _packet_root(repo_root)
     _verify_packet(packet_root)
     authorities = _load_authorities(packet_root)
-    _assert_quiesced(repo_root)
+    _assert_quiesced(repo_root, price_trees=(repo_root / "data" / "prices",))
     _verify_schedule_settings(repo_root)
     _verify_files(repo_root, authorities["files"], location="source")
     with _connect_ro(repo_root / "data" / "market_data.db") as connection:
@@ -873,7 +884,10 @@ def _execute(repo_root: Path, token: str | None) -> None:
             raise Refusal("snapshot bytes differ immediately before execution")
         _write_exclusive(snapshot_path, snapshot)
         _move_to_quarantine(repo_root, authorities["files"], moved)
-        _assert_quiesced(repo_root)
+        _assert_quiesced(
+            repo_root,
+            price_trees=(QUARANTINE_ROOT / "files" / "data" / "prices",),
+        )
         deleted = _delete_rows(repo_root, authorities)
         db_committed = True
         receipt = {
@@ -975,7 +989,14 @@ def _rollback(repo_root: Path, token: str | None) -> None:
     _require_authority_identity()
     _verify_repo(repo_root)
     _verify_database_identity(repo_root)
-    _assert_quiesced(repo_root)
+    source_price_tree = repo_root / "data" / "prices"
+    quarantine_price_tree = QUARANTINE_ROOT / "files" / "data" / "prices"
+    if source_price_tree.is_symlink() or quarantine_price_tree.is_symlink():
+        raise Refusal("rollback price-file holder root may not be a symlink")
+    rollback_price_trees = tuple(
+        path for path in (source_price_tree, quarantine_price_tree) if path.exists()
+    )
+    _assert_quiesced(repo_root, price_trees=rollback_price_trees)
     packet_root = _packet_root(repo_root)
     _verify_packet(packet_root)
     authorities = _load_authorities(packet_root)
@@ -1017,7 +1038,10 @@ def _verify_deleted(
     _verify_repo(repo_root)
     _verify_database_identity(repo_root)
     if require_quiesced:
-        _assert_quiesced(repo_root)
+        _assert_quiesced(
+            repo_root,
+            price_trees=(QUARANTINE_ROOT / "files" / "data" / "prices",),
+        )
     else:
         _assert_runtime_active()
     _verify_schedule_settings(repo_root)
