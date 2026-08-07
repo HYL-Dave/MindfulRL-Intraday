@@ -1214,7 +1214,7 @@ final exact readback:
   DB device/inodes, ticker aliases, and all seven schedule key/value pairs match
 canonical admission:
   product cutover remains 4581 seen / 4509 passed / 72 skipped / 0 non-passing
-  Task 9 changed no tracked product/test bytes; the reviewed Task 8 census owner remains 2 passed
+  Task 9 changed no tracked product bytes; the census-owner F1 correction below preserves all node IDs
 read-only production truth:
   GET /market-data/status returned 200, fundamentals projection 6 rows/6 tickers,
   financial_cache 27 rows, fundamentals sync null, and prices authority local
@@ -1240,6 +1240,45 @@ approved quarantine root. It was intentionally destroyed with the rollback
 snapshot after successful `post-restart`; no durable receipt SHA is claimed.
 The controller's four exit-zero states plus the independent exact-path and
 exact-row readback above are the closeout admission evidence.
+
+### 10.1 Closeout Review F1: Git-Crypt Census Visibility
+
+The Task 8 statement that the two census-owner nodes passed was measured in a
+locked worktree. Closeout review reran the same file in the unlocked main root
+and correctly obtained `1 failed / 1 passed`: plaintext exposed an
+`ibkr_fundamentals` hit in
+`data_sources/PAID_SUBSCRIPTION_EVALUATION.md`, while the locked worktree had
+shown only ciphertext. The fail-closed classifier rejected that previously
+unseen path.
+
+The tracked git-crypt census contains exactly three paths:
+
+```text
+data_sources/DATA_SOURCES_EVALUATION.md
+data_sources/IBKR_INVESTOR_DATA_VALUE.md
+data_sources/PAID_SUBSCRIPTION_EVALUATION.md
+```
+
+Only `PAID_SUBSCRIPTION_EVALUATION.md` contains an EIR-006 search-pattern hit
+when unlocked. It is a dated 2025-12-26 provider evaluation that explicitly
+describes the referenced path as absent and non-runnable, so the bounded fix
+classifies that path as `historical_reference`. No runtime consumer, deletion
+target, node ID, or product behavior changes.
+
+This corrects the earlier environment-independent `2 passed` implication. A
+future repository census must either run against an unlocked tree or enumerate
+every git-crypt path from `.gitattributes`, mark ciphertext as unsearchable,
+and assign each such path an explicit path-level disposition. A locked grep is
+not evidence that encrypted tracked files contain no matching text.
+
+The unlocked owning file reproduced RED as `1 failed / 1 passed`, with the
+unclassified historical path as the sole failure. After adding that one path
+to `_HISTORICAL`, the same command returned `2 passed`. Deterministic full
+collection remains exactly `4581` nodes at
+`6e4994bb664501cff75cb06dbad18db82ba68cbbe4b2b26c4d480250d7c4699f`;
+the correction adds, removes, and renames no test node. An initial collection
+invocation omitted the pinned reporter `PYTHONPATH` and failed before plugin
+loading or collection; it produced no report and is not identity evidence.
 
 ## 11. Honesty Ledger
 
