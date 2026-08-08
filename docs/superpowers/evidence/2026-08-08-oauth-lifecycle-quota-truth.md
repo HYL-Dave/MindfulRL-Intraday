@@ -1,6 +1,6 @@
 # OAuth Lifecycle and Subscription Usage Truth Evidence
 
-> **Status:** TASK 4 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 5
+> **Status:** TASK 5 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 6
 >
 > **Date:** 2026-08-08
 >
@@ -494,3 +494,116 @@ account-snapshot invalidation match the reviewed plan, full/focused collection
 identities remain exact, and the committed focused runtime is fully GREEN.
 Task 5 passive Claude `RateLimitEvent` capture and every later task remain
 unstarted and unauthorized until independent Task 4 review.
+
+## 23. Task 5 RED
+
+The one broad ignore node evolved into exactly the three reviewed IDs. Before
+product implementation, the exact three-node run ended `2 failed / 1 passed`:
+the no-event/no-probe contract was already GREEN, while both event-persistence
+owners failed only because `read_account_snapshot(...)` returned `None`. There
+was no import, fixture, SDK-constructor, SQLite, provider, or environment
+failure. Full/focused collect-only already matched the final reviewed identities
+`4607/5180502f...` and `272/6c706f9d...`, proving the required `+3/-1` ledger.
+
+The RED fixtures used real installed SDK dataclasses but a local fake `query()`.
+They prescribed a typed five-hour observation, no-create absence, and raw
+account/token/email/UUID/session/nested sentinels that must not survive into the
+stored model.
+
+## 24. Task 5 implementation
+
+Product/test family `296024b988bdf28940fc7752ec5b99c1576269e0`
+implements:
+
+- passive handling of SDK `RateLimitEvent` while ordinary `StreamEvent` and all
+  unrelated messages remain non-terminal ignores;
+- closed status and window types, bounded utilization, integer reset times, and
+  a bounded stable-code overage reason, without reading `RateLimitInfo.raw`,
+  event UUID, or session id;
+- a credential-bound SHA-256 fingerprint, required provider/auth/observation
+  metadata, latest-only profile-state persistence, and an empty typed usage
+  summary rather than invented token activity;
+- no-create absence: a stream without a rate-limit event performs exactly one
+  fake model request and creates neither the DB nor its parent directory; and
+- factory injection of the existing local observation store without changing
+  provider selection or execution transport. Telemetry validation/write
+  failure never fails the user's model request and never replaces absence with
+  zero.
+
+Post-commit source identities are:
+
+| Path | Lines | SHA-256 |
+|---|---:|---|
+| `src/auth_drivers/oauth_status.py` | 600 | `6b8bd7c9b726b4e53a90ff50bb91a5a80807d0cf1c74230ce1ece1d0a278ef1c` |
+| `src/auth_drivers/claude_code_sdk_driver.py` | 849 | `cb04433a8db12402b56120aa3432ea7ed0a1615262e29e1c2ca53f7652052ead` |
+| `src/auth_drivers/factory.py` | 160 | `c73d08e05092cc8864d7c43ada115842f9475c9eb2433bf3dbe3c8ba4ac10409` |
+| `tests/test_claude_code_sdk_driver.py` | 1,025 | `5f1cdbf4902890b4d1fe61573377bf0334c7f51691a2a9c4ceb0259f06f77c2d` |
+| `tests/test_auth_factory.py` | 183 | `b27e8faf183e6064dd6e34545b232fca9aa85ffc639611939d17980e606ad407` |
+
+## 25. Task 5 verification
+
+| Collection/run | Nodes | Node-stream SHA-256 | Report SHA-256 | Transcript SHA-256 |
+|---|---:|---|---|---|
+| backend full collect-only | 4,607 | `5180502f7dfe577ca758db5fb8ebdfe9ca282730a8976adcf65b7ab19c1c2d74` | `cd82864fb24cd088e1a4e863a42cf9084def3ca0c5a87a0baac82b9b420a797e` | `afed8c8eed13b4b633e935503e20fe6bbcc69ffdc0fd56ed0009525e7e4f3402` |
+| backend focused collect-only | 272 | `6c706f9d524ba65adc9b143479c0477516a2f2bd16a766a28ef27a46f2a8c4a4` | `7c8c76b21d5250049aaebdaf090529dedac403994d48fe50477dfddb676650f8` | `b3b085f7c3d6102ca96d08217322f44231be9d3d5872a4880fb0e701314bff00` |
+| backend focused runtime | 272 | same focused stream | `cfc220a80c01698a681ee3496150edeebb05f20837a790d2a664cc132de14608` | `0afc4b11c217bfa8b2b74a376d1532ed77df0999bbbc5189cb040cef095b1382` |
+
+The committed focused runtime ended `272 passed in 12.75s`, with all 272 nodes
+seen, zero non-passing nodes, and exit zero. Its exact file set was:
+
+```text
+tests/test_model_credentials_characterization.py
+tests/test_chatgpt_oauth_login.py
+tests/test_chatgpt_oauth_driver.py
+tests/test_chatgpt_oauth_manager.py
+tests/test_chatgpt_oauth_routes.py
+tests/test_oauth_import_route.py
+tests/test_claude_code_sdk_driver.py
+tests/test_credential_env_routes.py
+tests/test_oauth_lifecycle_status.py
+tests/test_oauth_cross_process_lock.py
+tests/test_subscription_account_usage.py
+```
+
+The exact pytest invocation used those eleven paths in the displayed order,
+with `PYTHONPATH=/tmp/eir002-green-baseline:${PYTHONPATH:-}` and
+`PRICE_TRUTH_TIER_REPORT=/tmp/arkscope-oauth-task5-post.AyW8Q7/focused-runtime.json`
+exported before:
+
+```text
+python -m pytest -q -p arkscope_eir002_reporter \
+  tests/test_model_credentials_characterization.py \
+  tests/test_chatgpt_oauth_login.py \
+  tests/test_chatgpt_oauth_driver.py \
+  tests/test_chatgpt_oauth_manager.py \
+  tests/test_chatgpt_oauth_routes.py \
+  tests/test_oauth_import_route.py \
+  tests/test_claude_code_sdk_driver.py \
+  tests/test_credential_env_routes.py \
+  tests/test_oauth_lifecycle_status.py \
+  tests/test_oauth_cross_process_lock.py \
+  tests/test_subscription_account_usage.py
+```
+
+The shared DTO/driver collateral command was exactly:
+
+```text
+python -m pytest -q \
+  tests/test_claude_code_sdk_driver.py \
+  tests/test_auth_factory.py \
+  tests/test_subscription_account_usage.py \
+  tests/test_oauth_lifecycle_status.py
+```
+
+It ended `91 passed`. `py_compile`, `git diff --check`, and all 37 protected
+path/blob/SHA/size tuples passed. Tests used only temporary observation DBs and
+fake SDK streams. No live provider request, real token store/profile DB,
+keyring, production data, scheduler, frontend, or Tranche B owner was touched.
+
+## 26. Task 5 disposition
+
+Task 5 is complete at `296024b9`. Passive Claude quota evidence now updates the
+same bounded credential snapshot only when a normal stream already supplies an
+event; missing evidence remains unknown and causes no probe. Exact final backend
+identities match the reviewed plan. Task 6 Provider Settings UI remains
+unstarted and unauthorized until independent Task 5 review.
