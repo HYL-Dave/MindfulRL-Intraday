@@ -1,6 +1,6 @@
 # OAuth Lifecycle and Subscription Usage Truth Evidence
 
-> **Status:** TASK 1 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 2
+> **Status:** TASK 2 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 3
 >
 > **Date:** 2026-08-08
 >
@@ -220,5 +220,94 @@ performed.
 
 Task 1 is complete at `d4adb6e3`. The reviewed full/focused identities match
 exactly, the lifecycle/store family is GREEN, and protected Tranche B/model
-routing/agent/Settings owners are unchanged. Task 2 cross-process locking and
-all later tasks remain unauthorized until independent Task 1 review.
+routing/agent/Settings owners are unchanged. At Task 1 close, Task 2 and all
+later tasks remained unauthorized. Independent review later cleared that gate;
+Sections 11-14 record the authorized Task 2 work.
+
+## 11. Task 2 RED
+
+`tests/test_oauth_cross_process_lock.py` added exactly the four reviewed node
+IDs and used spawned Python processes, temporary plaintext stores, filesystem
+barriers, and bounded joins. Before the product edit all four failed:
+
+- both processes loaded the same expired record and attempted the one-use
+  rotating grant; one succeeded and one received the expected invalid-grant
+  family error;
+- delete removed the credential and old token while refresh was paused, after
+  which the late refresh wrote a new token and reproduced resurrection;
+- the bounded timeout node found no timeout/error-code contract on the old
+  process-local context manager; and
+- the release node found neither the bounded contention result nor a lock file
+  whose descriptor lifecycle could be proved.
+
+There was no collection, provider, credential, keyring, home-directory, or
+fixture-setup wrong RED. The first two failures directly established the
+cross-process mutation defect rather than relying on the absent timeout API.
+
+## 12. Task 2 implementation
+
+Product/test family `f9fd8a1dd0adf8bcd74f4185e9e165817a02a7fd`
+changes only `src/auth_drivers/chatgpt_oauth_login.py` and the new four-node test
+file. The shared `oauth_credential_lock` now:
+
+- acquires the existing per-credential thread lock and one bounded POSIX
+  `flock` before yielding;
+- uses `ARKSCOPE_LOCK_DIR/oauth_credentials` when configured, otherwise
+  `<profile_state.db parent>/locks/oauth_credentials`;
+- names the file only with a SHA-256 credential digest and enforces directory
+  mode `0700`, regular non-symlink file mode `0600`, close-on-exec, and
+  no-follow open semantics;
+- returns typed `ChatGPTOAuthLoginError(error_code="oauth_lock_busy",
+  reauth_required=False)` on thread/file timeout, missing `fcntl`, invalid path,
+  open/fd, or flock failure; and
+- unlocks and closes the fd, then releases the thread lock, on normal return,
+  body exception, or acquisition failure. It never continues unlocked.
+
+The existing refresh, in-place re-login completion, and credential-delete
+paths already call this one context manager, so the family upgrades all three
+without adding another lock owner. Browser wait and authorization-code exchange
+remain outside the critical section.
+
+Post-commit source identities are:
+
+| Path | Lines | SHA-256 |
+|---|---:|---|
+| `src/auth_drivers/chatgpt_oauth_login.py` | 730 | `51a2ce52eb6fee60c62c556e162cd7df776d36a8ef49d1d5e4c59e6f9d5fa07f` |
+| `tests/test_oauth_cross_process_lock.py` | 389 | `4efb997a8a4e43381b1c78bd74137b3aa929b91c8f529d04f3e33a26fcc9b555` |
+
+## 13. Task 2 verification
+
+| Collection/run | Nodes | Node-stream SHA-256 | Report SHA-256 | Transcript SHA-256 |
+|---|---:|---|---|---|
+| backend full collect-only | 4,596 | `b9056110d25f64dc399e176502871a118b091bd4c3a4714933cb348dbc1d7b40` | `4385c884d9aec9d9b8de3cd15ce61fd8cc8304c18a46a691c754698a5836922b` | `ea35b3357aa22e3a3ad1e2ea2bbc29f09946727899388fa543c1565fa41f0761` |
+| backend focused collect-only | 261 | `a4b9af293b9c17c9bb93e82c8b99b5a181f06c2ebb9ea023381013998904dca7` | `41d862a6349b4016f4da84dc14998c49cb110e97a12e3242ba6570e5b1a8875d` | `c72060e47234b1087ee1b27df0debf4526e663d657b99d6363fbf365e58b808b` |
+| backend focused runtime | 261 | same focused stream | `dc46b448330d021b67927c2c3dc291ef430f935abb1217ca95fb3d2b54ba4e1b` | `e1ccae927488612c21069ec2be7f761a8c34ad2ef6619925f835d43a60753c35` |
+
+The post-commit focused runtime ended `261 passed in 10.45s`, with all 261
+nodes seen, zero non-passing nodes, and exit zero. The existing login, manager,
+and route owners plus the new lock file also completed `92 passed`; the owning
+file alone completed `4 passed`. `py_compile` and `git diff --check` passed.
+
+A separate persisted process proof at `/tmp/arkscope-oauth-task2/process-proof`
+contains 34 files with manifest SHA-256
+`14eb37ef95af382cfe4b160a158b5de993467173be22876fec120078bf5a13a0`.
+Its reporter/transcript SHAs are respectively
+`84a58b219834822d9f9004ede90c9a2da46c3842d7d27abb7805dc229f7d0043`
+and `7d1edeb663b168ffb8481f919710ad4f079e008508540de7d098106a7bb9ce29`.
+The raw results show both refresh workers succeeded with one grant attempt;
+delete and refresh both succeeded with final token storage `{}`; the contender
+returned `oauth_lock_busy` without entering; and another live process acquired
+the lock after both normal and raised-body exits while the prior process
+reported zero matching open fds.
+
+All values in that packet are obvious test sentinels. No provider, real token
+store, keyring, home directory, profile, production DB, scheduler, frontend, or
+account adapter was touched. All 37 protected paths remain byte-identical to
+`0753947e`.
+
+## 14. Task 2 disposition
+
+Task 2 is complete at `f9fd8a1d`. The exact staged identities and two-process
+behavior match the reviewed plan, lock failures are typed and fail closed, and
+the worktree returned clean. Task 3 account adapter/store/API and all later
+tasks remain unauthorized until independent Task 2 review.
