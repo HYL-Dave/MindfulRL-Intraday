@@ -1,7 +1,7 @@
 # Provider Evaluation Hygiene and Tiingo Tail Retirement Evidence
 
-> **Status:** TASK 0 COMPLETE - INDEPENDENT TASK 0 REVIEW REQUIRED;
-> TASK 1 IS NOT AUTHORIZED
+> **Status:** TASK 1 COMPLETE - INDEPENDENT TASK 1 REVIEW REQUIRED;
+> TASK 2 IS NOT AUTHORIZED
 >
 > **Date:** 2026-08-09
 > **Task 0 tip before evidence:** `a9c702626aed82e2f08700aefa05ae2495408685`
@@ -177,11 +177,129 @@ the runs.
 
 - Design review: GREEN at `db900ab8`.
 - Plan amendment focused review: GREEN at `a9c70262`.
-- Task 0 evidence review: pending.
-- Task 1: not started and not authorized.
-- Product/test/config deletion: not started.
+- Task 0 evidence review: GREEN at `8c47e994`.
+- Task 1 implementation commit: `5168603e39df77f35e2849177e92954faba944eb`.
+- Task 1 evidence review: pending.
+- Task 2: not started and not authorized.
+- Rate-family and Tiingo product/config deletion: not started.
 - Final native `4488 passed / 39 skipped / 0 failed` admission: not run; it is a
   post-cutover Task 4 gate and cannot be substituted by Task 0 collect-only.
 - Merge: not attempted or authorized.
 
 No partial or projected stream in this document is called a passing runtime.
+
+## 8. Task 1 - complete January-family retirement
+
+Task 1 used the single-use root
+`/tmp/provider-smoke-hygiene-task1-8c47e994`. Its recursive `SHA256SUMS`
+contains `86` entries and has SHA-256
+`28bf3b582ea59d9c32ab37b6e32e6c24b188ff1d6bf46e59771cd7426e0ffc87`.
+
+### 8.1 Exact deletion ledger
+
+The deletion input was reconstructed directly from commit `a8970e64` before any
+edit:
+
+```text
+15 paths
+2fff01e35f26d25c22ece520b491110b0066cf6fdccf31506fadab9f34fb30f2
+```
+
+`git rm` removed exactly those paths. No content was moved to `tests/live`, no
+skip/xfail replacement was added, and no sixteenth path was deleted. Immediately
+after `git rm`, an informational command inspected the unstaged diff and printed
+zero because `git rm` had already staged the deletions. That output was rejected;
+the staged deletion stream was then reconstructed, compared byte-for-byte with
+the pre-edit stream, and admitted only after reproducing the exact count and hash
+above.
+
+Implementation commit `5168603e` contains exactly `19` paths: the `15` deletions,
+new `tests/live/smoke_yfinance.py`, and the three reviewed owner updates. It is
+`+167/-5587` and contains no current provider implementation change.
+
+### 8.2 Manual yfinance contract
+
+The replacement is a newly written operator CLI rather than moved January code:
+
+```text
+tests/live/smoke_yfinance.py
+157 lines / 5,049 bytes
+SHA-256 2bf507bfe657613c344ae71f195f370edad14f887fa884bd965dc58998a396cd
+```
+
+AST verification proved:
+
+- no module-level yfinance import and no pytest-shaped function;
+- `parse_args` precedes the in-function yfinance import, which precedes
+  `yf.download`;
+- period and interval values are closed choices;
+- required fields are exactly Open, High, Low, Close, and Volume; and
+- response validation requires a non-empty table, parseable strictly ordered
+  timestamps, one unambiguous value per field, and a finite latest close.
+
+`--help` passed with a sentinel `yfinance.py` that raises on import. Missing
+ticker, invalid ticker, and invalid period each returned exit `2` under the same
+sentinel, proving those paths do not import yfinance or make a request. Compile
+output was redirected outside the repository. No valid ticker execution occurred.
+
+The live README now records the exact invocation, manual/public-network boundary,
+and current Yahoo/yfinance terms-and-limits prerequisite. The CLI suppresses
+provider stdout/stderr, never prints raw exceptions, cookies, headers, or cache
+contents, and returns non-zero for import, request, empty, malformed, or invalid
+responses.
+
+### 8.3 Current references and census ownership
+
+`docs/data/IBKR_NEWS_API_LIMITATIONS.md` now points Finnhub and Alpha Vantage
+verification at surviving product adapters rather than deleted January scripts.
+The EIR-006 census owner:
+
+- removed `tests/test_ibkr_fundamentals.py` from `_TEST_FIXTURES`;
+- classified this slice's design, plan, and evidence as historical path-evidence;
+- retained both existing node IDs and every other classification; and
+- changed from the Task 0 expected `205 passed / 1 failed` RED to `206 passed`.
+
+All 30 protected current provider/product owners remained byte-identical to
+`4ca66f0b373031fa64c73c537575a8d9fc25bba4fec663522cca59ed766b2fd2`.
+
+### 8.4 Collection and focused runtime
+
+Post-cutover collect-only report SHA-256 is
+`9740a9edf8742016ffa20d4fe5845c8e7867c66032c61e03c0245950d2e068a5`;
+transcript SHA-256 is
+`a12d61ecc6699a752bd469155101926a0acbdad5cd3717912102331635a09e08`.
+It completed with exit `0`, `4561` collected IDs, and `0` seen IDs:
+
+```text
+stage collection 4561 / dd127ce5dd34249a364b6a7965517aac66492b3d044ea8cc21e79a9706e58620
+base-only IDs   46 / bb23dd1d6c5415cf5043767bb72c1137dd6d6b897e513984a6c3e590d4645e4a
+tip-only IDs     0 / e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+tests/live IDs   0 / e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+```
+
+The 46-ID difference is byte-identical to the Task 0 January-node stream.
+
+The same reviewed 206-node retained owner set then ran under the native wrapper
+with only an empty `data/` marker:
+
+```text
+206 collected / 206 seen / 206 passed / 0 non-passing
+```
+
+Reporter SHA-256 is
+`b63465735fbe89d4433069afbb7afcbe2dd332558b70022fbfa1f84efd3e67e1`;
+transcript SHA-256 is
+`ce1c38163dcf6dfbce9f4e71c5afdfa41f7fb458c3fc192eaaa24be6c4491d7f`.
+`data/` remained empty and was removed; `src/data` remained absent.
+
+### 8.5 No-provider and unfinished-work boundary
+
+Task 1 executed no January file, rate-curve test, Tiingo diagnostic, or valid
+yfinance ticker request. Collection had `seen=0`; focused runtime included only
+the reviewed fake/local retained owner set. No credential, comparison output,
+cookie, timezone cache, yfinance artifact, repository data file, or production
+state was created or changed. Both worktrees were clean after implementation.
+
+Task 2 rate-family deletion, Task 3 Tiingo executable/config cutover, final
+`4527` collection, and native `4488 passed / 39 skipped / 0 failed` admission have
+not run. Task 1 evidence review is the only next gate.
