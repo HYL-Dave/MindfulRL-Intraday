@@ -1,7 +1,7 @@
 # Provider Evaluation Hygiene and Tiingo Tail Retirement Evidence
 
-> **Status:** TASK 1 COMPLETE - INDEPENDENT TASK 1 REVIEW REQUIRED;
-> TASK 2 IS NOT AUTHORIZED
+> **Status:** TASK 2 COMPLETE - INDEPENDENT TASK 2 REVIEW REQUIRED;
+> TASK 3 IS NOT AUTHORIZED
 >
 > **Date:** 2026-08-09
 > **Task 0 tip before evidence:** `a9c702626aed82e2f08700aefa05ae2495408685`
@@ -179,9 +179,10 @@ the runs.
 - Plan amendment focused review: GREEN at `a9c70262`.
 - Task 0 evidence review: GREEN at `8c47e994`.
 - Task 1 implementation commit: `5168603e39df77f35e2849177e92954faba944eb`.
-- Task 1 evidence review: pending.
-- Task 2: not started and not authorized.
-- Rate-family and Tiingo product/config deletion: not started.
+- Task 1 evidence review: GREEN at `ec140ae1`.
+- Task 2 implementation commit: `7f68f1fdd71225e889eb01e74622420fb288ba64`.
+- Task 2 evidence review: pending.
+- Tiingo product/config deletion: not started or authorized.
 - Final native `4488 passed / 39 skipped / 0 failed` admission: not run; it is a
   post-cutover Task 4 gate and cannot be substituted by Task 0 collect-only.
 - Merge: not attempted or authorized.
@@ -303,3 +304,104 @@ state was created or changed. Both worktrees were clean after implementation.
 Task 2 rate-family deletion, Task 3 Tiingo executable/config cutover, final
 `4527` collection, and native `4488 passed / 39 skipped / 0 failed` admission have
 not run. Task 1 evidence review is the only next gate.
+
+## 9. Task 2 - unconsumed option-rate family retirement
+
+Task 2 used the single-use root
+`/tmp/provider-smoke-hygiene-task2-ec140ae1`. Its recursive `SHA256SUMS`
+contains `81` entries and has SHA-256
+`e7a6c7c5c40deba873291695d871a410a8bbefff8c2ce2bf9dee42c9201ac447`.
+
+### 9.1 Pre-cutover consumer and node proof
+
+The current post-Task-1 tree was recollected before edits. Reporter SHA-256 is
+`9740a9edf8742016ffa20d4fe5845c8e7867c66032c61e03c0245950d2e068a5`;
+the new transcript SHA-256 is
+`7388ee177ab62c2b260a58de15e9640fcc95874ec13f64449100ecc71bc1c2b6`.
+It completed collect-only with `4561` collected, `0` seen, and exit `0`:
+
+```text
+stage collection 4561 / dd127ce5dd34249a364b6a7965517aac66492b3d044ea8cc21e79a9706e58620
+rate family       34 / 3d51583972d7d5172fc5cf53be569469bfe192800a07d097ef9f81cd7a32ad21
+```
+
+The 34-node stream is byte-identical to the independently reviewed Task 0
+stream. An uncapped tracked-Python symbol/import census found only these four
+paths:
+
+```text
+src/options_math/__init__.py
+src/options_math/option_pricing.py
+src/options_math/rate_curve.py
+tests/test_rate_curve.py
+```
+
+There was no fifth product/test consumer. In particular,
+`src/tools/options_tools.py` retains the caller-supplied `risk_free_rate`
+contract and imports only surviving pure pricing functions. The old rate tests
+were not executed: six of their nodes could query Yahoo without a provider fake,
+so collection plus complete consumer census is the truthful retirement RED.
+
+### 9.2 Exact no-tail cutover
+
+Implementation commit `7f68f1fdd71225e889eb01e74622420fb288ba64`
+changes exactly four paths (`+1/-673`):
+
+- deletes `src/options_math/rate_curve.py` and `tests/test_rate_curve.py`;
+- removes only the retired rate exports from `src/options_math/__init__.py`; and
+- removes `get_risk_free_rate`, its memory/disk cache helpers, Yahoo import path,
+  and now-unused `Path`/`Tuple` imports from `option_pricing.py`.
+
+No constant replacement, shim, deprecated export, optional import, or archived
+code tail remains. Pure Black-Scholes/Bjerksund-Stensland pricing and explicit
+caller-provided rate inputs are unchanged. This retirement also does not reject
+future options valuation: a provider-supplied estimate may be designed later
+against then-current evidence, but it is a new capability contract rather than
+a reason to retain this unconsumed implementation.
+
+### 9.3 Final collection and surviving option owners
+
+Post-cutover collect-only reporter SHA-256 is
+`b2f1539d751614942b45b15d5366383c3d7a1880adcfe3fcedb7b49d1406cc46`;
+transcript SHA-256 is
+`8c1c41ec0e24b1b9f439c52457d32e455aa0ba3739e281351fc4e20d53161eca`.
+It completed with exit `0`, `4527` collected IDs, and `0` seen IDs:
+
+```text
+final collection 4527 / 4eeb117804ad874c83ffe4c04fd25ecd4de4f460801bfbf95d15c1406f32455d
+pre-only IDs       34 / 3d51583972d7d5172fc5cf53be569469bfe192800a07d097ef9f81cd7a32ad21
+post-only IDs       0 / e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+```
+
+The final stream is byte-identical to the Task 0 preconstructed authority, and
+the pre-only stream is byte-identical to `tests/test_rate_curve.py`'s 34 IDs.
+
+The two surviving option owner files then ran through the native wrapper:
+
+```text
+75 collected / 75 seen
+74 passed / 1 skipped / 0 non-passing
+collection SHA-256 b710ec5c6d50f541fed94994e863a1e2feaf0ec87aeb11c6e3a98eb4e2da099f
+```
+
+Reporter SHA-256 is
+`250a7167990ce3dbfebbf33237f3a68edd0c32396efc2371d63a1231ba2cbdc4`;
+transcript SHA-256 is
+`f7ca1d1ad5633ef7181816d1323b98cb0eec5f6e27b4962d11ab45c335a637e3`.
+
+### 9.4 Static and execution boundary
+
+The post-cutover retired-symbol census across tracked Python is the empty
+stream. Current options code and the surviving tests contain no retired symbol,
+`rate_curve` import,
+`risk_free_rate.json` path, or yfinance import. `src/options_math` compiled with
+its bytecode redirected to the external artifact root; `git diff --check`
+passed. The implementation worktree was clean after commit, with no repository
+artifact or data path created.
+
+Task 2 issued no provider request and received no credential. Collect-only had
+`seen=0`; the surviving option owners are pure/local tests and the only live
+Yahoo path under this slice remains the explicit, non-collected manual smoke
+created in Task 1, which was not run. Task 3 Tiingo cutover, final native
+`4488 passed / 39 skipped / 0 failed` admission, and merge have not run. Task 2
+evidence review is the only next gate.
