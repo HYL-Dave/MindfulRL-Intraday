@@ -1,6 +1,6 @@
 # OAuth Lifecycle and Subscription Usage Truth Evidence
 
-> **Status:** TASK 2 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 3
+> **Status:** TASK 3 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 4
 >
 > **Date:** 2026-08-08
 >
@@ -310,4 +310,99 @@ account adapter was touched. All 37 protected paths remain byte-identical to
 Task 2 is complete at `f9fd8a1d`. The exact staged identities and two-process
 behavior match the reviewed plan, lock failures are typed and fail closed, and
 the worktree returned clean. Task 3 account adapter/store/API and all later
-tasks remain unauthorized until independent Task 2 review.
+tasks remained unauthorized until independent Task 2 review. That dated gate
+was later cleared; Sections 15-18 record the authorized Task 3 work.
+
+## 15. Task 3 RED
+
+`tests/test_subscription_account_usage.py` added exactly the nine reviewed
+adapter/store/route node IDs. An initial fixture transcription used an invalid
+f-string and failed during collection; that wrong RED was rejected and the
+fixture was corrected before any product edit or accepted RED claim.
+
+The corrected pre-product run collected all nine nodes and failed all nine for
+the intended absent Task 3 contract: the bounded Codex adapter, typed account
+snapshot DTO/store methods, sync service, and cached/sync routes did not yet
+exist. There was no collection, SQLite, fixture-date, network, credential,
+keyring, home-directory, or real-profile wrong RED.
+
+All protocol fixtures are local executable children with obvious sentinel
+tokens and account identifiers. They assert the exact initialize, external
+token login, `account/read`, `account/rateLimits/read`, and
+`account/usage/read` sequence and reject any thread/turn operation.
+
+## 16. Task 3 implementation
+
+Product/test family `f1eec320df960e0249eff998838254b6e8a16876`
+implements:
+
+- closed typed account, rate-limit, credit, spend-control, and usage DTOs plus
+  one latest-only `oauth_account_snapshot` row per credential;
+- no-create/query-only cached reads and atomic writes containing only
+  allowlisted non-secret fields, `observed_at`, source, and a
+  credential-bound account fingerprint;
+- a Codex app-server adapter pinned to exact CLI version `0.147.0`, with an
+  isolated temporary `CODEX_HOME`, a closed environment allowlist, bounded
+  JSONL request IDs, response and output limits, timeout, and process-group
+  cleanup on every exit;
+- rejection of unexpected server requests and all thread/turn methods, without
+  starting a model turn;
+- local cached GET and explicit mutating sync POST routes, while the existing
+  credential inventory GET remains local-only; and
+- per-credential backend single-flight so concurrent sync callers share one
+  adapter execution.
+
+The locally generated `0.147.0` protocol schema shows that `account/read`
+returns account kind/email/plan but no raw account identifier. Same-account
+validation therefore compares token-store account metadata with the ID-token
+account claim. Only the resulting credential-bound SHA-256 fingerprint leaves
+the adapter; raw account ID, token, email, fixture sentinel, stdout, and stderr
+are neither returned nor persisted. This is the actual verified boundary, not
+a claim that `account/read` supplies an identifier.
+
+Current sync failure, account mismatch, unsupported protocol/version, malformed
+response, and timeout preserve the last good snapshot and its observation
+time. Unsupported auth mode is rejected before token loading or child launch.
+Missing cached state remains typed unknown; it does not create the profile DB.
+
+Post-commit source identities are:
+
+| Path | Lines | SHA-256 |
+|---|---:|---|
+| `src/auth_drivers/oauth_status.py` | 568 | `07bff2ce1dd2aa274a407bd04969ec1c73c4c8518f7e2ef89c1b4e69ee0f1eb2` |
+| `src/auth_drivers/codex_account_usage.py` | 614 | `4ec1d1989b132b198d4e1367575df360adc9a97a1e51899215e242cfb3302d09` |
+| `src/api/dependencies.py` | 378 | `1cf4fb462f04a0735deff56a63916c3db3cde7152ae365fdbff4ac6687bdb4e3` |
+| `src/api/routes/config_routes.py` | 1,233 | `ad6d3a718a36c5dc5055f4854f6be51c10b1d7fd066dee47ff935111dc2cc7f6` |
+| `tests/test_subscription_account_usage.py` | 632 | `6fd932eb6083e8ec86d95ebc4c5448c90fc0537c57ca1715301567f39c98d305` |
+
+## 17. Task 3 verification
+
+| Collection/run | Nodes | Node-stream SHA-256 | Report SHA-256 | Transcript SHA-256 |
+|---|---:|---|---|---|
+| backend full collect-only | 4,605 | `3b6cbd5ffbe0decccddb2914d422c650c50c58f72667ccb285f9cf4a74b20c08` | `66d1b717cf096e7a06ff314ad457b9acfb6d7500884c4b1db38a357356de5f54` | `48b2b279096e7a06ff314ad457b9acfb8afd19183536e5461b40c4a1320bf624` |
+| backend focused collect-only | 270 | `d9b03cc7320a697abdc4a9049957d390f690d5223e6e5cecd4429a7c34b09338` | `7eabbacaf0507acedbda3a93ecaa038f272f0a7e7a12c4deed7d5ace6cc52e68` | `0afa22f12ad9117da17546d022754964886f2ab9f2d834e9337de18e1585b34d` |
+| backend focused runtime | 270 | same focused stream | `8f411c161cbda8cb78e7ccef8e5bbb9be80be1e0b607a3487ece2a0f641f49ff` | `097f44e50e5d6d36fa66bcbec52d44151736b8d25c643f0315ae6721157d000b` |
+
+The committed focused runtime ended `270 passed in 11.60s`, with all 270
+nodes seen, zero non-passing nodes, and exit zero. The owning Task 3 file ended
+`9 passed`. `py_compile` and `git diff --check` passed.
+
+The nine-node family proves five exhausted-account rate-limit reads leave usage
+unchanged; strict account mismatch and unknown protocol preserve the last good
+snapshot; exact-version refusal and hung-child timeout leave no child process;
+missing cached state is unknown/no-create; inventory, cached read, and explicit
+sync are separate HTTP contracts; concurrent sync is single-flight; and
+credential listing never refreshes or contacts the provider.
+
+The tests execute only redacted local fixtures under temporary paths. No live
+provider request, model turn, real token store, keyring, home directory,
+profile DB, production data, scheduler, frontend, or Tranche B owner was
+touched. All 37 protected paths remain byte-identical to `0753947e`.
+
+## 18. Task 3 disposition
+
+Task 3 is complete at `f1eec320`. The exact full/focused identities match the
+reviewed plan, all nine RED-first account adapter/store/route contracts are
+GREEN, bounded child cleanup and credential-bound persistence are proved, and
+the worktree returned clean before this docs-only closeout. Task 4 wiring and
+all later tasks remain unauthorized until independent Task 3 review.
