@@ -34,7 +34,8 @@ branch:      codex/scripts-tranche-b-inventory
 `72576991` is the merge base and ancestor of `04dd9a67`. Before this plan-gate
 packet the worktree was clean.
 
-Plan source identity presented for review:
+Original plan source identity committed at `d1c5b5a5` and superseded by the
+post-approval no-tail amendment:
 
 ```text
 674 lines / 36,175 bytes
@@ -42,7 +43,40 @@ SHA-256: 09307ddb241e2d0ac19ea61b467e6d07a34eb825663df67381eabdb7bc74562d
 Git blob: cda25357d145ca675774b20c852f958ce8455fc8
 ```
 
-### 2.2 Canonical base inputs
+Replacement plan source identity presented for independent review:
+
+```text
+715 lines / 39,324 bytes
+SHA-256: 70e48d1184f0581033ccbf566f7f33718fac6ac934ae7c2b41d963fcb665f704
+Git blob: 383ff74d835828719d6d234e3a0b00336e7d92fa
+```
+
+### 2.2 Post-approval no-tail amendment
+
+The user clarified that retirement must remove the obsolete architecture, not
+preserve it merely because PD 5-PD 6 retain two useful behaviors. Grounding
+confirmed that `src/tools/signal_tools.py` is the runtime importer of the old
+`src/signals/` package and that the package itself mixes the approved raw
+volume/event primitives with scorer prompts, sentiment anomaly, numeric event
+impact, sector aggregation, and composite synthesis.
+
+The plan now deletes that package and tool module completely, moves only the
+approved pure behavior to `src/news_analytics.py`, and exposes it through
+`src/tools/news_event_tools.py`. The old event-chain `TestSignalTools` node
+moves from evolved to retired; two honestly named news-event tool nodes replace
+the formerly planned one-node volume addition. No compatibility import,
+re-export, route, or old test namespace is allowed.
+
+This does not cancel the future Signals roadmap. The Workbench Product Spec and
+Priority Map explicitly retain a new evidence-gated Signals product with a
+written hypothesis, source-labeled inputs, OOS validation, and kill criteria.
+The frozen rows and local scoring secret are only temporarily unchanged because
+their destructive disposition needs separate authority. After runtime
+disconnection, exact deletion is the default unless a read-only packet proves a
+concrete research use worth detailed user review; runtime retention is not an
+outcome.
+
+### 2.3 Canonical base inputs
 
 The product tree is docs-only relative to the EIR-006 merged canonical base.
 The deterministic streams reused for plan construction are:
@@ -57,7 +91,7 @@ The deterministic streams reused for plan construction are:
 Task 0 must reproduce these values; this evidence does not substitute prior
 results for that executable gate.
 
-### 2.3 Node-ledger construction
+### 2.4 Node-ledger construction
 
 The plan author independently enumerated whole retired test files, mixed-file
 retired IDs, and all new IDs. Streams were combined as sets, sorted by UTF-8
@@ -66,16 +100,16 @@ set membership.
 
 | Stream | Count | SHA-256 |
 |---|---:|---|
-| retired | 137 | `997fb56be265e28c8f9b990ff2a2315c773d5645af2f7f1c5087a905cc4b2642` |
-| backend additions | 17 | `8b309a7af7df5e77cb4ba155fc32b88091305c4b5e7f21f9dd42eddd0b012e61` |
-| backend RED | 4,598 | `3378204c781c0433eafbcacca317cfe82613986fc9b3fb716412729a3aa09938` |
-| backend final | 4,461 | `463e864ef9ff0ec0b2b231e31836d52ed3a0ec7763ab654de70cdc41fc400d98` |
-| focused RED | 572 | `44c969899da478b7a0e7412a32ddc47190205b35419e6031949659489b7bb890` |
-| focused final | 435 | `0db45120dc5740c9372f07d6a5a9cec7d525a8d66e667fac6d170c99a827db18` |
+| retired | 138 | `b48b161d573afb37496763c0afe388c2421f06e35eb5cd7de959ba5778c05254` |
+| backend additions | 18 | `88ac9e5652c9df79eb42284d6a9c42a2f0f4a60b967badae37524fa127499520` |
+| backend RED | 4,599 | `ae382261eddb2b9bbe02e8c15ca2acc48a23a99745d910a28aba8f4ac7e3059b` |
+| backend final | 4,461 | `c7cb78b222952e9c1b5b3e18abcf413a14875a84ef7bc01d55ef500d939a74f9` |
+| focused RED | 573 | `5e0a5538c4106ca9b9cf0d701ab719d62c3a4056d1e101864ddb09b6beb9fb75` |
+| focused final | 435 | `2e5fcb6c22d6a1657e609542138830f2d5fd367a0e353ab30efdfbb8851a7c6a` |
 
-Retirement composition is exact `102 whole-file + 35 mixed-file = 137`.
+Retirement composition is exact `102 whole-file + 36 mixed-file = 138`.
 Addition composition is exact `8 boundary + 1 API + 3 monitor + 1 identity + 1
-morning brief + 1 volume tool + 2 truthful bridge-registry IDs = 17`.
+morning brief + 2 news-event tools + 2 truthful bridge-registry IDs = 18`.
 
 Plan self-review found that two retained bridge tests encoded the old count in
 their node names (`tools_count_31`). Changing only their assertions would leave
@@ -83,24 +117,24 @@ false test names. The ledger therefore retires those two IDs and adds
 `tools_match_registry` replacements. This changes stream identities but not the
 final count or native pass/skip arithmetic.
 
-The 26 explicitly retained/evolved base IDs are all present once; their sorted
+The 25 explicitly retained/evolved base IDs are all present once; their sorted
 stream SHA is
-`3215e2d46407119ddc3c104dd8edef935158701cfd8c2d1556a45af4f0d8da7f`.
+`2f0e0dd31390f975eb2b4f20244525a0bf09b0bc112f39f0f4cebfe2db76aa08`.
 
-### 2.4 Projected audit streams
+### 2.5 Projected audit streams
 
 | Projection | Count | SHA-256 |
 |---|---:|---|
 | storage/writer/root | 4,537 | `e2a744b8fdcb9cadcaa1a9e68f050805faf36b5e7beae1d033d889a71e2f44af` |
 | raw DTO/backend | 4,498 | `55b26b2ea092a378f04eb8f64de248e7c74364544ec1ab00eee2c29fb157324c` |
 | raw user behavior | 4,498 | `d6a0793368c7cc68b81bb96863028b46db4cbd3dc6200977b7ec8621d5fda2ba` |
-| volume/event/composite | 4,458 | `456d0f54a5f354210fb287ebe4425736bff30f0ae0540d504673b63f60eaa76a` |
-| final | 4,461 | `463e864ef9ff0ec0b2b231e31836d52ed3a0ec7763ab654de70cdc41fc400d98` |
+| volume/event/composite | 4,458 | `3896c617ca5594b30a644bd8cf61f96eea39ba753cf1858049121c626dfc469b` |
+| final | 4,461 | `c7cb78b222952e9c1b5b3e18abcf413a14875a84ef7bc01d55ef500d939a74f9` |
 
 These are mathematical node-accounting projections. They have not been called
 runtime GREEN and do not relax the atomic final gate.
 
-### 2.5 Native target arithmetic
+### 2.6 Native target arithmetic
 
 Two retired nodes were run under the blank canonical environment and both were
 observed skipped:
@@ -119,14 +153,14 @@ No repository-relative artifact remained; the temporary empty `data/` marker
 was removed and ordinary status returned clean. Therefore:
 
 ```text
-passed:  4509 - 135 retired passing + 17 new passing = 4391
+passed:  4509 - 136 retired passing + 18 new passing = 4391
 skipped:   72 -   2 retired skipped                  =   70
 total:   4391 + 70                                  = 4461
 ```
 
 Task 4 must prove this result; arithmetic is not admission evidence.
 
-### 2.6 Frontend construction
+### 2.7 Frontend construction
 
 The sole new decoded Vitest node is:
 
@@ -144,7 +178,7 @@ src/legacyScoreRetirement.test.ts<TAB>legacy score retirement boundary > removes
 The target was constructed from decoded runtime names, not escaped JSON text.
 Task 0 must re-run the pinned normalizer.
 
-### 2.7 Protected lineage
+### 2.8 Protected lineage
 
 The current tracked `training/` tree has 53 paths. Its sorted
 `path<TAB>git-blob` stream is:
@@ -157,6 +191,15 @@ Provider-native sentiment and investor-profile risk were found in distinct
 owners. They are protected and receive a dedicated new regression node rather
 than being removed through token matching.
 
+Self-review found and removed a plan contradiction: the no-tail ruling requires
+current `evidence_packet.py` copy to stop naming the deleted `signal_tools`
+module, while the original plan protected the entire file byte-for-byte. The
+amended contract excludes that file from the byte-identical manifest, permits
+only the exact docstring/`_EXCLUSION_NOTE` retirement-copy delta, records
+pre/post blobs, and keeps projection/gather logic plus the negative-contract
+tests unchanged. This is a bounded current-copy repair, not permission to alter
+objective evidence behavior.
+
 ## 3. Locked implementation sequence
 
 | Task | Status | Gate |
@@ -168,7 +211,7 @@ than being removed through token matching.
 | Task 4 native admission | blocked | all mutations restored |
 | Task 5 independent implementation review/merge | blocked | native GREEN |
 | Task 6 merged verification/closeout | blocked | fast-forward merge |
-| physical score-row manifest | separately blocked | merged rollout + new review/user approval |
+| physical score-row disposition | separately blocked | merged rollout + use analysis + new review/user approval |
 | scoring-secret disposition | separately blocked | exact consumer metadata + new review/user approval |
 
 ## 4. Plan-gate verification checklist
@@ -177,12 +220,14 @@ than being removed through token matching.
 - [x] Product and data/secret scopes separated.
 - [x] Backend base/RED/final and focused streams precomputed.
 - [x] Whole-file and mixed-file retirement IDs enumerated exactly.
-- [x] Seventeen independent new backend nodes named.
+- [x] Eighteen independent new backend nodes named.
+- [x] Legacy Signals namespace removal and honest news/event owners locked.
 - [x] Frontend decoded target and focused identities precomputed.
 - [x] Two canonical retired skips directly reproduced.
 - [x] Five intermediate projections labeled accounting-only.
 - [x] Ten product mutations mapped to owning nodes.
-- [x] Provider-native/training/EvidencePacket boundaries protected.
+- [x] Provider-native/training boundaries byte-protected; EvidencePacket copy
+  delta bounded while its negative behavior remains protected.
 - [x] Native wakeup/reporter/wrapper/toolchain boundary pinned.
 - [ ] Independent plan review GREEN.
 - [ ] Task 0 authorized and executed.
