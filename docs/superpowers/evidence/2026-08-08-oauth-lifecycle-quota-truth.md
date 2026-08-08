@@ -1,6 +1,6 @@
 # OAuth Lifecycle and Subscription Usage Truth Evidence
 
-> **Status:** TASK 3 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 4
+> **Status:** TASK 4 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 5
 >
 > **Date:** 2026-08-08
 >
@@ -406,3 +406,91 @@ reviewed plan, all nine RED-first account adapter/store/route contracts are
 GREEN, bounded child cleanup and credential-bound persistence are proved, and
 the worktree returned clean before this docs-only closeout. Task 4 wiring and
 all later tasks remain unauthorized until independent Task 3 review.
+
+## 19. Task 4 RED
+
+Task 4 evolved existing owners only; it added, removed, or renamed no node. The
+first targeted run produced eight failures, all at the absent reviewed wiring:
+refresh did not accept or write the observation/sync seams, the login manager
+did not inject those seams, Claude import still duplicated manual expiry into
+the token record, and credential deletion did not clear OAuth observations.
+There was no collection error, fixture-date error, SQLite error, provider
+request, real token-store access, or environment-dependent wrong RED.
+
+The accepted RED assertions required the refresh attempt before the rotating
+grant, success only after token save, stable redacted failures, post-commit
+account sync, exact re-login/delete invalidation, token-store-only ChatGPT
+expiry, DB-only Claude manual expiry, and unchanged API-key deletion behavior.
+
+## 20. Task 4 implementation
+
+Product/test family `610d3471fc3904b5e6e5052d35c4a0c67840bd8b`
+implements:
+
+- durable latest-only refresh attempt/success/error witnesses with the closed
+  stable-code set and bounded redacted diagnostics;
+- token-store save before success witness, so a successful refresh immediately
+  changes lifecycle/expiry projection without writing the ChatGPT DB expiry;
+- re-login cleanup of discovery plus both credential-bound observation rows
+  under the shared lifecycle lock before adopting a replacement token;
+- OAuth-only credential deletion that clears the exact refresh/account rows
+  before token and metadata removal, while API-key deletion never touches the
+  OAuth observation store;
+- post-commit login/re-login/refresh account-sync seams whose failure cannot
+  roll back valid auth; and
+- Claude setup-token import with manual expiry retained only on the credential
+  row, never duplicated into the token-store record.
+
+Final self-review found one race after the initial GREEN: an account adapter
+could start with the old token, deletion could clear the credential, and the
+old adapter result could then recreate its snapshot. The existing
+single-flight owner was strengthened without adding a node. Snapshot commit
+now reacquires the same credential lifecycle lock, reloads and constant-time
+compares the token generation, and returns typed
+`credential_changed_during_sync` with no snapshot when it changed. The test
+blocks the adapter, completes deletion and exact observation cleanup, then
+proves the old result cannot persist or return stale account state.
+
+Post-commit source identities are:
+
+| Path | Lines | SHA-256 |
+|---|---:|---|
+| `src/api/dependencies.py` | 423 | `bb88908670fba3c108c4aed7cb86ef6465d0cd19695deb2ee7bee281133e12d0` |
+| `src/api/routes/config_routes.py` | 1,262 | `e00571e8831e5508a411dc4cd6b824aab6ec78be7e1e67064ce9b861193ef573` |
+| `src/auth_drivers/chatgpt_oauth_login.py` | 920 | `157d2fd3e032559af049dcf38afbf5b9d820eb29d5c1da939aa92a478582d774` |
+| `src/auth_drivers/chatgpt_oauth_manager.py` | 245 | `dc920a1f7a0b671f410ffd064c5049981d17b4d0e989ca78cf70011e3217b0fb` |
+| `src/auth_drivers/oauth_status.py` | 585 | `b955610122dda6dc22d3b3364cdfef007ac4126752b4b7a3f7c4d4120bb2968d` |
+| `tests/test_chatgpt_oauth_login.py` | 889 | `dbc4653af98f5f69ea11906e80b49d5e84485290d9884c608dd25f6ad1f8272a` |
+| `tests/test_chatgpt_oauth_manager.py` | 473 | `aa4848ec9c2804f44bc26a591ce9042501b0ef700d5dcfaa0d3d4af3f0ecac5b` |
+| `tests/test_chatgpt_oauth_routes.py` | 687 | `f94fc6d4c8514067355e6849e964c85e090f871227e5a6b79dbe7d806464f677` |
+| `tests/test_oauth_import_route.py` | 177 | `2c00735cbf56545151451dfbebdef0896cdbfce884579c6954de6fc257c5d718` |
+| `tests/test_oauth_lifecycle_status.py` | 504 | `556162cb062cef1b1efebbefc9c441676f50fe59d4fdd4757fe477ce81665b6b` |
+| `tests/test_subscription_account_usage.py` | 666 | `a6113cacdd15629bca5a5bf859d90de93acd2a7b44cf0fa08b75870f71c93c68` |
+
+## 21. Task 4 verification
+
+| Collection/run | Nodes | Node-stream SHA-256 | Report SHA-256 | Transcript SHA-256 |
+|---|---:|---|---|---|
+| backend full collect-only | 4,605 | `3b6cbd5ffbe0decccddb2914d422c650c50c58f72667ccb285f9cf4a74b20c08` | `66d1b717cf096e7a06ff314ad457b9acfb6d7500884c4b1db38a357356de5f54` | `e62ae8cae36f033db1fc18edc6fbf561738bb6196bf5398002f22c1c1e76c53d` |
+| backend focused collect-only | 270 | `d9b03cc7320a697abdc4a9049957d390f690d5223e6e5cecd4429a7c34b09338` | `7eabbacaf0507acedbda3a93ecaa038f272f0a7e7a12c4deed7d5ace6cc52e68` | `21ba81260e0255d2f051909b46982ea1b11187b37a5090d9afafcf5cc946070b` |
+| backend focused runtime | 270 | same focused stream | `8f411c161cbda8cb78e7ccef8e5bbb9be80be1e0b607a3487ece2a0f641f49ff` | `a41bb6c4d56dd44579a692dadf2cb5b5407e87e78284b4f16a093d86135f6002` |
+
+The committed focused runtime saw all 270 nodes, ended `270 passed in 12.34s`,
+had zero non-passing nodes, and returned exit zero. The related structured
+output, task-canary, discovery-cache, auth-driver, and API-key owners ended
+`101 passed`. `py_compile`, `git diff --check`, and all 37 protected tuple
+checks passed. Final collection is byte-identical to Task 3, proving Task 4
+changed behavior without changing node identity.
+
+All writes in tests used temporary paths. Post-run inspection found both
+worktree `data/` and `src/data/` absent; no profile DB, token store, keyring,
+provider request, model turn, production data, scheduler, frontend, or Tranche
+B owner was touched.
+
+## 22. Task 4 disposition
+
+Task 4 is complete at `610d3471`. Refresh/login/delete integration and exact
+account-snapshot invalidation match the reviewed plan, full/focused collection
+identities remain exact, and the committed focused runtime is fully GREEN.
+Task 5 passive Claude `RateLimitEvent` capture and every later task remain
+unstarted and unauthorized until independent Task 4 review.
