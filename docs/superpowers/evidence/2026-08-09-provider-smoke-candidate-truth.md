@@ -1,7 +1,7 @@
 # Provider Evaluation Hygiene and Tiingo Tail Retirement Evidence
 
-> **Status:** TASK 3 COMPLETE - INDEPENDENT TASK 3 REVIEW REQUIRED;
-> TASK 4 IS NOT AUTHORIZED
+> **Status:** TASK 4 COMPLETE - INDEPENDENT TASK 4 REVIEW REQUIRED;
+> TASK 5 IS NOT AUTHORIZED
 >
 > **Date:** 2026-08-09
 > **Task 0 tip before evidence:** `a9c702626aed82e2f08700aefa05ae2495408685`
@@ -183,8 +183,9 @@ the runs.
 - Task 2 implementation commit: `7f68f1fdd71225e889eb01e74622420fb288ba64`.
 - Task 2 evidence review: GREEN at `6bf47673`.
 - Task 3 implementation commit: `d1adb9548f34a8919f804fdd0147477d94a2b0f7`.
-- Task 3 evidence review: pending.
-- Tiingo product/config deletion: complete; Task 4 mutation review is not
+- Task 3 evidence review: GREEN at `50a5c0ac`.
+- Task 4 mutation and boundary packet: complete; independent review pending.
+- Tiingo product/config deletion: complete; Task 5 canonical admission is not
   started or authorized.
 - Final native `4488 passed / 39 skipped / 0 failed` admission: not run; it is a
   later canonical-admission gate and cannot be substituted by collect-only or
@@ -520,3 +521,111 @@ The implementation worktree was clean after commit.
 
 Task 4 mutations, final native `4488 passed / 39 skipped / 0 failed` admission,
 merge, and closeout have not run. Independent Task 3 review is the only next gate.
+
+## 11. Task 4 - mutation self-review and boundary revalidation
+
+Task 4 used the single-use root
+`/tmp/provider-smoke-hygiene-task4-50a5c0ac`. Its `SHA256SUMS` contains `165`
+entries and has SHA-256
+`e34b5dee44aafb15c8a516e2d65c3a4a619984bcb97183bacb1bcc0ad05385cb`.
+The offline mutation gate is `fbee0ad59ebb5d5a838ab15c7af4fadc6b32372535c1139ae17f8ab125441422`;
+the copied shared-projection and census tools remain the reviewed
+`d83302fc5a229645f708379ad0e65fa6cc059a7b2a1a9a4d0b2c3cfbbc082905`
+and `82b9dd2e27be810f5237d6066cb5120e3c75b58bd25f3dd86ec65be0f4747026`.
+
+### 11.1 Four independent mutations
+
+Before mutation, all four offline owning gates and the protected-owner gate were
+GREEN. The four owner SHA manifest is
+`ceec738d6d06e56ca79ba748ea1aa717fba8b5aac7c7906393519b8949960e01`
+before and after the admitted cycle.
+
+| Mutation | Exact diff SHA-256 | Mutated owner SHA-256 | Owning RED |
+|---|---|---|---|
+| M1: move yfinance import to module scope | `c32aec0df23107e629a07f3385fc7e7aec64dd505967d99c30c334a7b123c64e` | `bc18655fe3fd749525a6050f39a100e7ce31bae5f6710d3b3c875069d6d33cfb` | `manual smoke imports yfinance at module scope` |
+| M2: restore a `tiingo` source-registry key | `ae5310aad6e375d4266e0e69c9c5e606b7eba73dc6146dce7ea2fab231062a08` | `d1239676f97cd22921fcd8de9b0fe113bd541ce6df53b9797a297b1c3e0a6269` | `forbidden Tiingo source-registry member is present` |
+| M3: restore `get_risk_free_rate` to `__all__` | `b141c9762b9bece093423d84d4a0451d1236a762439304fc2e455fcc9596fbdd` | `a0bec3442a8a1745180235e6c895aff869cb93e9ddf02982e24631464d965d34` | `retired rate symbol get_risk_free_rate is present in src/options_math/__init__.py` |
+| M4: restore a false live/fallback catalog claim | `3825e809bcfc93240b5473779b5842b18d36a7152c0aaea0fd58c6c232847d55` | `c4f1b74bb8efa0ec729c29dd58ecfa320989a03ecb055a7fafc70a82c6f5b7c8` | `current-authority Tiingo projection differs from candidate-only truth` |
+
+Each admitted mutation started from a clean tree, changed exactly one owner,
+returned exit `1` for the listed semantic reason, was reversed from its saved
+exact diff with `git apply --reverse --check`, reproduced its original SHA, and
+returned its owning gate to GREEN. No mutation imported yfinance or any provider
+adapter, executed a test or smoke, received a credential, or made a request.
+
+### 11.2 Rejected first-pass restoration
+
+The first attempted restoration sequence is preserved separately and is not
+admission evidence. A context-insufficient reverse patch moved the M1 lazy import
+into `_validate_frame` rather than back into `main`; applying M2 through the patch
+tool also changed the original no-newline-at-EOF byte. The resulting M2/M3 runs
+did not start from a clean tree and were rejected. The residual diffs are
+`93c3a8114abf5c06fdd494ea5ce8b1e735a1ffecf3d7b038886cde51da71e8fe`
+and `62b1d427e37175e908d637ab3d064e357be5c58bef36a0a3ad431e8c1b1a1323`;
+the 13-entry rejected packet manifest is
+`38b7cdc4c432b9c518f38eab0889df4837bd34f34da76b98b0d8de5744ae7976`.
+All four original owner SHAs and all baseline gates were re-established before
+the admitted M1-M4 cycle began.
+
+Two later checks also failed for operator-command reasons and were rejected: an
+`awk` filter addressed the wrong field of successful `sha256sum -c` output, and
+the first top-level manifest check ran from the repository rather than the
+artifact root. Direct SHA comparison and an in-root 165-entry manifest check then
+passed. Neither event changed repository or artifact evidence bytes used by the
+admitted mutations.
+
+### 11.3 Final boundary reconstruction
+
+Post-restore reconstruction reproduced:
+
+```text
+non-Tiingo shared projection 52299ff92aa740b7cd7492449f69f88b4fcae95612be5010405c180d9cca67a2
+protected owners              4ca66f0b373031fa64c73c537575a8d9fc25bba4fec663522cca59ed766b2fd2
+Tiingo discovery              14 / 28e1bb13abf0f0b7eab7a0c477446da460dbe4f1b2fb474090ae0a0390d2915f
+Tiingo terminal               13 / 0ba6820c5b4ce2afdc26fdbb379ea6a44eb38f8c33954ed49b9a2a5b65c6c517
+evaluation raw                10 / ccbc22031dc99f227e0b9738b510fa3845ddeda658ac889054a9055aa0cc98b9
+evaluation terminal           10 / 0625d1220d4f94110ca84c93bfa951fc4e69fa00f7ccf76ee9004184772d160c
+```
+
+The 14-path Tiingo discovery is exactly the thirteen classified terminal rows
+plus the explicitly classified priority-map decision log. The raw evaluation
+pair stream is exactly the first two columns of the classified terminal stream.
+All three git-crypt tracked blobs matched before unlocked plaintext was read.
+Current-authority search remains candidate-only and the executable/configuration
+tail gate remains empty.
+
+### 11.4 Collection, focused runtime, and unfinished work
+
+Fresh post-mutation collect-only completed as:
+
+```text
+4527 collected / 0 seen / 0 non-passing / exit 0
+collection SHA-256 4eeb117804ad874c83ffe4c04fd25ecd4de4f460801bfbf95d15c1406f32455d
+```
+
+Reporter SHA-256 is
+`b2f1539d751614942b45b15d5366383c3d7a1880adcfe3fcedb7b49d1406cc46`;
+transcript SHA-256 is
+`d0d341d2792512a1623ada4d0a35913949a78ea57377e4c9a02585b6666cd70a`.
+The report is byte-identical to Task 3 while the collection transcript is a new
+run.
+
+The retained-provider and option union then completed under the native wrapper:
+
+```text
+281 collected / 281 seen / 0 non-passing / exit 0
+280 passed / 1 skipped
+collection SHA-256 26aee6cf51eafd774b3015783729259beabaeecb9a17fc3cd27c9bae6c204e89
+```
+
+Reporter SHA-256 is
+`f9fca7e1c96cd26858e0c4fefcdeb54c41cb4418b53bb4f5975db3cdcd230026`;
+transcript SHA-256 is
+`ec03c36ff3274b1600d5eb4550c9584c4825fa22a39133626b57b7f509e8d9b4`.
+The temporary empty `data/` marker remained empty and was removed. `src/data`
+remained absent. Both worktrees were clean, and no provider request, credential,
+comparison output, cookie, timezone cache, yfinance artifact, repository data,
+or production state was created or changed.
+
+Task 5 native `4488 passed / 39 skipped / 0 failed` admission, merge, and
+closeout have not run. Independent Task 4 review is the only next gate.
