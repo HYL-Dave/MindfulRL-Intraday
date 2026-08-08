@@ -1,17 +1,20 @@
 # Provider Evaluation Hygiene and Tiingo Tail Retirement Evidence
 
-> **Status:** TASK 5 COMPLETE - INDEPENDENT IMPLEMENTATION REVIEW REQUIRED;
-> TASK 6 MERGE IS NOT AUTHORIZED
+> **Status:** TASK 6 COMPLETE - FOCUSED CLOSEOUT REVIEW REQUIRED
 >
 > **Date:** 2026-08-09
 > **Task 0 tip before evidence:** `a9c702626aed82e2f08700aefa05ae2495408685`
 > **Product grounding base:** `6159fc14956800dc04c4d6c944a2941b9c6c12db`
+> **PROVIDER_HYGIENE_CUTOVER_TIP:** `b991f543807751757fc7dd78adcba1ecbda90659`
 > **Task 0 artifact root:** `/tmp/provider-smoke-hygiene-task0-a9c70262`
 > **Task 0 artifact manifest:** `44` entries / SHA-256
 > `49f5038762337aeefcdf10f5f43baf5528515f1deb6f8a405d0887af9d6b157c`
 > **Current Task 5 packet:** `/tmp/provider-smoke-hygiene-task5-7d0538d3`
 > **Current packet manifest:** `698` payload entries / SHA-256
 > `162693e37d2484e1c0a12e329c91e6f9c5657578074527fddf56c976a077b8fa`
+> **Task 6 merged packet:** `/tmp/provider-smoke-hygiene-task6-b991f543`
+> **Task 6 packet manifest:** `606` payload entries / SHA-256
+> `febf5ffb35b9f2e61d30e7adc006d48786de98a9cc7d0907677f31152ff68510`
 
 Task 0 was evidence-only. It did not delete, move, edit, import as a runtime
 provider, or execute any January evaluation path, rate-fetch path, Tiingo path,
@@ -745,3 +748,94 @@ succeeded without force. Both persistent worktrees remained clean.
 
 Task 6 merge, exact-master admission, and closeout have not run. Independent
 implementation review of the raw Task 5 packet is the only next gate.
+
+## 13. Task 6 - reviewed merge and exact-master closeout
+
+Independent implementation review reconstructed the complete Task 5 packet and
+returned GREEN with zero findings. Its separate fresh detached control at
+`b991f543` also returned `4527 seen / 4488 passed / 39 skipped / 0 failed`;
+the reviewer's reporter JSON was byte-identical to the Task 5 report. This
+authorized Task 6 and no broader work.
+
+### 13.1 Linear fast-forward
+
+Both persistent worktrees were clean before merge. Commit
+`6159fc14956800dc04c4d6c944a2941b9c6c12db` was an ancestor of reviewed tip
+`b991f543807751757fc7dd78adcba1ecbda90659`; the range contained exactly 15
+commits and zero merge commits. Master advanced only through:
+
+```text
+git merge --ff-only b991f543807751757fc7dd78adcba1ecbda90659
+```
+
+The post-merge master is exact `b991f543`. `origin/master` remained
+`6159fc14956800dc04c4d6c944a2941b9c6c12db`; no push occurred. The reviewed
+product/test/config/doc bytes therefore became the master bytes without a merge
+commit or conflict resolution.
+
+### 13.2 Fresh exact-master admission
+
+The second single-use artifact root is
+`/tmp/provider-smoke-hygiene-task6-b991f543`. Its `SHA256SUMS` covers `606`
+payload files and has SHA-256
+`febf5ffb35b9f2e61d30e7adc006d48786de98a9cc7d0907677f31152ff68510`.
+
+A new detached worktree was created from exact merged master `b991f543`, using
+the reviewed no-op git-crypt checkout boundary from its first status check. It
+had no `config/.env`, empty `data/`, absent `src/data`, and only the pinned
+`node_modules` symlink. All wrapper/reporter/wakeup/toolchain identities and Node
+`v22.14.0` matched Section 0.4. The new single-use stage
+`provider-hygiene-task6-merged-b991f543` completed:
+
+```text
+4527 collected / 4527 seen / 0 non-passing / exit 0
+4488 passed / 39 skipped / 3 existing edgar deprecation warnings
+289.93 seconds
+collection SHA-256 4eeb117804ad874c83ffe4c04fd25ecd4de4f460801bfbf95d15c1406f32455d
+non-passing SHA-256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+```
+
+Merged reporter JSON SHA-256 is
+`1becf27f6755f4ec7d4b5ffabdf99d2d0db26665ce18dbbb2a1042f75da7c143`;
+it is byte-identical to branch-side Task 5. The independent merged transcript is
+`3f3dce27a4e37d2c13c182e9daa03b14630fc4161191a362eeda481973b72bf3`.
+
+### 13.3 Merged artifact transaction
+
+The merged run again produced exactly `612` repository-relative paths: `568`
+files and `44` directories, with the same top-level distribution as Task 5.
+Ordinary status stayed empty; no pre-existing path changed or disappeared;
+`src/data` and every `risk_free_rate.json` path remained absent. Exact-path
+quarantine receipt SHA-256 is
+`0b2c8b5e41a10fec30bb178a4e597f3c467d52531ebd0498d6ce99b02a2b244e`.
+The merged pre-run and restored full-tree snapshots are byte-identical at
+`d0ba4a3f27aa4c8d2b168d40223c9505a63e5a45d744b9cb1354406f32364a03`.
+Ordinary, ignored, symlink, `data/`, and `src/data` manifests also match. The
+controlled link and empty marker were removed; the detached worktree was clean
+and removed without force. Master and the implementation branch remained clean.
+
+### 13.4 Final product and candidate-data boundary
+
+The canonical master baseline is now
+`4527 collected / 4488 passed / 39 skipped / 0 failed`. The exact evolution from
+the OAuth baseline is `-80/+0`: the dated provider-evaluation family and
+unconsumed rate-curve contracts left without replacement nodes.
+
+Tiingo has no current executable, registry, credential, config, scheduler,
+health, API, or UI integration. Its Provider Catalog entry is only a
+not-connected reconsideration record. This is current integration retirement,
+not permanent rejection: any future Tiingo adoption starts from then-current
+API, price, licensing, reliability, unique-value, scheduler/storage, and spend
+evidence rather than reviving removed code.
+
+Paused-training yfinance remains explicitly preserved in the training owners,
+with a non-collected manual smoke under `tests/live/`; this line does not retire
+that capability. Pure option-pricing code and caller-supplied risk-free rates
+also remain. Any future provider-supplied option valuation is a separate product
+decision. Alpha Vantage and EODHD adapters remain byte-protected candidates;
+removing their dated skipped evaluation shells did not adopt or retire them.
+
+No provider credential or manual provider command was supplied, no production
+data or scheduler state changed, and no push occurred. Provider hygiene is
+implemented and verified on master. Focused review of this docs-only closeout is
+the only remaining gate.
