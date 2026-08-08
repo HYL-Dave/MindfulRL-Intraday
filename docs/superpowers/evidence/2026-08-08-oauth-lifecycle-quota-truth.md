@@ -1,6 +1,6 @@
 # OAuth Lifecycle and Subscription Usage Truth Evidence
 
-> **Status:** TASK 6 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 7
+> **Status:** TASK 7 VERIFICATION COMPLETE; INDEPENDENT IMPLEMENTATION REVIEW REQUIRED BEFORE MERGE
 >
 > **Date:** 2026-08-08
 >
@@ -703,3 +703,123 @@ remaining quota, or refresh causes, and its automatic sync is visible/stale
 only. Exact final frontend identities match the reviewed plan. Task 7 mutation,
 native admission, merge, and closeout remain unstarted and unauthorized until
 independent Task 6 review.
+
+## 31. Task 7 mutation sensitivity
+
+Independent Task 6 review authorized Task 7. Each final mutation changed only
+the named semantic, ran only its owning node, turned that node RED, restored the
+exact pre-mutation owner SHA, and then returned GREEN:
+
+| ID | Diff SHA-256 | Observed RED |
+|---|---|---|
+| M1 | `9a44b12bd636087ab34644664b30720cab2f4a3ff2332c424670ef64c57aecab` | expired OAuth was again projected available |
+| M2 | `f934ade6e2c7851d2cd7631711de50eae1901bfc7c6c3417a6d4e34867c49004` | ChatGPT DB expiry changed `refresh_required` to `ready` |
+| M3 | `48db0fa0a0458798aaac8c860abdc7641ae8ccce7a3110c6a0b06ab155b0092f` | retryable refresh failure collapsed to `reauth_required` |
+| M4 | `def28106c7b4436b331fb9ac229b1164b9d5626b31401ce0691eb5607994a92b` | refreshable active OAuth became runtime-unresolvable |
+| M5 | `5f27f0c96ff2a9f933a923a51af9ee5c09f3979bbe723823fcb939dce2910c7d` | two processes no longer consumed the rotating grant once |
+| M6 | `5d5eea5b52ae695ed1d4bb2ff7b7948e5c8e28455f5dad0174325ee08c768e79` | account mismatch was admitted instead of failed |
+| M7 | `9fa590c633635dedfb804891f690da2d7b273b007aecfd666ad22e0cedcf9c88` | a protocol failure discarded the last-good snapshot |
+| M8 | `6161bd9ad4f3e53b82b62f8f1bfcd43f919aba591895ac1a0b30fef8e588f211` | passive Claude rate-limit evidence was ignored |
+| M9 | `db666fce6e3d5bb546f05363de6be0a77ce26d17e3e30e53284f9d250afc6aea` | the visible stale sync cadence no longer stayed once-within-TTL |
+| M10 | `f8dcc96ec2b1427478765cf30bce2a75d71ef1f868e611d54daa8817dc43e84c` | one mutation invalidated another credential's cache |
+
+M3's first context-free inverse selected a second identical enum occurrence;
+the owner SHA check rejected it before M4, and the contextual inverse restored
+the exact pristine SHA. Two candidate M9 mutations were also rejected because
+the owning node remained GREEN: dead-condition diff `6ab84492...` and hidden-
+section diff `0d73e226...`. The admitted M9 directly replaced the TTL semantic
+with zero and made the owning cadence assertion RED. These rejected attempts
+are retained rather than presented as mutation evidence.
+
+All raw diffs and RED/GREEN transcripts are under
+`/tmp/arkscope-oauth-task7-6bba8307/mutations/`. The 72-entry review-packet
+checksum manifest is
+`/tmp/arkscope-oauth-task7-6bba8307/TASK7_SHA256SUMS`, SHA-256
+`71389349d59a7cdd124b2876841cf9200e1505192dcbec050b3c261a7d909f60`.
+
+## 32. Task 7 final identities and gates
+
+All four final collections were rebuilt after exact mutation restoration:
+
+| Collection | Nodes | Node-stream SHA-256 |
+|---|---:|---|
+| backend full | 4,607 | `5180502f7dfe577ca758db5fb8ebdfe9ca282730a8976adcf65b7ab19c1c2d74` |
+| backend focused | 272 | `6c706f9d524ba65adc9b143479c0477516a2f2bd16a766a28ef27a46f2a8c4a4` |
+| frontend full | 1,084 | `f0e5ecda1371f0559c1cc92af367b7e32daa91663ef2f316ed67e23129ee9637` |
+| frontend ProviderSection | 15 | `887a712a206a272d6db3e75c55a1d77ea2bfe032650186458a874c8495fe04bf` |
+
+The runtime and static gates were:
+
+| Gate | Result | Evidence SHA-256 |
+|---|---|---|
+| exact backend focused | `272 passed in 12.10s` | report `cfc220a8...`; transcript `951c8cb0...` |
+| task-canary/discovery collateral | `168 passed in 3.74s` | `d229229f...` |
+| ProviderSection focused | `15 passed in 3.00s` | `29100591...` |
+| frontend full | `97 files / 1,084 passed in 48.27s` | `ed179460...` |
+| TypeScript typecheck | exit `0` | `f11cc6b0...` |
+| production build | exit `0`; existing large-chunk warning only | `48169e56...` |
+| visible-literal scanner | `36 / 20 / 0 / 20`, exit `0` | `dd94c589...` |
+
+All nine backend product owners compiled. `git diff --check 0753947e..HEAD`
+was clean. New frontend product paths contained no raw token/account-id field
+names. The current 37 protected path/blob/SHA/size tuples reproduced Task 0
+byte-for-byte at `bcc7bf54c6e82e39a01c2e98dc9677640605580fa61eba4eba0b3bf39a084e65`.
+All OAuth-owned mutation/focused/frontend gates used local fakes and touched no
+live provider, real token store/profile DB, keyring, production data,
+scheduler, model-routing policy, or Tranche B owner.
+
+## 33. Task 7 native canonical admission
+
+A fresh detached worktree at exact tip
+`6bba8307a5bb328da2111a4a15b33b761104d70b` used no `config/.env`, an empty
+`data/`, absent `src/data`, and only the pinned `node_modules` symlink. The
+pinned wrapper and wakeup probe completed the entire suite:
+
+```text
+collected: 4607
+seen: 4607
+passed: 4535
+skipped: 72
+failed/errors/non-passing: 0/0/0
+exit: 0
+duration: 307.31s
+```
+
+The reporter is `0f450948...`, transcript `df2d3cd0...`, collected stream
+`5180502f...`, and empty non-passing stream `e3b0c442...`. The full collected
+stream is byte-identical to the final backend authority.
+
+This global canonical run is not described as network-free. It inherits seven
+pre-existing `tests/test_yfinance.py` smoke nodes that call public Yahoo data
+paths and return booleans rather than assertions; the isolated runtime produced
+`tmp/cookies.db` and ticker-timezone cache entries for AAPL/MSFT/GOOGL/AMZN/
+META/IBM and treasury symbols. They use no credential or metered account and
+are unrelated to the OAuth delta, but their public-network behavior is an
+existing test-hygiene fact. The no-live-provider claim above is deliberately
+limited to this slice's owned gates.
+
+The first ordinary `git status` in that fresh checkout correctly refused
+because the detached worktree had no git-crypt key. It ran no pytest and made
+no mutation. Every subsequent status command used the reviewed no-op git-crypt
+filters; the admission itself remained unchanged.
+
+The run created exactly 587 files: 564 bytecode files, 15 scratchpad JSONL
+files, three JSON files, one native-host log, and four pytest-cache files.
+Every exact relative path received inode/size/mode/mtime/SHA evidence and was
+moved to `/tmp/arkscope-oauth-task7-6bba8307/native-quarantine/files/`.
+The path stream is `4c2bb67e...`; the pre/quarantine 587-row metadata manifests
+are byte-identical at `9b814d8c...`. Ordinary status, ignored status, symlinks,
+and `data`/`src/data` inventories returned byte-for-byte to their pre-run
+states; empty `data/` remained and `src/data` remained absent. The restored
+worktree was then removed normally.
+
+## 34. Task 7 disposition
+
+Task 7 verification is complete at `6bba8307`. The OAuth product tip remains
+`bc1c79d1`; all later commits through this packet are test/evidence family
+commits already covered by the exact gates above. OAuth lifecycle truth,
+cross-process refresh serialization, bounded account usage, passive Claude
+quota evidence, and Provider Settings rendering are ready for independent
+implementation review. Fast-forward merge, fresh exact-master admission, and
+docs-only closeout remain explicitly unauthorized until that review returns
+GREEN.
