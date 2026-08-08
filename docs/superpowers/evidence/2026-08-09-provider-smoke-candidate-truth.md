@@ -1,7 +1,7 @@
 # Provider Evaluation Hygiene and Tiingo Tail Retirement Evidence
 
-> **Status:** TASK 2 COMPLETE - INDEPENDENT TASK 2 REVIEW REQUIRED;
-> TASK 3 IS NOT AUTHORIZED
+> **Status:** TASK 3 COMPLETE - INDEPENDENT TASK 3 REVIEW REQUIRED;
+> TASK 4 IS NOT AUTHORIZED
 >
 > **Date:** 2026-08-09
 > **Task 0 tip before evidence:** `a9c702626aed82e2f08700aefa05ae2495408685`
@@ -181,10 +181,14 @@ the runs.
 - Task 1 implementation commit: `5168603e39df77f35e2849177e92954faba944eb`.
 - Task 1 evidence review: GREEN at `ec140ae1`.
 - Task 2 implementation commit: `7f68f1fdd71225e889eb01e74622420fb288ba64`.
-- Task 2 evidence review: pending.
-- Tiingo product/config deletion: not started or authorized.
+- Task 2 evidence review: GREEN at `6bf47673`.
+- Task 3 implementation commit: `d1adb9548f34a8919f804fdd0147477d94a2b0f7`.
+- Task 3 evidence review: pending.
+- Tiingo product/config deletion: complete; Task 4 mutation review is not
+  started or authorized.
 - Final native `4488 passed / 39 skipped / 0 failed` admission: not run; it is a
-  post-cutover Task 4 gate and cannot be substituted by Task 0 collect-only.
+  later canonical-admission gate and cannot be substituted by collect-only or
+  focused runtime.
 - Merge: not attempted or authorized.
 
 No partial or projected stream in this document is called a passing runtime.
@@ -405,3 +409,114 @@ Yahoo path under this slice remains the explicit, non-collected manual smoke
 created in Task 1, which was not run. Task 3 Tiingo cutover, final native
 `4488 passed / 39 skipped / 0 failed` admission, and merge have not run. Task 2
 evidence review is the only next gate.
+
+## 10. Task 3 - Tiingo executable and configuration tail retirement
+
+Task 3 used the single-use root
+`/tmp/provider-smoke-hygiene-task3-6bf47673`. Its recursive `SHA256SUMS`
+contains `86` entries and has SHA-256
+`d5e4ef399d6f694868387b77ac3ffa7b3d3d4b5405958a4ba6a050600caa8ab9`.
+
+### 10.1 Exact no-tail implementation
+
+Implementation commit `d1adb9548f34a8919f804fdd0147477d94a2b0f7`
+changes exactly 12 paths (`2` deleted, `10` modified, `+30/-1148`):
+
+- deletes `data_sources/tiingo_source.py` and the spent
+  `data_sources/collect_aapl_comparison_data.py` diagnostic;
+- removes the Tiingo package export, enum, source-factory registration and
+  environment mapping, credential template, and inactive profile fallback;
+- removes every current connected/live/fallback/supporting Tiingo claim; and
+- retains one Provider Catalog candidate record that explicitly has no current
+  code, configuration, credential, scheduler, API, UI, health, fallback, or
+  adoption status and requires fresh review before any future implementation.
+
+There is no shim, disabled registry entry, alias, archived code copy, or TODO
+implementation. The implementation diff SHA-256 is
+`49e5faa8507ea0162426e01c33414a6cad0a8156dc5c82660ec67fdf7e35c774`;
+the committed implementation description SHA-256 is
+`9f47a9bda5d5eb4a9129b4222e7aec07f7bfb8598fe68cd76ba7789644a4bd23`.
+
+### 10.2 Shared projection and protected-owner closure
+
+The independently stored AST projection covers all non-Tiingo enum members,
+static and conditional source registrations, environment-key names, and package
+exports. Its pre- and post-edit JSON are byte-identical:
+
+```text
+52299ff92aa740b7cd7492449f69f88b4fcae95612be5010405c180d9cca67a2
+```
+
+The projection implementation is external to the repository, compiles, and has
+SHA-256
+`d83302fc5a229645f708379ad0e65fa6cc059a7b2a1a9a4d0b2c3cfbbc082905`.
+All 30 protected current provider/product owners remained byte-identical before
+and after at
+`4ca66f0b373031fa64c73c537575a8d9fc25bba4fec663522cca59ed766b2fd2`.
+The ignored comparison-output directory was absent before and after; both
+manifests are the empty-stream SHA. Python compilation, YAML parsing, import
+surface checks, and `git diff --check` passed.
+
+### 10.3 Dual census and current-authority truth
+
+The census again used current plaintext for ordinary files plus the unlocked
+main tree for all three git-crypt paths only after tracked-blob equality. The
+three encrypted blobs remained unchanged. Task 1 had already removed two of the
+reviewed 27 discovery paths, so the Task 3 pre-edit discovery was exactly the
+remaining `25` paths, SHA-256
+`1079fcd904cbd99a3fa684c473f766ab8296d660f8dfd59dea6f4584bc51044f`.
+
+Post-edit discovery is exactly `14` paths: the reviewed 13-row terminal history
+plus the explicitly classified priority-map decision log. Its SHA-256 is
+`28e1bb13abf0f0b7eab7a0c477446da460dbe4f1b2fb474090ae0a0390d2915f`.
+The terminal streams are:
+
+```text
+Tiingo external history 13 / 0ba6820c5b4ce2afdc26fdbb379ea6a44eb38f8c33954ed49b9a2a5b65c6c517
+evaluation history      10 / 0625d1220d4f94110ca84c93bfa951fc4e69fa00f7ccf76ee9004184772d160c
+```
+
+The evaluation stream is byte-identical before and after. Current executable and
+configuration residual search is empty. Current-authority Tiingo search returns
+only two lines in the single candidate-record section, SHA-256
+`747f8bc28d3087f19c041ee434bbf608677d3c0bfbfaff5328b9c2a9487a41eb`.
+
+### 10.4 Collection and focused runtime
+
+Post-cutover collect-only completed with exit `0`, `4527` collected IDs, and `0`
+seen IDs. The collection is byte-identical to the reviewed final authority:
+
+```text
+4527 / 4eeb117804ad874c83ffe4c04fd25ecd4de4f460801bfbf95d15c1406f32455d
+```
+
+Reporter SHA-256 is
+`b2f1539d751614942b45b15d5366383c3d7a1880adcfe3fcedb7b49d1406cc46`;
+transcript SHA-256 is
+`50fd7f1bab619e74c2354ddcc4981f38b0a85fa8a3971db2b7415c2a31fb458b`.
+
+The retained-provider and surviving-option union then ran under the native
+wrapper with only an empty `data/` marker:
+
+```text
+281 collected / 281 seen
+280 passed / 1 skipped / 0 non-passing
+collection SHA-256 26aee6cf51eafd774b3015783729259beabaeecb9a17fc3cd27c9bae6c204e89
+```
+
+Reporter SHA-256 is
+`f9fca7e1c96cd26858e0c4fefcdeb54c41cb4418b53bb4f5975db3cdcd230026`;
+transcript SHA-256 is
+`16cedceaf20392127346fa8accb2ac4f0ed17ad357b19bfcd13a60dc8060d2de`.
+The marker remained empty and was removed.
+
+### 10.5 No-provider and unfinished-work boundary
+
+Task 3 issued no provider request and received no credential. Collect-only had
+`seen=0`; focused runtime used only reviewed fake/local provider owners and pure
+option tests. No comparison output, cookie, timezone cache, yfinance artifact,
+repository data file, `src/data` path, or production state was created or changed.
+The implementation worktree was clean after commit.
+
+Task 4 mutations, final native `4488 passed / 39 skipped / 0 failed` admission,
+merge, and closeout have not run. Independent Task 3 review is the only next gate.
