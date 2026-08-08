@@ -1,6 +1,6 @@
 # OAuth Lifecycle and Subscription Usage Truth Evidence
 
-> **Status:** TASK 7 VERIFICATION COMPLETE; INDEPENDENT IMPLEMENTATION REVIEW REQUIRED BEFORE MERGE
+> **Status:** IMPLEMENTATION MERGED; EXACT-MASTER VERIFICATION GREEN; CLOSEOUT REVIEW REQUIRED
 >
 > **Date:** 2026-08-08
 >
@@ -823,3 +823,64 @@ quota evidence, and Provider Settings rendering are ready for independent
 implementation review. Fast-forward merge, fresh exact-master admission, and
 docs-only closeout remain explicitly unauthorized until that review returns
 GREEN.
+
+## 35. Independent review and fast-forward merge
+
+Independent implementation review returned GREEN for
+`6bba8307..02f1e588`. The reviewer independently reproduced all 4,607 backend
+nodes, `4535 passed / 72 skipped / 0 failed`, all four final collection
+identities, the 72-entry packet checksum manifest, every mutation class, and
+the 37 protected tuples. The review explicitly accepted the bounded yfinance
+disclosure as pre-existing canonical-suite behavior rather than OAuth behavior.
+
+The main worktree was clean at `7257699171a81294b74ff8cde61fb90bb065a2b4`.
+That commit was a strict ancestor of reviewed tip
+`02f1e588c6f9d91d4710627de3699a821e0bda6f`; the 16-commit range contained no
+merge commit. `git merge --ff-only codex/oauth-lifecycle-quota-truth` advanced
+`master` exactly to the reviewed tip. No push occurred; `origin/master`
+remained `fd6d1b86383df2a98f97b235d9796d4bcaaa7a58`.
+
+## 36. Fresh exact-master verification
+
+A new detached worktree at exact merged tip `02f1e588` again used no
+`config/.env`, an existing empty `data/`, absent `src/data`, and only the pinned
+`node_modules` link. The unchanged wrapper, reporter, wakeup probe, package
+lock, and Node v22.14.0 identities all matched before execution. The new
+single-use stage `oauth-merged-02f1e588-full` completed:
+
+```text
+collected: 4607
+seen: 4607
+passed: 4535
+skipped: 72
+failed/errors/non-passing: 0/0/0
+exit: 0
+duration: 302.36s
+```
+
+The merged reporter JSON is byte-identical to the branch-side report at
+`0f4509485f84c825aa453974a3e9b6598c7057818cf5d6365595dacb0f17bded`.
+The timestamp-bearing transcript is `00e1300c66e83127d003bbe301f4795048aadb889333c366c1b80efa748aa2f0`.
+The collected stream remains `5180502f...`, byte-identical to the reviewed
+target, and the non-passing stream remains empty at `e3b0c442...`.
+
+The run produced exactly 587 repository-relative files. Their exact path stream
+is `c5b6851e...`; the pre/quarantine inode/size/mode/mtime/SHA manifests are
+byte-identical at `6132f8a3...`. Ordinary status, ignored status, symlink
+inventory, empty `data/`, and absent `src/data` all returned byte-for-byte to
+their pre-run states before the detached worktree was removed. The 19-entry
+merged-evidence checksum manifest is
+`/tmp/arkscope-oauth-merged-02f1e588-evidence/SHA256SUMS`, SHA-256
+`8da95b35111a7ca321161f041e97c0a693af9f1bbbbd1eb4f0ba94f103a99f4a`.
+
+The merged warning summary independently re-exposed the seven pre-existing
+boolean-returning yfinance smoke nodes and six analogous Tiingo nodes. This does
+not change OAuth admission: all OAuth-owned gates remain fake/local and
+provider-free. The user has separately ruled that the yfinance remnants should
+retire; that cleanup is intentionally not mixed into this reviewed OAuth
+lineage.
+
+OAuth implementation and merged verification are complete. The canonical
+backend baseline is now `4607 collected / 4535 passed / 72 skipped / 0 failed`.
+This docs-only checkpoint stops for focused closeout review; no branch deletion,
+push, yfinance retirement, or Tranche B rebase is included.
