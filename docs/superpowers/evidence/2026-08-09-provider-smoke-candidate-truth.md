@@ -1,14 +1,17 @@
 # Provider Evaluation Hygiene and Tiingo Tail Retirement Evidence
 
-> **Status:** TASK 4 COMPLETE - INDEPENDENT TASK 4 REVIEW REQUIRED;
-> TASK 5 IS NOT AUTHORIZED
+> **Status:** TASK 5 COMPLETE - INDEPENDENT IMPLEMENTATION REVIEW REQUIRED;
+> TASK 6 MERGE IS NOT AUTHORIZED
 >
 > **Date:** 2026-08-09
 > **Task 0 tip before evidence:** `a9c702626aed82e2f08700aefa05ae2495408685`
 > **Product grounding base:** `6159fc14956800dc04c4d6c944a2941b9c6c12db`
-> **Single-use artifact root:** `/tmp/provider-smoke-hygiene-task0-a9c70262`
-> **Artifact manifest:** `44` entries / SHA-256
+> **Task 0 artifact root:** `/tmp/provider-smoke-hygiene-task0-a9c70262`
+> **Task 0 artifact manifest:** `44` entries / SHA-256
 > `49f5038762337aeefcdf10f5f43baf5528515f1deb6f8a405d0887af9d6b157c`
+> **Current Task 5 packet:** `/tmp/provider-smoke-hygiene-task5-7d0538d3`
+> **Current packet manifest:** `698` payload entries / SHA-256
+> `162693e37d2484e1c0a12e329c91e6f9c5657578074527fddf56c976a077b8fa`
 
 Task 0 was evidence-only. It did not delete, move, edit, import as a runtime
 provider, or execute any January evaluation path, rate-fetch path, Tiingo path,
@@ -629,3 +632,116 @@ or production state was created or changed.
 
 Task 5 native `4488 passed / 39 skipped / 0 failed` admission, merge, and
 closeout have not run. Independent Task 4 review is the only next gate.
+
+## 12. Task 5 - native canonical admission and implementation review packet
+
+Independent Task 4 review returned GREEN with zero findings and authorized Task
+5 at exact tip `7d0538d312846da10b6e1cc243efd786ce1210c2`. The single-use Task 5
+root is `/tmp/provider-smoke-hygiene-task5-7d0538d3`. Its `SHA256SUMS` covers
+`698` payload files and has SHA-256
+`162693e37d2484e1c0a12e329c91e6f9c5657578074527fddf56c976a077b8fa`.
+
+### 12.1 Static, census, collection, and focused revalidation
+
+Task 5 copied and re-executed the reviewed offline gate, projection, and
+two-input census tools; it did not admit their previous outputs as this task's
+result. The tool identities remain:
+
+```text
+mutation gate       fbee0ad59ebb5d5a838ab15c7af4fadc6b32372535c1139ae17f8ab125441422
+shared projection   d83302fc5a229645f708379ad0e65fa6cc059a7b2a1a9a4d0b2c3cfbbc082905
+reference census    82b9dd2e27be810f5237d6066cb5120e3c75b58bd25f3dd86ec65be0f4747026
+```
+
+All structural gates returned GREEN. The shared non-Tiingo projection remained
+`52299ff9...`; all 30 protected owners remained `4ca66f0b...`; unlocked
+two-input census reproduced Tiingo discovery `14/28e1bb13...`, terminal history
+`13/0ba6820c...`, and evaluation history `10/0625d122...`. `tests/live/`
+contains zero pytest-shaped files. Changed Python/live files compiled, and
+`git diff --check` passed.
+
+Fresh collect-only then returned `4527` collected, zero seen, zero non-passing,
+and exit `0`. The exact node stream is
+`4eeb117804ad874c83ffe4c04fd25ecd4de4f460801bfbf95d15c1406f32455d`.
+Against the reviewed OAuth base, the difference is exactly `80/a069a5af...`
+removed and an empty additions stream. Reporter SHA-256 is
+`b2f1539d751614942b45b15d5366383c3d7a1880adcfe3fcedb7b49d1406cc46`;
+the new transcript is
+`092203b0465d5d4218104a86f15c9966a300a488de07a3012d224adce3dfc3a3`.
+
+The two focused owner sets ran separately under the pinned native wrapper with
+only the required empty `data/` marker:
+
+```text
+retained providers 206 collected / 206 seen / 206 passed / 0 non-passing
+provider nodes      349552ac414fd067ce8cce2b918f5ae4bec5cbf3e725d313a3f42fbc272de737
+provider report     b63465735fbe89d4433069afbb7afcbe2dd332558b70022fbfa1f84efd3e67e1
+surviving options   75 collected / 75 seen / 74 passed / 1 skipped
+option nodes        b710ec5c6d50f541fed94994e863a1e2feaf0ec87aeb11c6e3a98eb4e2da099f
+option report       250a7167990ce3dbfebbf33237f3a68edd0c32396efc2371d63a1231ba2cbdc4
+```
+
+The marker remained empty and was removed. The implementation and unlocked main
+worktrees were clean. These commands received no credential and invoked no
+manual smoke, provider comparison, Gateway, or provider request command.
+
+### 12.2 Fresh exact-tip native admission
+
+Canonical admission used a fresh detached worktree at exact `7d0538d3`, with no
+`config/.env`, an empty `data/`, absent `src/data`, and only the reviewed
+`node_modules` symlink. All five wrapper/reporter/wakeup/toolchain identities and
+Node `v22.14.0` matched Section 0.4. The checkout itself was correct, but the
+first ordinary `git status` attempted the repository's git-crypt clean filter
+against the locked checkout and exited `128`. That rejected preflight ran no
+test. Every subsequent worktree status used the explicit no-op git-crypt filter,
+returned clean, and is retained in the packet.
+
+The single-use stage `provider-hygiene-task5-native-7d0538d3` completed:
+
+```text
+4527 collected / 4527 seen / 0 non-passing / exit 0
+4488 passed / 39 skipped / 3 existing edgar deprecation warnings
+288.34 seconds
+collection SHA-256 4eeb117804ad874c83ffe4c04fd25ecd4de4f460801bfbf95d15c1406f32455d
+non-passing SHA-256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+```
+
+Reporter JSON SHA-256 is
+`1becf27f6755f4ec7d4b5ffabdf99d2d0db26665ce18dbbb2a1042f75da7c143`;
+transcript SHA-256 is
+`fbd13dd83ec116f9e059717392c0d2597896089b82c2bbdde8f619b37c1645cc`.
+The reporter node stream is byte-identical to Task 5 collect-only and the
+reviewed final target; the terminal transcript is supporting runtime evidence,
+not node-accounting authority.
+
+### 12.3 Artifact transaction and retired-cache witness
+
+The pinned `artifact_boundary.py` is SHA-256
+`70026127ca00b4cbb19afbf659e17a8380e51bc452a3e9bcab0e671895b1959f`.
+It snapshots every non-`.git` path without following symlinks, hashes regular
+files, rejects special paths, and refuses quarantine if any pre-existing path is
+missing or changed.
+
+The native run created exactly `612` repository-relative paths: `568` files and
+`44` directories. They consist of ignored Python/pytest caches plus hermetic test
+artifacts under `data/` (scratchpad fixtures, two Financial Datasets fixture
+JSON files, a 522-byte native-host test log, and empty normalized-news
+directories). Ordinary git status remained empty. No pre-existing path changed
+or disappeared. Full-tree search returned zero `risk_free_rate.json` paths;
+`src/data` remained absent. This is the direct native witness that retiring the
+unconsumed rate fallback removed the cache artifact that every earlier canonical
+run had to quarantine.
+
+All 568 files moved by exact relative path to the external Task 5 quarantine;
+all 44 new directories were then removed only after becoming empty. Quarantine
+receipt SHA-256 is
+`1c19d806f05fc8f07720133ae98e781b9db00aad521584dac95bf9424c2c07c0`.
+The pre-run and restored full-tree snapshots are byte-identical at
+`3bf3009b5cc1ab1b8cdf4161a9f70afaaa18d860c81a141e24d31238ea175ca6`.
+Ordinary, ignored, symlink, `data/`, and `src/data` manifests also compare
+byte-for-byte. The controlled `node_modules` link and empty `data/` marker were
+then removed, the detached worktree was clean, and `git worktree remove`
+succeeded without force. Both persistent worktrees remained clean.
+
+Task 6 merge, exact-master admission, and closeout have not run. Independent
+implementation review of the raw Task 5 packet is the only next gate.
