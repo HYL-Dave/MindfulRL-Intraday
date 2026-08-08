@@ -1,6 +1,6 @@
 # OAuth Lifecycle and Subscription Usage Truth Evidence
 
-> **Status:** TASK 5 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 6
+> **Status:** TASK 6 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 7
 >
 > **Date:** 2026-08-08
 >
@@ -607,3 +607,99 @@ same bounded credential snapshot only when a normal stream already supplies an
 event; missing evidence remains unknown and causes no probe. Exact final backend
 identities match the reviewed plan. Task 6 Provider Settings UI remains
 unstarted and unauthorized until independent Task 5 review.
+
+## 27. Task 6 RED
+
+The seven reviewed frontend nodes were added under the exact describe owner and
+the focused collection immediately matched `15/887a712a...`. An initial harness
+attempt used a `Date.now()`-based `waitFor` while the cooldown owner installed a
+fake system clock; those timeouts were rejected as wrong-RED and the shared test
+waiter was corrected to use monotonic `performance.now()` before product code
+changed.
+
+The accepted RED ended `8 passed / 7 failed`. All seven new nodes failed only
+because lifecycle-specific status, account observations, visible stale sync,
+manual cooldown, and exact mutation invalidation did not exist. There was no
+import, fixture, browser, provider, secret, token-store, profile-DB, or path
+failure.
+
+## 28. Task 6 implementation
+
+Frontend/i18n family `bc1c79d139a39fcb489036b54c7beb71790cba48`
+implements:
+
+- closed lifecycle, account-snapshot, rate-limit, usage, cached-read, and
+  explicit-sync DTOs in the API client;
+- lifecycle-specific credential and provider status, while legacy responses
+  without the new field retain the previous `available` display contract;
+- direct used/reset/status/overage/source/observation facts, explicitly labeled
+  inferred remaining percentage, and `Unknown` for absent evidence;
+- cached reads for active OAuth credentials, automatic ChatGPT sync only for a
+  visible stale/missing observation, a five-minute TTL, focus recheck, one local
+  in-flight request, a ten-second manual cooldown, and no interval poll;
+- credential-bound response checks plus generation guards so stale in-flight
+  reads cannot repopulate a mutated credential;
+- exact invalidation after add/import/login/manual completion/activate/update/
+  delete, followed by inventory refresh and, for an active OAuth result, an
+  affected-credential cached read; and
+- matching English/Traditional Chinese copy plus reviewed i18n inventory and
+  lifecycle-aware CSS source-contract evolution.
+
+Post-commit source identities are:
+
+| Path | Lines | SHA-256 |
+|---|---:|---|
+| `apps/arkscope-web/src/ProviderSection.test.ts` | 763 | `5f0f87deed3cb6b3ec81e271487d9b7104cc557d20a321e303b4a9c71da28cc2` |
+| `apps/arkscope-web/src/api.ts` | 2,904 | `d426950f15b560bdbe15ba72a2d8724ef7eb241afa7ba906de960e1774b51017` |
+| `apps/arkscope-web/src/i18n/resources.test.ts` | 1,182 | `df3cf136fee12c10cd69acff4558b696d076963ab2f02c1af28882df30be0a03` |
+| `apps/arkscope-web/src/i18n/resources/en/settings.ts` | 1,027 | `9844a82c1c3f86de00750600361977de0f75b04ead7778146da548c12839fce1` |
+| `apps/arkscope-web/src/i18n/resources/zh-Hant/settings.ts` | 1,026 | `6efe230246784de2717a6106300f82808f25e68d332e156898dcf858e1d8e3d7` |
+| `apps/arkscope-web/src/settings/ProviderSection.tsx` | 1,698 | `03f14d41421389d34c13465d6fa0323435bd8dabab79ae673222212d94b46606` |
+| `apps/arkscope-web/src/shell/ShellCss.test.ts` | 163 | `4f1bdc7145771db58f64e68806d37752d8904fb0f4e19fe10859078981b09394` |
+
+## 29. Task 6 verification
+
+| Collection/run | Nodes | Node-stream SHA-256 | Transcript SHA-256 |
+|---|---:|---|---|
+| ProviderSection focused collect-only | 15 | `887a712a206a272d6db3e75c55a1d77ea2bfe032650186458a874c8495fe04bf` | n/a |
+| ProviderSection focused runtime | 15 | same focused stream | `a58b51809b67f44b05e66b85cbfc25e9e6f137e27445bc6a128014c26661620a` |
+| frontend full collect-only | 1,084 | `f0e5ecda1371f0559c1cc92af367b7e32daa91663ef2f316ed67e23129ee9637` | n/a |
+| frontend full runtime | 1,084 | same full stream | `83279825af198f78c807aea3a7d08681c8c79647456183471ae3d1c88533264a` |
+
+The isolated focused run ended `15 passed in 3.32s`. The single admitted full
+run ended `97 files / 1,084 passed in 49.65s`. The ProviderSection plus the two
+evolved collateral owners ended `40 passed`. Typecheck, production build, and
+the visible-literal scanner all returned exit zero; the scanner reported
+`36` candidates, `20` signatures, zero debt signatures, and `20` allowlist
+entries. Build emitted only the existing large-chunk warning.
+
+The first full-runtime command was accidentally launched twice concurrently
+and is not admission evidence. One transcript (`ce3a8f9c...`) exposed the two
+deterministic stale contract owners: exact i18n inventory counts had to grow by
+the reviewed 27 provider leaves, and `ShellCss.test.ts` still matched the old
+literal `cred.available` expression. Its unrelated foundation timeout was
+concurrency noise. Both owners passed in isolation, all duplicate Vitest
+processes exited, and the later single-process full run above is the only
+admitted full result.
+
+The three frozen Settings contracts remained byte-identical:
+
+| Path | SHA-256 |
+|---|---|
+| `apps/arkscope-web/src/settings/settingsCopy.test.ts` | `00babecf33c522dd32476a49cd1c439d7f85ac5991d5b49aebf24c650d401e00` |
+| `apps/arkscope-web/src/settings/settingsRegistry.test.ts` | `b9ad9aef50d464ed7b7e6ecd0a9e4348dafb55eca2337e263e654c93221d7044` |
+| `apps/arkscope-web/src/SettingsCss.test.ts` | `fc3e7b831b7deccfcce699172933071bde12eb5d9ddd91b44fa2210c4bbb456d` |
+
+Tests used only mocked `fetch` responses and synthetic credential/account
+identities. No live provider, real credential/token store/profile database,
+production data, scheduler, backend product, model registry/routing, or
+Tranche B owner was touched.
+
+## 30. Task 6 disposition
+
+Task 6 is complete at `bc1c79d1`. Provider Settings now renders the backend
+lifecycle and bounded account observations without inventing availability,
+remaining quota, or refresh causes, and its automatic sync is visible/stale
+only. Exact final frontend identities match the reviewed plan. Task 7 mutation,
+native admission, merge, and closeout remain unstarted and unauthorized until
+independent Task 6 review.
