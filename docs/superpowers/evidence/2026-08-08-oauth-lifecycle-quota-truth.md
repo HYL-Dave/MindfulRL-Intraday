@@ -1,6 +1,6 @@
 # OAuth Lifecycle and Subscription Usage Truth Evidence
 
-> **Status:** TASK 0 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 1
+> **Status:** TASK 1 COMPLETE; INDEPENDENT REVIEW REQUIRED BEFORE TASK 2
 >
 > **Date:** 2026-08-08
 >
@@ -11,9 +11,10 @@
 ## 1. Scope and boundary
 
 Task 0 performed collection, one focused offline runtime, and static identity
-checks only. It changed no product or test file, contacted no provider, read no
-real token store/profile database, and made no production-data or scheduler
-change. Task 1 product implementation has not started.
+checks only. At Task 0 close it had changed no product or test file, contacted
+no provider, read no real token store/profile database, and made no
+production-data or scheduler change. Task 1 began only after independent GREEN
+review of that packet.
 
 The branch was clean at reviewed plan tip `0753947e`, and its merge base with
 the grounding base was exactly `72576991`. Git used the established no-op
@@ -156,6 +157,68 @@ All four reviewed base identities reproduced exactly, focused runtime is
 identities are banked. The worktree returned clean with no `data`, `src/data`,
 or toolchain residue.
 
-Task 0 is complete. Independent review is the sole next gate. Task 1 lifecycle
-tests/product code, every later task, merge, and live synchronization remain
-unauthorized.
+Task 0 completed at `01fb7177`. At that point independent review was the sole
+next gate and Task 1 remained unauthorized. That dated gate was later cleared;
+Sections 7-10 record the authorized Task 1 work.
+
+## 7. Task 1 RED
+
+The eleven exact lifecycle node IDs were added to
+`tests/test_oauth_lifecycle_status.py` with all new-product imports inside test
+functions. The pre-product run collected all eleven and failed all eleven for
+the intended absent contract: ten failed because `src.auth_drivers.oauth_status`
+did not exist, and the API-payload node failed because `lifecycle_state` did not
+exist. There was no collection, fixture, SQLite, date, or secret-dependent
+wrong RED.
+
+## 8. Task 1 implementation
+
+Product/test family `d4adb6e3062a7662c13689002f5faea5e2d59d77` implements:
+
+- the closed lifecycle states `ready`, `refresh_required`,
+  `refresh_failed_retryable`, `reauth_required`, and `unverifiable`;
+- no-create observation reads, latest-only bounded refresh witnesses, sanitized
+  error details, and a no-create singleton accessor;
+- OAuth `available` as a projection of lifecycle readiness while preserving the
+  existing API-key and environment-derived availability behavior;
+- runtime resolution of an explicitly active OAuth credential independently of
+  display availability, without credential/provider fallback;
+- token-store expiry as ChatGPT OAuth authority, with the compatibility DB
+  expiry field no longer written, while user-declared Claude setup-token expiry
+  remains DB-owned; and
+- explicit token-store injection at the route boundary so pure projections do
+  not open a real default token store.
+
+Two implementation corrections kept the reviewed slice narrow. First, Task 1
+does not migrate OAuth account labels: account-snapshot ownership belongs to
+Task 3. Second, `OAuthObservationStore` contains only Task 1 refresh/lifecycle
+state; the account adapter and account snapshot schema were not implemented
+early.
+
+## 9. Task 1 verification
+
+| Collection/run | Nodes | Node-stream SHA-256 | Report SHA-256 | Transcript SHA-256 |
+|---|---:|---|---|---|
+| backend full collect-only | 4,592 | `7f9d48845e7d0a4cde3e5c3e91b944eccc3cbcaf4109c0d11a01ef9a72dbfc54` | `95237174787b859b67f3e82662f6d3aea233ab94d56475c0c0b24c1434cb017e` | not admission-bearing |
+| backend focused collect-only | 257 | `b875fd44906f15fff83dee815516f6dc4b99ec1565a2777b0dbd1d88649faeef` | `5042d06d94f7a92078171e13bd4058d31a48e29fca0c4fef4bae810e0f0e5eb8` | not admission-bearing |
+| backend focused runtime | 257 | same focused stream | `f744a66c5ce78ca0bf837831016f9e01ec2395a2300a43c49efbd609ecaee507` | `e7590eb35d6b55d4224ecae264373c08c7a0967dad6db53fae3c89612d99c663` |
+
+The focused runtime ended `257 passed in 5.20s`, with `257 collected = 257
+seen`, zero non-passing nodes, and exit zero. The related route/inventory
+collateral group completed `164 passed`; the eleven owning nodes completed
+`11 passed`. `py_compile` and `git diff --check` passed.
+
+All 37 protected paths remained byte-identical to `0753947e`; the protected
+path stream remains `9a503591fd04098f5d3a5cb1b15bc81b164c0e9fe7061c4ea8147775a95589ff`.
+The new tests use injected token stores, stores under temporary paths, and fake
+errors. They contain no provider URL/client, `Path.home`, real profile path, or
+default real-token-store construction. No provider call, production-data write,
+scheduler change, frontend change, account read, or live synchronization was
+performed.
+
+## 10. Task 1 disposition
+
+Task 1 is complete at `d4adb6e3`. The reviewed full/focused identities match
+exactly, the lifecycle/store family is GREEN, and protected Tranche B/model
+routing/agent/Settings owners are unchanged. Task 2 cross-process locking and
+all later tasks remain unauthorized until independent Task 1 review.
