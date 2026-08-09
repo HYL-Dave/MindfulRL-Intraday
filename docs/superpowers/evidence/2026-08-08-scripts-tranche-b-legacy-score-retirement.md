@@ -1,7 +1,7 @@
 # Scripts Tranche B Legacy Score Retirement Evidence
 
-> **Status:** TASKS 0-4 COMPLETE; ATOMIC TIP `8ebf7fae`; NATIVE ADMISSION
-> GREEN; INDEPENDENT IMPLEMENTATION REVIEW PENDING; NOT MERGED
+> **Status:** TASKS 0-6 COMPLETE; PRODUCT CUTOVER MERGED AND VERIFIED;
+> FOCUSED CLOSEOUT REVIEW PENDING
 > **Date:** 2026-08-08
 > **Rebase amendment:** 2026-08-09
 > **Current plan base:** `814ef2edd1b6aa66499145e1a9109d05f5fb0d89`
@@ -542,8 +542,8 @@ independent review of this amendment.
 | Task 2 atomic cutover | complete at `8ebf7fae` | exact target identities reached |
 | Task 3 mutation/focused gates | complete | registry amendment `54d442d2` independently GREEN; M1-M11 restored |
 | Task 4 native admission | complete | `4282 seen / 4253 passed / 29 skipped / 0 failed` |
-| Task 5 independent implementation review/merge | review pending; merge blocked | packet `d5917eb7...` |
-| Task 6 merged verification/closeout | blocked | fast-forward merge |
+| Task 5 independent implementation review/merge | complete; independently GREEN | fast-forward to `0c16771b` |
+| Task 6 merged verification/closeout | complete; focused review pending | packet `7b42a38e...` |
 | physical score-row disposition | separately blocked | merged rollout + use analysis + new review/user approval |
 | scoring-secret disposition | separately blocked | exact consumer metadata + new review/user approval |
 
@@ -669,5 +669,66 @@ The raw review packet is
 `/tmp/scripts-tranche-b-task4-8ebf7fae`: 668 retained files, all verified by
 `SHA256SUMS`; manifest SHA-256 is
 `d5917eb703081d80d66b042886c581ba09df7950bc2a7ffb3061a910551b3ce5`.
-Merge, production score-row disposition, and scoring-secret disposition remain
-blocked pending their separately reviewed gates.
+Production score-row disposition and scoring-secret disposition remain blocked
+pending their separately reviewed gates.
+
+## 7. Task 5 merge and Task 6 exact-master verification
+
+Independent implementation review returned GREEN for
+`54d442d2..0c16771b`. `master` then fast-forwarded from
+`814ef2edd1b6aa66499145e1a9109d05f5fb0d89` to exact reviewed tip
+`0c16771bce89c664151918bd2825f0cf4989d263`. The range contains 13 linear
+commits and zero merge commits. `origin/master` remained at `6159fc14`; no push
+occurred. The atomic product commit is recorded as:
+
+```text
+SCRIPTS_TRANCHE_B_PRODUCT_CUTOVER_TIP=8ebf7fae14bcd1136ae3e9f1c2bfbed05b00da6c
+```
+
+### 7.1 Exact merged identities and runtime
+
+A fresh detached exact-master worktree reproduced:
+
+| Gate | Exact merged result |
+|---|---|
+| backend collection | `4282/281cad976a2df29224f41d7442f39ee6deb5b78165fb9efe3945bee6d520abe3` |
+| backend focused | `421/385d0ac7...`; `404 passed / 17 skipped` |
+| backend protected | `1222 passed` |
+| backend rollout | `12 passed` |
+| frontend collection | `99 files / 1124/da69a2942c03e4794e3384e6125936f9f25c1fafbad7d006b67025f8fd97bc39` |
+| frontend focused/full | `28/28`; `1124/1124` |
+| canonical native | `4282 collected = seen`; `4253 passed / 29 skipped / 0 failed`; exit `0` |
+
+Typecheck, build, and i18n scanner were GREEN; the scanner remained
+`36/20/0/20`. The canonical reporter JSON is byte-identical to the reviewed
+branch admission report at SHA-256
+`252535bf53aa30f93995f2633b39415c28c9bfec94bbea4af5576a9ec320de5b`.
+The merged transcript SHA-256 is
+`8d44c8746458007b10dd1c47a94ea9c550d7419f124ecf720b42f5bd0ac7c25c`.
+
+### 7.2 Rollout, retirement, and production boundaries
+
+The 12-node rollout gate proves retained raw-news/morning-brief behavior,
+absence of old score/signals routes and model contracts, score-free news-volume
+behavior, retained event sequences, and typed-unavailable impact. All 113
+reviewed direct-deletion paths are absent. Tracked paths under `scripts/`,
+`training/`, `src/signals/`, `src/analysis/`, `src/tools/signal_tools.py`, and
+`src/api/routes/signals.py` are empty. The 122 byte-protected rows remain exact.
+
+Read-only URI mode plus `PRAGMA query_only=ON` observed 491,808 score rows and
+140,152 distinct article IDs before and after canonical admission. The score
+projection and metadata-only secret projection are byte-identical. Secret
+content, size, and digest were not read.
+
+Canonical admission generated 510 repository-relative files. Every file was
+recorded and moved by exact relative path into packet quarantine. Ordinary
+status returned empty; ignored status returned to only the pinned
+`node_modules` link; `data/` returned present-and-empty; `src/data` remained
+absent. The fresh worktree was then removed and its Git registration is absent.
+
+The merged packet is `/tmp/scripts-tranche-b-task6-merged-0c16771b`: 569
+payload entries, all verified by `SHA256SUMS`; manifest SHA-256 is
+`7b42a38e67c00e45585b02121344d95d72f8cb01c87849bcbfb251db2149494d`.
+This closeout does not classify, retain, delete, or otherwise mutate the frozen
+score rows or the scoring secret. Those later operations remain independently
+blocked.
