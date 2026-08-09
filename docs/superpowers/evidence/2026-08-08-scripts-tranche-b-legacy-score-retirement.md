@@ -375,6 +375,13 @@ old `+18/-138 -> 4407` authority is dated evidence; current authority is
 `+18/-247 -> 4298`. Product bytes remain unchanged, but Task 0 and Task 1 are
 paused pending independent review of the expanded plan.
 
+The user additionally required the deletion to remain intelligible from Git
+history alone. The expanded plan therefore pins subject
+`refactor: retire legacy scoring and training lineage` and requires its body to
+record the 62-path/247-node scope, retirement reason, preserved capabilities,
+future new-design rule, and the untouched production score-row/secret boundary.
+Generic cleanup wording is not admissible.
+
 ## 3. Locked implementation sequence
 
 | Task | Status | Gate |
