@@ -1,6 +1,6 @@
 # Settings Navigation and Warm Cache Evidence
 
-> **Status:** TASK 1 COMPLETE; TASK 2 PAUSED FOR BOUNDED AMENDMENT REVIEW
+> **Status:** TASK 2 COMPLETE; TASKS 3-5 BATCH EXECUTION IN PROGRESS
 >
 > **Date:** 2026-08-09
 >
@@ -316,4 +316,76 @@ amendment.
 The bounded amendment adds only `SettingsPostPgExitStorage.test.ts` to Task 2
 and authorizes evolving that one existing assertion to the complete registry
 order. Stage identities, the `+6/-1` Task 2 delta, and the global `+40/-1`
-ledger remain unchanged. Task 2 may resume only after focused review.
+ledger remain unchanged. The initial stop record requested an extra focused
+review, but the user clarified that the already-granted Tasks 1-5 batch
+authorization covers this bounded correction. No technical gate was waived:
+the expanded focused owner, browser, protected-byte, stage-identity, and
+product/docs commit requirements all remained mandatory.
+
+## 10. Task 2 - sticky navigation and complete directory
+
+### 10.1 Implementation and GREEN
+
+Product/test commit `ecf87f0c` changes exactly the six reviewed owners. The
+Settings workflow tab row is sticky and non-wrapping inside the existing
+`.main` scroll owner; its one shared offset also owns the directory rail and
+section anchor margin. The empty directory renders all three registry groups
+and all nine sections. Manual group navigation and exact-anchor navigation are
+separate post-mount effects: an accepted manual switch restores the Settings
+scroll owner to zero and focuses the selected tab without scrolling, while an
+exact target mounts its group then focuses the anchor. Dirty-confirm and busy
+guards schedule neither effect until navigation is actually accepted.
+
+The existing post-PG-exit directory assertion now checks the complete registry
+order without changing its node ID. Fresh verification was:
+
+```text
+direct owners: 45 passed / 45
+focused:       204 passed / 204 across 15 files
+typecheck:     exit 0
+full stage:    1106 / 10965b1c8e5a51cb...
+focused stage: 204 / e34c217edb518485e...
+```
+
+All ten Task 0 protected rows, including generic `ui/Tabs.tsx`, its owner,
+both frozen Settings fixtures, registry/copy/i18n owners, and Investor Profile
+owners, remained byte-identical. `git diff --check` passed.
+
+### 10.2 Browser evidence
+
+A fail-closed Playwright harness served only typed in-memory GET fixtures and
+blocked every unknown or external request. The admitted run used Chrome
+`150.0.7871.128` at `1322x777` and `390x844`. Both viewports mechanically
+proved:
+
+- three directory groups and nine unique section links;
+- one mounted tabpanel and no retained Data Sources owner after leaving it;
+- exact macro-anchor focus below the sticky tab row;
+- deep Settings scroll `1200` with the row still sticky;
+- no page/main horizontal overflow and no clipped tab label; and
+- manual switch to Personalization at `scrollTop=0` with selected-tab focus.
+
+The result JSON is SHA-256 `efaab767f65c4101438d780c9d5e1525e6b3051c9fa4aaaccd2ba0f2e4f2dc92`.
+The inspected desktop and mobile screenshots are respectively
+`b8bf994eb9e6401d040e3a1172c0e1c1f08cd00cf4e6c60de6262aa994c90b31`
+and
+`3a048e8211d279c1b62fdec783796aa735a569b62f8835381f98d0273d06e12a`.
+
+Two earlier harness attempts are rejected evidence, not product failures. The
+first supplied `fundamentals: null` against the current typed status DTO and
+therefore crashed the fixture-rendered storage panel. The second passed every
+layout assertion but correctly rejected two missing Investor Profile GET
+fixtures because console errors are forbidden. The final harness fixed only
+its in-memory fixtures; no repository byte changed between those attempts.
+
+### 10.3 Artifacts and handoff
+
+The Task 2 root is
+`/tmp/settings-navigation-warm-cache-task2-4745b359`. It contains `17`
+payload entries; `SHA256SUMS` has SHA-256
+`73f1a4cd5eca233cbe39f76f994aa5ee852d2438151dac324f80072df074ea97`.
+Thirty-five Vite/Vitest cache files were individually hashed, then the exact
+generated `apps/arkscope-web/node_modules` root was removed. Port `8461` was
+closed, ordinary status contained only the six intended owners before commit,
+and ignored status returned to the sole pinned root `node_modules` symlink.
+Task 3 is the next stage of the already-authorized batch.
