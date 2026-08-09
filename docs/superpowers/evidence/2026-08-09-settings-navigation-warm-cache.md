@@ -448,3 +448,20 @@ state returned to the pinned root `node_modules` only. Raw evidence is under
 `SHA256SUMS` SHA-256
 `77e338a2bc3e161ea120da684871bb63c96a8afdf6afa9245c4ea39affa86ee1`.
 Task 4 follows immediately under the user's batch authorization.
+
+## 12. Task 4 bounded cache-handoff ownership amendment
+
+Pre-edit inspection found that the reviewed Task 4 owned-path list named the
+Provider implementation and its test but omitted the existing render owner in
+`Settings.tsx`. The Provider cannot consume the Task 3 App-owned cache unless
+that call site passes the same instance. A Provider-local or module-global
+fallback would violate the App-root isolation contract.
+
+The bounded amendment therefore adds `Settings.tsx` only for the prop handoff.
+It authorizes no other Settings behavior, no new cache owner, and no test-node
+change. Task 4 remains exactly `+3/-0`, with full target
+`1116/09d31fa1bd22d3b0519c8dce2c606d7ec91c41d5b9251437299a2e3a95d74888`
+and focused target
+`214/d44260d583bda710fabd963c1f9af8730aa92835cd8b5a7177ba5f092f381632`.
+The user's existing Tasks 1-5 batch authorization remains in force; this is
+not an added review wait.
