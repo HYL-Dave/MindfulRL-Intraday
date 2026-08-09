@@ -512,3 +512,13 @@ The isolated RED worktree was removed after capture. One generated Vite result
 file was inventoried, and the exact app-local `node_modules` cache root was
 removed; ignored state returned to the pinned root `node_modules` link only.
 Task 5 follows immediately under the user's batch authorization.
+
+## 14. Task 5 bounded cache-handoff ownership amendment
+
+Pre-edit inspection found the same bounded render-owner omission as Task 4:
+the reviewed Task 5 list named the four Data/Storage sections and tests but
+not `Settings.tsx`, which holds the App-root cache at all four render sites.
+The amendment authorizes only those prop handoffs and forbids module-global or
+section-owned fallback caches. Task 5 remains exactly `+7/-0`; final full and
+focused identities remain `1123/9262d7b1...` and `221/a2c20d36...`. Existing
+batch authorization remains in force without an added review wait.
