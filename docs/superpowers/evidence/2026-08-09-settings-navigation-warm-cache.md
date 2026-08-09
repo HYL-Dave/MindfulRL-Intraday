@@ -1,6 +1,6 @@
 # Settings Navigation and Warm Cache Evidence
 
-> **Status:** TASK 6 COMPLETE; INDEPENDENT IMPLEMENTATION REVIEW PENDING; TASK 7 NOT STARTED
+> **Status:** TASK 7 MERGED AND EXACT-MASTER VERIFIED; FOCUSED CLOSEOUT REVIEW PENDING
 >
 > **Date:** 2026-08-09
 >
@@ -786,3 +786,113 @@ all entries pass `sha256sum -c`.
 Task 6 is complete. Independent implementation review is the only next gate.
 Task 7 merge, exact-master verification, closeout, and the Tranche B absolute
 identity re-derivation have not run and remain unauthorized.
+
+## 19. Task 7 merge and exact-master verification
+
+Independent Task 6 review returned GREEN with zero findings at docs commit
+`cd216665`. The reviewer independently reconstructed all five mutation diffs
+and restoration hashes, both frontend streams and runtimes, backend identity,
+browser DOM/request/screenshot evidence, and the complete 115-entry packet.
+Task 7 was then authorized.
+
+### 19.1 Linear merge boundary
+
+Before merge:
+
+```text
+master:       3d18e9c0ea54d99fc4824b7919d74a4c3a38502b
+branch tip:   cd216665d344e7581b71140e257f55b5ffd571db
+origin:       6159fc14956800dc04c4d6c944a2941b9c6c12db
+range:        20 commits / 0 merge commits
+```
+
+Both main and feature worktrees were clean, and `master` was a strict ancestor
+of the branch tip. `git merge --ff-only` moved master to
+`SETTINGS_NAVIGATION_WARM_CACHE_CUTOVER_TIP=cd216665d344e7581b71140e257f55b5ffd571db`.
+No merge commit was created and origin was not pushed. Master ended 37 commits
+ahead of the unchanged origin pointer.
+
+### 19.2 Fresh exact-master admission
+
+The first detached-worktree checkout was rejected before verification because
+the repository git-crypt smudge filter lacked an unlocked key. It created
+neither a registered worktree nor target directory. The admitted checkout used
+the reviewed no-op clean/smudge boundary and retained exact tracked ciphertext
+bytes at merged master.
+
+Fresh-master verification reproduced:
+
+```text
+frontend full collection:     1123 / 9262d7b15a926d7...
+frontend focused collection:   221 / a2c20d3607e5fd489...
+focused runtime:                221 passed / 15 files
+native full runtime:           1123 passed / 98 files
+typecheck:                      exit 0
+build:                          exit 0; existing >500 KiB warning only
+i18n scanner:                   36 / 20 / 0 / 20; exit 0
+protected frontend:             10/10 / 4eae072b4eae3069...
+Python/backend paths:           597/597 / 59412c6b815fbba9...
+backend collect-only:           4527 collected / 0 seen / 0 non-passing
+backend node stream:            4eeb117804ad874c83ffe4c04fd25ecd...
+```
+
+The collection streams and backend reporter JSON are byte-identical to Task 6.
+The first full runtime was rejected because the execution layer still placed
+it in the known-incompatible sandbox: it produced exactly 19
+`spawnSync(node) EPERM` failures in `foundationBoundaries.test.ts` and
+`visibleLiteralScanner.test.ts`, with 1,104 other nodes passing. The admitted
+native rerun passed all 1,123 nodes. The rejected transcript is retained and is
+not called full admission.
+
+One local reporter extraction also stopped immediately after using nonexistent
+shorthand JSON keys. The reporter file was unchanged; the admitted extraction
+uses `collected_node_ids`, `seen_node_ids`, and `nonpassing_node_ids` and
+reproduces the reviewed identity.
+
+### 19.3 Merged browser matrix
+
+The reviewed harness logic changed only its artifact root/name and loopback
+port from `8464` to `8465`. The sandbox Vite bind attempt failed with
+`listen EPERM` before browser launch and is rejected evidence. Native loopback
+Vite plus pinned Chrome then passed the complete `1322x777` and `390x844`
+matrix.
+
+All Task 6 DOM assertions reproduced. Both screenshots are byte-identical to
+Task 6 and were inspected again at original resolution. The merged raw ledger
+contains 51 desktop and 37 mobile requests, all GET. Its raw bytes differ from
+Task 6 only because the mobile account read began later within the concurrent
+idle batch; the canonical `(viewport, method, path, response_generation)`
+projection is byte-identical. No raw sequence was rewritten or mislabeled as
+byte-identical.
+
+Two early cleanup-probe command shapes were rejected: one lacked native
+netlink access and one matched its own parent-shell command text. The admitted
+process-identity check constrained `ps` by executable family and proved port
+8465 closed, zero matching Chrome/Vite processes, and both temporary profiles
+absent.
+
+### 19.4 Artifact transaction and closeout gate
+
+The exact-master run created 536 entries under 32 validated roots: the 535
+generated files seen in Task 6 plus the pinned root `node_modules` symlink.
+Every entry was recorded with type, inode, size, mode, nanosecond timestamp,
+content/target SHA-256, and link target where applicable. Exact-root cleanup
+restored the pre-run file/symlink stream and ignored-status stream byte-for-byte.
+
+The clean detached verifier directory was removed. Its first removal command
+deleted the path but the sandbox could not delete the final Git registration;
+the sole entry was explicitly `prunable`, and native `git worktree prune`
+removed it. Both path and registration are now absent. Main remains clean at
+the cutover tip; origin remains unchanged.
+
+Raw evidence is under
+`/tmp/settings-navigation-warm-cache-task7-merged-cd216665`. Its `80` payload
+entries are covered by `SHA256SUMS`, whose SHA-256 is
+`0cdd82361f1bdd9d5a6d26f62d927472a01dfc4eacf30427a632a3b9fa7ecfe9`;
+all entries pass `sha256sum -c`.
+
+Task 7 implementation merge and exact-master verification are complete. This
+docs-only closeout stops for independent focused review. Until that review is
+GREEN, the line is not declared LIVE COMPLETE and the one-time Tranche B
+absolute identity re-derivation remains unauthorized; its reviewed relative
+`-138/+18` ledger is unchanged.
