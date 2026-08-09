@@ -1,11 +1,13 @@
 # Scripts Tranche B Legacy Score Retirement Evidence
 
-> **Status:** FULL PLAN AND ONE-TIME REBASE AMENDMENT GREEN; TASK 0 STOPPED ON
-> A BOUNDED NO-TAIL OWNER AMENDMENT; IMPLEMENTATION NOT STARTED
+> **Status:** USER TRAINING-RETIREMENT RULING RECORDED; EXPANDED PLAN AMENDMENT
+> REVIEW PENDING; TASK 0 PAUSED; IMPLEMENTATION NOT STARTED
 > **Date:** 2026-08-08
 > **Rebase amendment:** 2026-08-09
 > **Current plan base:** `814ef2edd1b6aa66499145e1a9109d05f5fb0d89`
 > **Product ruling:** PD 1-PD 8 approved on 2026-08-08
+> **Training ruling:** direct Git retirement approved on 2026-08-09; no archive
+> branch, tag, copy, disabled scaffold, or compatibility tail
 > **Destructive authority:** none; score rows and `scoring_keys.txt` remain blocked
 
 ## 1. Approval and scope
@@ -121,14 +123,17 @@ set membership.
 
 | Stream | Count | SHA-256 |
 |---|---:|---|
-| retired | 138 | `b48b161d573afb37496763c0afe388c2421f06e35eb5cd7de959ba5778c05254` |
+| retired | 247 | `149962668e116460f4b88402b1fabb8bb24f0a3409e33d8cade5924dd34ca671` |
 | backend additions | 18 | `88ac9e5652c9df79eb42284d6a9c42a2f0f4a60b967badae37524fa127499520` |
 | backend RED | 4,545 | `e1fa3f7d54d671c984e9800e38850ccb802f06f83d78aa2114b749bb7414f9da` |
-| backend final | 4,407 | `d71b9825e727fd7ccac43b79ebb904144a48a9acc66b75ccae002471822ac8bc` |
+| backend final | 4,298 | `38705c3d431238f5fecb15d3dd4a668cee41912005bfc883d8b4e7275b5efee6` |
 | focused RED | 573 | `5e0a5538c4106ca9b9cf0d701ab719d62c3a4056d1e101864ddb09b6beb9fb75` |
 | focused final | 435 | `2e5fcb6c22d6a1657e609542138830f2d5fd367a0e353ab30efdfbb8851a7c6a` |
 
-Retirement composition is exact `102 whole-file + 36 mixed-file = 138`.
+Retirement composition is exact `211 whole-file + 36 mixed-file = 247`.
+The added 109-node training-only stream is
+`db3cad74da2ec956e252096948d80631297e9d4e8c731fb6706da7b2976941b2`
+and has zero intersection with the original 138-node score/signal stream.
 Addition composition is exact `8 boundary + 1 API + 3 monitor + 1 identity + 1
 morning brief + 2 news-event tools + 2 truthful bridge-registry IDs = 18`.
 
@@ -146,11 +151,12 @@ stream SHA is
 
 | Projection | Count | SHA-256 |
 |---|---:|---|
-| storage/writer/root | 4,483 | `a00d996aa45fda19e0a9a473fb2767310b98daf5d2ab8ad1c72754c3b2a080f1` |
-| raw DTO/backend | 4,444 | `e71c3b0cfe25931558fe4d01b81fd7a0c653b002c7aa506ace66581b4b0ff458` |
-| raw user behavior | 4,444 | `d2dd1b144e3923a60672c23e2f8f8ac9f42c1a42445235b47e83a90d1a51a99e` |
-| volume/event/composite | 4,404 | `ebc5563c5d408bf83dd14f643d6a5ffd082f1b02d5159485fdb1e0b2ef00c7a9` |
-| final | 4,407 | `d71b9825e727fd7ccac43b79ebb904144a48a9acc66b75ccae002471822ac8bc` |
+| training lineage retirement | 4,418 | `284db7fe2fac55bb84ea2bfed4b68a9a566b303b132dda0aaabcfd440978cd56` |
+| storage/writer/root | 4,374 | `fcd8775f6255b780c68cb0a943031d49b8f357dd2dcd6da1c8def2af268c19bf` |
+| raw DTO/backend | 4,335 | `c6a074a3649b515216402b1b868eb588f57f873474f8b5a15934fcaea48c0d95` |
+| raw user behavior | 4,335 | `d17b58f518fb48be84087c6c9169a7738baa478be3d55fac6156449fdc366835` |
+| volume/event/composite | 4,295 | `6e42c990ca4ce3b8d57159ec24af47c04306f4cf911a705eae0ffdb4184f6725` |
+| final | 4,298 | `38705c3d431238f5fecb15d3dd4a668cee41912005bfc883d8b4e7275b5efee6` |
 
 These are mathematical node-accounting projections. They have not been called
 runtime GREEN and do not relax the atomic final gate.
@@ -174,9 +180,9 @@ No repository-relative artifact remained; the temporary empty `data/` marker
 was removed and ordinary status returned clean. Therefore:
 
 ```text
-passed:  4488 - 136 retired passing + 18 new passing = 4370
-skipped:   39 -   2 retired skipped                  =   37
-total:   4370 + 37                                  = 4407
+passed:  4488 - 136 score/signal - 101 training + 18 new = 4269
+skipped:   39 -   2 score/signal -   8 training          =   29
+total:   4269 + 29                                      = 4298
 ```
 
 Task 4 must prove this result; arithmetic is not admission evidence.
@@ -261,18 +267,12 @@ The product-decision amendment changes only its status header and section 9
 handoff sequence to record completed predecessor lines; PD 1-PD 8 and their
 approval/non-authorization semantics are unchanged.
 
-### 2.9 Protected lineage
-
-The current tracked `training/` tree has 53 paths. Its sorted
-`path<TAB>git-blob` stream is:
-
-```text
-2284c8989f6104979a11a5111de987f5d6f2974e3d2f74f0cf47ed5b4854e14a
-```
+### 2.9 Provider-native protected lineage
 
 Provider-native sentiment and investor-profile risk were found in distinct
-owners. They are protected and receive a dedicated new regression node rather
-than being removed through token matching.
+owners. They remain protected and receive a dedicated new regression node
+rather than being removed through token matching. The former training
+protection is superseded by the explicit user ruling in section 2.11.
 
 Self-review found and removed a plan contradiction: the no-tail ruling requires
 current `evidence_packet.py` copy to stop naming the deleted `signal_tools`
@@ -305,10 +305,11 @@ Re-grounding before the stop produced:
 | native canonical base | `4527 collected = 4527 seen / 4488 passed / 39 skipped / 0 failed`; report `1becf27f6755f4ec7d4b5ffabdf99d2d0db26665ce18dbbb2a1042f75da7c143` |
 | native generated artifacts | 568 files plus two empty directories; file manifest `90f7a97e85de76545e9d7453d77c219845371c383df8548d608a566f0b46994a`; pre/final status and data projections equal |
 
-The retired/addition streams, all five phase projections, focused targets, and
-frontend target were independently reconstructed from named owners and matched
-every section 2 count and full SHA. Four pre-rebase authority files were also
-confirmed as identical Git blobs between `52354806` and `f9958efb`.
+The retired/addition streams, all five then-authorized score/signal phase
+projections, focused targets, and frontend target were independently
+reconstructed from named owners and matched every then-current section 2 count
+and full SHA. Four pre-rebase authority files were also confirmed as identical
+Git blobs between `52354806` and `f9958efb`.
 
 Two rejected operator/harness attempts are retained rather than rewritten:
 
@@ -337,14 +338,48 @@ the already-retired five-node `tests/test_news_score_migration.py`, while the
 module imports the planned-deleted `.scores` owner. The reviewed plan omitted
 the source module from every disposition. Under the no-tail ruling and stop
 condition 15, Task 0 stopped before claiming a closed owned/protected manifest.
-This amendment assigns the module to phase-1 deletion without changing any node
-ledger. Product edits and Task 1 remain blocked pending focused review.
+The amendment assigns the module to phase-1 deletion without changing any node
+ledger. Focused review cleared it at `a6e99c02`, revalidated the partial packet,
+and allowed Task 0 to resume at manifest construction without rerunning the
+unchanged native base gate.
+
+### 2.11 User training-retirement ruling and expanded ledger stop
+
+The next manifest step surfaced an obsolete governance assumption rather than
+a hash to normalize away: the plan still protected `training/` under the July
+`paused-preserve` ruling. The user explicitly superseded that ruling and chose
+direct retirement. Grounding produced these independent facts:
+
+| Witness | Result |
+|---|---|
+| tracked training tree | 53 paths; current `path<TAB>Git blob` stream `782dd7e42eabaacc814cde180b04f473d6e2433c6dd5e3cc907fa00f96211351` |
+| runtime consumers | zero in `src/`, apps, services, schedulers, or data sources |
+| external test owners | 8 files / 109 nodes / `db3cad74da2ec956e252096948d80631297e9d4e8c731fb6706da7b2976941b2` |
+| focused runtime | `101 passed / 8 skipped / 0 failed` |
+| direct deletion | 62 paths / `7c552b4940deeb666cd865656e980f9bba392507e6ed3f9b11b1672269b61c7d` |
+| combined retirement | 247 nodes / `149962668e116460f4b88402b1fabb8bb24f0a3409e33d8cade5924dd34ca671` |
+| ownerless requirements | 8 package names / 9 lines (`torch` is duplicated); `scipy` remains option-pricing-owned |
+| new final target | 4,298 nodes / `38705c3d431238f5fecb15d3dd4a668cee41912005bfc883d8b4e7275b5efee6` |
+| native arithmetic | `4,269 passed / 29 skipped / 0 failed` |
+
+The 62 deleted paths are all 53 tracked training files, the eight dedicated
+test files, and `tests/live/smoke_yfinance.py`. The same atomic cutover removes
+only their proven ownerless package/config/ignore/current-copy tail. Git history
+is the sole archive: no preservation branch, tag, copied directory, tarball,
+disabled scaffold, or compatibility import is authorized. Future RL, Signals,
+or provider-backed options research begins from a new design and current data
+contracts.
+
+This is a deliberate product-scope change, not a protected-pin correction. The
+old `+18/-138 -> 4407` authority is dated evidence; current authority is
+`+18/-247 -> 4298`. Product bytes remain unchanged, but Task 0 and Task 1 are
+paused pending independent review of the expanded plan.
 
 ## 3. Locked implementation sequence
 
 | Task | Status | Gate |
 |---|---|---|
-| Task 0 re-ground | stopped at owned/protected census | focused no-tail owner amendment review |
+| Task 0 re-ground | paused after user training-retirement scope ruling | expanded plan amendment review |
 | Task 1 RED | blocked | Task 0 GREEN |
 | Task 2 atomic cutover | blocked | plan + Task 0 GREEN |
 | Task 3 mutation/focused gates | blocked | product target exact |
@@ -364,16 +399,18 @@ ledger. Product edits and Task 1 remain blocked pending focused review.
 - [x] Legacy Signals namespace removal and honest news/event owners locked.
 - [x] Frontend decoded target and focused identities precomputed.
 - [x] Two canonical retired skips directly reproduced.
-- [x] Five intermediate projections labeled accounting-only.
-- [x] Ten product mutations mapped to owning nodes.
-- [x] Provider-native/training boundaries byte-protected; EvidencePacket copy
-  delta bounded while its negative behavior remains protected.
+- [x] Six intermediate projections labeled accounting-only.
+- [x] Eleven product mutations mapped to owning witnesses.
+- [x] Provider-native boundaries byte-protected; EvidencePacket copy delta
+  bounded while its negative behavior remains protected.
 - [x] Native wakeup/reporter/wrapper/toolchain boundary pinned.
 - [x] Independent full-plan review GREEN at `52354806`.
 - [x] One-time rebase completed with unchanged relative ledgers and exact new
   full/projection identities.
 - [x] Focused rebase-amendment review GREEN at `5be77be2`.
-- [ ] Task 0 authorized and executed.
+- [x] Focused no-tail owner amendment review GREEN at `a6e99c02`.
+- [ ] Expanded direct training-retirement plan independently GREEN.
+- [ ] Task 0 completed through exact owned/protected/deletion manifests.
 
 ## 5. Honesty boundary
 
