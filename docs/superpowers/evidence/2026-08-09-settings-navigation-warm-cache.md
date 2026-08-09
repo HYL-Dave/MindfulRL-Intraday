@@ -1,6 +1,6 @@
 # Settings Navigation and Warm Cache Evidence
 
-> **Status:** TASK 2 COMPLETE; TASKS 3-5 BATCH EXECUTION IN PROGRESS
+> **Status:** TASK 3 COMPLETE; TASKS 4-5 BATCH EXECUTION IN PROGRESS
 >
 > **Date:** 2026-08-09
 >
@@ -417,3 +417,34 @@ warmup now issues the reviewed GETs, while their Task 5 components have not yet
 joined the shared cache and therefore duplicate those calls. This is the
 predeclared partial-integration state that Task 5 removes; the failures are not
 called GREEN and their assertions are not weakened in Task 3.
+
+### 11.1 Product commit and packet
+
+Product/test commit `462bb8af` creates one cache lazily per App root, injects it
+through `SettingsView`, renders retained model catalog truth synchronously,
+joins visible and idle revalidation, invalidates before every reviewed catalog
+mutation refresh, and prevents old completions from repopulating. Idle work is
+one cancellable post-paint task and supplies only the reviewed local GET
+allowlist; it contains no interval, persistent listener, extension read, POST,
+discovery, model/provider execution, schedule mutation, or Investor Profile
+request.
+
+Final Task 3 checks were:
+
+```text
+exact RED owners:          64 passed / 7 failed (intended contracts only)
+new owners + cache owner:  88 passed / 88
+wider protected owners:    121 passed / 121
+typecheck:                 exit 0
+full collection:           1113 / eefdbdaa10c83786...
+focused collection:        211 / d74255067e3ca453...
+intermediate full focused: 202 passed / 9 failed (rejected, Task 5 boundary)
+```
+
+All ten protected rows remained byte-identical. The sole generated Vitest
+result file and empty Vite directories were recorded then removed; ignored
+state returned to the pinned root `node_modules` only. Raw evidence is under
+`/tmp/settings-navigation-warm-cache-task3-d4e4bc4d`: `11` payload entries,
+`SHA256SUMS` SHA-256
+`77e338a2bc3e161ea120da684871bb63c96a8afdf6afa9245c4ea39affa86ee1`.
+Task 4 follows immediately under the user's batch authorization.
