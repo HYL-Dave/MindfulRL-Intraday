@@ -1,6 +1,6 @@
 # Settings Navigation and Warm Cache Evidence
 
-> **Status:** TASK 0 COMPLETE - INDEPENDENT REVIEW REQUIRED
+> **Status:** TASK 1 COMPLETE; TASKS 2-5 BATCH EXECUTION AUTHORIZED
 >
 > **Date:** 2026-08-09
 >
@@ -16,8 +16,7 @@
 
 Task 0 was grounding and evidence only. It changed no product, test, backend,
 API, cache, provider, credential, scheduler, profile, or production-data byte.
-Tasks 1-7 remain unstarted and unauthorized until this packet receives
-independent GREEN review.
+At Task 0 close, Tasks 1-7 remained unstarted and unauthorized pending review.
 
 ## 1. Authority and execution boundary
 
@@ -196,9 +195,84 @@ Each generated root was then removed by exact recorded path. Post-cleanup:
 The artifact manifest verifies all 72 retained evidence payloads. It excludes
 only `SHA256SUMS` itself.
 
-## 7. Handoff
+## 7. Task 0 handoff and review
 
 Independent review must reconstruct the base and ten staged streams from raw
 artifacts, verify exact `+40/-1`, inspect both runtime transcripts, validate
 the protected/backend manifests, and confirm rejected-attempt isolation and
-artifact cleanup. Task 1 may begin only after that review is GREEN.
+artifact cleanup. Independent review returned GREEN with zero findings at
+`8aca8c1a`; the reviewer reconstructed all 72 packet entries, raw and staged
+streams, frontend/backend gates, byte restoration, and cleanup.
+
+## 8. Task 1 - cache core
+
+After Task 0 GREEN, the user authorized continuous execution of Tasks 1-5.
+This ruling replaces only the per-task independent wait in plan Section 4.
+Every task still requires its own RED/GREEN artifacts, exact stage identity,
+product/test commit, docs evidence commit, and immediate stop on any plan stop
+condition or accounting drift. Task 2's early browser structural check remains
+a stop gate. Task 6 mutations/final admission and Task 7 merge remain separate
+hard gates.
+
+### 8.1 RED and exact accounting
+
+Task 1 added only the reviewed seventeen IDs in
+`src/settings/settingsReadCache.test.ts`. Collection succeeded before product
+code and reproduced:
+
+| Stream | Files | Nodes | SHA-256 |
+|---|---:|---:|---|
+| full stage 1 | 98 | 1,101 | `6f77e16694bc7994ea62a0e51ec13a7ee79fc9f03851da7a55519b04bcbc801f` |
+| focused stage 1 | 15 | 199 | `543ebdffdf922d73045fa42c1e19ae2aba5cf598e8804c359ec0c868ce27fee3` |
+
+All seventeen new nodes executed and failed only because the function-level
+module import could not find the absent cache owner. There was no collection,
+fixture, syntax, timer, or network error. One preceding command used a
+duplicated Vitest config/root path and failed before loading tests; it is
+recorded as rejected operator evidence and was not admitted as RED.
+
+Two same-node RED refinements then proved that nested `Error`/`Promise` values
+were initially retained by ordinary JSON serialization and that a discarded
+catalog generation could initially trigger account warmup. The fixes reject
+non-data serializer values recursively and derive account keys only from a
+current successful catalog outcome. Neither refinement changed node identity.
+
+### 8.2 Implemented contract and GREEN
+
+Product/test commit `e34aaef8` added exactly:
+
+```text
+apps/arkscope-web/src/settings/settingsReadCache.ts
+apps/arkscope-web/src/settings/settingsReadCache.test.ts
+```
+
+The cache is App-injectable pure TypeScript with no React/API/storage/network,
+logging, telemetry, or provider DTO parsing. It implements the closed resource
+policy, synchronous fresh/stale inspection, one promise per current
+generation, invalidation-safe completion, retained stale truth on ordinary
+error, `32 / 512 KiB / 4 MiB` LRU bounds, exact credential/source invalidation,
+and an injected cancellable allowlisted idle scheduler.
+
+Fresh verification produced:
+
+```text
+owner:   17 passed / 17
+focused: 199 passed / 199 across 15 files
+typecheck: exit 0
+full collection: 1101 / 6f77e16694bc7994...
+```
+
+Final owner identities:
+
+| Path | SHA-256 |
+|---|---|
+| `settingsReadCache.ts` | `da18a1fc1dd5c6947aa140c9b74e71ffd2737c82398cb0c7633286ab38843c79` |
+| `settingsReadCache.test.ts` | `3847468622e3fe5e1a1a36cd28f1eefa9d8467873cab7e61a60e97f0b8debbd5` |
+
+The Task 1 raw root is
+`/tmp/settings-navigation-warm-cache-task1-8aca8c1a`; its `38`-entry manifest
+SHA-256 is
+`b63d5cdf076383dc26ec0310ea858c9833bb9adeb795bb850393bcdab4b7240e`.
+The sole generated Vitest cache file was manifested and removed. Post-product
+commit, both tracked worktrees were clean and the isolated ignored state was
+again exactly `!! node_modules`. Task 2 is the next batch stage.
