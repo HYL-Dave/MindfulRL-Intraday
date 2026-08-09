@@ -1,7 +1,6 @@
 # Scripts Tranche B Legacy Score Retirement Evidence
 
-> **Status:** TASKS 0-6 COMPLETE; PRODUCT CUTOVER MERGED AND VERIFIED;
-> FOCUSED CLOSEOUT REVIEW PENDING
+> **Status:** LIVE COMPLETE - FOCUSED CLOSEOUT REVIEW GREEN AT `e2706592`
 > **Date:** 2026-08-08
 > **Rebase amendment:** 2026-08-09
 > **Current plan base:** `814ef2edd1b6aa66499145e1a9109d05f5fb0d89`
@@ -543,7 +542,7 @@ independent review of this amendment.
 | Task 3 mutation/focused gates | complete | registry amendment `54d442d2` independently GREEN; M1-M11 restored |
 | Task 4 native admission | complete | `4282 seen / 4253 passed / 29 skipped / 0 failed` |
 | Task 5 independent implementation review/merge | complete; independently GREEN | fast-forward to `0c16771b` |
-| Task 6 merged verification/closeout | complete; focused review pending | packet `7b42a38e...` |
+| Task 6 merged verification/closeout | complete; independently GREEN | closeout `e2706592` |
 | physical score-row disposition | separately blocked | merged rollout + use analysis + new review/user approval |
 | scoring-secret disposition | separately blocked | exact consumer metadata + new review/user approval |
 
@@ -732,3 +731,21 @@ payload entries, all verified by `SHA256SUMS`; manifest SHA-256 is
 This closeout does not classify, retain, delete, or otherwise mutate the frozen
 score rows or the scoring secret. Those later operations remain independently
 blocked.
+
+### 7.3 Independent focused closeout review
+
+Independent focused review returned GREEN with zero findings at closeout
+commit `e2706592`. The reviewer confirmed the linear fast-forward topology,
+docs-only closeout, unchanged origin, clean worktrees, and zero product drift
+after atomic cutover `8ebf7fae`. The reviewed exact-master report is
+byte-identical to the pre-merge admission and the reviewer's independent
+control at `252535bf...`; all three record `4253 passed / 29 skipped / 0
+failed`. The 569-entry packet, collection identities, frontend gates,
+production read-only witnesses, and metadata-only secret boundary all remain
+valid.
+
+Scripts retirement is now closed across Tranche A and Tranche B. Canonical
+baselines are backend `4282/281cad97...` with native `4253/29/0`, and frontend
+`1124/da69a294...`. Physical disposition of the 491,808 score rows and
+`config/scoring_keys.txt` remains outside this closed line and requires its own
+authority.
