@@ -1,7 +1,7 @@
 # Scripts Tranche B Legacy Score Retirement Evidence
 
-> **Status:** TASK 2 CUTOVER PRESENT BUT UNCOMMITTED; TASK 3 PROTECTED GATE
-> STOPPED ON TEN OMITTED SHARED REGISTRY-COUNT OWNERS; AMENDMENT REVIEW PENDING
+> **Status:** TASKS 0-4 COMPLETE; ATOMIC TIP `8ebf7fae`; NATIVE ADMISSION
+> GREEN; INDEPENDENT IMPLEMENTATION REVIEW PENDING; NOT MERGED
 > **Date:** 2026-08-08
 > **Rebase amendment:** 2026-08-09
 > **Current plan base:** `814ef2edd1b6aa66499145e1a9109d05f5fb0d89`
@@ -21,9 +21,11 @@ config/scoring_keys.txt: later independent exact approval required
 ```
 
 Sections 2.1-2.13 record plan construction and Task 0 before product work.
-Section 2.14 records the later protected-gate stop. The cutover is present only
-in the isolated implementation worktree and has not been committed or merged.
-No production data, local secret, provider, scheduler, or model request changed.
+Section 2.14 records the later protected-gate stop. Section 6 records the
+reviewed amendment, atomic product commit, mutation/focused gates, and native
+admission. The cutover is committed only on the isolated implementation branch;
+it is not merged or pushed. No production data, local secret, provider,
+scheduler, or model request changed.
 
 ## 2. Plan-gate grounding
 
@@ -535,12 +537,12 @@ independent review of this amendment.
 
 | Task | Status | Gate |
 |---|---|---|
-| Task 0 re-ground | packet complete; review pending | exact owner/protected/deletion manifests complete |
-| Task 1 RED | user-authorized batch complete | intended RED artifacts preserved; no RED-only commit |
-| Task 2 atomic cutover | present, uncommitted | exact target identities reached |
-| Task 3 mutation/focused gates | stopped | ten omitted registry-count owners await amendment review |
-| Task 4 native admission | blocked | all mutations restored |
-| Task 5 independent implementation review/merge | blocked | native GREEN |
+| Task 0 re-ground | complete; independently GREEN | exact owner/protected/deletion manifests complete |
+| Task 1 RED | complete | intended RED artifacts preserved; no RED-only commit |
+| Task 2 atomic cutover | complete at `8ebf7fae` | exact target identities reached |
+| Task 3 mutation/focused gates | complete | registry amendment `54d442d2` independently GREEN; M1-M11 restored |
+| Task 4 native admission | complete | `4282 seen / 4253 passed / 29 skipped / 0 failed` |
+| Task 5 independent implementation review/merge | review pending; merge blocked | packet `d5917eb7...` |
 | Task 6 merged verification/closeout | blocked | fast-forward merge |
 | physical score-row disposition | separately blocked | merged rollout + use analysis + new review/user approval |
 | scoring-secret disposition | separately blocked | exact consumer metadata + new review/user approval |
@@ -567,10 +569,105 @@ independent review of this amendment.
 - [x] Focused no-tail owner amendment review GREEN at `a6e99c02`.
 - [x] Expanded direct training-retirement plan independently GREEN at `92f51f7e`.
 - [x] Phase D/PostgreSQL owner-closure amendment independently GREEN at `ea4429b0`.
-- [x] Task 0 completed through exact owned/protected/deletion manifests; independent packet review pending.
+- [x] Task 0 exact owned/protected/deletion manifests independently GREEN at `3d49d139`.
+- [x] Shared registry-count amendment independently GREEN at `54d442d2`.
+- [x] Atomic product cutover committed at `8ebf7fae` with the exact reviewed subject and body.
+- [x] M1-M11, focused/protected, frontend, production-boundary, and native admission gates complete.
 
 ## 5. Honesty boundary
 
 This packet proves that the plan is grounded and internally accounted. It does
-not prove that the implementation exists, that the final suite passes, or that
-production score rows are deletable. Those claims require their later gates.
+not authorize merge, physical score-row deletion, or scoring-secret
+disposition. The implementation and final suite evidence are recorded below;
+the destructive claims still require their later gates.
+
+## 6. Tasks 1-4 implementation and admission
+
+### 6.1 Atomic product cutover
+
+The complete approved cutover is one product commit:
+
+```text
+8ebf7fae14bcd1136ae3e9f1c2bfbed05b00da6c
+refactor: retire legacy scoring and training lineage
+```
+
+The commit changes 193 files (`1,393` insertions, `31,384` deletions). Its
+113 direct deletions are byte-for-byte the reviewed
+`all-direct-deletion.paths` stream; every changed path belongs to the exact
+201-path authorized universe and the unauthorized difference is empty. The
+commit body records the 62-path training family, exact `109 + 138 + 16 = 263`
+retirement, 18 replacement contracts, preserved raw/provider-native/options
+capabilities, future new-design rule, and read-only score-row/metadata-only
+secret boundary.
+
+Final collection identities are exact:
+
+| Surface | Result | SHA-256 |
+|---|---:|---|
+| backend full | 4,282 | `281cad976a2df29224f41d7442f39ee6deb5b78165fb9efe3945bee6d520abe3` |
+| backend focused | 421 | `385d0ac7a142ba1cb488a1dccd3d1a7ae8e2065585b59130f4b3bf75120a2739` |
+| frontend full | 99 files / 1,124 | `da69a2942c03e4794e3384e6125936f9f25c1fafbad7d006b67025f8fd97bc39` |
+| frontend focused | 4 files / 28 | `b11cc27b90c570b20aeb728c48d39497e7eff555976f0c00a42d6129b26cf1cd` |
+
+### 6.2 Focused, protected, and mutation gates
+
+- the ten amended shared-count owners are `10 passed` at registry `50`, bridge
+  `51`, and news category `11`;
+- the exact backend focused runtime is `404 passed / 17 skipped`;
+- the broad protected runtime is `1,222 passed`;
+- all 122 byte-protected rows reproduce stream
+  `c174c7d7b7e9731d4cb04bf00a7b40af1fcaacee5c09f6c77c3f2c585d6f9ca2`;
+- frontend focused is `28/28`; native full Vitest is `1,124/1,124` across 99
+  files; typecheck, build, and i18n scanner are GREEN, with scanner result
+  `36/20/0/20`; and
+- M1-M11 each changed the real reviewed owner, made its owning contract RED,
+  and restored the exact pre-mutation SHA. The mutation manifest SHA is
+  `5bf15136a76f1e6b504adeba4f912d12a5a290a50bd34904137a8f475ea2a97a`.
+
+A supplementary managed-sandbox full Vitest attempt is rejected evidence: all
+19 failures came from the two known subprocess-owning files receiving
+`spawnSync ... EPERM`. The immediate native run on identical bytes passed all
+1,124 nodes. Earlier split controls also passed the scanner owner `18/18` and
+the exact complement `1106/1106`.
+
+### 6.3 Production and native admission boundaries
+
+Read-only SQLite URI mode plus `PRAGMA query_only=ON` still reports exactly
+491,808 `news_article_scores` rows and 140,152 distinct article IDs. The
+pre/post score projection and metadata-only `config/scoring_keys.txt` witness
+are byte-identical; secret content, size, and digest were never read. The DB
+identity was stable during each witness query.
+
+Fresh exact-tip native admission used the pinned wakeup probe, wrapper, and
+reporter outside the managed sandbox:
+
+```text
+4282 collected = 4282 seen
+4253 passed / 29 skipped / 0 failed
+exit 0
+non-passing SHA-256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+report SHA-256 252535bf53aa30f93995f2633b39415c28c9bfec94bbea4af5576a9ec320de5b
+transcript SHA-256 da604e029b880314fe9c30115f596ba3a5fc67c7f299356e99834b4cd42ded67
+```
+
+The run generated 506 ignored files. Every file received relative-path,
+inode, size, mode, mtime-ns, and SHA evidence and was renamed on the same
+filesystem into packet quarantine. The corrected directory inventory records
+35 generated/untracked directory paths and 60 complete generated parent paths.
+Ordinary status returned empty; ignored status returned to only the pinned
+`node_modules` symlink; `data/` returned to present-and-empty; `src/data`
+remained absent. The clean single-use native worktree was then removed through
+`git worktree remove`, and its registration is absent.
+
+The first reconciliation attempt is retained as rejected evidence. Its
+ignored-file inventory could not see four empty `data/news/...` directories,
+so the final empty-`data/` assertion refused the attempt. All 506 files were
+restored by exact path with identical metadata before the corrected run.
+
+The raw review packet is
+`/tmp/scripts-tranche-b-task4-8ebf7fae`: 668 retained files, all verified by
+`SHA256SUMS`; manifest SHA-256 is
+`d5917eb703081d80d66b042886c581ba09df7950bc2a7ffb3061a910551b3ce5`.
+Merge, production score-row disposition, and scoring-secret disposition remain
+blocked pending their separately reviewed gates.
