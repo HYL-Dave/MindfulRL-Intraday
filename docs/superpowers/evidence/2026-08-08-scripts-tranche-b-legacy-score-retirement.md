@@ -1,7 +1,7 @@
 # Scripts Tranche B Legacy Score Retirement Evidence
 
-> **Status:** TASK 0 PHASE D/POSTGRESQL OWNER CLOSURE RECORDED; EXPANDED PLAN
-> AMENDMENT REVIEW PENDING; TASK 0 PAUSED; IMPLEMENTATION NOT STARTED
+> **Status:** TASK 0 MANIFEST PACKET COMPLETE; INDEPENDENT REVIEW PENDING;
+> USER-AUTHORIZED BATCH CONTINUATION TO TASK 1; IMPLEMENTATION NOT STARTED
 > **Date:** 2026-08-08
 > **Rebase amendment:** 2026-08-09
 > **Current plan base:** `814ef2edd1b6aa66499145e1a9109d05f5fb0d89`
@@ -452,12 +452,48 @@ scheduler, and secret bytes are unchanged. Task 0
 stopped before RED or implementation for independent review of this expanded
 owner map.
 
+### 2.13 Task 0 exact manifest completion
+
+Independent focused review cleared the Phase D/PostgreSQL amendment at
+`ea4429b0` and authorized Task 0 to resume. The unchanged native baseline
+waiver remained valid because `5be77be2..ea4429b0` changed governance documents
+only. No product or test byte changed before this manifest pass.
+
+The supplemental packet is
+`/tmp/scripts-tranche-b-task0-ea4429b0`. Its 19-entry `SHA256SUMS` has SHA-256
+`ff18e224e393790a26bd04b74278912824b63a59d4406afd277f98cd7d4a4b56`;
+the deterministic builder is `/tmp/build_tranche_b_task0_manifests.py`, SHA-256
+`380fda9fbf6f06658d1c213e7dd0b8d7bfc5ccbaf8ae50368e0a2b3e855b522f`.
+It supplements rather than rewrites the earlier 637-entry partial packet
+`3be60a14192520da2977e4a1604f1c4c251052ff94e3c98719692e99c587822a`.
+
+| Manifest witness | Result |
+|---|---|
+| exact owned paths | 196 rows; SHA-256 `c332d72367fc38876bdee57b5d097745a0cb18b00a091de43f5aba929238b282` |
+| direct deletion paths | 113 rows; SHA-256 `ddb853a5937d452192e44564d09bc8fa83aa21db5cd3a552f675b16585d096a3` |
+| byte-protected paths | 123 rows; SHA-256 `da5c2477eb2848e803ee8088750e41f2ba869935be6fb3e23cee4573e4599c86` |
+| behavior-protected pre-blobs | 10 rows; SHA-256 `b360f7d601c1aa3870a9496a40f9ee5ce7ea1848aa3a540fb9df22f74ad97980` |
+| Phase D dispositions | 40 rows; SHA-256 `09b63c5031e314a4feab1f415e2e56145d3149301e2921c06d0cae7a79c94ca5` |
+| OAuth reviewed handoff | exactly `apps/arkscope-web/src/api.ts` and `PROJECT_PRIORITY_MAP.md`; all other recorded OAuth paths remain byte-protected |
+| training family | 53 Git blobs `782dd7e4...`; direct deletion 62 paths `7c552b49...`; nine ownerless requirement lines; zero surviving Python import |
+| retained numerical owner | `scipy` remains imported by `src/options_math/option_pricing.py` |
+| Phase D direct deletion | 21 paths `635d5091...` |
+| exact node witnesses | retired 263 `93459510...`; final 4282 `281cad97...`; focused final 421 `385d0ac7...`; retained/evolved 33 `d9cf7a28...` |
+
+The scoring-key metadata still exactly matches the first Task 0 observation:
+existence, mode `0600`, inode, and mtime only. The isolated worktree contains no
+gitignored secret. The builder used `lstat` against the main worktree and did
+not open, hash, print, copy, size, change, or delete the file. Production score
+rows and the market database were not touched. Task 0 therefore closes with
+exact owner, deletion, protected, and handoff boundaries; Task 1 may establish
+the reviewed 18-node RED without committing a knowingly RED tree.
+
 ## 3. Locked implementation sequence
 
 | Task | Status | Gate |
 |---|---|---|
-| Task 0 re-ground | paused after Phase D/PostgreSQL owner closure | expanded plan amendment review |
-| Task 1 RED | blocked | Task 0 GREEN |
+| Task 0 re-ground | packet complete | exact owner/protected/deletion manifests await independent review |
+| Task 1 RED | user-authorized batch continuation | preserve RED artifacts; no RED-only commit |
 | Task 2 atomic cutover | blocked | plan + Task 0 GREEN |
 | Task 3 mutation/focused gates | blocked | product target exact |
 | Task 4 native admission | blocked | all mutations restored |
@@ -487,8 +523,8 @@ owner map.
 - [x] Focused rebase-amendment review GREEN at `5be77be2`.
 - [x] Focused no-tail owner amendment review GREEN at `a6e99c02`.
 - [x] Expanded direct training-retirement plan independently GREEN at `92f51f7e`.
-- [ ] Phase D/PostgreSQL owner-closure amendment independently GREEN.
-- [ ] Task 0 completed through exact owned/protected/deletion manifests.
+- [x] Phase D/PostgreSQL owner-closure amendment independently GREEN at `ea4429b0`.
+- [x] Task 0 completed through exact owned/protected/deletion manifests; independent packet review pending.
 
 ## 5. Honesty boundary
 
