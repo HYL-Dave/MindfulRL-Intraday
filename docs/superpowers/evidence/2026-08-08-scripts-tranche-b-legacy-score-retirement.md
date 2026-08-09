@@ -1,7 +1,7 @@
 # Scripts Tranche B Legacy Score Retirement Evidence
 
-> **Status:** USER TRAINING-RETIREMENT RULING RECORDED; EXPANDED PLAN AMENDMENT
-> REVIEW PENDING; TASK 0 PAUSED; IMPLEMENTATION NOT STARTED
+> **Status:** TASK 0 PHASE D/POSTGRESQL OWNER CLOSURE RECORDED; EXPANDED PLAN
+> AMENDMENT REVIEW PENDING; TASK 0 PAUSED; IMPLEMENTATION NOT STARTED
 > **Date:** 2026-08-08
 > **Rebase amendment:** 2026-08-09
 > **Current plan base:** `814ef2edd1b6aa66499145e1a9109d05f5fb0d89`
@@ -62,14 +62,35 @@ SHA-256: 70e48d1184f0581033ccbf566f7f33718fac6ac934ae7c2b41d963fcb665f704
 Git blob: 383ff74d835828719d6d234e3a0b00336e7d92fa
 ```
 
-The byte-identical rebased plan at `f9958efb` had that same identity. This
-one-time absolute-identity amendment changes it to:
+The byte-identical rebased plan at `f9958efb` had that same identity. The
+one-time absolute-identity amendment at `5be77be2` changed it to:
 
 ```text
 755 lines / 41,529 bytes
 SHA-256: 12082ce9b049b0b488cea298ee313b85ba7a884c6f462d5d9bc43a224537c802
 Git blob: e1eff4ad70ec44add348b277a67c5f94668241c0
 ```
+
+The independently reviewed training-retirement amendment at `92f51f7e` then
+produced `859 lines / 47,809 bytes /
+d21ab5325656049c4c8de0151f637db031fe025c4a76f767487bdd95ad28ca3d`
+(Git blob `f509597e8add91743eb2608dc037720996afb813`). The Git-record commit
+at `d991f64b` produced `881 lines / 48,949 bytes /
+415f6f83dd0ef045eeed6ed79364f3244b7266b21d9d8a8d79add7c9664e5533`
+(Git blob `e9a565faacf5a51dfd7e2d8821a59a559f848f46`).
+
+The current Phase D/PostgreSQL owner-closure plan presented for focused review
+is:
+
+```text
+983 lines / 55,944 bytes
+SHA-256: dedd092297b804a4db5212364a219478c0b45c27023dd6c5b3778eb57509288e
+Git blob: 38eab2d9f5ea3ddebeb04253eda58f959dafd87d
+```
+
+Its amended product-decision authority is `457 lines / 22,825 bytes /
+b490d46b250757c674af89f4f04d8e1030e35de1b442ec4847ee6f89a9b16e01`
+(Git blob `7f01edc5cffb06aa4e5b796150fa080c9495c1f3`).
 
 ### 2.2 Post-approval no-tail amendment
 
@@ -123,17 +144,19 @@ set membership.
 
 | Stream | Count | SHA-256 |
 |---|---:|---|
-| retired | 247 | `149962668e116460f4b88402b1fabb8bb24f0a3409e33d8cade5924dd34ca671` |
+| retired | 263 | `93459510fc09e961b0d726527d953ed6fdfd07c584d598ee1de9a60851ca3eda` |
 | backend additions | 18 | `88ac9e5652c9df79eb42284d6a9c42a2f0f4a60b967badae37524fa127499520` |
 | backend RED | 4,545 | `e1fa3f7d54d671c984e9800e38850ccb802f06f83d78aa2114b749bb7414f9da` |
-| backend final | 4,298 | `38705c3d431238f5fecb15d3dd4a668cee41912005bfc883d8b4e7275b5efee6` |
+| backend final | 4,282 | `281cad976a2df29224f41d7442f39ee6deb5b78165fb9efe3945bee6d520abe3` |
 | focused RED | 573 | `5e0a5538c4106ca9b9cf0d701ab719d62c3a4056d1e101864ddb09b6beb9fb75` |
-| focused final | 435 | `2e5fcb6c22d6a1657e609542138830f2d5fd367a0e353ab30efdfbb8851a7c6a` |
+| focused final | 421 | `385d0ac7a142ba1cb488a1dccd3d1a7ae8e2065585b59130f4b3bf75120a2739` |
 
-Retirement composition is exact `211 whole-file + 36 mixed-file = 247`.
+Retirement composition is exact `223 whole-file + 40 mixed-file = 263`.
 The added 109-node training-only stream is
 `db3cad74da2ec956e252096948d80631297e9d4e8c731fb6706da7b2976941b2`
-and has zero intersection with the original 138-node score/signal stream.
+and has zero intersection with the original 138-node score/signal stream and
+the 16-node Phase D stream
+`d190b082db0ce6a231b1a93e7de7fef682c0ef3ce48d7c96fd4522e51fa7fee7`.
 Addition composition is exact `8 boundary + 1 API + 3 monitor + 1 identity + 1
 morning brief + 2 news-event tools + 2 truthful bridge-registry IDs = 18`.
 
@@ -143,9 +166,9 @@ false test names. The ledger therefore retires those two IDs and adds
 `tools_match_registry` replacements. This changes stream identities but not the
 final count or native pass/skip arithmetic.
 
-The 25 explicitly retained/evolved base IDs are all present once; their sorted
+The 33 explicitly retained/evolved base IDs are all present once; their sorted
 stream SHA is
-`2f0e0dd31390f975eb2b4f20244525a0bf09b0bc112f39f0f4cebfe2db76aa08`.
+`d9cf7a2826d24f72aeb7db840d19bdb979d077e64b23fdf23ccaa79e2e16f67b`.
 
 ### 2.5 Projected audit streams
 
@@ -155,8 +178,8 @@ stream SHA is
 | storage/writer/root | 4,374 | `fcd8775f6255b780c68cb0a943031d49b8f357dd2dcd6da1c8def2af268c19bf` |
 | raw DTO/backend | 4,335 | `c6a074a3649b515216402b1b868eb588f57f873474f8b5a15934fcaea48c0d95` |
 | raw user behavior | 4,335 | `d17b58f518fb48be84087c6c9169a7738baa478be3d55fac6156449fdc366835` |
-| volume/event/composite | 4,295 | `6e42c990ca4ce3b8d57159ec24af47c04306f4cf911a705eae0ffdb4184f6725` |
-| final | 4,298 | `38705c3d431238f5fecb15d3dd4a668cee41912005bfc883d8b4e7275b5efee6` |
+| volume/event/composite/Phase D | 4,279 | `7ed812b25be6c29d74d9d3b311d105c218d5eca19b386efa936ae612f291352d` |
+| final | 4,282 | `281cad976a2df29224f41d7442f39ee6deb5b78165fb9efe3945bee6d520abe3` |
 
 These are mathematical node-accounting projections. They have not been called
 runtime GREEN and do not relax the atomic final gate.
@@ -180,9 +203,9 @@ No repository-relative artifact remained; the temporary empty `data/` marker
 was removed and ordinary status returned clean. Therefore:
 
 ```text
-passed:  4488 - 136 score/signal - 101 training + 18 new = 4269
-skipped:   39 -   2 score/signal -   8 training          =   29
-total:   4269 + 29                                      = 4298
+passed:  4488 - 136 score/signal - 101 training - 16 Phase D + 18 new = 4253
+skipped:   39 -   2 score/signal -   8 training                      =   29
+total:   4253 + 29                                                  = 4282
 ```
 
 Task 4 must prove this result; arithmetic is not admission evidence.
@@ -357,10 +380,10 @@ direct retirement. Grounding produced these independent facts:
 | external test owners | 8 files / 109 nodes / `db3cad74da2ec956e252096948d80631297e9d4e8c731fb6706da7b2976941b2` |
 | focused runtime | `101 passed / 8 skipped / 0 failed` |
 | direct deletion | 62 paths / `7c552b4940deeb666cd865656e980f9bba392507e6ed3f9b11b1672269b61c7d` |
-| combined retirement | 247 nodes / `149962668e116460f4b88402b1fabb8bb24f0a3409e33d8cade5924dd34ca671` |
+| combined retirement at this dated gate | 247 nodes / `149962668e116460f4b88402b1fabb8bb24f0a3409e33d8cade5924dd34ca671` |
 | ownerless requirements | 8 package names / 9 lines (`torch` is duplicated); `scipy` remains option-pricing-owned |
-| new final target | 4,298 nodes / `38705c3d431238f5fecb15d3dd4a668cee41912005bfc883d8b4e7275b5efee6` |
-| native arithmetic | `4,269 passed / 29 skipped / 0 failed` |
+| dated final target | 4,298 nodes / `38705c3d431238f5fecb15d3dd4a668cee41912005bfc883d8b4e7275b5efee6` |
+| dated native arithmetic | `4,269 passed / 29 skipped / 0 failed` |
 
 The 62 deleted paths are all 53 tracked training files, the eight dedicated
 test files, and `tests/live/smoke_yfinance.py`. The same atomic cutover removes
@@ -370,23 +393,70 @@ disabled scaffold, or compatibility import is authorized. Future RL, Signals,
 or provider-backed options research begins from a new design and current data
 contracts.
 
-This is a deliberate product-scope change, not a protected-pin correction. The
-old `+18/-138 -> 4407` authority is dated evidence; current authority is
-`+18/-247 -> 4298`. Product bytes remain unchanged, but Task 0 and Task 1 are
-paused pending independent review of the expanded plan.
+This is a deliberate product-scope change, not a protected-pin correction. At
+this dated gate, `+18/-247 -> 4298` superseded `+18/-138 -> 4407`; section 2.12
+subsequently supersedes both. Product bytes remained unchanged, and Task 0 and
+Task 1 stayed paused.
 
 The user additionally required the deletion to remain intelligible from Git
 history alone. The expanded plan therefore pins subject
 `refactor: retire legacy scoring and training lineage` and requires its body to
-record the 62-path/247-node scope, retirement reason, preserved capabilities,
+record the 62-path training scope and then-current 247-node total, retirement
+reason, preserved capabilities,
 future new-design rule, and the untouched production score-row/secret boundary.
 Generic cleanup wording is not admissible.
+
+### 2.12 Task 0 Phase D and PostgreSQL owner-closure stop
+
+Resumed exact owner construction found two omissions that could not be assigned
+to a later cleanup without violating the approved no-tail ruling:
+
+1. `src/analysis/pipeline.py` was only one file in an active 18-path Phase D
+   package. The surviving factory, service, templates, renderer, API route,
+   scheduled job, CLI commands, and enabled config all formed one current
+   recommendation surface. Its default strategy chain consumed the retired
+   sentiment field and emitted weighted `buy`/`hold`/`sell` output. The future
+   on-demand analysis goal does not make this implementation valid scaffolding.
+2. `sql/002_add_news_scores.sql` remained an executable score migration, while
+   `sql/001_init_schema.sql` still created legacy score columns, a `signals`
+   table/index/RLS example, and a sentiment-summary helper.
+
+The corrected disposition deletes all 18 `src/analysis/` paths,
+`src/api/routes/analysis.py`, `tests/test_analysis_pipeline.py`, and
+`sql/002_add_news_scores.sql`; removes the Phase D route/job/CLI/config/current
+copy; evolves generic job/report fixtures rather than deleting those shared
+capabilities; and removes only legacy score/signal DDL from
+`sql/001_init_schema.sql`.
+
+| Witness | Result |
+|---|---|
+| Phase D/PostgreSQL direct deletion | 21 sorted paths / `635d5091410cbb953cadb768aa190b23690e035877188b0b58ccf9e160fcdba9` |
+| additional retirement | 16 passing nodes / `d190b082db0ce6a231b1a93e7de7fef682c0ef3ce48d7c96fd4522e51fa7fee7` |
+| combined retirement | 263 nodes / `93459510fc09e961b0d726527d953ed6fdfd07c584d598ee1de9a60851ca3eda` |
+| whole/mixed composition | `223 + 40 = 263` |
+| phase 4 projection | 4,279 nodes / `7ed812b25be6c29d74d9d3b311d105c218d5eca19b386efa936ae612f291352d` |
+| final target | 4,282 nodes / `281cad976a2df29224f41d7442f39ee6deb5b78165fb9efe3945bee6d520abe3` |
+| focused final | 421 nodes / `385d0ac7a142ba1cb488a1dccd3d1a7ae8e2065585b59130f4b3bf75120a2739` |
+| retained/evolved owners | 33 nodes / `d9cf7a2826d24f72aeb7db840d19bdb979d077e64b23fdf23ccaa79e2e16f67b` |
+| native arithmetic | `4,253 passed / 29 skipped / 0 failed` |
+
+The 16-node stream is exactly all 12 `tests/test_analysis_pipeline.py` nodes,
+two `TestAnalysisEndpoint` nodes, one `analysis_watchlist_batch` node, and one
+analysis-only summary node. It has zero intersection with the earlier 247-node
+stream. Eleven additional unchanged node IDs are explicitly retained/evolved:
+two EIR boundary owners, seven generic job persistence/status owners, and two
+generic service/job route owners. They move to current authorities/current job
+fixtures rather than preserving a retired Phase D name. All 18 additions remain
+unchanged and absent from base. Product, test, production data, provider,
+scheduler, and secret bytes are unchanged. Task 0
+stopped before RED or implementation for independent review of this expanded
+owner map.
 
 ## 3. Locked implementation sequence
 
 | Task | Status | Gate |
 |---|---|---|
-| Task 0 re-ground | paused after user training-retirement scope ruling | expanded plan amendment review |
+| Task 0 re-ground | paused after Phase D/PostgreSQL owner closure | expanded plan amendment review |
 | Task 1 RED | blocked | Task 0 GREEN |
 | Task 2 atomic cutover | blocked | plan + Task 0 GREEN |
 | Task 3 mutation/focused gates | blocked | product target exact |
@@ -416,7 +486,8 @@ Generic cleanup wording is not admissible.
   full/projection identities.
 - [x] Focused rebase-amendment review GREEN at `5be77be2`.
 - [x] Focused no-tail owner amendment review GREEN at `a6e99c02`.
-- [ ] Expanded direct training-retirement plan independently GREEN.
+- [x] Expanded direct training-retirement plan independently GREEN at `92f51f7e`.
+- [ ] Phase D/PostgreSQL owner-closure amendment independently GREEN.
 - [ ] Task 0 completed through exact owned/protected/deletion manifests.
 
 ## 5. Honesty boundary
