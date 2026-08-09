@@ -389,3 +389,31 @@ generated `apps/arkscope-web/node_modules` root was removed. Port `8461` was
 closed, ordinary status contained only the six intended owners before commit,
 and ignored status returned to the sole pinned root `node_modules` symlink.
 Task 3 is the next stage of the already-authorized batch.
+
+## 11. Task 3 - RED and bounded real-ID amendment
+
+The seven exact Task 3 nodes collected without import, fixture, network, or
+timer errors. Their first runtime produced `64 passed / 7 failed`; every
+failure landed on the intended absent contract: no App-owned cache prop, no
+retained catalog render/replacement/generation invalidation, and no scheduled
+idle warmup. The decoded stream already reproduced the predeclared full
+stage-3 identity `1113/eefdbdaa10c83786...`.
+
+During GREEN wiring, the reviewed account warmup reached a Task 1 fixture
+assumption that was not product-real: the test used `local-oauth`, but the
+backend's stored credential authority emits `local:<positive-int>`. The cache
+validator rejected every colon, so a real active OAuth row could not be warmed.
+The bounded amendment adds the existing cache source/test to Task 3 ownership,
+accepts only that exact stored-local-ID shape when a colon exists, and evolves
+the existing warmup node to `local:7`. It does not relax control-character,
+length, unknown-colon, raw-account, secret, or persistence constraints.
+
+After the correction, the seven new owners plus the cache owner produced
+`88/88`; the wider App/Settings/protected group produced `121/121`; typecheck
+passed. Full and focused decoded identities are exactly
+`1113/eefdbdaa10c83786...` and `211/d74255067e3ca453...`. A deliberately wider
+intermediate focused run exposed nine old Data/Sync call-count assertions:
+warmup now issues the reviewed GETs, while their Task 5 components have not yet
+joined the shared cache and therefore duplicate those calls. This is the
+predeclared partial-integration state that Task 5 removes; the failures are not
+called GREEN and their assertions are not weakened in Task 3.
