@@ -1,6 +1,6 @@
 # Settings Navigation and Warm Cache Evidence
 
-> **Status:** TASK 4 COMPLETE; TASK 5 BATCH EXECUTION IN PROGRESS
+> **Status:** TASKS 1-5 COMPLETE; IMPLEMENTATION REVIEW PENDING; TASK 6 NOT STARTED
 >
 > **Date:** 2026-08-09
 >
@@ -522,3 +522,107 @@ The amendment authorizes only those prop handoffs and forbids module-global or
 section-owned fallback caches. Task 5 remains exactly `+7/-0`; final full and
 focused identities remain `1123/9262d7b1...` and `221/a2c20d36...`. Existing
 batch authorization remains in force without an added review wait.
+
+## 15. Task 5 - Data Sources and storage readers
+
+### 15.1 RED, implementation, and exact accounting
+
+The seven exact Task 5 nodes collected at the predeclared final identities and
+failed only on the absent cache handoffs: retained schedule/health/config,
+mounted-only schedule polling, visible-only extension retention, source
+completion invalidation, per-lookback storage isolation, retained news, and
+independent macro legs. The exact four-file selector transcript ended with
+`7 failed / 61 skipped`; no existing selected node failed. The capture command
+used `tee` without `pipefail`, so its shell status was incorrectly zero even
+though Vitest's terminal summary was RED. The transcript is retained as RED
+evidence and is not represented as a successful runtime.
+
+Product/test commit `5b134025` passes only the existing App-root cache into
+the four Data/Storage sections. Schedule, provider health, and provider config
+keep independent outcomes. Mounted polling retains its 5/30-second cadence
+and joins the exact cache key; a reviewed running-to-terminal transition
+invalidates only that source's downstream reads, while an unknown source
+clears the closed Data/Sync set. Extension health remains excluded from idle
+warmup and its manual command force-loads only that key. Market status,
+lookback-scoped coverage, news status, macro status, and macro snapshot render
+retained truth immediately and revalidate independently.
+
+Mechanical verification was:
+
+```text
+exact Task 5 RED:       7 failed / 61 skipped (intended new nodes only)
+focused GREEN:          221 passed / 221 across 15 files
+full collection:        1123 / 9262d7b15a926d7...
+focused collection:     221 / a2c20d3607e5fd489...
+Task 5 delta:           +7 / -0 exact node IDs
+typecheck:              exit 0
+protected frontend:     10/10; aggregate 4eae072b...
+Python/backend diff:    empty
+git diff --check:       exit 0
+```
+
+The two final normalized streams are byte-identical to Task 0's prebuilt
+stage-5 streams. Two existing call-count assertions were evolved in place,
+without node renaming, to enforce the reviewed same-key single-flight rule:
+`force` bypasses freshness but joins an already-running request.
+
+### 15.2 Browser request ledger
+
+A hermetic Playwright harness used the pinned system Chrome and typed local
+fixtures. Unknown or external requests failed the run. For the nine Task 5
+GET keys, initial visible traversal produced exactly one request each. An
+unmount/remount inside retention produced no additional request. Manual news,
+macro, market, coverage, Data Sources, and extension commands then changed
+only their reviewed keys:
+
+```text
+news refresh:           news_status only, 1 -> 2
+macro refresh:          macro_status + macro_snapshot only, 1 -> 2
+market refresh:         market_data_status only, 1 -> 2
+coverage refresh:       lookback-10 coverage only, 1 -> 2
+Data Sources refresh:   schedule + provider health + provider config, 1 -> 2
+extension recheck:      sa_extension_health only, 1 -> 2
+```
+
+Every recorded request was `GET`; the harness error list was empty. The saved
+screenshot was inspected at original resolution: the sticky workflow row and
+complete directory remained visible and no control, text, or panel overlapped.
+
+### 15.3 Packet and cleanup
+
+Raw evidence is under
+`/tmp/settings-navigation-warm-cache-task5-21076da7`. Its `28` payload entries
+are covered by `SHA256SUMS`, whose SHA-256 is
+`6146db48a4236ecc0c73137c40362eb38ade84584abbb3cecbf53d444d702594`.
+The packet includes raw decoded collections, node streams, RED and GREEN
+transcripts, exact product patch and file identities, browser harness/result
+JSON/screenshot, protected checks, typecheck, node delta, and generated-file
+inventory.
+
+The browser/Vitest runs created one App-local `node_modules` cache root with
+35 files / 41 total entries. Every file was recorded before exact-root
+removal. The first post-cleanup comparison mistakenly projected full tracked
+status as well as ignored rows and was rejected by `cmp`; the corrected
+ignored-only projection is byte-identical to the pre-run state
+`!! node_modules`. No generated app-local root remains.
+
+## 16. Tasks 1-5 batch handoff
+
+The user-authorized batch is complete at these product/test commits:
+
+```text
+Task 1  e34aaef8  cache core
+Task 2  ecf87f0c  sticky navigation and complete directory
+Task 3  462bb8af  App-lifetime cache and idle warmup
+Task 4  bbf81adb  OAuth account-read integration
+Task 5  5b134025  Data Sources and storage integration
+```
+
+Each task retained its own RED/GREEN evidence, exact staged identity, and
+product/docs commit boundary. The final ledger is exactly `+40/-1`; frontend
+collection moved from `1084/f0e5ecda...` to `1123/9262d7b1...` and the final
+focused owner set is `221/a2c20d36...`. Backend collection and all Python
+bytes remain unchanged. Independent review should reconstruct Tasks 1-5 from
+the five packet roots and this commit lineage. Task 6 mutations/full runtime,
+build/scanner, final browser matrix, and native admission have not started and
+remain a separate hard gate.
