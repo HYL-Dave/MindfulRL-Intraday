@@ -1,7 +1,7 @@
 # Scripts Tranche B Legacy Score Retirement Evidence
 
-> **Status:** FULL PLAN GREEN; ONE-TIME REBASE AMENDMENT AWAITING FOCUSED
-> REVIEW; IMPLEMENTATION NOT STARTED
+> **Status:** FULL PLAN AND ONE-TIME REBASE AMENDMENT GREEN; TASK 0 STOPPED ON
+> A BOUNDED NO-TAIL OWNER AMENDMENT; IMPLEMENTATION NOT STARTED
 > **Date:** 2026-08-08
 > **Rebase amendment:** 2026-08-09
 > **Current plan base:** `814ef2edd1b6aa66499145e1a9109d05f5fb0d89`
@@ -283,11 +283,68 @@ pre/post blobs, and keeps projection/gather logic plus the negative-contract
 tests unchanged. This is a bounded current-copy repair, not permission to alter
 objective evidence behavior.
 
+### 2.10 Task 0 execution and no-tail stop
+
+Independent review cleared rebase amendment `5be77be2`, authorizing Task 0. The
+artifact root is `/tmp/scripts-tranche-b-task0-5be77be2`; its current 637-entry
+partial manifest is
+`3be60a14192520da2977e4a1604f1c4c251052ff94e3c98719692e99c587822a`.
+It is explicitly partial because the owned/protected path manifests remain
+blocked on the finding below.
+
+Re-grounding before the stop produced:
+
+| Witness | Result |
+|---|---|
+| backend full collection | `4527 / 4eeb117804ad874c83ffe4c04fd25ecd4de4f460801bfbf95d15c1406f32455d` |
+| backend focused collection | `555 / ea5d897ca3597ef4edca7583db0b363360ceba9e362e516422f901ff8af004dd` |
+| frontend full decoded collection | `98 files / 1123 / 9262d7b15a926d7eeb60952e4c351c6c9b944772904fdb82438c62a2a51f6c1c` |
+| frontend focused decoded collection | `3 files / 27 / c77d25d5bf7c868899d555f099fc245b13d35d4052a6a8242ac3f5c1300fb584` |
+| focused backend runtime | `536 passed / 19 skipped / 0 failed`; report `84bb7106505ccee1d437e0b9e8dfa1c45117b1d628e41f0a7d349e760ed08133` |
+| focused frontend runtime | `27 passed`; transcript `df658d97ae9a651c4b4e39e45632b0ef5323e769edcd2d15045da1d737c1d093` |
+| native canonical base | `4527 collected = 4527 seen / 4488 passed / 39 skipped / 0 failed`; report `1becf27f6755f4ec7d4b5ffabdf99d2d0db26665ce18dbbb2a1042f75da7c143` |
+| native generated artifacts | 568 files plus two empty directories; file manifest `90f7a97e85de76545e9d7453d77c219845371c383df8548d608a566f0b46994a`; pre/final status and data projections equal |
+
+The retired/addition streams, all five phase projections, focused targets, and
+frontend target were independently reconstructed from named owners and matched
+every section 2 count and full SHA. Four pre-rebase authority files were also
+confirmed as identical Git blobs between `52354806` and `f9958efb`.
+
+Two rejected operator/harness attempts are retained rather than rewritten:
+
+- the first focused backend stage omitted the canonical empty `data/` marker and
+  returned 10 FileBackend setup-related non-passing nodes; a fresh stage with the
+  required marker passed;
+- the first frontend focused command ran from repository root, bypassing the app
+  Vitest config and its i18n setup; the same three files from the correct
+  `apps/arkscope-web` workspace passed 27/27.
+
+Production observation was read-only SQLite URI mode plus
+`PRAGMA query_only=ON`. `news_article_scores` still has exactly 491,808 rows and
+140,152 distinct article IDs; article timestamps span
+`2022-01-01T05:14:26+0000..2026-04-27T00:17:00+0000`, and score operation times
+span `2026-06-07T06:03:13.042078+00:00..2026-06-07T06:06:26.870916+00:00`.
+The 3,477,532,672-byte DB had inode `127284871` and SHA-256
+`123b7f8f00b9d643a0c98244d2e8521e2ef164d0c8439e887d0493d47064abab`;
+its inode/size/mtime remained stable during the query. `config/scoring_keys.txt`
+was not opened, read, hashed,
+printed, copied, or sized; only existence, mode `0600`, inode, and mtime were
+recorded.
+
+The subsequent exact owner census stopped on
+`src/news_normalized/score_migration.py`. Git proves its only tracked importer is
+the already-retired five-node `tests/test_news_score_migration.py`, while the
+module imports the planned-deleted `.scores` owner. The reviewed plan omitted
+the source module from every disposition. Under the no-tail ruling and stop
+condition 15, Task 0 stopped before claiming a closed owned/protected manifest.
+This amendment assigns the module to phase-1 deletion without changing any node
+ledger. Product edits and Task 1 remain blocked pending focused review.
+
 ## 3. Locked implementation sequence
 
 | Task | Status | Gate |
 |---|---|---|
-| Task 0 re-ground | not started | focused rebase-amendment review |
+| Task 0 re-ground | stopped at owned/protected census | focused no-tail owner amendment review |
 | Task 1 RED | blocked | Task 0 GREEN |
 | Task 2 atomic cutover | blocked | plan + Task 0 GREEN |
 | Task 3 mutation/focused gates | blocked | product target exact |
@@ -315,7 +372,7 @@ objective evidence behavior.
 - [x] Independent full-plan review GREEN at `52354806`.
 - [x] One-time rebase completed with unchanged relative ledgers and exact new
   full/projection identities.
-- [ ] Focused rebase-amendment review GREEN.
+- [x] Focused rebase-amendment review GREEN at `5be77be2`.
 - [ ] Task 0 authorized and executed.
 
 ## 5. Honesty boundary
