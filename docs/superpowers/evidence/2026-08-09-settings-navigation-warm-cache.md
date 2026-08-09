@@ -1,6 +1,6 @@
 # Settings Navigation and Warm Cache Evidence
 
-> **Status:** TASKS 1-5 COMPLETE; REVIEW F1 FIXED; FOCUSED RE-REVIEW PENDING; TASK 6 NOT STARTED
+> **Status:** TASK 6 COMPLETE; INDEPENDENT IMPLEMENTATION REVIEW PENDING; TASK 7 NOT STARTED
 >
 > **Date:** 2026-08-09
 >
@@ -664,4 +664,125 @@ payload entries are covered by `SHA256SUMS`, whose SHA-256 is
 `56efbba619d6a104c666cbb94e82f1579439683b1192e225b49cfc1b862cec23`.
 The one generated App-local Vitest file and its directory entries were
 manifested and removed; ignored state returned exactly to `!! node_modules`.
-Task 6 remains unstarted pending focused re-review.
+Independent focused re-review returned GREEN at docs tip `140ed1f3`,
+authorizing Task 6.
+
+## 18. Task 6 mutations and final admission
+
+Task 6 ran against exact implementation tip
+`140ed1f34125a46be037c188966b31d5d8408455`. No product or test edit followed
+that reviewed F1 tip.
+
+### 18.1 Mutation cycle
+
+M1-M5 ran independently from fresh exact-tip archive roots. Each mutation
+changed the reviewed live seam, turned the named owner RED with exit `1`, and
+returned GREEN with exit `0` after byte-exact source and test restoration:
+
+| Mutation | Exact diff SHA-256 | Contract proved |
+|---|---|---|
+| M1 | `f50390494ed41d0b9f85b3341d9baa4cc859cc849e48de4f1853860edfc6a74d` | sticky row is required at deep scroll |
+| M2 | `95dfdca399b67942b43564e6e2af84c0087cd4f90f126a9f5b19c3dd55aa6c0d` | directory must expose all nine sections |
+| M3 | `967c0950484e803a293efe73fc8b1c56026762d1d10be32b58bebb192fd85d89` | stale generation cannot repopulate invalidated data |
+| M4 | `a2a4f8c34d3e96de3aff86aa9575fd0b347ef7d1b88643ef6b038e9ff8ccb655` | extension health cannot enter idle warmup |
+| M5 | `bdc30615bfa3a43d26e3c520c6c598ec1d675f2caee719be125a28859ea2187a` | credential invalidation remains one-local-row exact |
+
+The disposable archive roots were removed only after the restoration checks;
+their file and byte counts are retained in `mutation-scratch-cleanup.tsv`.
+
+### 18.2 Final frontend and backend gates
+
+Decoded collection and runtime admission are:
+
+```text
+full collection:        98 files / 1123 nodes / 9262d7b15a926d7...
+focused collection:     15 files / 221 nodes / a2c20d3607e5fd489...
+exact ledger:           +40 / -1, byte-equal to Task 0 reviewed streams
+focused runtime:        221 passed / exit 0
+native full runtime:    98 files / 1123 passed / exit 0
+typecheck:              exit 0
+build:                  exit 0; existing >500 KiB chunk warning only
+i18n scanner:           36 / 20 / 0 / 20; exit 0
+protected frontend:     10/10; aggregate 4eae072b4eae3069...
+Python/backend paths:   597/597; aggregate 59412c6b815fbba9...
+backend collect-only:   4527 collected / 0 seen / exit 0 / 4eeb117804ad874c...
+```
+
+The first sandbox full run is rejected evidence: it ended with 19
+`spawnSync(node) EPERM` failures confined to the two known process-spawning
+owners. The exact two-owner native control then passed `29/29`; the admitted
+native full run passed `1123/1123`. Both the rejected transcript and native
+control remain in the packet. No partial or sandbox transcript is called a
+passing full runtime.
+
+The backend reporter JSON is
+`b2f1539d751614942b45b15d5366383c3d7a1880adcfe3fcedb7b49d1406cc46`.
+It records all `4527` nodes, zero seen test bodies, and zero non-passing nodes;
+the complete Python/backend byte comparison remains the stronger no-drift
+gate.
+
+### 18.3 Hermetic browser matrix
+
+The final harness uses the pinned system Chrome, local deterministic fixtures,
+an isolated profile, and a loopback Vite server. It admits only known fixture
+routes; final request methods are exactly `{GET}` and the browser error list is
+empty. At both `1322x777` and `390x844`, DOM authority proved:
+
+- all three workflow tabs remain sticky and clickable at deep scroll;
+- the directory contains exactly nine links under three registry-order groups;
+- manual group switching returns to group top with selected-tab focus;
+- cross-group navigation focuses the exact heading below the sticky row;
+- rejected navigation preserves group, scroll, and focus;
+- exactly one tabpanel remains mounted, with no inactive Investor owner;
+- there is no horizontal overflow, overlap, or clipped tab label;
+- fresh route-away/back adds no duplicate read;
+- retained stale content remains visible while one matching GET is pending;
+- idle warmup issues only allowlisted local GETs and never extension health;
+- Chrome, Vite, profile directories, and listeners are absent after cleanup.
+
+The first harness attempt was rejected because its account fixture
+`observed_at` preceded the injected clock by an hour and therefore correctly
+triggered a sync POST. The fixture time was aligned without changing product
+code. Its stdout, Chrome log, profile census, and reason remain separate from
+the admitted run.
+
+Final browser identities are:
+
+```text
+harness:             95d877caedc8ccfe42ccda084d9c8e2df1501d29515fef13a806d0fac10d6dd3
+results JSON:        d539b15c4d51eba56973d6340d5fbbb68ba22606644cda2c076cf9c98e5db60f
+request ledger:      488fd07697c6b5e64e4d6819489f560efb3a5f0c29d1290cb289f7388d3731a5
+fixture payload:     af3ea3f7d21b01e6bac7f4a277ef605bffb5da0534d6f7c495c07986da4cf52c
+desktop screenshot:  445a1de7937e0695d7ff4781db459126b97ebf0adbcd1e7860c0fa0a23426f49
+mobile screenshot:   0fa8f9cd743d4bf1b737f87e4e65e21a8c219c302bef9211bf1cfc3665360062
+```
+
+Both screenshots were inspected at original resolution. Their framing matches
+the DOM result: the complete directory and sticky workflow row are visible,
+with no overlap or clipping.
+
+### 18.4 Generated-artifact transaction and handoff
+
+Task 6 generated exactly `535` worktree files under `31` validated roots:
+frontend `dist`, App-local Vite cache, and test `__pycache__` directories. The
+packet records every file's path, inode, size, mode, nanosecond timestamp, and
+SHA-256 before exact-root removal. Cleanup restored both the pre-gate regular
+file stream and `git status --ignored --short` stream byte-for-byte. Ordinary
+`git status --short` is empty; the only ignored row is the pre-existing root
+`node_modules` path.
+
+Two post-cleanup comparison command shapes were rejected because they included
+the linked-worktree `./.git` pointer while the pre-gate authority excludes it.
+The corrected command matched that authority exactly. This is recorded in
+`generated-cleanup-verification.txt`; neither rejected comparison is used as
+admission evidence.
+
+The complete raw packet is
+`/tmp/settings-navigation-warm-cache-task6-140ed1f3`. Its `115` payload entries
+are covered by `SHA256SUMS`, whose SHA-256 is
+`5aa07f0e82a810905a0d9e746289ad0c34fb409833b62da27c41dd57f9c97a79`;
+all entries pass `sha256sum -c`.
+
+Task 6 is complete. Independent implementation review is the only next gate.
+Task 7 merge, exact-master verification, closeout, and the Tranche B absolute
+identity re-derivation have not run and remain unauthorized.
