@@ -1,6 +1,6 @@
 # Settings Navigation and Warm Cache Evidence
 
-> **Status:** TASK 3 COMPLETE; TASKS 4-5 BATCH EXECUTION IN PROGRESS
+> **Status:** TASK 4 COMPLETE; TASK 5 BATCH EXECUTION IN PROGRESS
 >
 > **Date:** 2026-08-09
 >
@@ -465,3 +465,50 @@ and focused target
 `214/d44260d583bda710fabd963c1f9af8730aa92835cd8b5a7177ba5f092f381632`.
 The user's existing Tasks 1-5 batch authorization remains in force; this is
 not an added review wait.
+
+## 13. Task 4 - OAuth account read integration
+
+### 13.1 RED, implementation, and exact identities
+
+The three exact Task 4 nodes were first applied alone to isolated parent
+`e7d18fa2`. They collected and ran without import or fixture errors, producing
+`15 passed / 3 failed`; the failed set was exactly retained-immediate GET,
+retained-on-error, and targeted manual-sync replacement. No existing node
+failed.
+
+Product/test commit `bbf81adb` passes the existing App-root cache from
+`Settings.tsx` into `ProviderSection`. Cached account views are validated
+against the local credential row before display, stale values remain visible
+during one shared GET, loader errors preserve last-good truth, and invalid
+credential-bound responses never enter visible state. Existing visible,
+focus, and manual sync policy remains the sole POST owner. A successful sync
+replaces only its exact account key after the existing generation/binding
+checks; credential mutation invalidates that key and leaves unrelated account
+entries intact.
+
+Verification was:
+
+```text
+exact RED:                15 passed / 3 failed
+Provider GREEN:           18 passed / 18
+cross-handoff regression: 106 passed / 106 across 5 files
+typecheck:                exit 0
+full collection:          1116 / 09d31fa1bd22d3...
+focused collection:       214 / d44260d583bda710...
+```
+
+Both normalized collection streams are byte-identical to the preconstructed
+Task 4 streams. `git diff --check` passed. No backend, API, credential,
+provider request, profile, storage, scheduler, or production-data byte
+changed.
+
+### 13.2 Packet and cleanup
+
+Raw evidence is under
+`/tmp/settings-navigation-warm-cache-task4-bbf81adb`. It has `10` payload
+entries; `SHA256SUMS` has SHA-256
+`307db954a1821205d9bfb8e040b4c53482c95fa21fca4e8e6cfebb0593700d05`.
+The isolated RED worktree was removed after capture. One generated Vite result
+file was inventoried, and the exact app-local `node_modules` cache root was
+removed; ignored state returned to the pinned root `node_modules` link only.
+Task 5 follows immediately under the user's batch authorization.
