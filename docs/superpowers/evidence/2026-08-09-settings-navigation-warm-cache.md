@@ -1,6 +1,6 @@
 # Settings Navigation and Warm Cache Evidence
 
-> **Status:** TASK 1 COMPLETE; TASKS 2-5 BATCH EXECUTION AUTHORIZED
+> **Status:** TASK 1 COMPLETE; TASK 2 PAUSED FOR BOUNDED AMENDMENT REVIEW
 >
 > **Date:** 2026-08-09
 >
@@ -276,3 +276,44 @@ SHA-256 is
 The sole generated Vitest cache file was manifested and removed. Post-product
 commit, both tracked worktrees were clean and the isolated ignored state was
 again exactly `!! node_modules`. Task 2 is the next batch stage.
+
+## 9. Task 2 stop-and-amend
+
+Task 2 first replaced the one superseded directory node and added the other
+five reviewed nodes without touching product code. The decoded collection
+matched the predeclared identities exactly:
+
+| Stream | Nodes | SHA-256 |
+|---|---:|---|
+| full stage 2 | 1,106 | `10965b1c8e5a51cbf5d38950b0db8410faef1a528e6dc2856e391267019a37bc` |
+| focused stage 2 | 204 | `e34c217edb518485ebacbbe382a44f47f36e536c9a15f13125add0664910a085` |
+
+The two direct owner files then produced an admissible RED: `30` existing
+nodes passed and five intended old-contract assertions failed (complete
+directory, two group-top outcomes, and two sticky/shared-offset CSS outcomes).
+The busy-rejection protection node remained GREEN, as expected.
+
+An initial implementation made both direct owner files GREEN at `35/35`.
+The required complete focused run then stopped at `199 passed / 5 failed`:
+
+- four `SettingsModelRouting.test.ts` cases reached the new group-top effect in
+  jsdom, whose `HTMLElement` lacks `scrollTo`; the semantic implementation can
+  use the scroll owner's `scrollTop` directly within existing Task 2 scope;
+- the existing
+  `SettingsPostPgExitStorage.test.ts > uses_normal_user_outcomes_in_the_enabled_settings_directory`
+  node still asserted the now-superseded four-link active-group directory.
+
+The latter file was absent from Task 2's owned paths even though the reviewed
+design requires all nine links. No node was added, removed, or renamed by this
+finding. Task 2 stopped before product/test commit, early browser work, or any
+Task 3 action. The uncommitted five-file product/test delta was retained as
+`/tmp/settings-navigation-warm-cache-task2-4745b359/task2-paused-product.patch`
+(SHA-256
+`673846832dc7f607435f36ad955c6a155a610edf0eb08cbd8553253a8598c18c`),
+then the worktree was restored to the clean Task 1 tip before this docs-only
+amendment.
+
+The bounded amendment adds only `SettingsPostPgExitStorage.test.ts` to Task 2
+and authorizes evolving that one existing assertion to the complete registry
+order. Stage identities, the `+6/-1` Task 2 delta, and the global `+40/-1`
+ledger remain unchanged. Task 2 may resume only after focused review.
