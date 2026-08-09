@@ -1,6 +1,6 @@
 # Provider Evaluation Hygiene and Tiingo Tail Retirement Evidence
 
-> **Status:** TASK 6 COMPLETE - FOCUSED CLOSEOUT REVIEW REQUIRED
+> **Status:** LIVE COMPLETE - FOCUSED CLOSEOUT REVIEW GREEN AT `5a525de1`
 >
 > **Date:** 2026-08-09
 > **Task 0 tip before evidence:** `a9c702626aed82e2f08700aefa05ae2495408685`
@@ -837,5 +837,14 @@ removing their dated skipped evaluation shells did not adopt or retire them.
 
 No provider credential or manual provider command was supplied, no production
 data or scheduler state changed, and no push occurred. Provider hygiene is
-implemented and verified on master. Focused review of this docs-only closeout is
-the only remaining gate.
+implemented and verified on master. Focused review of this docs-only closeout
+was the only remaining gate and is recorded below.
+
+### 13.5 Independent focused closeout review
+
+Independent focused review returned GREEN with zero findings at closeout commit
+`5a525de1`. The reviewer reconstructed its parent as cutover tip `b991f543`,
+confirmed the linear zero-merge lineage from `6159fc14`, reproduced the merged
+native report byte-for-byte at `4527 seen / 4488 passed / 39 skipped / 0 failed`,
+verified `PROVIDER_HYGIENE_CUTOVER_TIP`, and found both worktree and status
+transitions clean. This closes the provider-smoke hygiene line.
