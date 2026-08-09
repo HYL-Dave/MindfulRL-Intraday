@@ -1,7 +1,7 @@
 # Scripts Tranche B Legacy Score Retirement Evidence
 
-> **Status:** TASK 0 MANIFEST PACKET COMPLETE; INDEPENDENT REVIEW PENDING;
-> USER-AUTHORIZED BATCH CONTINUATION TO TASK 1; IMPLEMENTATION NOT STARTED
+> **Status:** TASK 2 CUTOVER PRESENT BUT UNCOMMITTED; TASK 3 PROTECTED GATE
+> STOPPED ON TEN OMITTED SHARED REGISTRY-COUNT OWNERS; AMENDMENT REVIEW PENDING
 > **Date:** 2026-08-08
 > **Rebase amendment:** 2026-08-09
 > **Current plan base:** `814ef2edd1b6aa66499145e1a9109d05f5fb0d89`
@@ -20,9 +20,10 @@ two later operations outside that approval:
 config/scoring_keys.txt: later independent exact approval required
 ```
 
-This packet currently records only plan construction. No product/test/runtime
-source, production data, local secret, provider, scheduler, or model request has
-changed on this branch.
+Sections 2.1-2.13 record plan construction and Task 0 before product work.
+Section 2.14 records the later protected-gate stop. The cutover is present only
+in the isolated implementation worktree and has not been committed or merged.
+No production data, local secret, provider, scheduler, or model request changed.
 
 ## 2. Plan-gate grounding
 
@@ -488,14 +489,56 @@ rows and the market database were not touched. Task 0 therefore closes with
 exact owner, deletion, protected, and handoff boundaries; Task 1 may establish
 the reviewed 18-node RED without committing a knowingly RED tree.
 
+### 2.14 Task 3 stale shared registry-count owner stop
+
+After the approved `+18/-263` cutover reached exact backend
+`4282/281cad976a2df29224f41d7442f39ee6deb5b78165fb9efe3945bee6d520abe3`,
+focused `421/385d0ac7a142ba1cb488a1dccd3d1a7ae8e2065585b59130f4b3bf75120a2739`,
+frontend `1124/da69a2942c03e4794e3384e6125936f9f25c1fafbad7d006b67025f8fd97bc39`,
+and frontend focused
+`28/b11cc27b90c570b20aeb728c48d39497e7eff555976f0c00a42d6129b26cf1cd`,
+the broad protected suite stopped before the atomic commit.
+
+The exact protected command covered 58 files from the Task 0 byte/behavior
+manifests and produced `1,141 passed / 6 failed`. All six failures were in
+`tests/test_sa_tools.py`; each pinned a pre-cutover aggregate count while its
+SA-specific assertions passed. A repository-wide exact-pattern census then
+found four more shared count owners outside that protected command. Running the
+closed ten-node set produced `10 failed` for the same intended reason:
+
+| Expected before cutover | Current reviewed truth | Owners |
+|---:|---:|---:|
+| registry/schema `53` | `50` | eight |
+| Anthropic bridge `54` | `51` | one |
+| news category `10` | `11` | one |
+
+The ten-node sorted stream is
+`3c7e2870264e5959a6418701553af6a8870f2adde30b18b9c35e326056b4c305`;
+the original 33 retained/evolved nodes plus these ten produce exact 43-node
+stream
+`7e4f4d2b5290f47c368227223a558043a040304eb6a042af5519e0207a91ed54`.
+No node is added, removed, renamed, parametrized, or skipped, so all collection
+and native targets remain unchanged.
+
+Task 0's 123-row byte-protected manifest incorrectly protected all of
+`tests/test_sa_tools.py` despite the approved registry evolution. The bounded
+replacement excludes only that one file and pins the other 122 rows to stream
+SHA-256
+`c174c7d7b7e9731d4cb04bf00a7b40af1fcaacee5c09f6c77c3f2c585d6f9ca2`.
+Only six numeric assertions in `test_sa_tools.py` and one numeric assertion in
+each of `test_analyst_tools.py`, `test_memory_tools.py`,
+`test_portfolio_tools.py`, and `test_sec_tools.py` may change. The implementation
+stopped without an atomic product commit or native target admission pending
+independent review of this amendment.
+
 ## 3. Locked implementation sequence
 
 | Task | Status | Gate |
 |---|---|---|
-| Task 0 re-ground | packet complete | exact owner/protected/deletion manifests await independent review |
-| Task 1 RED | user-authorized batch continuation | preserve RED artifacts; no RED-only commit |
-| Task 2 atomic cutover | blocked | plan + Task 0 GREEN |
-| Task 3 mutation/focused gates | blocked | product target exact |
+| Task 0 re-ground | packet complete; review pending | exact owner/protected/deletion manifests complete |
+| Task 1 RED | user-authorized batch complete | intended RED artifacts preserved; no RED-only commit |
+| Task 2 atomic cutover | present, uncommitted | exact target identities reached |
+| Task 3 mutation/focused gates | stopped | ten omitted registry-count owners await amendment review |
 | Task 4 native admission | blocked | all mutations restored |
 | Task 5 independent implementation review/merge | blocked | native GREEN |
 | Task 6 merged verification/closeout | blocked | fast-forward merge |
