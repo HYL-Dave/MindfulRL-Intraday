@@ -1,8 +1,10 @@
 # Scripts Tranche B Legacy Score Retirement Evidence
 
-> **Status:** PLAN PACKET WRITTEN; IMPLEMENTATION NOT STARTED
+> **Status:** FULL PLAN GREEN; ONE-TIME REBASE AMENDMENT AWAITING FOCUSED
+> REVIEW; IMPLEMENTATION NOT STARTED
 > **Date:** 2026-08-08
-> **Plan base:** `04dd9a67d75042aa078bedde1e6dbc2a68e7736a`
+> **Rebase amendment:** 2026-08-09
+> **Current plan base:** `814ef2edd1b6aa66499145e1a9109d05f5fb0d89`
 > **Product ruling:** PD 1-PD 8 approved on 2026-08-08
 > **Destructive authority:** none; score rows and `scoring_keys.txt` remain blocked
 
@@ -25,14 +27,21 @@ changed on this branch.
 ### 2.1 Git boundary
 
 ```text
-master/base: 7257699171a81294b74ff8cde61fb90bb065a2b4
-inventory:   098dff564faea1fc2617e198414ccde6067f23f8
-decision:    04dd9a67d75042aa078bedde1e6dbc2a68e7736a
+reviewed old base: 7257699171a81294b74ff8cde61fb90bb065a2b4
+current base:      814ef2edd1b6aa66499145e1a9109d05f5fb0d89
+inventory:         098dff56 -> 8c952773
+decision:          04dd9a67 -> f34463df
+plan:              d1c5b5a5 -> bda76296
+no-tail tip:       52354806 -> f9958efb
 branch:      codex/scripts-tranche-b-inventory
 ```
 
-`72576991` is the merge base and ancestor of `04dd9a67`. Before this plan-gate
-packet the worktree was clean.
+The full plan at `52354806` received independent GREEN review. After all three
+predecessor lines merged, the four docs-only commits were rebased once onto
+`814ef2ed`; the inventory, decision, plan, and evidence bytes at `f9958efb`
+were identical to their reviewed pre-rebase versions. The priority map retained
+the same Tranche B decision entry and gained only intervening reviewed history.
+Before the rebase and before this amendment, both worktrees were clean.
 
 Original plan source identity committed at `d1c5b5a5` and superseded by the
 post-approval no-tail amendment:
@@ -49,6 +58,15 @@ Replacement plan source identity presented for independent review:
 715 lines / 39,324 bytes
 SHA-256: 70e48d1184f0581033ccbf566f7f33718fac6ac934ae7c2b41d963fcb665f704
 Git blob: 383ff74d835828719d6d234e3a0b00336e7d92fa
+```
+
+The byte-identical rebased plan at `f9958efb` had that same identity. This
+one-time absolute-identity amendment changes it to:
+
+```text
+755 lines / 41,529 bytes
+SHA-256: 12082ce9b049b0b488cea298ee313b85ba7a884c6f462d5d9bc43a224537c802
+Git blob: e1eff4ad70ec44add348b277a67c5f94668241c0
 ```
 
 ### 2.2 Post-approval no-tail amendment
@@ -76,20 +94,23 @@ disconnection, exact deletion is the default unless a read-only packet proves a
 concrete research use worth detailed user review; runtime retention is not an
 outcome.
 
-### 2.3 Canonical base inputs
+### 2.3 Rebased canonical base inputs
 
-The product tree is docs-only relative to the EIR-006 merged canonical base.
-The deterministic streams reused for plan construction are:
+The product tree remains docs-only relative to merged `master`. The
+deterministic streams re-collected after OAuth, provider hygiene, and Settings
+navigation are:
 
 | Stream | Count | SHA-256 |
 |---|---:|---|
-| backend full | 4,581 | `6e4994bb664501cff75cb06dbad18db82ba68cbbe4b2b26c4d480250d7c4699f` |
-| frontend full | 1,077 | `3f5e9f5bbe88d5ac48015a8c9e9d669dcd649a53a2ac868fc8a98d21f8d7e4eb` |
+| backend full | 4,527 | `4eeb117804ad874c83ffe4c04fd25ecd4de4f460801bfbf95d15c1406f32455d` |
+| frontend full | 1,123 | `9262d7b15a926d7eeb60952e4c351c6c9b944772904fdb82438c62a2a51f6c1c` |
 | backend focused | 555 | `ea5d897ca3597ef4edca7583db0b363360ceba9e362e516422f901ff8af004dd` |
 | frontend focused | 27 | `c77d25d5bf7c868899d555f099fc245b13d35d4052a6a8242ac3f5c1300fb584` |
 
-Task 0 must reproduce these values; this evidence does not substitute prior
-results for that executable gate.
+Task 0 must reproduce these values; this amendment does not substitute set
+construction for that executable gate. Backend collect-only at the rebased tip
+reported `4527 collected / 0 seen / exit 0`; frontend used the pinned decoded
+JSON normalizer.
 
 ### 2.4 Node-ledger construction
 
@@ -102,8 +123,8 @@ set membership.
 |---|---:|---|
 | retired | 138 | `b48b161d573afb37496763c0afe388c2421f06e35eb5cd7de959ba5778c05254` |
 | backend additions | 18 | `88ac9e5652c9df79eb42284d6a9c42a2f0f4a60b967badae37524fa127499520` |
-| backend RED | 4,599 | `ae382261eddb2b9bbe02e8c15ca2acc48a23a99745d910a28aba8f4ac7e3059b` |
-| backend final | 4,461 | `c7cb78b222952e9c1b5b3e18abcf413a14875a84ef7bc01d55ef500d939a74f9` |
+| backend RED | 4,545 | `e1fa3f7d54d671c984e9800e38850ccb802f06f83d78aa2114b749bb7414f9da` |
+| backend final | 4,407 | `d71b9825e727fd7ccac43b79ebb904144a48a9acc66b75ccae002471822ac8bc` |
 | focused RED | 573 | `5e0a5538c4106ca9b9cf0d701ab719d62c3a4056d1e101864ddb09b6beb9fb75` |
 | focused final | 435 | `2e5fcb6c22d6a1657e609542138830f2d5fd367a0e353ab30efdfbb8851a7c6a` |
 
@@ -125,11 +146,11 @@ stream SHA is
 
 | Projection | Count | SHA-256 |
 |---|---:|---|
-| storage/writer/root | 4,537 | `e2a744b8fdcb9cadcaa1a9e68f050805faf36b5e7beae1d033d889a71e2f44af` |
-| raw DTO/backend | 4,498 | `55b26b2ea092a378f04eb8f64de248e7c74364544ec1ab00eee2c29fb157324c` |
-| raw user behavior | 4,498 | `d6a0793368c7cc68b81bb96863028b46db4cbd3dc6200977b7ec8621d5fda2ba` |
-| volume/event/composite | 4,458 | `3896c617ca5594b30a644bd8cf61f96eea39ba753cf1858049121c626dfc469b` |
-| final | 4,461 | `c7cb78b222952e9c1b5b3e18abcf413a14875a84ef7bc01d55ef500d939a74f9` |
+| storage/writer/root | 4,483 | `a00d996aa45fda19e0a9a473fb2767310b98daf5d2ab8ad1c72754c3b2a080f1` |
+| raw DTO/backend | 4,444 | `e71c3b0cfe25931558fe4d01b81fd7a0c653b002c7aa506ace66581b4b0ff458` |
+| raw user behavior | 4,444 | `d2dd1b144e3923a60672c23e2f8f8ac9f42c1a42445235b47e83a90d1a51a99e` |
+| volume/event/composite | 4,404 | `ebc5563c5d408bf83dd14f643d6a5ffd082f1b02d5159485fdb1e0b2ef00c7a9` |
+| final | 4,407 | `d71b9825e727fd7ccac43b79ebb904144a48a9acc66b75ccae002471822ac8bc` |
 
 These are mathematical node-accounting projections. They have not been called
 runtime GREEN and do not relax the atomic final gate.
@@ -153,9 +174,9 @@ No repository-relative artifact remained; the temporary empty `data/` marker
 was removed and ordinary status returned clean. Therefore:
 
 ```text
-passed:  4509 - 136 retired passing + 18 new passing = 4391
-skipped:   72 -   2 retired skipped                  =   70
-total:   4391 + 70                                  = 4461
+passed:  4488 - 136 retired passing + 18 new passing = 4370
+skipped:   39 -   2 retired skipped                  =   37
+total:   4370 + 37                                  = 4407
 ```
 
 Task 4 must prove this result; arithmetic is not admission evidence.
@@ -170,15 +191,77 @@ src/legacyScoreRetirement.test.ts<TAB>legacy score retirement boundary > removes
 
 | Stream | Files / nodes | SHA-256 |
 |---|---:|---|
-| base | `97 / 1077` | `3f5e9f5bbe88d5ac48015a8c9e9d669dcd649a53a2ac868fc8a98d21f8d7e4eb` |
-| target | `98 / 1078` | `de1e0c3fccb1fad3574a5089f76164791895e7c5a70bb4a2ce578b38b30d4192` |
+| base | `98 / 1123` | `9262d7b15a926d7eeb60952e4c351c6c9b944772904fdb82438c62a2a51f6c1c` |
+| target | `99 / 1124` | `da69a2942c03e4794e3384e6125936f9f25c1fafbad7d006b67025f8fd97bc39` |
 | focused base | `3 / 27` | `c77d25d5bf7c868899d555f099fc245b13d35d4052a6a8242ac3f5c1300fb584` |
 | focused target | `4 / 28` | `b11cc27b90c570b20aeb728c48d39497e7eff555976f0c00a42d6129b26cf1cd` |
 
 The target was constructed from decoded runtime names, not escaped JSON text.
 Task 0 must re-run the pinned normalizer.
 
-### 2.8 Protected lineage
+### 2.8 One-time absolute-identity re-derivation
+
+The re-derivation root is `/tmp/scripts-tranche-b-rebase-f9958efb`. Its
+66-entry `SHA256SUMS` is
+`e61626c9d55ffab5bc51d887e0c9c35bb82d33b141a2322f4c312205db49b102`.
+It contains the raw backend reporter/transcript, raw frontend Vitest JSON,
+frozen ledger inputs, every derived stream/table, the old/current delta streams,
+the rebased commit chain, and the old-versus-new range-diff. Its
+backend identity table is `6523058c898983dc5507281c02ee22156cc606469ee4408245ce54f014a78695`;
+its phase validation table is
+`d9f4cc12d8536652979613da42cb3d5bb930ead767046495c203516954974c9b`;
+its frontend identity table is
+`f5ba905e21cc987b1053e90b27e3d10172e4abd58d97f39a3fce323e46df51f1`.
+The backend collect-only reporter is
+`b2f1539d751614942b45b15d5366383c3d7a1880adcfe3fcedb7b49d1406cc46`
+and records `4527 collected / 0 seen / 0 non-passing / exit 0`.
+The two current-base retired-skip owners were rerun through the same native
+wrapper and returned `2 skipped / exit 0`; their structured report is
+`50a99f651a839d67d65e13d6915ab169d27fe56f0078566835e3d14e8ecad6ca`.
+
+The intervening backend delta from the reviewed pre-handoff base is exact
+`-81/+27`; the removed and added streams are respectively
+`80a52a1e2844a72a45b02940f143d08d24a578ae79d7c48d6cbd3a028e17a2dc`
+and `abcf25ac4d850c9d64fa55932415c268740c00eacb71905cdddc9ac202786f5f`.
+Neither stream intersects the corresponding frozen Tranche B retirement or
+addition ledger. The frontend delta is exact `-1/+47`; the current full stream
+was decoded from Vitest JSON with pinned normalizer `955dca59...`, not text
+extraction. All 138 retired backend IDs are present, all 18 additions are
+absent, and the frontend addition is absent.
+
+Each phase independently proves every removal present and every addition absent
+before mutation:
+
+| Phase | Removal expected/present | Addition expected/pre-existing |
+|---|---:|---:|
+| 1 | `46/46` | `2/0` |
+| 2 | `43/43` | `4/0` |
+| 3 | `1/1` | `1/0` |
+| 4 | `45/45` | `5/0` |
+| 5 | `3/3` | `6/0` |
+
+Stage 5 is byte-identical to the independently constructed final target.
+Backend focused identities remain exactly `555 -> 573 -> 435`; frontend
+focused identities remain exactly `3/27 -> 4/28`. This is direct evidence that
+the handoff changed only absolute full/projection identities, not Tranche B's
+relative owner ledger.
+
+The following reviewed pre-handoff identities are retained only as dated
+history and are prohibited for current admission:
+
+| Surface | Superseded base | Superseded target |
+|---|---|---|
+| backend | `4581/6e4994bb...` | `4461/c7cb78b2...` |
+| frontend | `97 files / 1077/3f5e9f5b...` | `98 files / 1078/de1e0c3f...` |
+| native | `4509 passed / 72 skipped` | `4391 passed / 70 skipped` |
+
+No product/test byte, production row, provider, scheduler, secret, or model
+request changed during rebase or re-derivation.
+The product-decision amendment changes only its status header and section 9
+handoff sequence to record completed predecessor lines; PD 1-PD 8 and their
+approval/non-authorization semantics are unchanged.
+
+### 2.9 Protected lineage
 
 The current tracked `training/` tree has 53 paths. Its sorted
 `path<TAB>git-blob` stream is:
@@ -204,7 +287,7 @@ objective evidence behavior.
 
 | Task | Status | Gate |
 |---|---|---|
-| Task 0 re-ground | not started | independent evidence review |
+| Task 0 re-ground | not started | focused rebase-amendment review |
 | Task 1 RED | blocked | Task 0 GREEN |
 | Task 2 atomic cutover | blocked | plan + Task 0 GREEN |
 | Task 3 mutation/focused gates | blocked | product target exact |
@@ -229,7 +312,10 @@ objective evidence behavior.
 - [x] Provider-native/training boundaries byte-protected; EvidencePacket copy
   delta bounded while its negative behavior remains protected.
 - [x] Native wakeup/reporter/wrapper/toolchain boundary pinned.
-- [ ] Independent plan review GREEN.
+- [x] Independent full-plan review GREEN at `52354806`.
+- [x] One-time rebase completed with unchanged relative ledgers and exact new
+  full/projection identities.
+- [ ] Focused rebase-amendment review GREEN.
 - [ ] Task 0 authorized and executed.
 
 ## 5. Honesty boundary
