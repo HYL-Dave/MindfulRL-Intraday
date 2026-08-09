@@ -1,6 +1,6 @@
 # Settings Navigation and Warm Cache Evidence
 
-> **Status:** TASKS 1-5 COMPLETE; IMPLEMENTATION REVIEW PENDING; TASK 6 NOT STARTED
+> **Status:** TASKS 1-5 COMPLETE; REVIEW F1 FIXED; FOCUSED RE-REVIEW PENDING; TASK 6 NOT STARTED
 >
 > **Date:** 2026-08-09
 >
@@ -626,3 +626,42 @@ bytes remain unchanged. Independent review should reconstruct Tasks 1-5 from
 the five packet roots and this commit lineage. Task 6 mutations/full runtime,
 build/scanner, final browser matrix, and native admission have not started and
 remain a separate hard gate.
+
+## 17. Post-batch-review F1 - fallback warmup isolation
+
+Independent combined review reconstructed all five task packets and returned
+one finding. Plan Section 1.1 requires idle warmup only when
+`SettingsReadCache` was explicitly supplied. The implementation created a
+per-view fallback correctly but invoked `scheduleSettingsIdleWarmup`
+unconditionally. Consequently, legacy direct renders could schedule hidden
+Data/Sync reads; broad rejected-promise handling could leave those tests GREEN
+without making them hermetic.
+
+The regression was proved before production edit by evolving an existing
+`SettingsWorkspace` node. A direct render without the prop observed one idle
+callback instead of zero and failed exactly at that assertion. The two
+existing warmup nodes now explicitly supply their own cache, preserving their
+original node IDs and production-shaped warmup contract.
+
+Product/test commit `cef07f56` adds one condition to the existing effect:
+fallback cache still supports the visible model-catalog read, but only an
+explicitly supplied cache schedules idle warmup. Verification after the fix:
+
+```text
+precise regression RED:  1 failed / 31 skipped; idle callbacks 1 != 0
+SettingsWorkspace:       32 passed / 32
+focused runtime:         221 passed / 221 across 15 files
+full collection:         1123 / 9262d7b15a926d7...
+focused collection:      221 / a2c20d3607e5fd489...
+typecheck:               exit 0
+protected frontend:      10/10; aggregate 4eae072b...
+Python/backend diff:     empty
+```
+
+Both decoded streams are byte-identical to the reviewed final streams. Raw
+evidence is under `/tmp/settings-navigation-warm-cache-f1-31dd7591`; its `25`
+payload entries are covered by `SHA256SUMS`, whose SHA-256 is
+`56efbba619d6a104c666cbb94e82f1579439683b1192e225b49cfc1b862cec23`.
+The one generated App-local Vitest file and its directory entries were
+manifested and removed; ignored state returned exactly to `!! node_modules`.
+Task 6 remains unstarted pending focused re-review.
