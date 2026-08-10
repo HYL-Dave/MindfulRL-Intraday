@@ -309,3 +309,25 @@ single-command `1,132/1,132` at the same product bytes exists in
 `full-fe-final.txt`'s prior stage only for the pre-fix tree, so the
 reviewer should reproduce the single-command run in their own environment
 (the Settings-line closeout precedent). Packet manifest is now `1a5af9684d173824563bb077c0425da44f1f36aff4e4acfc0af843fb84f15643`.
+
+### 8.3 Re-review findings fixed (commit `9bf2b9bd`)
+
+- **Dead-credential resurrection:** the `credential_changed_during_sync`
+  branch now calls `invalidateCredentialAccount` (flipping the cache
+  generation and removing the retained entry) BEFORE clearing the view, so
+  a later focus revalidation misses the cache and fetches the server's
+  post-change truth. The node's resurrection-guard phase asserts a real GET
+  fires and the dead 18% observation stays gone.
+- **Authoritative failure snapshot:** a non-credential-changed decoded
+  failure now prefers the snapshot carried by the failure view itself,
+  falling back to the prior one only when absent (phase D: initial unknown,
+  POST fails with an attached 21% snapshot, UI shows 21% plus the stable
+  code).
+- **Packet hygiene:** `owned-post.sha256` was previously appended with `>>`
+  and carried two stale rows; it is regenerated as a valid final-state
+  manifest (all six owner rows verify) and the packet `SHA256SUMS` is
+  rebuilt.
+
+Post-fix: owned file `26 passed`, focused `41 passed`, collection
+`1132/0cd20954...` unchanged, typecheck exit 0, packet manifest `d1cb7c007a198a9205895ce68f4e2348f9fe7de5fa3412a997fceb6c20285672`.
+Codex independently reproduced the single-command full run `1,132/1,132`.
