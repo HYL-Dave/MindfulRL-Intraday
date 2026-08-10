@@ -1,6 +1,6 @@
 # OAuth Usage Recovery and Sticky Inset Evidence
 
-> **Status:** TASK 0 COMPLETE - INDEPENDENT CODEX REVIEW REQUIRED
+> **Status:** TASK 1 COMPLETE - INDEPENDENT CODEX REVIEW REQUIRED
 >
 > **Date:** 2026-08-10
 >
@@ -71,3 +71,39 @@ frontend (3-file set):                  33 passed (3 files) / exit 0
 Independent Codex review of this packet authorizes Task 1 (Codex launcher
 repair, `+7` RED-first). The packet root carries every raw stream, list
 output, transcript, and `SHA256SUMS`.
+
+## 6. Task 1 - Codex launcher repair (product commit `c04f58d0`)
+
+RED at stage-1 identity `4289/37bc0a59...` (packet `red-collection.nodes`):
+all seven new nodes failed on the intended collapsed classification at the
+old `codex_account_usage.py:520` seam (`red-run-full.txt`); the nine existing
+nodes were untouched.
+
+Implementation per plan §1.1: `_resolve_launcher_and_target()` preserves the
+which()/explicit launcher (symlinks intact) and resolves the target for
+inspection only; `_isolated_environment(launcher, target, codex_home)` puts
+the launcher directory first and the resolved target directory second on the
+isolated `PATH`; `_require_shebang_interpreter()` reads a bounded 4,096-byte
+first line, accepts only the closed interpreter-name syntax, and returns
+typed `interpreter_unavailable` before any spawn; `_verify_version()` now
+classifies exactly: non-zero exit -> `adapter_unavailable`, oversized
+stdout/stderr -> `protocol_incompatible`, malformed output (not
+`codex-cli N.N.N`) -> `protocol_incompatible`, well-formed different version
+-> `version_incompatible`. The app-server spawn uses the launcher argv[0]
+and the same environment. The shared test fixture additionally records
+`argv0`/`PATH` per app-server message and a `version-ran.marker`, giving the
+launcher-path and ran-cleanly assertions real witnesses.
+
+GREEN evidence (packet `/tmp/oauth-usage-sticky-impl-task1-953ea7e7`,
+manifest `93b660d161a730d26ecab54a9fd6e4762979f78957a577270623ba1174aaf6c7`):
+
+```text
+owned file:        16 passed (9 existing + 7 new)
+focused (3 files): 68 passed / exit 0
+full collection:   4,289 / 37bc0a59... (== stage 1)
+protected blobs:   18/18 identical
+worktree delta:    exactly the two owned paths
+```
+
+Task 2 (Anthropic adapter + dispatch, `+14`) awaits independent Task 1
+review.
