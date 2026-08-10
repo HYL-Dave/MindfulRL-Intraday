@@ -1,6 +1,6 @@
 # OAuth Usage Recovery and Sticky Inset Evidence
 
-> **Status:** TASK 4 FABLE-GREEN; TASK 5 PAUSED AT MU5 OWNER GAP - AMENDMENT REVIEW REQUIRED
+> **Status:** TASK 4 FABLE-GREEN; MU5 OWNER CLOSED; TASK 5 PAUSED AT MU6 OWNER OVERCLAIM - AMENDMENT REVIEW REQUIRED
 >
 > **Date:** 2026-08-10
 >
@@ -14,6 +14,8 @@
 > **Task 4 artifact root:** `/tmp/oauth-usage-sticky-impl-task4-7857dd6f`
 >
 > **Task 5 partial artifact root:** `/tmp/oauth-usage-sticky-impl-task5-4fbf3087`
+>
+> **Task 5 continuation artifact root:** `/tmp/oauth-usage-sticky-impl-task5-a16d1b70`
 >
 > **Implementers:** Fable through the Task 3 recovery commits; Codex for the
 > Task 3 ownership refactor and Task 4. Fable is the reviewer of record for
@@ -469,3 +471,26 @@ The bounded amendment adds a rejection subcase to the existing one-request
 node without changing its ID or any pinned identity. Partial packet: 34
 payloads; `PARTIAL_SHA256SUMS`
 `fd7d0fdd574d3f69b71aae11d2fdf411c7568fc23e83d115fd061a4bf288e146`.
+
+## 11. MU5 closure and MU6 owner overclaim
+
+Fable independently replayed the MU5 two-request mutation and returned
+amendment `a16d1b70` GREEN. Test commit `9a704331` strengthened the existing
+one-request node with a 400-rejection subcase. Before mutation, that owner
+passed and the backend focused set remained `82/82`. On the exact MU5 replay
+it failed at the new one-request assertion after recording Sonnet then Opus.
+The adapter's pre/post SHA-256 was identical:
+`ab6cafba94bba3bde26c5446b850a365dc3d433333dbb82bff1a22444c64e0df`.
+
+MU6 used the faithful inverse: remove only the Settings scroll owner's
+`padding-top: 0` rule and retain the lede inset. The CSS file ran `1 failed /
+6 passed`; the exact scroll-owner node failed, while the shared-sticky-offset
+node stayed GREEN. That second result is correct for its responsibility and
+proves the plan's "both new CSS nodes" requirement was an overclaim. CSS was
+restored byte-exactly at
+`325fa0e1ce63b97b551ee57a3dcd067e0da527463bd5f94474651f554d568a25`.
+
+The restored CSS owner file then passed `7/7`. No later admission gate ran.
+Continuation packet: 12 payloads;
+`PARTIAL2_SHA256SUMS`
+`8b4ee1a7007780cb205901ec428ec71eca420b5e96c309f405d88e1c4b86666a`.
