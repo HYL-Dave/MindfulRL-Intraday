@@ -331,3 +331,57 @@ reviewer should reproduce the single-command run in their own environment
 Post-fix: owned file `26 passed`, focused `41 passed`, collection
 `1132/0cd20954...` unchanged, typecheck exit 0, packet manifest `d1cb7c007a198a9205895ce68f4e2348f9fe7de5fa3412a997fceb6c20285672`.
 Codex independently reproduced the single-command full run `1,132/1,132`.
+
+### 8.4 Task 3 ownership refactor (product commit `380021b5`; review pending)
+
+The §0.1.2 role swap is now exercised: Fable authored and re-pinned the
+ownership amendment through `d96a87f2`; Codex implemented the product/test
+change; Fable is the reviewer of record. Task 4 remains paused.
+
+RED was replayed from detached `d96a87f2` with only the new 12-node test
+file present. Collection was exactly `1,144/c9deb227...`; all twelve nodes
+ran and failed only because `oauthAccountUsageReducer` / `useOAuthAccountUsage`
+did not exist (no collection error). The disposable worktree was removed.
+
+The committed architecture has one pure four-field reducer
+(`snapshot/cachedRead/syncSend/backendSync`) with no admission counter, and
+one hook owning cache access, epoch admission, retry episode, cooldown,
+single-flight, and manual POST. The cache stores only validated,
+credential-bound snapshots; the Settings idle warmup uses the same validated
+snapshot loader. `ProviderSection` no longer owns account generations,
+timers, cache entries, or request state.
+
+Pre-commit code review caught one test-body weakness: `read errors and sync
+errors never clear each other` proved only the read-to-sync direction, while
+`sync_succeeded` and snapshot-bearing `sync_failed` still cleared the read
+channel. The existing node was strengthened in both directions and the
+reducer now preserves `cachedRead` across every sync fact. This changed no
+node ID or collection identity.
+
+Final-tree gates:
+
+```text
+ownership nodes:       12/12 passed
+ProviderSection owner: 26/26 passed
+focused (4 files):     53/53 passed; 92572473783df673...
+full collection:       100 files / 1,144; c9deb227812c8cb7...
+typecheck:             exit 0
+i18n scanner:          36 / 20 / 0 / 20, exit 0
+protected boundary:    17/17 byte-identical
+api.ts:                exactly the authorized one-line source-union hunk
+```
+
+The final bytes did not obtain a clean default-concurrency single-command
+full run under the active desktop load. Three retained rejected transcripts
+show only untouched 5,000 ms timeout families: one
+`visibleLiteralScanner` failure (`1,143P/1F`), one initial
+`ResearchHistoryDrawer` timeout cascading to that file's remaining cases,
+then one further `visibleLiteralScanner` timeout (`1,143P/1F`). The exact
+final tree passed the disjoint runtime partition: 98-file complement
+`1,110/1,110`, `visibleLiteralScanner` `18/18`, and
+`ResearchHistoryDrawer` `16/16`, totaling all `1,144` nodes. These partition
+runs are supporting evidence, not a claim of a clean full command.
+
+Review packet:
+`/tmp/oauth-usage-sticky-impl-task3-refactor-d96a87f2` (25 payloads,
+`SHA256SUMS` `2d5b271159edbd8b20a246cf70cf879d35a21d49d0105a3ec5ed0709e6833b4a`).
