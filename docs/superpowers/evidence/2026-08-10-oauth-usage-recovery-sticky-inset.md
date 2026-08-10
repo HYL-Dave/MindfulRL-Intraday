@@ -204,3 +204,19 @@ packet manifest `639b70bfa1651728799446f7ae0c93b5d4d999d7fd3f1b78a99d66d128ac9ef
 
 Post-fix: focused 4-file `82 passed`, network guard green, collection
 `4,303/52b862d7...` unchanged, protected `18/18`, packet manifest `343c2d37fdd704ab1fcdd1ea8efeffecf2a47037e8725c9abca85c4223642024`.
+
+### 7.3 Receipt-time order witness (commit `0cdfb813`)
+
+The boundary assertion alone could not discriminate a pre-request stamp.
+The dispatch node now records event order: the fake raw client emits
+`headers_returned`, the module clock is monkeypatched to emit `clock_read`,
+and the node asserts exactly `["headers_returned", "clock_read"]`.
+Discriminacy was proven by mutation: with the stamp temporarily moved back
+before the request, the node failed precisely on the order assertion
+(`receipt-order-discriminacy-red.txt`); after byte-exact restoration
+(`git checkout`, blob re-verified) it passed (`receipt-order-green.txt`).
+The packet now carries `owned-current.sha256` for the current owner bytes
+(replacing the stale post-`42caff78` capture); manifest `1695e93d7f20284bccfaaa111de25da979ba4066452dff056fed32fbe08a18da`.
+
+Post-fix: focused `82 passed`, collection `4,303/52b862d7...`, protected
+`18/18`.
