@@ -154,3 +154,34 @@ One implementation note: raw `utilization * 100` produced
 to four decimals so persisted truth matches header precision.
 
 Task 3 (frontend recovery split, `+8`) awaits independent Task 2 review.
+
+### 7.1 Task 2 review findings F1-F3 fixed (commit `42caff78`)
+
+Codex review found three blocking defects; all confirmed and fixed:
+
+- **F1 (dead seam):** the adapter rejected a missing `observed_at` while the
+  service never passes one — every real sync would have been
+  `adapter_unavailable` with zero requests, hidden by a hand-rolled fake
+  adapter in the dispatch test (the seam-mock lesson again). The adapter now
+  self-stamps a UTC receipt time when none is provided, and the dispatch
+  node exercises the REAL adapter with a fake raw client through the real
+  service call (which passes no `observed_at`; asserted via source
+  inspection in the packet's `green-fix` run).
+- **F2 (fake success):** empty or partial unified headers on 2xx produced an
+  all-unknown `status=available` snapshot, and a 429 with `status=allowed`
+  was admitted. Admission is now fail-closed for both paths
+  (`_admit_quota_snapshot`): the core (overall status + both windows'
+  utilization and reset) must parse, and 429 additionally requires
+  `status=rejected`; auxiliary fields (overage status/reason, claim) stay
+  None when malformed. The test helper's falsy-`{}` header bug is fixed,
+  and the 2xx/429/malformed nodes gained the fail-closed subcases
+  (core-malformed -> `quota_headers_unavailable`, never zero).
+- **F3 (client leak):** the Anthropic client is now closed in a `finally`
+  on every path (success, `sdk_incompatible`, all typed failures); close
+  witnesses were added to the request-shape, `sdk_incompatible`, and
+  dispatch nodes.
+
+Post-fix verification: adapter+subscription `30 passed`, focused 4-file
+`82 passed`, collection unchanged at `4,303/52b862d7...`, network guard
+`12 passed` under socket-connect denial, protected blobs `18/18`, updated
+packet manifest `639b70bfa1651728799446f7ae0c93b5d4d999d7fd3f1b78a99d66d128ac9ef8`.
