@@ -1,6 +1,6 @@
 # OAuth Usage Recovery and Sticky Inset Evidence
 
-> **Status:** TASK 3 COMPLETE - INDEPENDENT CODEX REVIEW REQUIRED
+> **Status:** TASK 4 COMPLETE - FABLE IMPLEMENTATION REVIEW REQUIRED
 >
 > **Date:** 2026-08-10
 >
@@ -11,10 +11,15 @@
 >
 > **Task 0 artifact root:** `/tmp/oauth-usage-sticky-impl-task0-953ea7e7`
 >
-> **Implementer:** Fable (design LD 11); reviewer: Codex.
+> **Task 4 artifact root:** `/tmp/oauth-usage-sticky-impl-task4-7857dd6f`
+>
+> **Implementers:** Fable through the Task 3 recovery commits; Codex for the
+> Task 3 ownership refactor and Task 4. Fable is the reviewer of record for
+> those role-swapped product commits.
 
-Task 0 changed no product or test byte. Tasks 1-7 remain unstarted and
-unauthorized until this re-grounding receives independent GREEN review.
+At the Task 0 handoff, no product or test byte had changed and Tasks 1-7
+were still unstarted and unauthorized pending independent GREEN review.
+That is a dated Task 0 boundary statement, not the current line status.
 
 ## 1. Boundary and toolchain
 
@@ -332,11 +337,12 @@ Post-fix: owned file `26 passed`, focused `41 passed`, collection
 `1132/0cd20954...` unchanged, typecheck exit 0, packet manifest `d1cb7c007a198a9205895ce68f4e2348f9fe7de5fa3412a997fceb6c20285672`.
 Codex independently reproduced the single-command full run `1,132/1,132`.
 
-### 8.4 Task 3 ownership refactor (product commit `380021b5`; review pending)
+### 8.4 Task 3 ownership refactor (product commit `380021b5`; Fable-reviewed GREEN)
 
 The §0.1.2 role swap is now exercised: Fable authored and re-pinned the
 ownership amendment through `d96a87f2`; Codex implemented the product/test
-change; Fable is the reviewer of record. Task 4 remains paused.
+change; Fable independently reviewed the raw packet and returned GREEN with
+zero findings. The user accepted that review and authorized Task 4.
 
 RED was replayed from detached `d96a87f2` with only the new 12-node test
 file present. Collection was exactly `1,144/c9deb227...`; all twelve nodes
@@ -385,3 +391,50 @@ runs are supporting evidence, not a claim of a clean full command.
 Review packet:
 `/tmp/oauth-usage-sticky-impl-task3-refactor-d96a87f2` (25 payloads,
 `SHA256SUMS` `2d5b271159edbd8b20a246cf70cf879d35a21d49d0105a3ec5ed0709e6833b4a`).
+
+## 9. Task 4 - Settings sticky inset (product commit `99ca5441`)
+
+The docs-only split-ownership amendment landed at `5140d96b`; its priority
+map ordering fix landed at `7857dd6f`. Codex focused review found the final
+authority coherent: `settings.css` owns the zero scroll-owner top inset
+and 20px desktop lede pad, while the existing 760px media block in `styles.css`
+owns the one higher-specificity 12px declaration.
+
+RED added exactly the two §2.3 CSS nodes. Collection immediately matched the
+planned final identity (`100 files / 1,146 / 4ed7874404b462846ffc51ddd7798633a77fb1a12f46ce4b5f45ae4913d54145`),
+and runtime was `5 passed / 2 failed`: both new nodes failed on the absent
+inset transfer. Product commit `99ca5441` then wrapped the PageHeader in the
+lede, moved the top inset off `.main.settings-workspace`, and added the
+single responsive declaration in the existing media block.
+
+The first post-product owner run is retained as rejected evidence. The old
+test helper searched selector substrings, so `.settings-workspace` matched
+the newly added `.main.settings-workspace` rule and two assertions read the
+wrong body. The helper was tightened to an indented line-start exact
+selector match; no product CSS or node ID changed. The admitted owner run
+was `7/7`, and collection stayed byte-identical.
+
+Final gates:
+
+```text
+frontend collection:  100 files / 1,146 / 4ed7874404b46284...
+focused identity:     55 / df92b0c026fab6ce...
+focused runtime:      55 passed / 0 failed
+typecheck:            exit 0
+i18n scanner:         36 / 20 / 0 / 20, exit 0
+protected boundary:  17/17 byte-identical; api.ts unchanged since 380021b5
+backend/Python delta: empty
+```
+
+The reviewed fixture-only browser harness ran at `1322x777` and `390x844`.
+Initial computed and visual lede inset was exactly `20px` and `12px`; after
+`scrollTop=1200`, workflow-row top minus Settings scrollport top was `0px`
+at both viewports. There was no page/main overflow, overlap, clipping,
+console error, page error, or provider POST. Request ledgers were 51 GETs
+desktop and 37 GETs mobile. Original-resolution screenshots were inspected.
+
+Review packet: `/tmp/oauth-usage-sticky-impl-task4-7857dd6f` (35 payloads,
+`SHA256SUMS` `b0c7a1f9e49ba015d380b5bd4d7c37d7f0a4d5b3b0394307fcfcc3c3f4136e73`).
+Task 4 intentionally ran the plan-owned focused gate; Task 5 owns the full
+frontend runtime, mutations, build, native admission, and final browser
+matrix and remains unstarted pending Fable review.
