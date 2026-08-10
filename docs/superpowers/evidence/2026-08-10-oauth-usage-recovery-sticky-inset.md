@@ -185,3 +185,22 @@ Post-fix verification: adapter+subscription `30 passed`, focused 4-file
 `82 passed`, collection unchanged at `4,303/52b862d7...`, network guard
 `12 passed` under socket-connect denial, protected blobs `18/18`, updated
 packet manifest `639b70bfa1651728799446f7ae0c93b5d4d999d7fd3f1b78a99d66d128ac9ef8`.
+
+### 7.2 Re-review findings fixed (commit `2dde7790`)
+
+- **Receipt time is now receipt time:** the UTC stamp moved from
+  pre-request to inside `_observation`, i.e. only after the unified headers
+  were received and admitted; the real-adapter dispatch node now asserts the
+  stored `observed_at` lies within the sync-call boundary (seconds grain,
+  matching `timespec="seconds"`).
+- **Admission relaxed to the authority contract:** fail-closed applies only
+  to the unified authority (overall `-status` present/valid; 429 must say
+  `rejected`). Individual window utilization/reset fields are nullable again
+  (absent/malformed -> None, never zero, observation retained), matching
+  plan §1.2 and design LD 7. The 2xx node now proves a partial-window
+  response records an observation with the missing leg unknown, and the
+  malformed node splits window-malformed (nulled) from authority-malformed
+  (`quota_headers_unavailable`).
+
+Post-fix: focused 4-file `82 passed`, network guard green, collection
+`4,303/52b862d7...` unchanged, protected `18/18`, packet manifest `343c2d37fdd704ab1fcdd1ea8efeffecf2a47037e8725c9abca85c4223642024`.
