@@ -1,6 +1,6 @@
 # OAuth Usage Recovery and Sticky Inset Evidence
 
-> **Status:** TASK 2 COMPLETE - INDEPENDENT CODEX REVIEW REQUIRED
+> **Status:** TASK 3 COMPLETE - INDEPENDENT CODEX REVIEW REQUIRED
 >
 > **Date:** 2026-08-10
 >
@@ -220,3 +220,44 @@ The packet now carries `owned-current.sha256` for the current owner bytes
 
 Post-fix: focused `82 passed`, collection `4,303/52b862d7...`, protected
 `18/18`.
+
+## 8. Task 3 - frontend recovery split, manual-only sync (product commit `b757d347`)
+
+RED at re-derived stage-3 `1132/0cd20954...` (`red-collection.nodes`): the
+section 2.3a rename and the eight recovery nodes landed in one commit-shaped
+change; all nine failed on the missing contracts (`red-run.txt`), with node
+4 discriminated via a null-snapshot decoded failure (the old copy claimed a
+retained observation that did not exist). 17 existing nodes stayed green.
+
+Implementation per §1.3 and the §0.1.1 manual-only ruling:
+three-channel account state (`cachedRead` / `syncSend` / decoded view), one
+bounded 1,000 ms cached-read retry per credential generation (unmount and
+credential change cancel; witnessed by the retry/unmount node), a
+provider-free **Retry local read** action, manual sync buttons for BOTH
+OAuth providers (Claude copy discloses cost), the visible/focus automatic
+sync effects REMOVED (focus now revalidates only the local cached read
+through the five-minute cache policy), source-aware 5h/7d window labels and
+`來源：anthropic_oauth_probe` rendering, LD 9-truthful copies (no
+"retained observation" claim without a snapshot), the one authorized
+`api.ts` union line (verified as exactly one +/- pair), and eight bilingual
+`providers.accountUsage.*` keys. The §2.3b inventory owners were updated
+exactly as amended: current counts `741`/`1825`, frozen baseline numbers
+untouched, the eight paths joined `postSliceSettingsPaths`, and
+`currentSliceDelta` became a per-subtree prefix count. An accidental
+rewording of the existing en `syncFailed` copy was caught and reverted
+before commit (`green-i18n-provider.txt` covers the re-run).
+
+GREEN evidence (packet `/tmp/oauth-usage-sticky-impl-task3-0cdfb813`,
+manifest `942503b10bab0e2d4a566d3893162d29b923c9a9ecade7c2e485562e400989e4`):
+
+```text
+owned file:            26 passed (17 existing + 9 new-behavior)
+focused (3 files):     41 passed / exit 0
+full frontend:         99 files / 1,132 passed / exit 0
+full collection:       1,132 / 0cd20954... (== stage 3)
+typecheck / scanner:   exit 0 / 36-20-0-20 exit 0
+protected blobs:       17/17 identical + api.ts exactly the authorized hunk
+worktree delta:        exactly the six owned paths
+```
+
+Task 4 (sticky inset, `+2`) awaits independent Task 3 review.
