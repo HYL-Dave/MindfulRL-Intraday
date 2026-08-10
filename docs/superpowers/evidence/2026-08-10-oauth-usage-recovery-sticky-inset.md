@@ -1,6 +1,6 @@
 # OAuth Usage Recovery and Sticky Inset Evidence
 
-> **Status:** TASK 1 COMPLETE - INDEPENDENT CODEX REVIEW REQUIRED
+> **Status:** TASK 2 COMPLETE - INDEPENDENT CODEX REVIEW REQUIRED
 >
 > **Date:** 2026-08-10
 >
@@ -107,3 +107,50 @@ worktree delta:    exactly the two owned paths
 
 Task 2 (Anthropic adapter + dispatch, `+14`) awaits independent Task 1
 review.
+
+## 7. Task 2 - Anthropic adapter and dispatch (product commit `ec51bd93`)
+
+RED at stage-2 identity `4303/52b862d7...` (packet `red-collection.nodes`):
+the twelve new-file nodes failed on module absence inside test bodies
+(collection stayed intact), and both dispatch nodes failed on the missing
+`anthropic_adapter` service surface (`red-anthropic.txt`,
+`red-dispatch.txt`).
+
+Implementation per plan §1.2: new `src/auth_drivers/anthropic_account_usage.py`
+(pinned probe shape `claude-sonnet-5` / `max_tokens=8` / OAuth beta
+`oauth-2025-04-20` / identity block / one fixed message; injectable client
+factory; default factory `Anthropic(auth_token=..., api_key=None,
+timeout=20.0, max_retries=0)`); unified-header parsing with typed validators
+(utilization finite `[0,1]` -> `round(x*100, 4)` used-percent, absolute Unix
+resets, closed status values, bounded reason/claim patterns,
+`fallback-percentage` ignored); closed error vocabulary
+(`missing_token`, `sdk_incompatible`, `provider_auth_rejected`,
+`provider_access_rejected`, `quota_headers_unavailable`,
+`provider_request_rejected`, `timeout`, `transport_error`,
+`adapter_unavailable`); 429-with-valid-headers is an observation, 429
+without them is `quota_headers_unavailable`. `oauth_status.py`'s source
+`Literal` gained exactly `anthropic_oauth_probe`; `OAuthAccountSyncService`
+gained `anthropic_adapter` and explicit provider/auth-mode dispatch under the
+same lock/single-flight/generation flow; every other pair remains
+`unsupported_auth_mode`. The declared section 2.4 backend evolution replaced
+the dispatched `claude_code_oauth` unsupported-example with `api_key`
+(`subscription-tests.diff`).
+
+GREEN evidence (packet `/tmp/oauth-usage-sticky-impl-task2-c04f58d0`,
+manifest `891b4a2e718fc221d13d613cb8b46297fc86336ff3e6dda07f37383e71669b6f`):
+
+```text
+adapter file:        12 passed
+subscription file:   18 passed (16 + 2 dispatch, incl. the evolved node)
+focused (4 files):   82 passed / exit 0
+full collection:     4,303 / 52b862d7... (== stage 2)
+network guard:       12 passed with socket.connect denied (zero provider use)
+protected blobs:     18/18 identical
+worktree delta:      exactly the five owned paths
+```
+
+One implementation note: raw `utilization * 100` produced
+`14.000000000000002` for `0.14`; the adapter rounds the stored used-percent
+to four decimals so persisted truth matches header precision.
+
+Task 3 (frontend recovery split, `+8`) awaits independent Task 2 review.
