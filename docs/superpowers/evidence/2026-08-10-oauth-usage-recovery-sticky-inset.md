@@ -261,3 +261,37 @@ worktree delta:        exactly the six owned paths
 ```
 
 Task 4 (sticky inset, `+2`) awaits independent Task 3 review.
+
+### 8.1 Task 3 review findings fixed (commit `d679d95c`)
+
+Codex review returned RED with three findings; all confirmed and fixed:
+
+- **F1 (channel overwrite):** the decoded backend error now lives in its own
+  `backendSyncError` field. A successful cached GET no longer clears it, and
+  a decoded failure retains the prior snapshot per LD 9 — with exactly one
+  typed exception, `credential_changed_during_sync`, which clears the stale
+  observation because it belongs to a dead credential identity. Covered by
+  the three-phase evolution of `decoded backend sync failure shows its
+  stable backend code`.
+- **F2 (deferred-GET race):** a manual sync success now calls
+  `invalidateCredentialAccount` BEFORE `replace`, flipping the cache
+  generation so an older in-flight GET completes as discarded and cannot
+  roll the display back. Covered by the deferred-GET race phase added to
+  `does not sync stale ChatGPT usage without an explicit manual click`
+  (both nodes share a Date.now spy so the ten-second cooldown and the
+  five-minute freshness advance together).
+- **F3 (evidence honesty):** the earlier section 8 text omitted a rejected
+  GREEN attempt. For the record: `green-run1.txt` (retained in the packet)
+  failed `cached read failure with snapshot keeps observation and its
+  observed_at` because the first test design re-mounted with a fresh
+  default cache and lost the retained view; the node was redesigned around
+  an injectable cache clock plus focus-driven revalidation before the
+  admitted GREEN. That transcript is rejected evidence, not a pass.
+
+Wording correction (review advisory): the bounded cached-read retry is one
+retry per CONSECUTIVE-FAILURE EPISODE — a successful read re-arms it — not
+one per credential generation as section 8 previously said.
+
+Post-fix: owned file `26 passed`, focused `41 passed`, full frontend
+`1,132 passed`, collection `1132/0cd20954...` unchanged, typecheck exit 0,
+packet manifest `672333d2979348e4cccac80714860a59a90135858c8f7da22fdec0e85e97ef51`.
