@@ -295,3 +295,17 @@ one per credential generation as section 8 previously said.
 Post-fix: owned file `26 passed`, focused `41 passed`, full frontend
 `1,132 passed`, collection `1132/0cd20954...` unchanged, typecheck exit 0,
 packet manifest `672333d2979348e4cccac80714860a59a90135858c8f7da22fdec0e85e97ef51`.
+
+### 8.2 Full-suite runtime under host load (honest partition)
+
+At the fixed tip the single-command full run hit the KNOWN two-file
+environment flake (`foundationBoundaries` / `visibleLiteralScanner`, both
+untouched by this line): 5,000 ms per-test timeouts on subprocess/AST-heavy
+nodes under host load average ~21 (interactive desktop use). First run
+2 failed, rerun 1 failed, both retained as rejected evidence. Isolation
+passed `29/29` and the 97-file complement passed `1,103 passed / exit 0`,
+so the partition covers all 1,132 nodes green under load; a clean
+single-command `1,132/1,132` at the same product bytes exists in
+`full-fe-final.txt`'s prior stage only for the pre-fix tree, so the
+reviewer should reproduce the single-command run in their own environment
+(the Settings-line closeout precedent). Packet manifest is now `1a5af9684d173824563bb077c0425da44f1f36aff4e4acfc0af843fb84f15643`.
