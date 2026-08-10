@@ -1,6 +1,6 @@
 # OAuth Usage Recovery and Sticky Inset Evidence
 
-> **Status:** TASK 4 COMPLETE - FABLE IMPLEMENTATION REVIEW REQUIRED
+> **Status:** TASK 4 FABLE-GREEN; TASK 5 PAUSED AT MU5 OWNER GAP - AMENDMENT REVIEW REQUIRED
 >
 > **Date:** 2026-08-10
 >
@@ -12,6 +12,8 @@
 > **Task 0 artifact root:** `/tmp/oauth-usage-sticky-impl-task0-953ea7e7`
 >
 > **Task 4 artifact root:** `/tmp/oauth-usage-sticky-impl-task4-7857dd6f`
+>
+> **Task 5 partial artifact root:** `/tmp/oauth-usage-sticky-impl-task5-4fbf3087`
 >
 > **Implementers:** Fable through the Task 3 recovery commits; Codex for the
 > Task 3 ownership refactor and Task 4. Fable is the reviewer of record for
@@ -438,3 +440,32 @@ Review packet: `/tmp/oauth-usage-sticky-impl-task4-7857dd6f` (35 payloads,
 Task 4 intentionally ran the plan-owned focused gate; Task 5 owns the full
 frontend runtime, mutations, build, native admission, and final browser
 matrix and remains unstarted pending Fable review.
+
+Fable independently reconstructed the Task 4 collection/focused identities,
+bounded CSS deltas, RED, protected boundary, browser geometry, request
+ledger, and screenshots and returned GREEN with zero findings. That review
+authorized Task 5.
+
+## 10. Task 5 partial admission - MU5 owner gap
+
+The final identities were re-collected at docs tip `4fbf3087` before any
+mutation and all matched: backend `4303/52b862d7...`, frontend
+`1146/4ed78744...`, backend focused `82/1c8c9de1...`, frontend focused
+`55/df92b0c0...`, and Settings 15-file projection `231/ac2319b0...`.
+
+MU1-MU4 each produced the required owner RED and exact whole-file restore.
+MU2 also retained one rejected candidate: a context-insufficient inverse hit
+the empty-token branch rather than the missing-PATH-interpreter seam, so the
+named owner stayed GREEN; only the second live-seam diff was admitted.
+
+MU5 stopped the run. A temporary product mutation issued
+`claude-sonnet-5` and then `claude-opus-5` after HTTP 400. The direct raw
+witness recorded `request_count=2`, yet the plan's one-request node and the
+4xx typed-outcome node both passed. The mutation was rejected, the product
+file restored byte-exactly, and MU6 plus all later gates remained unstarted.
+This is a mutation-owner gap, not a product failure.
+
+The bounded amendment adds a rejection subcase to the existing one-request
+node without changing its ID or any pinned identity. Partial packet: 34
+payloads; `PARTIAL_SHA256SUMS`
+`fd7d0fdd574d3f69b71aae11d2fdf411c7568fc23e83d115fd061a4bf288e146`.
