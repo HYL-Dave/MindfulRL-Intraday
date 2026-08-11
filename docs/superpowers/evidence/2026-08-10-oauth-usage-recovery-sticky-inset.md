@@ -1,6 +1,7 @@
 # OAuth Usage Recovery and Sticky Inset Evidence
 
-> **Status:** TASK 6 MERGED AND EXACT-MASTER VERIFIED AT `fdb81913`; CLOSEOUT REVIEW PENDING
+> **Status:** TASK 6 CLOSEOUT AT `a8f91bf8` FABLE-REVIEWED GREEN;
+> IMPLEMENTATION/CUTOVER LINE CLOSED; TASK 7 NOT RUN AND USER-GATED
 >
 > **Date:** 2026-08-10
 >
@@ -646,6 +647,20 @@ temporary profiles, and port 8465 were removed; `master` is clean. Packet
 `/tmp/oauth-usage-sticky-task6-merged-fdb81913` contains 44 payloads;
 `TASK6_SHA256SUMS` SHA-256 is
 `85f3b52f27f8e6560449c4612ce1340dbdd58406abd966fd171b42678c739e2c`,
-and all rows verify. Independent closeout review is the only next gate.
-Task 7's one `max_tokens=8` Anthropic request remains unexecuted and requires
-the user's explicit authorization in chat.
+and all rows verify.
+
+## 15. Independent closeout review
+
+Fable independently verified the linear `8cf85597 -> fdb81913` fast-forward,
+the docs-only `a8f91bf8` closeout, and product-byte equality with reviewed tip
+`ca61992b`. The merged native report is byte-identical to the independent
+control (`307333f697a96ec0a392c3e91a56781552724a3395bd930039cd73853433936f`),
+and the four pinned streams, focused/runtime gates, browser contract, and all
+44 packet payloads independently reproduced. The benign browser scheduling
+difference remained GET-only and did not alter the canonical contract.
+
+Closeout verdict: GREEN. The canonical baseline is backend `4303` collected
+with native `4274 passed / 29 skipped / 0 failed`, frontend `100 files / 1146`,
+and Settings projection `231`. The implementation/cutover line is closed.
+Task 7 remains unexecuted and requires a separate explicit user authorization;
+no Anthropic request was made during closeout.
