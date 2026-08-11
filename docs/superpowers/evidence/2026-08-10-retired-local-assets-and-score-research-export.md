@@ -2,7 +2,7 @@
 
 > **Status:** EXECUTED 2026-08-10
 > **Product base:** `8cf85597d866c6d9cd0b75c75a24f86d73ca65a1`
-> **Tracked prevention commit:** `b4b12f84b99d895e6aab433fb62255b910d9c77c`
+> **Tracked prevention commit:** `341e66733aa1f4971384186336b73c0ea4a3e45b`
 > **Authority:** explicit user approval to delete the retired local assets,
 > preserve the frozen score dataset in a private research database, validate
 > it, and remove the score table from the product database.
@@ -11,7 +11,7 @@
 
 The Finnhub and Polygon collector CLIs retained cwd-relative `FileHandler`
 instances after their root logs had otherwise become ownerless. Commit
-`b4b12f84` removes those two file handlers while preserving console logging,
+`341e6673` removes those two file handlers while preserving console logging,
 provider collection, and scheduler behavior. The existing import-safety owner
 now also asserts that CLI setup contains exactly one `logging.StreamHandler`
 and no `logging.FileHandler`.
@@ -24,10 +24,9 @@ Verification:
 - `src/collectors/` contains no `collect_finnhub_news.log`,
   `collect_polygon_news.log`, or `logging.FileHandler` reference.
 
-This tracked change remains on the isolated
-`codex/retired-assets-research-cleanup` branch until the active OAuth repair
-line closes. That preserves the OAuth line's reviewed product base. It must be
-rebased and merged before the two CLI changes are considered live on `master`.
+After the OAuth repair line closed, this tracked change was rebased onto its
+reviewed `master` tip and included in the same fast-forward cleanup cutover as
+this evidence. The two CLI changes are live with that cutover.
 
 ## 2. Exact local deletion
 
@@ -132,6 +131,9 @@ Retained row counts inside the transaction were unchanged:
 | `prices` | 2,425,998 |
 | `financial_cache` | 43 |
 | `market_sync_meta` | 2 |
+
+`news_score_migration_runs` retains one row as a historical witness. Physical
+retirement remains subject to a separately reviewed future database slice.
 
 Focused retirement/schema tests returned `30 passed`. The desktop, Vite,
 Electron, and Python sidecar restarted successfully; `/healthz` returned HTTP
