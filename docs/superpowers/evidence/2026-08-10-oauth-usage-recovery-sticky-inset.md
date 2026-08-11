@@ -1,6 +1,6 @@
 # OAuth Usage Recovery and Sticky Inset Evidence
 
-> **Status:** TASK 4 FABLE-GREEN; MU5 OWNER CLOSED; TASK 5 PAUSED AT MU6 OWNER OVERCLAIM - AMENDMENT REVIEW REQUIRED
+> **Status:** TASK 5 COMPLETE AT `ca61992b`; IMPLEMENTATION REVIEW PENDING
 >
 > **Date:** 2026-08-10
 >
@@ -17,9 +17,11 @@
 >
 > **Task 5 continuation artifact root:** `/tmp/oauth-usage-sticky-impl-task5-a16d1b70`
 >
+> **Task 5 final packet:** `/tmp/oauth-usage-sticky-impl-task5-final2-ca61992b`
+>
 > **Implementers:** Fable through the Task 3 recovery commits; Codex for the
-> Task 3 ownership refactor and Task 4. Fable is the reviewer of record for
-> those role-swapped product commits.
+> Task 3 ownership refactor, Task 4, and the Task 5 final fix/admission.
+> Fable is the reviewer of record for those role-swapped product commits.
 
 At the Task 0 handoff, no product or test byte had changed and Tasks 1-7
 were still unstarted and unauthorized pending independent GREEN review.
@@ -494,3 +496,100 @@ The restored CSS owner file then passed `7/7`. No later admission gate ran.
 Continuation packet: 12 payloads;
 `PARTIAL2_SHA256SUMS`
 `8b4ee1a7007780cb205901ec428ec71eca420b5e96c309f405d88e1c4b86666a`.
+
+## 12. Host-live stops, bounded diagnostic, and complete-history fix
+
+The first host-live ChatGPT acceptance proved the NVM launcher repair but
+stopped before account reads because the strict adapter rejected the pinned
+CLI's schema-declared `remoteControl/status/changed` notification. The
+reviewed §1.5 amendment added exactly that allowlist member; product/test
+commit `bd32b7fe` replayed the notification with a non-leak sentinel and
+preserved backend collection `4303/52b862d7...` and focused `82/82`.
+
+The one authorized rerun passed that seam and then stopped later as
+`protocol_incompatible`. No guess-based validator edit followed. A single
+shape-only runtime diagnostic, reviewed under packet manifest
+`ea2deea2d8e5925f8f244c144675a21851fb7072d33192042a63e949c3760962`,
+recorded only method names, id-presence booleans, field names, JSON types,
+and array lengths. Independent leak review was clean; production row
+projections and cleanup boundaries were unchanged. It found one exact root
+cause: real `account/usage/read` returned 246 valid
+`{startDate: string, tokens: number}` rows, while the adapter imposed a
+31-row fixed cap.
+
+The user ruled full retention. Amendment `7ada5826` authorized only deleting
+the dead constant and removing the list-length clause; list type, every
+row's date/token validation, and the 256 KiB transport cap remain. RED on
+the faithful 246-row fixture was exactly `protocol_incompatible` at the old
+guard. Product/test commit `ca61992b` removed that assumption and strengthened
+the existing session owner to assert the complete date and token sequences
+plus first/last row integrity. The owner, focused `82/82`, and collection
+`4303/52b862d7...` then passed. No Anthropic request occurred.
+
+## 13. Task 5 final admission
+
+### 13.1 Host-live ChatGPT acceptance
+
+One normal, non-instrumented host-live POST ran through a temporary localhost
+sidecar, isolated `CODEX_HOME`, read-only production snapshot, and the real
+NVM Codex launcher. It succeeded with source `codex_app_server`, retained and
+persisted all 246 daily rows in the isolated snapshot, and returned a primary
+rate-limit observation. `llm_credentials` stayed 7 rows and
+`oauth_account_snapshot` stayed 2 rows with byte-identical row-projection
+hashes before/after. Adapter descendants, temporary homes, and the port all
+returned to zero; no token or raw account identity entered an artifact. This
+was exactly one authorized POST and was not rerun.
+
+### 13.2 Browser and frontend admission
+
+The reviewed fixture-only browser harness passed at `1322x777` and
+`390x844`. At each viewport the initial lede inset was exactly `20px`/`12px`,
+deep-scroll tabs top equaled scrollport top, all three workflow labels were
+unclipped, and no overflow, overlap, console error, or page error occurred.
+Each viewport performed three cached GETs and exactly one explicit manual
+sync POST: an invalid cached view rendered the no-observation copy, Retry
+local read recovered to 18%, focus/visibility/idle emitted zero POSTs, and
+the button advanced the view to 19%. The combined request ledger is 112 GETs
+and two manual POSTs. Original-resolution screenshots were inspected.
+
+Three browser attempts are retained as rejected evidence: button focus
+auto-scrolled before the top-geometry assertion; fixture time advanced before
+the inherited immediate-remount assertion; and an HTTP 503 fixture generated
+expected Chrome console noise. The admitted harness respectively reset the
+scroll position, moved stale-focus after remount, and used an HTTP 200
+credential-invalid DTO so product validation — not browser transport noise —
+owned the failure state.
+
+Final frontend evidence is exact:
+
+```text
+collection:          100 files / 1,146 / 4ed7874404b46284...
+focused:             55/55 / df92b0c026fab6ce...
+Settings projection: 231/231 / ac2319b0553545b1...
+full runtime:        100 files / 1,146 passed (single command)
+typecheck/build:     exit 0 / exit 0 (existing >500 kB chunk warning only)
+i18n scanner:        36 / 20 / 0 / 20, exit 0
+```
+
+### 13.3 Native and boundary admission
+
+A fresh detached worktree at exact product tip `ca61992b`, with the pinned
+reporter/wrapper and empty data root, completed `4,303 collected = 4,303
+seen / 4,274 passed / 29 skipped / 0 failed`, exit 0. The reporter's
+collected and seen streams are byte-identical to each other and to the final
+backend stream. The fresh worktree produced only 509 ignored paths; all were
+inventoried, the disposable worktree was removed, and its external runtime
+root was deleted. The implementation worktree remained clean.
+
+All 17 unconditional protected blobs match the grounding base. `api.ts`
+diffs from `8cf85597` in exactly one hunk containing only the authorized
+`anthropic_oauth_probe` union member. `git diff --check` is empty. The Vite
+process and port 8465 are closed.
+
+Final packet `/tmp/oauth-usage-sticky-impl-task5-final2-ca61992b` contains
+153 payloads, including the prior mutation/diagnostic packets, final raw
+streams/transcripts, safe host-live witnesses, browser ledgers/screenshots,
+and cleanup inventories. `TASK5_SHA256SUMS` SHA-256 is
+`11aa165f3962b3ccf7eba8af974629725d7262a8250e985cf626399bc1e44377`;
+all 153 rows verify. Independent implementation review is the only next
+gate. Merge and the user-gated Anthropic live probe remain unauthorized.
