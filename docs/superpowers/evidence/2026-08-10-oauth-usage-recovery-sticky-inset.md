@@ -1,6 +1,6 @@
 # OAuth Usage Recovery and Sticky Inset Evidence
 
-> **Status:** TASK 5 COMPLETE AT `ca61992b`; IMPLEMENTATION REVIEW PENDING
+> **Status:** TASK 6 MERGED AND EXACT-MASTER VERIFIED AT `fdb81913`; CLOSEOUT REVIEW PENDING
 >
 > **Date:** 2026-08-10
 >
@@ -593,3 +593,59 @@ and cleanup inventories. `TASK5_SHA256SUMS` SHA-256 is
 `11aa165f3962b3ccf7eba8af974629725d7262a8250e985cf626399bc1e44377`;
 all 153 rows verify. Independent implementation review is the only next
 gate. Merge and the user-gated Anthropic live probe remain unauthorized.
+
+## 14. Task 6 fast-forward merge and exact-master verification
+
+Fable independently returned Task 5 GREEN after reproducing native
+`4274/29/0` with a byte-identical reporter. `master` then fast-forwarded
+from `8cf85597` to `fdb81913` through 50 linear commits; the range contains
+zero merge commit, `origin/master` remained at `6159fc14`, and no push ran.
+
+Two fresh detached exact-master worktrees separated frontend/browser work
+from native admission. The merged gates reproduced:
+
+```text
+backend collection:   4,303 / 52b862d7bf94f9d4...
+backend focused:      82/82
+frontend collection:  100 files / 1,146 / 4ed7874404b46284...
+frontend focused:     55/55
+Settings projection:  231/231
+frontend full:        1,146/1,146 (single admitted command)
+typecheck/build:      exit 0 / exit 0 (existing chunk warning only)
+i18n scanner:         36 / 20 / 0 / 20, exit 0
+native:               4,303 seen / 4,274 passed / 29 skipped / 0 failed
+```
+
+The first merged full-Vitest attempt is rejected evidence: only the
+unchanged `visibleLiteralScanner` subprocess owner exceeded its fixed
+five-second test timeout (`1145P/1F`). Its isolated control passed `18/18`,
+and the next unchanged full command passed `1146/1146`; no timeout or test
+setting changed.
+
+The merged native report SHA-256 is
+`307333f697a96ec0a392c3e91a56781552724a3395bd930039cd73853433936f`,
+byte-identical to both Task 5 and Fable's independent control. Browser
+request ledger, fixture payload, both original-resolution screenshots, and
+all asserted behavior/geometry are byte-identical to Task 5: 112 GETs, two
+explicit manual POSTs, zero automatic POSTs, zero errors, 20/12px lede
+insets, and exact sticky alignment.
+
+Raw browser results are not claimed byte-identical. They differ in exactly
+three hunks: two artifact-root screenshot paths and the desktop account GET
+count sampled immediately after initial idle work (`2` on Task 5, `1` on
+merged). The harness subsequently waits for the bounded retry and both runs
+finish with the same three account GETs and byte-identical final ledger.
+Removing only that pre-wait timing diagnostic and normalizing screenshot
+basenames gives contract projection SHA-256
+`4a89d6f38b6dff4d0259a6633575df345eb9691730dd71f68c5116b4f27f5bd0`
+on both sides.
+
+All 17 protected blobs and the single authorized `api.ts` hunk remain
+exact. Both disposable worktrees, the native runtime root, Vite, Chrome,
+temporary profiles, and port 8465 were removed; `master` is clean. Packet
+`/tmp/oauth-usage-sticky-task6-merged-fdb81913` contains 44 payloads;
+`TASK6_SHA256SUMS` SHA-256 is
+`85f3b52f27f8e6560449c4612ce1340dbdd58406abd966fd171b42678c739e2c`,
+and all rows verify. Independent closeout review is the only next gate.
+Task 7's one `max_tokens=8` Anthropic request remains unexecuted and requires
+the user's explicit authorization in chat.
