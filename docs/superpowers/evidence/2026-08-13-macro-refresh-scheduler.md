@@ -1,7 +1,6 @@
 # Macro Refresh and Scheduler Integration Evidence
 
-> **Status:** TASKS 0-2 COMPLETE; TASK 3 STOPPED ON BOUNDED AMENDMENT REVIEW;
-> TASK 6 NOT AUTHORIZED
+> **Status:** TASKS 0-3 COMPLETE; TASK 4 ACTIVE; TASK 6 NOT AUTHORIZED
 >
 > **Date:** 2026-08-13
 >
@@ -204,3 +203,52 @@ It contains the exact RED/GREEN collection streams, current uncommitted owner
 bytes and diff, `104 passed` focused transcript, typecheck/scanner outputs, the
 isolated current-behavior probe, and their raw transcripts. No provider request
 or production write occurred.
+
+## 8. Task 3 - Shared Frontend Controller And Attended Busy
+
+Focused review returned GREEN at `80e8498a`. Product/tests commit `9fea8f49`
+extracts one cache-backed schedule hook and table without changing the Data
+Sources registry set. The controller rejects stale request sequences, shares
+in-flight reads, prevents duplicate mutations, preserves price/news/SEC cache
+mappings, and classifies future macro sources from `write_target`. Successful
+FRED-series terminal revisions invalidate `macro_status` plus
+`macro_snapshot`; the other four macro sources invalidate `macro_status` only.
+Failed, skipped, or busy macro outcomes preserve stored-data keys.
+
+The fast-terminal owner proves that a manual run which reaches a newer
+successful terminal revision before any observed `running` frame still
+invalidates the exact macro keys. It also holds an older GET across the manual
+mutation and proves the cache generation discards that stale completion. A
+hard mutation ref prevents rapid duplicate POSTs.
+
+The attended writer-busy correction is trigger-scoped. `scheduler` contention
+remains a pure defer before attempt/result/row creation. `api`, `cli`, and
+`manual` contention each produce one failed canonical `fetch_fred_series` row
+and one transient `skipped` result with code/reason `macro_calendar_busy`, with
+zero provider calls and no automatic cadence or durable-state mutation.
+
+Commit-time self-review found that provider configuration work no longer
+reached the extracted controller's busy guard. The strengthened existing Task
+3 node first failed because schedule controls remained enabled, then passed
+after `DataScheduleTable` received the external provider-operation busy state.
+No node ID or staged identity changed.
+
+GREEN admission:
+
+| Gate | Result |
+|---|---|
+| backend full collection | `4,359 / c100ee5de4ad42c490e6048e4b7cf22540e417f579987c676796663608d17afd` |
+| backend focused | `393 / 0dd72ab8e64fa0f8324c441b67ad65a10d886692dc41c0d2d487b403aac6a5d5`; `393 passed` |
+| frontend full collection | `101 files / 1,167 / 461b38278c8125f6995e35a883771789d83df6b641236a02bb44b269e039f9bf` |
+| frontend focused | `104 / 8fd324f07dbb75d53ce3629a94922ff4b50b244fea8ef0bd40777d36d82c327a`; `104 passed` |
+| frontend static gates | typecheck `0`; scanner `37/20/0/20` |
+| protected boundary | `828/828`, zero mismatch |
+| unowned product/test paths | `0` |
+| live provider requests | `0` |
+
+Final Task 3 packet:
+`/tmp/macro-refresh-scheduler-task3-80e8498a`, 23 payloads;
+`SHA256SUMS` SHA-256
+`3f16fe7a1001327bb64718a570cf847e2debe7f3c9750a4246342469d5c7b615`.
+Task 4 proceeds under the batch ruling. Task 6, merge, push, and live-provider
+traffic remain unauthorized.
