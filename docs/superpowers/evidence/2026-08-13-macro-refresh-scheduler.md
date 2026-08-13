@@ -68,5 +68,47 @@ values; abbreviated values here are labels, not admission authority.
 - `SHA256SUMS` SHA-256:
   `2859cfc0f842dcb9063726a33bf43e8fc4d02089bd397fae0ed31c68d1390cef`.
 
-Task 1 may begin RED-first under the batch ruling. Any identity mismatch,
+## 5. Task 1 - Shared Execution And Writer Lock
+
+Product/tests commit: `c689de80` (`feat: serialize macro calendar execution`).
+Artifact packet: `/tmp/macro-refresh-scheduler-task1-861f2305`, 31 payloads,
+manifest SHA-256
+`85c8b6faa16badf3d2b92c4853336c021179575af005938e49c2bb107090b0e6`.
+
+The eight planned nodes were added before product code. Collection was exactly
+`4,349 / 372fe6ab268fabd0d0bbb66dd26f93fb7f684d63ad19885c3d587bfefa50c340`;
+RED was `8 failed`, all caused by the intentionally absent `execution` or
+`write_lock` module. No collection/import error in an existing module was
+accepted.
+
+The implementation moves all six provider/date/parameter formulas to
+`src/macro_calendar/execution.py`, which has no telemetry dependency. Direct
+`run_job()` and scheduled `run_source()` each create and finish exactly one
+canonical `fetch_*` row. A scheduler-held lease is same-process,
+same-thread, active, and single-use; the dispatcher rejects missing authority,
+foreign, released, or reused leases rather than reacquiring the non-reentrant
+lock.
+
+`src/macro_calendar/write_lock.py` requires both a process-local lock and POSIX
+`flock`, rejects symlink/non-regular lock files, fails closed when `fcntl` or
+the lock path is unavailable, uses one bounded deadline, and releases the file
+descriptor and thread lock on every tested terminal path. A real two-process
+test proves mutual exclusion and later reacquisition. The fd witness covers
+success, body failure, symlink rejection, and missing-`fcntl` rejection.
+
+GREEN admission:
+
+| Gate | Result |
+|---|---|
+| eight new owners | `8 passed` |
+| backend focused | `383 / de8eb8c4e4549deb7a7b66e9a2dd6e51049106f9a76a8ddd4287c98f4050eeb0`; `383 passed` |
+| backend full collection | `4,349 / 372fe6ab268fabd0d0bbb66dd26f93fb7f684d63ad19885c3d587bfefa50c340` |
+| protected Task 0 boundary | `828/828`, zero mismatch |
+
+The first protected-tree command was rejected because `git hash-object`
+invoked the unavailable git-crypt clean filter in the locked worktree. Its raw
+error is retained; the admitted check uses `git hash-object --no-filters` and
+compares raw worktree bytes against all 828 Task 0 blobs.
+
+Task 2 may begin RED-first under the batch ruling. Any identity mismatch,
 unowned collateral, or other plan stop condition ends the batch immediately.
