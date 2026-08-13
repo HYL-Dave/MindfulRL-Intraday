@@ -1,6 +1,6 @@
 # Macro Refresh and Scheduler Integration Evidence
 
-> **Status:** TASKS 0-2 COMPLETE; TASK 3 ACTIVE UNDER BATCH AUTHORIZATION;
+> **Status:** TASKS 0-2 COMPLETE; TASK 3 STOPPED ON BOUNDED AMENDMENT REVIEW;
 > TASK 6 NOT AUTHORIZED
 >
 > **Date:** 2026-08-13
@@ -161,3 +161,46 @@ GREEN admission:
 
 Task 3 may begin under the batch ruling. Task 6, merge, push, and live-provider
 traffic remain unauthorized.
+
+## 7. Task 3 Stop - Attended Macro Busy Visibility
+
+Task 3 reached its exact RED/GREEN collection identity and the focused owners
+while product changes were still uncommitted. Admission review then found two
+race boundaries.
+
+The frontend manual-run owner first proved that a short macro run can complete
+before the first poll observes `running`. The old completion detector required
+`running -> terminal`, so that valid success left `macro_status` and
+`macro_snapshot` retained. The strengthened existing node failed on both keys;
+the bounded correction compares the authoritative terminal revision, including
+attempt/result/durable timestamps, and now passes without changing its node ID.
+
+More importantly, an isolated no-provider probe at
+`/tmp/macro_manual_busy_probe.py` proved that
+`run_source("fred_series", trigger_source="api")` returns
+`{status: "deferred", reason: "macro_calendar_busy"}` while leaving
+`_LAST_RESULT`, scheduler state, and telemetry empty whenever another macro
+writer owns the gate. That behavior is correct for automatic scheduler work
+but violates the approved design for explicit manual/API actions: the POST has
+already returned `started`, so the UI receives no later busy truth at all.
+
+The amendment keeps automatic `scheduler` deferral byte-for-semantics. For an
+attended `api`, `cli`, or `manual` trigger only, the same busy boundary must
+create one failed canonical `fetch_*` telemetry row, publish one transient
+`skipped` result with stable `macro_calendar_busy` code/reason, perform zero
+provider work, and leave `_LAST_ATTEMPT` plus durable scheduler state unchanged.
+The existing lock-busy backend owner and existing frontend manual/failure owners
+are strengthened in place; collection counts and all pinned stream hashes stay
+unchanged.
+
+Per stop condition 2, no further product edit, Task 3 commit, Task 4 work, or
+Task 5 admission is authorized until focused review returns GREEN.
+
+Partial review packet:
+`/tmp/macro-refresh-scheduler-task3-stop-b010dfb7`, 12 payloads;
+`SHA256SUMS` SHA-256
+`c27a2fde406d90089f1e4deae9a45ce8c751341dbee2322f51e637f8306bf68c`.
+It contains the exact RED/GREEN collection streams, current uncommitted owner
+bytes and diff, `104 passed` focused transcript, typecheck/scanner outputs, the
+isolated current-behavior probe, and their raw transcripts. No provider request
+or production write occurred.
