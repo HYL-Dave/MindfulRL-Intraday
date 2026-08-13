@@ -1,6 +1,6 @@
 # Macro Refresh and Scheduler Integration Evidence
 
-> **Status:** TASKS 0-3 COMPLETE; TASK 4 ACTIVE; TASK 6 NOT AUTHORIZED
+> **Status:** TASKS 0-3 COMPLETE; TASK 4 PAUSED ON HEADING-OWNER REVIEW; TASK 6 NOT AUTHORIZED
 >
 > **Date:** 2026-08-13
 >
@@ -252,3 +252,34 @@ Final Task 3 packet:
 `3f16fe7a1001327bb64718a570cf847e2debe7f3c9750a4246342469d5c7b615`.
 Task 4 proceeds under the batch ruling. Task 6, merge, push, and live-provider
 traffic remain unauthorized.
+
+## 9. Task 4 Stop - Snapshot Heading Owner Scope
+
+Task 4 added its reviewed tests first and collected the exact final frontend
+identity, `101 files / 1,172 /
+d40a30d5e50690f79b644e0b25122da02441eb0cf54ab02793d02269419e23cb`.
+The six new Task 4 nodes and the post-PG replacement failed RED for the planned
+missing schedule, copy, and CSS behavior. After the bounded product work, the
+combined owner run passed `37` nodes and failed one existing Macro node.
+
+`renders English Macro Data status snapshot and table headings` previously read
+every `th` in the mounted page. The reviewed schedule table correctly adds five
+headings, so the node now receives ten headings while still expecting the five
+FRED snapshot headings. This is deterministic collateral, not a product defect
+and not permission to weaken the expected FRED headings.
+
+The bounded amendment permits exactly one test-body edit: select
+`.settings-fred-table th` and keep the existing five-value expectation, node ID,
+and all other bytes in that node unchanged. Counts and normalized collection
+streams do not change. Current product/test work remains uncommitted; no live
+provider or production data was touched. Tasks 4-5 remain paused until focused
+review returns GREEN.
+
+Rejected owner report:
+`/tmp/macro-task4-existing-heading-collateral.json`, `14` total / `13` passed /
+`1` failed.
+
+Partial packet:
+`/tmp/macro-refresh-scheduler-task4-stop-2b5690dc`, five payloads;
+`SHA256SUMS` SHA-256
+`827db0b86e2e80d7c02338f6f0328f26b347271332633fda8454fc92cfef9dc3`.
