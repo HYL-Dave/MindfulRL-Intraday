@@ -1,7 +1,7 @@
 # Macro Refresh and Scheduler Integration Evidence
 
-> **Status:** TASK 0 COMPLETE; TASKS 1-5 BATCH-AUTHORIZED; TASK 6 NOT
-> AUTHORIZED
+> **Status:** TASKS 0-2 COMPLETE; TASK 3 ACTIVE UNDER BATCH AUTHORIZATION;
+> TASK 6 NOT AUTHORIZED
 >
 > **Date:** 2026-08-13
 >
@@ -112,3 +112,52 @@ compares raw worktree bytes against all 828 Task 0 blobs.
 
 Task 2 may begin RED-first under the batch ruling. Any identity mismatch,
 unowned collateral, or other plan stop condition ends the batch immediately.
+
+## 6. Task 2 - Registry, Arbitration, And Automation Truth
+
+Product/tests commit: `792f3d9c` (`feat: schedule macro calendar refreshes`).
+Artifact packet: `/tmp/macro-refresh-scheduler-task2-798527b0`, 20 payloads;
+`SHA256SUMS` SHA-256
+`3537047858f85ea463649b840f9047e55328712dcedc2181fefbc2df621eb2e5`.
+
+The ten planned nodes were added before product edits. Collection was exactly
+`4,359 / c100ee5de4ad42c490e6048e4b7cf22540e417f579987c676796663608d17afd`.
+The owner run was `9 failed / 9 passed`: the existing interrupted-runtime
+reconciliation already satisfied its new contract, while the other nine Task
+2 nodes failed only at the planned missing registry, arbitration, snapshot,
+or read-projection boundaries. The already-landed eight Task 1 nodes remained
+GREEN, so this was admitted as the Task 2 RED state rather than misreported as
+ten failures.
+
+The five reviewed sources now use canonical `fetch_*` job identities, default
+disabled intervals, exact provider maps, and `macro_calendar.db` presentation
+metadata. Market and macro writers have independent one-per-tick arbitration.
+A macro writer occupied in this tick, an earlier tick, or another process
+defers the next source before `_LAST_ATTEMPT`, result state, or telemetry row
+creation. Missing provider configuration is checked only after the selected
+source owns the writer lease and one canonical attempt/row exists; it performs
+zero provider work and finishes that row failed. Scheduled FRED series always
+passes `full_refresh=False` outside telemetry payloads.
+
+`/macro/snapshot` no longer publishes `auto_refresh_enabled`. The replacement
+projection opens an existing profile database read-only with `query_only`,
+returns default-disabled truth when the file/table is absent, returns unknown
+for an invalid/non-file store, and reads the exact five settings when present.
+Provider health now derives FRED automation from the two FRED schedule rows,
+including enabled-source count; `macro_calendar_enabled` remains only the
+existing job/agent capability gate. Finnhub health gained no calendar field.
+
+GREEN admission:
+
+| Gate | Result |
+|---|---|
+| all macro integration owners | `18 passed` |
+| backend focused | `393 / 0dd72ab8e64fa0f8324c441b67ad65a10d886692dc41c0d2d487b403aac6a5d5`; `393 passed` |
+| backend full collection | `4,359 / c100ee5de4ad42c490e6048e4b7cf22540e417f579987c676796663608d17afd` |
+| PG-unreachable smoke owners | `13 passed` |
+| protected Task 0 boundary | `828/828`, zero mismatch |
+| unowned product/test paths | `0` |
+| live provider requests | `0` |
+
+Task 3 may begin under the batch ruling. Task 6, merge, push, and live-provider
+traffic remain unauthorized.
