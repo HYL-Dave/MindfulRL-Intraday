@@ -1,6 +1,6 @@
 # SA Health Truth and Typed Diagnostics Evidence
 
-> **Status:** TASKS 0-4 COMPLETE; TASKS 5-6 BATCH EXECUTION ACTIVE;
+> **Status:** TASKS 0-5 COMPLETE; TASK 6 BATCH EXECUTION ACTIVE;
 > IMPLEMENTATION NOT YET COMPLETE; NOT MERGED; NOT PUSHED
 >
 > **Date:** 2026-08-14
@@ -10,6 +10,8 @@
 > **Product grounding base:** `9c9021afe6e9fe4d27a971f0841d38d213354a94`
 >
 > **Task 0 packet:** `/tmp/sa-health-diagnostics-task0-73e5e175`
+>
+> **Task 5 packet:** `/tmp/sa-health-diagnostics-task5-258e387d`
 
 ## 1. Process Boundary
 
@@ -225,8 +227,62 @@ Packet `/tmp/sa-health-diagnostics-task4-c44521d8` contains 20 payloads. Its
 No live provider request, extension install/reload, production write,
 schedule/repair action, merge, push, or destructive operation occurred.
 
-## 10. Next Gate
+## 10. Task 5 - Truthful Frontend Diagnostics
 
-Task 5 applies the exact frontend `+8/-3` semantic ledger at final identity
-`101 files / 1177 / 9530dcd9...`. Any stop condition still overrides the batch
-ruling.
+Task 5 applied the exact frontend `+8/-3` semantic ledger. RED collection and
+final collection are byte-identical at `101 files / 1177 /
+9530dcd91d8a7d684faa5e56f2986fbaeaa22e1d89f67818a12ed5d8ca77d1b1`;
+all eight planned additions were absent from the base and all three semantic
+renames existed exactly once. Product commit `d9c4361e` replaces the open
+`ok` presentation with the closed three-state chain DTO, renders capture
+history independently from chain health, and exposes only admitted typed
+diagnostic fields. Raw diagnostic `message` and backend `detail` values are
+not rendered in either normal or Developer mode.
+
+The exact 44-add/2-retire i18n ledger landed in both locales. Settings count is
+`827`, locale total is `1911`, frozen inventory constants remain unchanged,
+and the new Traditional Chinese copy uses `擷取`. One pre-existing search
+alias still contains `攝入`; Task 5 neither touched nor rendered that alias,
+and the browser contract directly proves the term is absent from the DOM.
+
+Final gates:
+
+- SA owner projection `79/0d6568f19a5d572688bbbb303f32c7cff5f86b19ce51bcc5b730b86beb91753d`
+  passed `79/79`;
+- Settings projection `249/a3a5e481cace86991db6d8ec5da56c2d973d224e1cb1de57f631c210a646a16e`
+  passed `249/249`;
+- the accepted sequential full run passed `101 files / 1177/1177`;
+- typecheck, build, and the visible-literal scanner passed, with scanner debt
+  remaining zero; and
+- all 17 protected paths remained byte-identical at aggregate
+  `1c5b539a05e51eef3f52e0cad9efa02063db077cfb7e190f20ccdc8b0580e0ae`.
+
+The first default-parallel full run is rejected evidence: only the two known,
+unmodified five-second timeout owners failed. Their isolated control passed
+`26/26`, and the unchanged final bytes then passed the complete sequential
+run. The first browser harness run is also rejected because it read an
+existing closed `<details>` element without opening it; the final harness
+opens the element and changes no repository byte.
+
+Hermetic Chrome at `1322 x 777` and `390 x 844` passed normal and Developer
+cases. Healthy, degraded-capture, structurally degraded/interrupted,
+historical-repair, typed browser/native/local-persistence, legacy-absence, and
+rejected-diagnostic states all rendered with distinct honest copy. Every
+network entry was GET; mount, focus, visibility, and idle issued no automatic
+SA refresh, while each explicit recheck added exactly one local health GET.
+Raw sentinels, `攝入`, overlap, and page overflow were absent. Four screenshots
+were inspected at original resolution; Vite, Chrome profiles, and port `8472`
+were removed afterward.
+
+Packet `/tmp/sa-health-diagnostics-task5-258e387d` contains 35 payloads. Its
+`SHA256SUMS` SHA-256 is
+`8934320b46b68fe8db1f200528acb10d6dec924cb3f6a14daa29d5228541d27c`.
+No live provider request, extension install/reload, production write,
+schedule/repair action, merge, push, or destructive operation occurred.
+
+## 11. Next Gate
+
+Task 6 independently replays M1-M9, runs final backend/frontend/native/static
+and browser admission, accounts for generated artifacts, and then stops for
+the combined implementation review. Any stop condition still overrides the
+batch ruling; Task 7 and merge remain unauthorized.
