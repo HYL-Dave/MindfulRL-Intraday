@@ -1,6 +1,6 @@
 # SA Health Truth and Typed Diagnostics Evidence
 
-> **Status:** TASKS 0-1 COMPLETE; TASKS 2-6 BATCH EXECUTION ACTIVE;
+> **Status:** TASKS 0-2 COMPLETE; TASKS 3-6 BATCH EXECUTION ACTIVE;
 > IMPLEMENTATION NOT YET COMPLETE; NOT MERGED; NOT PUSHED
 >
 > **Date:** 2026-08-14
@@ -123,7 +123,40 @@ Its `SHA256SUMS` SHA-256 is
 No provider, live extension, production profile, network endpoint, or
 destructive operation was used.
 
-## 7. Next Gate
+## 7. Task 2 - Native Persistence Failure Envelope
 
-Task 2 starts with the exact eight-node native-host RED at
-`4378/03bceb26...`. Any stop condition still overrides the batch ruling.
+Task 2 added the exact eight-node native-host ledger. Initial RED was
+`7 failed / 1 passed`: seven nodes exposed raw-error, false-result, or bridge
+gaps, while the success-shape owner already passed and therefore guarded the
+requirement that successful saves gain no failure fields. Full collection was
+the predicted `4378/03bceb26c4691823d21d903fb4fb064df4734d69b2c7c8e6ce0ff55509265b18`;
+the eight-row addition stream was
+`a9df387a09c5e60808d854755fc57473e3e751944bc1e7c3263bb1ceafc820ca`.
+
+Product commit `f53dcfee` gives exactly five active save handlers one closed
+failure projector. SQLite busy/locked is retryable `database_busy`;
+constraint/integrity/corruption is terminal `database_integrity_failed`; all
+other exceptions and false save results are retryable `database_write_failed`.
+Responses use fixed text and never interpolate exception values. Python 3.10
+does not export all SQLite symbolic result-code names, so the implementation
+uses SQLite's stable base codes plus exception-family fallback.
+
+Grounding against the DAL found another failure shape after the first helper
+version: several methods return an error dictionary when local storage is not
+available. The shared-handler owner was strengthened and failed on this live
+path before the final implementation routed returned-error, exception, and
+false-result forms through the same projection. Native telemetry now forwards
+exactly the optional `extension_diagnostics` sibling and still rejects caller
+status/hash/extra fields.
+
+Final gates were `8/8` new nodes and `294/294` SA focused, with focused
+identity `4826f566d053acab428e9574ddc64c72acbb57e9a12858cdddffb9a67b27e793`.
+Full collection remained `4378/03bceb26...`; protected paths remained exact.
+Packet `/tmp/sa-health-diagnostics-task2-3c37dbd6` contains 20 payloads, with
+`SHA256SUMS` SHA-256
+`6eeea62ec5ee7c4654f1ea41a17cc6c6ee4842f4e7fa76e9b48e915b66808955`.
+
+## 8. Next Gate
+
+Task 3 starts with the exact eight-node extension-flow RED at
+`4386/c3969f49...`. Any stop condition still overrides the batch ruling.
