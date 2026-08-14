@@ -1,6 +1,6 @@
 # Settings Schedule Surface Ownership Evidence
 
-> **Status:** TASK 0 COMPLETE; TASKS 1-3 BATCH EXECUTION ACTIVE
+> **Status:** TASK 0 COMPLETE; TASK 2 STOPPED AT SCANNER PREDICTION; BOUNDED AMENDMENT REVIEW NEXT
 >
 > **Reviewed plan tip:** `590ce355ae3f296e666a5dbcabd5b3694d7633a1`
 >
@@ -115,3 +115,25 @@ uncommitted and preserved with the RED and partial-GREEN transcripts in
 `/tmp/schedule-surface-ownership-task2-7a4185e4`. The bounded plan amendment
 authorizes one existing heading-key replacement and no other Task 2 hunk in
 that file. Execution remains stopped pending focused review.
+
+## Task 2 - Stop at Scanner Prediction
+
+Focused review approved the heading-consumer amendment at `926c128f`. The
+exact one-line `MacroStorageSection.tsx` key replacement then produced
+`127/127` focused, `249/249` Settings, and one sequential `1177/1177` full
+runtime. Typecheck and build exited zero. Those changes remain uncommitted.
+
+The i18n scanner returned `37/20/0/20`, not the planned `36/20/0/20`.
+Execution stopped before committing or beginning Task 3. A fresh scanner run
+at product base `e2ead437` and at the current Task 2 worktree returned the same
+37 candidates. Their line-number-independent
+`{file, kind, literal, signature}` projections are byte-identical at SHA-256
+`5dc46070ca18211027f0bf626955b79ca3409331d09e2562fda4250c62612ac3`.
+No candidate was added or removed by this line.
+
+The plan had inferred that retiring `DataScheduleLocalError` and its local
+missing-source state would remove one visible-literal candidate. The scanner
+shows that neither typed structure was a candidate at the base. The bounded
+amendment corrects only the Task 2 and Task 3 expected scanner result to
+`37/20/0/20`; scanner code, allowlist, product, tests, resources, identities,
+and protected bytes remain outside this amendment.
