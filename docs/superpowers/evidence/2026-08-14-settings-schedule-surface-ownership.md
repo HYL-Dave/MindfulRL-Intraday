@@ -1,6 +1,6 @@
 # Settings Schedule Surface Ownership Evidence
 
-> **Status:** TASK 0 COMPLETE; TASK 2 STOPPED AT SCANNER PREDICTION; BOUNDED AMENDMENT REVIEW NEXT
+> **Status:** TASKS 0-2 COMPLETE; TASK 3 ACTIVE UNDER BATCH RULING
 >
 > **Reviewed plan tip:** `590ce355ae3f296e666a5dbcabd5b3694d7633a1`
 >
@@ -137,3 +137,20 @@ shows that neither typed structure was a candidate at the base. The bounded
 amendment corrects only the Task 2 and Task 3 expected scanner result to
 `37/20/0/20`; scanner code, allowlist, product, tests, resources, identities,
 and protected bytes remain outside this amendment.
+
+## Task 2 - Owner-Specific Copy Complete
+
+Focused review returned GREEN for scanner amendment `adc50d5b`. Product/tests
+commit `9dc2ebf4` atomically lands the eight reviewed Task 2 paths: the exact
+bilingual Data Sources and Macro schedule titles, one new Macro resource path,
+the existing Macro heading's one-line consumer-key replacement, and only the
+eight authorized existing owner-body updates. The heading file changes by
+exactly `1+/1-`; it has no second Task 2 hunk.
+
+The admitted final gates are focused `127/127`, Settings `249/249`, sequential
+full `1177/1177`, typecheck exit zero, build exit zero, and scanner
+`37/20/0/20`. Collection identities remain byte-identical to Task 1:
+frontend `1177/90f56093...`, focused `127/0d6eb258...`, and Settings
+`249/ee6618df...`. Task 3 mutations and final admission are now active under
+the existing batch ruling; merge, push, live traffic, provider calls, and
+production mutation remain unauthorized.
