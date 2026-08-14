@@ -59,3 +59,41 @@ Tasks 0-3 as one continuous execution batch. Per-task commits, packets,
 RED-first evidence, exact identities, and all stop conditions remain binding.
 Task 3 is the combined implementation-review gate. Merge, push, live traffic,
 provider calls, and production mutation are not authorized.
+
+## Task 1 - Partition and Latest-Job Facts
+
+Product/tests commit: `7de617dd`.
+
+The exact replacement collection is `101 files / 1177 /
+90f56093290c70a27369296ec8d8c7de99d084a091134994ae6451bc8e45743b`.
+Focused is `127 / 0d6eb25864d2c0a7a5ee76a9d05dacbc45e232106e62461a043b3d7196aac644`,
+and the Settings projection is `249 /
+ee6618dfc755f5ead79f6012967d3dda2c7a33f37ef87f62c5f98deff0f6c5cf`.
+The node delta is exactly the reviewed `-2/+2` ledger.
+
+RED was `2 failed / 125 passed`. The Provider integration exposed ten rows
+under Data Sources instead of five, and the focused controller test exposed
+that the old table ignored the required scope. No existing-module import,
+fixture, timeout, or network failure contributed to RED.
+
+GREEN proves:
+
+- exact `write_target === "macro_calendar.db"` classification;
+- disjoint and complete Macro/non-Macro partitions in insertion order;
+- future Macro placement and unknown non-Macro fail-visible placement;
+- one real shared controller and enabled controls in both partitions;
+- Data Sources and Macro each render five current rows in both locales;
+- a successful existing provider-health read replaces an older cached Macro
+  job timestamp, while a rejected read preserves the admitted timestamp; and
+- the disabled-provider neutral contract remains intact.
+
+Final runtime is `127/127`; typecheck exits zero. Structural census records one
+mounted `DataScheduleControlsProvider`, one schedule timer, one focus listener,
+unchanged `getSchedule` and `getProvidersHealth` caller sets, zero table-level
+`jobs` prop, and zero product occurrences of `sourceIds`,
+`DataScheduleLocalError`, or `MACRO_SCHEDULE_SOURCE_IDS`. Protected paths remain
+`13/13` at aggregate `b3b3ac3f...`.
+
+Packet: `/tmp/schedule-surface-ownership-task1-bf6b74a0`, 40 payloads,
+`SHA256SUMS` SHA-256
+`966e33572f9dd6dba40caf740d6bd542bd9f092965cb94994253b4ec9cc48e6b`.
