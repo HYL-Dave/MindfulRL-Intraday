@@ -97,3 +97,21 @@ unchanged `getSchedule` and `getProvidersHealth` caller sets, zero table-level
 Packet: `/tmp/schedule-surface-ownership-task1-bf6b74a0`, 40 payloads,
 `SHA256SUMS` SHA-256
 `966e33572f9dd6dba40caf740d6bd542bd9f092965cb94994253b4ec9cc48e6b`.
+
+## Task 2 - Stop at Macro Title Consumer
+
+The eight reviewed retained owners went RED exactly as planned: `8 failed /
+119 passed`, with failures confined to the owner-specific title and resource
+expectations. The collection remained `1177/90f56093...`.
+
+After applying only the two locale resource changes, five owners became GREEN
+and three remained RED. `MacroStorageSection.tsx` still read
+`$.dataSources.schedule.title`, so the new `macroStorage.schedule.title` path
+was not consumed and Macro still displayed the Data Sources-specific title.
+This deterministic product wiring was absent from the Task 2 file list.
+
+No Macro product edit has been made. Current Task 2 test/resource changes are
+uncommitted and preserved with the RED and partial-GREEN transcripts in
+`/tmp/schedule-surface-ownership-task2-7a4185e4`. The bounded plan amendment
+authorizes one existing heading-key replacement and no other Task 2 hunk in
+that file. Execution remains stopped pending focused review.
