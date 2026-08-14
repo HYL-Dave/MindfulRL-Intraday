@@ -283,3 +283,43 @@ Partial packet:
 `/tmp/macro-refresh-scheduler-task4-stop-2b5690dc`, five payloads;
 `SHA256SUMS` SHA-256
 `827db0b86e2e80d7c02338f6f0328f26b347271332633fda8454fc92cfef9dc3`.
+
+## 10. Task 4 Stop - Rendered Source Wrapping Cascade
+
+After the provider-fixture amendment, the final focused suite passed
+`109/109`, the separate post-PG owner file passed `14/14`, typecheck and build
+exited zero, the scanner returned the same `37/20/0/20` as a detached base
+control, and one complete sequential frontend command passed `101 files /
+1172/1172`. The required early real-browser gate then failed before Task 4
+commit.
+
+At desktop `1322 x 777`, the fixture rendered the exact ten Data Sources rows,
+the exact five Macro rows, and the reviewed `30/11/12/12/35` column widths.
+The table scroller stayed inside the Settings scroll owner and neither the page
+nor main owner overflowed. However, every Macro source cell computed to
+`white-space: nowrap`: `.data-table td` has specificity `(0,1,1)` and therefore
+outranks the later bare `.settings-schedule-source-cell` selector `(0,1,0)`.
+The Finnhub economic and earnings source cells measured `scrollWidth 326/320`
+against `clientWidth 294`. `overflow-wrap: anywhere` was present but cannot
+wrap while `nowrap` wins.
+
+This is a deterministic rendered product defect and stop condition 19, not a
+test preference. The bounded amendment authorizes one selector replacement to
+`.settings-schedule-table td.settings-schedule-source-cell`, with all four
+existing declarations unchanged, and an in-place strengthening of the already
+added wrapping CSS node. No node ID, count, staged identity, or other
+product/test edit is authorized. Desktop and mobile computed-style replay must
+prove normal wrapping, no source-cell overflow, exact columns, bounded table
+scrolling, and zero page/main overflow or cell overlap before Task 4 resumes.
+
+The first browser process was rejected because sandbox network isolation could
+not reach local Vite. A later diagnostic used the wrong subsection attribute
+and was also rejected; the product DOM uses `data-settings-location`, not
+`data-settings-anchor`, for `source_schedules`. Neither run is used as product
+evidence. The admitted RED is the recorded computed-style/geometry artifact.
+No live provider or production data was contacted or changed.
+
+Partial packet:
+`/tmp/macro-refresh-scheduler-task4-stop4-83f881a0`, `12` payloads;
+`SHA256SUMS` SHA-256
+`f26131aa40557c89e39eb5dcbb8ade4645a5317c8d15d566ea463f29db9c5cf0`.
