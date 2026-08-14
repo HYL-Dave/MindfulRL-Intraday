@@ -1,7 +1,7 @@
 # Macro Refresh and Scheduler Integration Evidence
 
-> **Status:** TASKS 0-6 COMPLETE; MERGED AT `da7efd9a`; FOCUSED CLOSEOUT
-> REVIEW REQUIRED; NOT PUSHED
+> **Status:** COMPLETE; MERGED AT `da7efd9a`; CLOSEOUT GREEN AT `e508eba9`;
+> NOT PUSHED
 >
 > **Date:** 2026-08-13
 >
@@ -486,3 +486,17 @@ the detached verification worktree was removed. Final Task 6 packet:
 `SHA256SUMS` SHA-256
 `44ca729d205436390ec2319bfda915627c6bf988afc2ee512c7ea77ce3b7eec5`.
 The merged line remains unpushed and stops for focused closeout review.
+
+## 15. Focused Closeout Review
+
+Focused closeout review returned GREEN at `e508eba9`. The reviewer independently
+re-collected backend `4,359 / c100ee5d...` and frontend `101 files / 1,172 /
+d40a30d5...`, ran frontend focused `109/109`, verified all `74/74` Task 6
+payloads, and confirmed that `da7efd9a..e508eba9` changes exactly the four
+closeout documentation files. Task 5 resume, independent control, and Task 6
+exact-master native reports remain byte-identical at `7bf1eca4...`.
+
+The reviewer ruled that production equality does not rerun: Task 6 used an
+isolated runtime root and did not touch production assets, while the quiesced
+Task 5 pre/post proof remains valid. Desktop and sidecar may remain running.
+The macro scheduler line is CLOSED and remains unpushed.
