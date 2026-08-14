@@ -1,6 +1,6 @@
 # SA Health Truth and Typed Diagnostics Evidence
 
-> **Status:** TASKS 0-2 COMPLETE; TASKS 3-6 BATCH EXECUTION ACTIVE;
+> **Status:** TASKS 0-3 COMPLETE; TASKS 4-6 BATCH EXECUTION ACTIVE;
 > IMPLEMENTATION NOT YET COMPLETE; NOT MERGED; NOT PUSHED
 >
 > **Date:** 2026-08-14
@@ -156,7 +156,46 @@ Packet `/tmp/sa-health-diagnostics-task2-3c37dbd6` contains 20 payloads, with
 `SHA256SUMS` SHA-256
 `6eeea62ec5ee7c4654f1ea41a17cc6c6ee4842f4e7fa76e9b48e915b66808955`.
 
-## 8. Next Gate
+## 8. Task 3 - Extension Diagnostics And Terminal Conflict
 
-Task 3 starts with the exact eight-node extension-flow RED at
-`4386/c3969f49...`. Any stop condition still overrides the batch ruling.
+Task 3 added the exact eight-node extension-flow ledger and evolved only the
+two authorized dependency/outbox owners. RED and final GREEN collection are
+byte-identical at
+`4386/c3969f490e2adc485668916784ce0f48d9d974bf11f312b1c635b1ea110b0fc6`;
+the exact eight-row addition stream is
+`50da1c4b1e9f6be9602f7e77436674eb9cd7d911e6a8068a5862e54f843c8a08`.
+Initial RED contained exactly ten failures: the eight absent collector/flow
+behaviors plus the two authorized existing owners.
+
+Product commit `259ff1ee` adds one closed, bounded browser-side diagnostic
+collector and threads it through Alpha Picks, manual fetch, and Market News.
+Every detail failure calls the typed recorder before its count changes; native
+transport and local persistence retain distinct stable causes. Telemetry
+copies diagnostics into the immutable outbox identity, while server
+`event_conflict` terminally removes the queue item as unavailable. Firefox
+loads the new literal dependency; the protected Chrome manifest is unchanged.
+
+Pre-commit review found one plan-owned gap: a job function could throw before
+an owning flow recorded a phase diagnostic, while the common queue still
+created a failed terminal result. The existing successful-save Task 3 node
+gained a thrown-job subcase, then `enqueueSaSyncJob` was corrected to record a
+fixed `extension_runtime/unknown_failure` phase entry without retaining raw
+error text. This changed no node ID or staged identity.
+
+Final gates are exact Task 3 owners `10/10`, SA focused `302/302` with identity
+`73b47eef08012db1fcef649cc0c8cdaf989f2cd6bdb13d999b70c504e2986269`,
+full collect-only `4386/c3969f49...`, and protected paths `17/17`. Eight
+explicit scenario artifacts contain zero URL/body/token/email/path sentinels.
+Packet `/tmp/sa-health-diagnostics-task3-536e30e5` contains 35 payloads; its
+`SHA256SUMS` SHA-256 is
+`83af6697a09d1197ec3f89b79fb5cf7681e04d8841a4d1d0008ba4dd48896d62`.
+The rejected broad-glob sentinel scan and relative-path fixture invocation are
+retained and excluded from accepted evidence.
+
+No live provider request, extension install/reload, production write,
+schedule/repair action, merge, push, or destructive operation occurred.
+
+## 9. Next Gate
+
+Task 4 starts with the exact eight-node health-projection RED at
+`4394/b0285ee3...`. Any stop condition still overrides the batch ruling.
