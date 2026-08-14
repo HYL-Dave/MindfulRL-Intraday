@@ -1,7 +1,7 @@
 # SA Health Truth and Typed Diagnostics Evidence
 
-> **Status:** TASKS 0-5 COMPLETE; TASK 6 BATCH EXECUTION ACTIVE;
-> IMPLEMENTATION NOT YET COMPLETE; NOT MERGED; NOT PUSHED
+> **Status:** TASKS 0-6 COMPLETE; COMBINED IMPLEMENTATION REVIEW NEXT;
+> TASK 7 NOT AUTHORIZED; NOT MERGED; NOT PUSHED
 >
 > **Date:** 2026-08-14
 >
@@ -12,6 +12,8 @@
 > **Task 0 packet:** `/tmp/sa-health-diagnostics-task0-73e5e175`
 >
 > **Task 5 packet:** `/tmp/sa-health-diagnostics-task5-258e387d`
+>
+> **Task 6 packet:** `/tmp/sa-health-diagnostics-task6-21b40d7e`
 
 ## 1. Process Boundary
 
@@ -280,9 +282,74 @@ Packet `/tmp/sa-health-diagnostics-task5-258e387d` contains 35 payloads. Its
 No live provider request, extension install/reload, production write,
 schedule/repair action, merge, push, or destructive operation occurred.
 
-## 11. Next Gate
+## 11. Task 6 - Mutations And Final Admission
 
-Task 6 independently replays M1-M9, runs final backend/frontend/native/static
-and browser admission, accounts for generated artifacts, and then stops for
-the combined implementation review. Any stop condition still overrides the
-batch ruling; Task 7 and merge remain unauthorized.
+M1-M9 each changed the intended live behavior, made its declared owner RED,
+and restored the complete owner byte-for-byte. The mutation summary records
+equal pre/post SHA-256 for all nine owners. M9 additionally used a hermetic
+real-browser replay: replacing the GET-only recheck with a provider test
+produced exactly one forbidden `POST /providers/test/polygon`, then the
+restored implementation returned to GET-only behavior. M7 retains rejected
+operator attempts where the first diff capture used the wrong path boundary;
+none is counted as admitted evidence.
+
+All final identities and focused runtimes match the plan:
+
+- backend full `4394/b0285ee3a3d124c4bbe380ad0dea022ef09fa46b52b6a14a0375c5f2459a62fb`;
+- backend focused `310/f9e7c89c0a6bf082e5dc2e29dfe13aef275fe517c8c0622118e58658fef2049e`,
+  with `310/310` passed;
+- frontend full `101 files / 1177/9530dcd91d8a7d684faa5e56f2986fbaeaa22e1d89f67818a12ed5d8ca77d1b1`,
+  with the accepted sequential run passing `1177/1177`;
+- frontend SA owners `79/0d6568f19a5d572688bbbb303f32c7cff5f86b19ce51bcc5b730b86beb91753d`,
+  with `79/79` passed; and
+- Settings regression `249/a3a5e481cace86991db6d8ec5da56c2d973d224e1cb1de57f631c210a646a16e`,
+  with `249/249` passed.
+
+The first attempted sequential frontend command used an unsupported
+`--minWorkers` option and exited before test execution. It is retained as
+rejected evidence. The accepted command used `--no-file-parallelism` and one
+worker. Typecheck, build, the visible-literal scanner, extension dependency
+closure, exact `+35/-0` and `+8/-3` ledgers, no-unowned-path, secret census,
+and `git diff --check` all passed. All 17 protected paths remain byte-identical
+at aggregate
+`1c5b539a05e51eef3f52e0cad9efa02063db077cfb7e190f20ccdc8b0580e0ae`.
+
+The final hermetic Chrome replay covered normal and Developer modes at
+`1322 x 777` and `390 x 844`. All traffic was GET, every explicit recheck
+added one local health read, and there was no provider POST, raw sentinel,
+`攝入`, overlap, main/page overflow, or browser error. The schedule table
+retained its intentional local horizontal scroller. All four screenshots were
+inspected at original resolution.
+
+After the user closed Desktop, the five product DB paths had zero openers and
+stable stat samples. The canonical isolated native run collected and saw all
+`4394` nodes and finished `4382 passed / 12 skipped / 0 failed`; reporter
+SHA-256 is
+`0a58d493ab6b406a2a69fa4cc7b25670373d7a16fd74b85c2b60c9452e07c030`.
+The temporary worktree `.env` symlink was removed by the command trap. Product
+DB, journal, local config, and secret-file metadata/hashes were then captured
+again; pre and post manifests are byte-identical at
+`23930634978d38d26caf4511b887e50ac8717387b87794e83212aaaa27a9921b`.
+No product record or secret content entered the packet.
+
+Exactly `21,535` generated runtime/report paths were recorded before removal.
+Both isolated runtime roots and original reporter copies are absent, port
+`8472` is closed, browser profiles and Task 6 processes are zero, and the
+worktree `.env` is absent. The pre-existing Vite process on port `8430` was
+outside this task and was not touched. Packet
+`/tmp/sa-health-diagnostics-task6-21b40d7e` contains `112` payloads; all pass
+`sha256sum -c`, and `SHA256SUMS` SHA-256 is
+`205f9d6456ad33bca960a3d7689264b8ba96d4031dbbeb22a29a70f97ab1ce78`.
+The first post-documentation verification invocation used the implementation
+worktree as cwd for a relative-path manifest and is retained as a rejected
+operator error; the accepted packet-root replay verified all `112` payloads.
+
+No live SA/provider request, extension install/reload, production write,
+schedule/repair action, merge, push, or destructive product-data operation
+occurred.
+
+## 12. Next Gate
+
+Tasks 0-6 are complete. Full independent implementation review is the sole
+next gate. Task 7 fast-forward merge and closeout remain unauthorized until
+that review returns GREEN.
