@@ -1,7 +1,7 @@
 # SA Health Truth and Typed Diagnostics Evidence
 
-> **Status:** TASKS 0-6 COMPLETE; COMBINED IMPLEMENTATION REVIEW NEXT;
-> TASK 7 NOT AUTHORIZED; NOT MERGED; NOT PUSHED
+> **Status:** TASKS 0-7 COMPLETE; MERGED AT `233b09d4`; EXACT-MASTER
+> VERIFICATION COMPLETE; FOCUSED CLOSEOUT REVIEW NEXT; NOT PUSHED
 >
 > **Date:** 2026-08-14
 >
@@ -28,6 +28,13 @@ unauthorized.
 Task 0 changed no product or test byte. The implementation worktree was clean
 before and after grounding; `9c9021af..73e5e175` contains only the reviewed
 design, plan, and priority-map documents.
+
+After Task 6, Fable independently reconstructed both semantic ledgers,
+reviewed every owned product path and mutation, reran the canonical native
+suite to a byte-identical reporter, and returned GREEN. The user then
+authorized Task 7's local fast-forward merge and exact-master closeout. No
+push, live SA/provider request, extension installation, production write,
+schedule/repair action, or destructive product-data operation was authorized.
 
 ## 2. Re-collected Baselines
 
@@ -348,8 +355,48 @@ No live SA/provider request, extension install/reload, production write,
 schedule/repair action, merge, push, or destructive product-data operation
 occurred.
 
-## 12. Next Gate
+## 12. Task 7 - Fast-Forward Merge And Exact-Master Closeout
 
-Tasks 0-6 are complete. Full independent implementation review is the sole
-next gate. Task 7 fast-forward merge and closeout remain unauthorized until
-that review returns GREEN.
+`master` and the implementation worktree were clean. The merge base was exact
+product base `9c9021af`; `9c9021af..233b09d4` contains 14 linear commits and
+zero merge commits. `git merge --ff-only codex/sa-diagnostics-plan` advanced
+local `master` to `233b09d4`; origin was not contacted or changed.
+
+A fresh detached no-op-git-crypt worktree at exact merged master reran every
+Task 7 gate with new artifact names:
+
+- backend collection `4394/b0285ee3a3d124c4bbe380ad0dea022ef09fa46b52b6a14a0375c5f2459a62fb`;
+- backend focused `310/310`, identity
+  `f9e7c89c0a6bf082e5dc2e29dfe13aef275fe517c8c0622118e58658fef2049e`;
+- canonical native `4382 passed / 12 skipped / 0 failed`; reporter
+  `0a58d493ab6b406a2a69fa4cc7b25670373d7a16fd74b85c2b60c9452e07c030`
+  is byte-identical to both Task 6 and Fable's independent control;
+- frontend collection `101 files / 1177/9530dcd91d8a7d684faa5e56f2986fbaeaa22e1d89f67818a12ed5d8ca77d1b1`;
+- SA owner `79/79`, Settings `249/249`, and sequential full `1177/1177`;
+- typecheck, build, and visible-literal scanner `37/20/0/20` passed;
+- all 17 protected paths remained exact at aggregate
+  `1c5b539a05e51eef3f52e0cad9efa02063db077cfb7e190f20ccdc8b0580e0ae`;
+- Chrome/Firefox extension dependency closure remained `15/16` files with
+  `extension_diagnostics.js` in both; and
+- the hermetic desktop/mobile normal/Developer browser matrix remained
+  GET-only with zero error, raw sentinel, overlap, main overflow, or page
+  overflow. Its canonical contract is byte-identical to Task 6 at
+  `5270ec72210a601252ea90807d8643c749222d4adfd45338c93f7b5b419a6bc4`.
+
+All four screenshots were inspected at original resolution. Port `8472`,
+Chrome profiles, temporary `.env`, dependency symlinks, build output, empty
+worktree data, isolated runtime roots, copied reporter sources, and the clean
+detached exact-master worktree are absent.
+The rejected `rm -rf` policy invocation and multi-operand `unlink` operator
+mistake changed no path and are recorded honestly. Packet
+`/tmp/sa-health-diagnostics-task7-merged-233b09d4` contains 46 payloads; all
+pass `sha256sum -c`, and `SHA256SUMS` SHA-256 is
+`03375b38b0c62b659d12b69a032240191d46c97c8fb78b9dad765bb85bc52e43`.
+
+## 13. Next Gate
+
+The SA diagnostics implementation and local cutover are complete. Focused
+independent closeout review is the sole next gate. The implementation
+worktree and branch remain in place until that review returns GREEN. Push,
+live traffic, extension installation, and production writes remain outside
+this line.
