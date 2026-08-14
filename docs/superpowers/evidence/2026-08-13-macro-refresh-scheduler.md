@@ -1,7 +1,7 @@
 # Macro Refresh and Scheduler Integration Evidence
 
-> **Status:** TASKS 0-5 COMPLETE; FULL IMPLEMENTATION REVIEW REQUIRED; TASK 6
-> NOT AUTHORIZED
+> **Status:** TASKS 0-6 COMPLETE; MERGED AT `da7efd9a`; FOCUSED CLOSEOUT
+> REVIEW REQUIRED; NOT PUSHED
 >
 > **Date:** 2026-08-13
 >
@@ -450,3 +450,39 @@ Task 5 is complete and stops for full implementation review. Final packet:
 `SHA256SUMS` SHA-256
 `5b7c1fd1cc6448c70dccc85e30d6368e1c3d443a3be0a4f89e994dad246b45c0`.
 Task 6, merge, push, and live-provider traffic remain unauthorized.
+
+## 14. Task 6 - Fast-Forward Merge And Exact-Master Verification
+
+Independent implementation review returned GREEN at `da7efd9a`. The product
+branch had `f9b69913` as its exact merge base, contained 16 linear commits and
+zero merge commits, and fast-forwarded `master` without pulling or pushing.
+The cutover tip is `da7efd9a9b9b5d058892d236d342b474e3c7ed7b`.
+
+A fresh detached exact-master worktree reproduced the final backend collection
+as `4,359 / c100ee5de4ad42c490e6048e4b7cf22540e417f579987c676796663608d17afd`
+and frontend collection as `101 files / 1,172 /
+d40a30d5e50690f79b644e0b25122da02441eb0cf54ab02793d02269419e23cb`.
+Runtime gates passed backend focused `393/393`, frontend focused `109/109`,
+frontend full `1,172/1,172` in one sequential command, typecheck, build,
+scanner `37/20/0/20`, lock lifecycle `2/2`, and the scratch DB proof. The
+scratch proof records zero provider requests and identical business-table
+digests before and after a simulated provider failure.
+
+Canonical native passed `4,347 / 12 / 0`; reporter JSON SHA-256 is
+`7bf1eca48e44c6886767c0502334842c8751015c20f50d2c46d341674752b4de`
+and is byte-identical to Task 5. The temporary config symlink was removed. The
+fixture-only browser matrix passed desktop `1322 x 777` and mobile `390 x
+844`: exact rows and `30/11/12/12/35` columns, normal wrapping, bounded table
+scrolling, no page/main overflow or overlap, zero POST before explicit click,
+one POST per viewport after the click, and an honest succeeded terminal state.
+Original-resolution screenshots were inspected. Protected paths remained
+`826/826`.
+
+The packet records all rejected operator runs separately. Exactly 518 generated
+files were hashed before deletion; both dependency symlinks and the empty data
+root were removed, Vite port 8467 and browser process checks were clean, and
+the detached verification worktree was removed. Final Task 6 packet:
+`/tmp/macro-refresh-scheduler-task6-da7efd9a`, `74` payloads;
+`SHA256SUMS` SHA-256
+`44ca729d205436390ec2319bfda915627c6bf988afc2ee512c7ea77ce3b7eec5`.
+The merged line remains unpushed and stops for focused closeout review.
