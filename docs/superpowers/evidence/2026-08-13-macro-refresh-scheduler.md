@@ -1,6 +1,7 @@
 # Macro Refresh and Scheduler Integration Evidence
 
-> **Status:** TASKS 0-4 COMPLETE; TASK 5 ACTIVE; TASK 6 NOT AUTHORIZED
+> **Status:** TASKS 0-4 COMPLETE; TASK 5 STOPPED AT FINAL PRODUCTION-EQUALITY
+> GATE; FOCUSED REVIEW REQUIRED; TASK 6 NOT AUTHORIZED
 >
 > **Date:** 2026-08-13
 >
@@ -364,3 +365,57 @@ run as GREEN evidence. Final packet:
 
 Task 5 proceeds under the batch ruling. Task 6, merge, push, and live-provider
 traffic remain unauthorized.
+
+## 12. Task 5 Stop - Active Production Writer During Admission
+
+All nine mutations turned their named semantic owners RED and restored the
+complete owner bytes before the next mutation. M8 and M9 additionally produced
+the required real-Chrome computed-style/geometry failures. Final identities
+were exact: backend `4,359 / c100ee5d...`, backend focused `393/393`, frontend
+`101 files / 1,172 / d40a30d5...`, and frontend focused `109/109`. Frontend
+full passed `1,172/1,172`; typecheck, build, scanner, the scratch DB proof, and
+the two-process/descriptor lock probes all passed. The adjusted protected
+boundary is `826/826` with zero mismatch.
+
+The first native command was rejected as an input-boundary diagnostic: the
+isolated worktree had no ignored `config/.env`, so 17 conditional PG contract
+nodes skipped and the result was `4,330 passed / 29 skipped`. A targeted run
+with the main-root file visible only through a temporary symlink passed all
+`21/21` `test_db_backend.py` nodes. The resulting canonical command then
+matched the planned result exactly: `4,359 seen = 4,347 passed / 12 skipped /
+0 failed / exit 0`. The symlink was removed immediately; no secret value was
+copied into an artifact.
+
+The Task 5 browser matrix exercised desktop `1322 x 777` and mobile `390 x
+844`. Both rendered the exact five Macro rows and ten Data Sources rows,
+computed the exact `30/11/12/12/35` columns, wrapped long source descriptions,
+and kept horizontal overflow inside the table scroller with no page/main
+overflow or overlap. Mount, the 30-second idle tick, focus, visibility change,
+and local status reload produced zero POSTs. One explicit FRED click produced
+exactly one POST, two schedule reads (`running` then `succeeded`), and an honest
+`上次成功` terminal surface. The first browser run is rejected evidence because
+its harness incorrectly required focus to issue a second GET while the idle
+single-flight was still admissibly shared; the corrected harness tests the
+approved zero-POST contract without forbidding read coalescing.
+
+Final production equality did not pass. From the `09:06:05` pre-sample to the
+post-sample, `macro_calendar.db`, `config/.env`, and
+`config/user_profile.local.yaml` were exact. Production `profile_state.db`
+kept its inode and mode but changed size, mtime, and SHA. The Desktop app and
+sidecar had been running since 2026-08-12. Read-only `job_runs` rows show the
+external five-minute `sa_market_news_refresh` sequence from `01:08:44` through
+`01:38:44 UTC`, one `collect.ibkr_news` scheduler run, and matching DB mtimes.
+The canonical wrapper wrote its own 225,280-byte profile database under the
+separate runtime root. This establishes the stop's cause but does not turn an
+unequal production manifest into passing evidence.
+
+Task 5 remains incomplete. After focused review, the user must quiesce the
+Desktop/sidecar writer (or separately authorize the operator to do so). The
+resume gate takes a fresh four-asset pre-manifest, reruns canonical native on
+unchanged product bytes, removes the temporary config symlink, and requires a
+byte-identical post-manifest. Frontend and fixture-only browser gates do not
+rerun. Partial packet:
+`/tmp/macro-refresh-scheduler-task5-c286d504`, `140` payloads;
+`PARTIAL_SHA256SUMS` SHA-256
+`0d8127ec550b857b39a3164b796dc470e7a54696c33e2b17584cdae1efc01f23`.
+Task 6, merge, push, and live-provider traffic remain unauthorized.
