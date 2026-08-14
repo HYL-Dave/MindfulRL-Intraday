@@ -1,7 +1,7 @@
 # Macro Refresh and Scheduler Integration Evidence
 
-> **Status:** TASKS 0-4 COMPLETE; TASK 5 STOPPED AT FINAL PRODUCTION-EQUALITY
-> GATE; FOCUSED REVIEW REQUIRED; TASK 6 NOT AUTHORIZED
+> **Status:** TASKS 0-5 COMPLETE; FULL IMPLEMENTATION REVIEW REQUIRED; TASK 6
+> NOT AUTHORIZED
 >
 > **Date:** 2026-08-13
 >
@@ -418,4 +418,35 @@ rerun. Partial packet:
 `/tmp/macro-refresh-scheduler-task5-c286d504`, `140` payloads;
 `PARTIAL_SHA256SUMS` SHA-256
 `0d8127ec550b857b39a3164b796dc470e7a54696c33e2b17584cdae1efc01f23`.
+Task 6, merge, push, and live-provider traffic remain unauthorized.
+
+## 13. Task 5 Resume - Quiesced Production Equality
+
+Focused review returned GREEN at `d7c59b11`. Before the fresh pre-manifest,
+Desktop/Electron/sidecar were absent, `profile_state.db` had no file opener,
+and three samples across two minutes retained one inode, size, mode, and
+nanosecond mtime. The implementation worktree was clean and contained no
+`config/.env` entry.
+
+The same canonical wrapper ran with the main-root `config/.env` visible only
+through a temporary symlink. It completed `4,359 seen = 4,347 passed / 12
+skipped / 0 failed / exit 0`. Reporter JSON SHA-256 is
+`7bf1eca48e44c6886767c0502334842c8751015c20f50d2c46d341674752b4de`,
+byte-identical to the previously admitted Task 5 report. The symlink was
+removed by a guarded `unlink` trap before any post-manifest read. An earlier
+operator command containing `rm -f` was rejected by execution policy before
+process creation; it created no symlink and ran no test.
+
+Fresh pre and post manifests cover production `macro_calendar.db`,
+`profile_state.db`, `config/.env`, and `config/user_profile.local.yaml`. They
+are byte-identical and each has SHA-256
+`0f1c4a2b9feb6608d2a12faef8185f2aec2511cbab273ebf590061464402d376`.
+There was no profile DB opener before or after the command. Stop condition 15
+is therefore resolved without waiving equality or rerunning the already
+admitted fixture-only frontend/browser gates.
+
+Task 5 is complete and stops for full implementation review. Final packet:
+`/tmp/macro-refresh-scheduler-task5-c286d504`, `152` payloads;
+`SHA256SUMS` SHA-256
+`5b7c1fd1cc6448c70dccc85e30d6368e1c3d443a3be0a4f89e994dad246b45c0`.
 Task 6, merge, push, and live-provider traffic remain unauthorized.
