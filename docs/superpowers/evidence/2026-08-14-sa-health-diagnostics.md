@@ -1,6 +1,6 @@
 # SA Health Truth and Typed Diagnostics Evidence
 
-> **Status:** TASKS 0-3 COMPLETE; TASKS 4-6 BATCH EXECUTION ACTIVE;
+> **Status:** TASKS 0-4 COMPLETE; TASKS 5-6 BATCH EXECUTION ACTIVE;
 > IMPLEMENTATION NOT YET COMPLETE; NOT MERGED; NOT PUSHED
 >
 > **Date:** 2026-08-14
@@ -195,7 +195,38 @@ retained and excluded from accepted evidence.
 No live provider request, extension install/reload, production write,
 schedule/repair action, merge, push, or destructive operation occurred.
 
-## 9. Next Gate
+## 9. Task 4 - Structural Chain State And Bounded Recurrence
 
-Task 4 starts with the exact eight-node health-projection RED at
-`4394/b0285ee3...`. Any stop condition still overrides the batch ruling.
+Task 4 added the exact eight-node health ledger. RED and final GREEN collection
+are byte-identical at
+`4394/b0285ee3a3d124c4bbe380ad0dea022ef09fa46b52b6a14a0375c5f2459a62fb`;
+all eight RED nodes entered their test bodies and failed only because the old
+health service lacked the structural reducer, exact degraded outcome, typed
+diagnostic projection, or bounded recurrence.
+
+Product commit `2ee63df6` replaces the ambiguous top-level `ok` with one
+six-segment `chain_state` authority. Capture and historical repair rows no
+longer alter that state. The latest capture preserves exact workload, outcome,
+counts, occurrence time, admitted diagnostics, omitted count, and a read-only
+20-run recurrence grouped by workload/stage/reason. Legacy rows expose
+`diagnostics_status=absent` without inferred cause; malformed stored
+projections fail closed to the fixed rejection marker. The
+`detail_failures_recorded` producer is gone and degraded captures now remain
+warning history under `capture_degraded`.
+
+Final gates are `19/19` health owners, `310/310` SA backend focused, full
+collect-only `4394/b0285ee3...`, and protected paths `17/17`. A whole-file
+formatter attempt was rejected because these existing files are not a global
+Black baseline; all unrelated formatting hunks were removed before commit.
+Packet `/tmp/sa-health-diagnostics-task4-c44521d8` contains 20 payloads. Its
+`SHA256SUMS` SHA-256 is
+`590bdeb881cc0d31f58e0d8b3ed1c162b5f92960e6d12972395e50922a93e161`.
+
+No live provider request, extension install/reload, production write,
+schedule/repair action, merge, push, or destructive operation occurred.
+
+## 10. Next Gate
+
+Task 5 applies the exact frontend `+8/-3` semantic ledger at final identity
+`101 files / 1177 / 9530dcd9...`. Any stop condition still overrides the batch
+ruling.
