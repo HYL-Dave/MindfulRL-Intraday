@@ -1,6 +1,7 @@
 # Settings Schedule Surface Ownership Evidence
 
-> **Status:** TASKS 0-2 COMPLETE; TASK 3 ACTIVE UNDER BATCH RULING
+> **Status:** TASKS 0-3 COMPLETE; INDEPENDENT IMPLEMENTATION REVIEW NEXT;
+> NOT MERGED
 >
 > **Reviewed plan tip:** `590ce355ae3f296e666a5dbcabd5b3694d7633a1`
 >
@@ -153,4 +154,61 @@ full `1177/1177`, typecheck exit zero, build exit zero, and scanner
 frontend `1177/90f56093...`, focused `127/0d6eb258...`, and Settings
 `249/ee6618df...`. Task 3 mutations and final admission are now active under
 the existing batch ruling; merge, push, live traffic, provider calls, and
+production mutation remain unauthorized.
+
+## Task 3 - Mutations and Final Admission Complete
+
+M1-M7 each changed a live ownership contract, made its declared owner RED,
+and restored the complete owner byte-for-byte before the next mutation. M6's
+first table-local request mutation was rejected because the named unit owner
+stayed GREEN. The admitted M6 mutation entered the real shared hook and made
+both the unit request-count owner and a hermetic browser ledger RED with extra
+`/schedule` GETs. M7 independently proved the bilingual Data Sources and Macro
+headings cannot share a resource key. Every admitted mutation has
+`mutated != pre` and `restored == pre` evidence.
+
+Final collection identities are byte-identical to the reviewed targets:
+
+- frontend: `101 files / 1177 /
+  90f56093290c70a27369296ec8d8c7de99d084a091134994ae6451bc8e45743b`;
+- focused six-file projection: `127 /
+  0d6eb25864d2c0a7a5ee76a9d05dacbc45e232106e62461a043b3d7196aac644`;
+- Settings fifteen-file projection: `249 /
+  ee6618dfc755f5ead79f6012967d3dda2c7a33f37ef87f62c5f98deff0f6c5cf`;
+  and
+- unchanged backend collect-only identity: `4394 /
+  b0285ee3a3d124c4bbe380ad0dea022ef09fa46b52b6a14a0375c5f2459a62fb`.
+
+Admitted runtime is focused `127/127`, Settings `249/249`, and one sequential
+full command `1177/1177`. Typecheck and build exit zero; the scanner returns
+the corrected `37/20/0/20`. The thirteen protected paths reproduce aggregate
+`b3b3ac3f2151d34bf3ce0e15a772ebb0a655e46fe63a43eccae142d4208602a1`.
+There is no Python delta. Retired ownership censuses find zero `sourceIds`,
+`DataScheduleLocalError`, `MACRO_SCHEDULE_SOURCE_IDS`, optional/global scope,
+or table-level `jobs` prop. Structural projection finds one mounted schedule
+provider, one controller/cache loader/timer/focus listener, two consumers, and
+one existing provider-health loader.
+
+The final fixture-only browser matrix passed at `1322x777` and `390x844` in
+both zh-TW and en. The five non-Macro and five Macro rows are disjoint,
+complete, and ordered; provider-health latest-job truth is retained; headings
+are owner-specific; mount, idle, focus, visibility, local reload, and locale
+reload remain GET-only; each viewport's explicit Run click is its sole POST.
+There are no external requests, errors, cell overlaps, or page-level
+horizontal overflow. Existing table-local horizontal scrolling remains
+available on narrow viewports. Four screenshots were inspected at original
+resolution.
+
+Six browser-harness iterations were rejected before admission (incorrect
+heading level, imprecise Macro heading selection, unscoped reload button,
+case-sensitive English aria label, decorated Run button name, and failure to
+open the mobile directory drawer). They changed no product byte and remain in
+the packet as rejected evidence. Vite, Chrome profiles, port `8474`, and all
+temporary processes were removed.
+
+Packet: `/tmp/schedule-surface-ownership-task3-f7105482`, 108 payloads,
+`SHA256SUMS` SHA-256
+`eba91721d540927c2e21fde43e7341e34fc3e675082e1a95cdd22fc690b5d836`;
+all entries verify. Tasks 0-3 are complete. Independent implementation review
+is the only next gate; Task 4, merge, push, live/provider traffic, and
 production mutation remain unauthorized.
