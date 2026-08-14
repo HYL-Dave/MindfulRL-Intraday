@@ -1,6 +1,6 @@
 # SA Health Truth and Typed Diagnostics Evidence
 
-> **Status:** TASK 0 COMPLETE; TASKS 1-6 BATCH EXECUTION ACTIVE;
+> **Status:** TASKS 0-1 COMPLETE; TASKS 2-6 BATCH EXECUTION ACTIVE;
 > IMPLEMENTATION NOT YET COMPLETE; NOT MERGED; NOT PUSHED
 >
 > **Date:** 2026-08-14
@@ -84,7 +84,46 @@ Task 0 packet `/tmp/sa-health-diagnostics-task0-73e5e175` contains 64 payloads.
 3a787bfee056f60e997ef888071e68575e378fc314a0b4709c166e8afee42b74
 ```
 
-## 6. Next Gate
+## 6. Task 1 - API Validation And Durable Projection
 
-Task 1 starts with the exact 11-node API/store RED at
-`4370/554dc03c...`. Any stop condition still overrides the batch ruling.
+Task 1 followed the exact 11-node RED-first ledger. The pre-product run failed
+all 11 nodes only at the absent request field, validator, durable projection,
+or bounded reader. Full collection was the predicted
+`4370/554dc03c78ff70f362fd24df4a4f562510b47597916d42c56251dcb869b85b83`;
+the exact 11-row addition stream was
+`e257bc36995ed72bfbce39c0886238c04f0de106ea0bd7664f02c45e3b8c99b5`.
+
+Product commit `ed8228cd` adds one closed validator, three server-owned
+canonical event documents, recorded/rejected/absent durable projections, and
+one read-only allowlisted 20-row reader. Legacy requests retain the exact old
+hash document without an `absent` member. Explicit malformed diagnostics retain
+the valid terminal outcome and hash only the fixed rejection marker; no raw
+rejected value reaches `job_runs`.
+
+The first product-side run found that the existing deduplication scan reused
+the local variable name prepared for a new payload. With an older row already
+present, a new event could therefore inherit the scanned row's payload. The
+implementation separated `existing_payload` from the new payload before
+admission. The legacy/new-event regression then passed and directly owns this
+failure mode.
+
+Final gates:
+
+- new API/store nodes: `11 passed`;
+- existing `tests/test_job_runs.py`: `68 passed`;
+- SA focused: `286 passed`, identity
+  `9c68d4a2fa4cce3c37b1cfa5365a92dd4de2caf835eb74d9e03b3a9413d70a7c`;
+- full collect-only: `4370/554dc03c...`, with RED and GREEN node streams
+  byte-identical; and
+- all 17 protected paths remained at their Task 0 blobs.
+
+Packet `/tmp/sa-health-diagnostics-task1-45586c03` contains 19 payloads.
+Its `SHA256SUMS` SHA-256 is
+`19d24d33ce5aa5cbe74f92139d58fe3da395f644feb05765c4dd7d75bb0d27d9`.
+No provider, live extension, production profile, network endpoint, or
+destructive operation was used.
+
+## 7. Next Gate
+
+Task 2 starts with the exact eight-node native-host RED at
+`4378/03bceb26...`. Any stop condition still overrides the batch ruling.
