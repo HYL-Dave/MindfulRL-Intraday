@@ -1,6 +1,6 @@
 # Macro Refresh and Scheduler Integration Evidence
 
-> **Status:** TASKS 0-3 COMPLETE; TASK 4 PAUSED ON HEADING-OWNER REVIEW; TASK 6 NOT AUTHORIZED
+> **Status:** TASKS 0-4 COMPLETE; TASK 5 ACTIVE; TASK 6 NOT AUTHORIZED
 >
 > **Date:** 2026-08-13
 >
@@ -323,3 +323,44 @@ Partial packet:
 `/tmp/macro-refresh-scheduler-task4-stop4-83f881a0`, `12` payloads;
 `SHA256SUMS` SHA-256
 `f26131aa40557c89e39eb5dcbb8ade4645a5317c8d15d566ea463f29db9c5cf0`.
+
+## 11. Task 4 - Macro Settings Surface And Rendered Layout
+
+Focused review returned GREEN at `6dc7b51c`. Product/tests commit `052c9134`
+lands the five Macro schedule rows, one `data_sync` group-scoped schedule
+controller, truthful three-state automation copy, local-only status reload,
+and the reviewed schedule-table layout. The two visible schedule consumers
+share one controller through the initial load and the first 30-second poll;
+leaving `data_sync` unmounts that owner.
+
+The final CSS correction changes only the source-cell selector to
+`.settings-schedule-table td.settings-schedule-source-cell`. Its four
+declarations are byte-identical to the reviewed rule. Fixture-only Chrome
+replay at `1322 x 777` and `390 x 844` proves computed
+`white-space: normal`, `overflow-wrap: anywhere`, exact
+`30/11/12/12/35` columns, wrapped long Finnhub descriptions, no source-cell
+overflow, bounded table scrolling, and zero page/main overflow or overlap.
+Every browser request was GET; no provider or production endpoint was used.
+
+Final admission:
+
+| Gate | Result |
+|---|---|
+| frontend collection | `101 files / 1,172 / d40a30d5e50690f79b644e0b25122da02441eb0cf54ab02793d02269419e23cb` |
+| frontend focused | `109/109` |
+| post-PG owner | `14/14` |
+| frontend full | `101 files / 1,172/1,172`, one sequential command |
+| static gates | typecheck `0`; build `0`; scanner `37/20/0/20` |
+| protected boundary | `826/826`, zero mismatch after excluding the two paths added to the reviewed owned set |
+| live traffic | `0`; fixture ledger contains GET only |
+
+The four reviewed stop packets remain linked in the final packet. They record
+the heading selector scope, duplicate controller ownership, stale schedule
+fixture, and rendered CSS specificity defects without treating any rejected
+run as GREEN evidence. Final packet:
+`/tmp/macro-refresh-scheduler-task4-6dc7b51c`, `33` payloads;
+`SHA256SUMS` SHA-256
+`1cf69c36ed1cb6e03777f8b9482df1d5a31e36501d141a78692cf8935b329908`.
+
+Task 5 proceeds under the batch ruling. Task 6, merge, push, and live-provider
+traffic remain unauthorized.
