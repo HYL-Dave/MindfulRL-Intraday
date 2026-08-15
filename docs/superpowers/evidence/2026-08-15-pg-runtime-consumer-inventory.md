@@ -1,7 +1,8 @@
 # PostgreSQL Runtime Consumer Inventory Evidence
 
 > **Status:** TASK 0 REVIEW GREEN; ZERO-TRACKED-RESIDUE RE-PIN REVIEW GREEN;
-> TASK 1 COMPLETE; TASK 2 ACTIVE UNDER BATCH A
+> TASK 1 LEDGER SUPERSEDED; TASK 2 STOPPED BEFORE CLASSIFICATION; TASK 1R
+> AMENDMENT REVIEW NEXT
 >
 > **Last independently reviewed execution amendment tip:**
 > `a4f45a7e87030f8abc09d0122c14b90e123b3d81`
@@ -283,3 +284,64 @@ No product/test/dependency/config byte, provider, remote database, production
 SQLite file, FastAPI lifespan, scheduler, tracked archive, private secret,
 merge, or push was touched. Task 2 classification now proceeds under Batch A
 and remains the required review stop.
+
+## Task 2 Stop - Incomplete PG Vocabulary
+
+Task 2 created only a packet-local path summarizer and no tracked
+classification authority. Before assigning any disposition, reachability,
+consumer method, CLI class, test role, or documentation status, a direct
+source-tip check found that the Task 1 scanner did not emit standalone `PG`
+or several identifier forms. The reviewed zero-residue ruling requires those
+names to enter the candidate universe; Task 2 owns their eventual
+classification.
+
+The first direct witness is
+`src/macro_calendar/__init__.py:20` at exact source tip
+`4c6b8d44ce2e768e95b822b11f618cc40f4bb9f0`: its docstring names the old `PG`
+`MacroCalendarStore`, while the 6,902-row ledger contains no candidate whose
+path is `src/macro_calendar/__init__.py`.
+
+A bounded diagnostic scanned immutable Git blobs, excluding the three
+git-crypt paths from generic plaintext inspection and skipping five tracked
+PNG files as binary. It retained only path, line, byte column, normalized word
+or bounded identifier, never surrounding source text. Against the old ledger's
+317 distinct paths it found:
+
+```text
+standalone ASCII-word PG                  2,645 hits
+standalone hits on absent candidate paths  150 hits / 54 paths
+PG identifier morphology                    551 hits
+identifier hits on absent candidate paths    50 hits / 13 paths
+semantic tracked path names                  33 hits / 0 uncovered paths
+```
+
+Examples among the missing paths include current product/test surfaces
+`src/analyst_consensus.py`, `src/api/routes/macro_calendar.py`,
+`src/macro_calendar/__init__.py`, `src/news_providers.py`,
+`tests/test_ibkr_gateway_lock.py`, `tests/test_profile_state.py`, and
+`apps/arkscope-web/src/SettingsProviderConfig.test.ts`, plus dated documents
+that the later no-tail line must delete exactly. Identifier hits also expose
+`sourcePg`, `sourcePgFallback`, `SettingsPostPgExitStorage`, and a
+`test_*_never_pg` name. Lexically similar but unrelated terms such as Unix
+`PGID` are still candidates and require explicit `lexical_non_surface`
+adjudication; opaque `package-lock.json` integrity strings are excluded from
+the identifier projection rather than misrepresented as source identifiers.
+
+This triggers hard stop 12. Commit `4a03c7ee` and packet
+`/tmp/pg-runtime-inventory-task1-4c6b8d44` remain immutable dated evidence, but
+their `6,902/dcfa6392...` ledger and candidate runtimes are superseded and
+cannot admit Task 2. Task 1R must regenerate the complete source union from the
+unchanged source tip, rerun the full expanded backend/frontend candidate
+suites, replace the ledger in a new docs-only commit, and receive focused
+review before classification resumes. This amendment does not predict the new
+counts or hashes.
+
+No product, test, dependency, configuration, provider, database, production
+SQLite, FastAPI lifespan, scheduler, secret, encrypted plaintext, archive,
+merge, push, no-tail, or CLI-retirement action occurred. The implementation
+tree remained clean before this docs-only amendment.
+
+Stop packet
+`/tmp/pg-runtime-inventory-task2-stop-pg-vocabulary-4a03c7ee` contains 26
+checksummed payloads. Its final manifest SHA-256 is reported at the focused
+review handoff rather than self-referenced from this amendment.
