@@ -2,10 +2,10 @@
 
 > **Status:** TASK 0 REVIEW GREEN; ZERO-TRACKED-RESIDUE RE-PIN REVIEW GREEN;
 > TASK 1 LEDGER SUPERSEDED; TASK 1R REVIEW GREEN; TASK 1S REVIEW GREEN; TASK 2
-> CLASSIFICATION COMPLETE - REVIEW NEXT
+> CLASSIFICATION REVIEW GREEN; TASK 3 CLOSED; TASK 4 ADMISSION ACTIVE
 >
 > **Last independently reviewed execution tip:**
-> `1e4bdd8b5f741662e35741525462fc11be17a38e`
+> `402ca66ac4d119b8574ec5c73f3e5fb2989d9fb2`
 >
 > **Current design amendment tip:**
 > `b21b7b280108d6e1eff2562a204c27501bbda075`
@@ -626,3 +626,115 @@ its `SHA256SUMS` identity is
 Task 2 now stops for the classification review required by Batch A. Task 3,
 product/no-tail work, merge, push, live access, secret/config mutation, archive
 work, and CLI retirement remain unauthorized.
+
+## Task 3 - Closed Inventory and No-Tail Handoff
+
+Independent classification review returned GREEN for Task 2 at
+`402ca66ac4d119b8574ec5c73f3e5fb2989d9fb2` and unlocked Batch B. Task 3
+generated every projection from the two canonical JSONL authorities, then ran
+a second clean generation into a separate directory. The two directories,
+readable authorities, and count summaries are byte-identical. No generated
+classification row was edited manually.
+
+### Exact generated identities
+
+The canonical sources remain candidates
+`10446/d1ab1f1a1c7001799bde2dcedcc2e4424af670e1ec1f2f38737f8a5fb671f8e9`,
+adjudications
+`10446/75c39f535b5ec9f72476e98d61cc664a95d4a1d9adc23eca787d242838ba7041`,
+and surfaces
+`478/5ad4e381d9eae04f9e1c060977290039337d853456e25079e84afd400fda2379`.
+Their generated adjudication TSV is
+`10446/57f89d9c027e0d853e8f46382906793e74679e08307bc2d47d6ab91b8a8d9009`.
+
+The exact inventory projections are:
+
+```text
+paths                         478 392ffd9bcb8f651a739d034f7192c8a317c8e798861d22a4eb2c578b093e3440
+symbols                       303 b879f27df787f448d479cd412705b560ec5dca6428718b6caabb569ed117336d
+startup/scheduler hooks        14 003770833155c4c1155c97df575de2d29ed0ab38a0ed9574f8afb1127178229b
+type checks                    20 1ea972cb8442e2d761f9916ff22c529ed74048787c6ef856d23affe4525c6a27
+dependencies                   85 b89173141cec01d85d42815c592b77c9baed98760bea95eb308be1f91d4e3809
+test relationships           1921 6ed87f786ef8103eef22735b92624113c9288113ebed327478f355b212f5e2c5
+CLI entrypoints                47 147a94bd0030524923d870de3a61ba013bdbd7b2794e34352905915cb148b264
+documentation claims          159 ebe49c85a08a6b384334b4c6bd4499b692737642b745a53bc5781b5fea667731
+consumer methods              178 609fc15c73a1f5dacc21b0a2aceb725e425c7325c9cde4665488e7359701c15f
+dispositions                  478 42c26215eabc25cd53cc853dd151d1b3ae520a241ea62259abdaa478dd1d154c
+```
+
+The 1,921 test relationships join to 1,897 unique canonical nodes, all found
+exactly once through the reviewed candidate-node map and base streams. The
+focused identity is
+`1897/57c1b5145529ae0b36f4068406c67d40a7610f5cd0b3472ec0bd9e88dfeefbf9`;
+the readable authority records its per-suite and per-file decomposition.
+
+### Closed algebra and predicted path sets
+
+All five dispositions are non-empty, pairwise disjoint, and union to all 478
+surface IDs:
+
+```text
+defer_to_legacy_agent_cli_census    2 1967f9a0a098b5192a908d1d7ef8b31f2e1d9b0068e750b33de734437fbd4a63
+retain_operator_remove_pg_branch   24 90756c34a05428291989aff49c532a0e63954333a5a500c02eddecf6231bcfcf
+retire_pg_only                    192 4009da3a7075eaa9fa674f2a260cff20fda4eb965284871e164127b26779950e
+rewrite_current_authority         242 19f71c076f0396646dfb60f83fca9e060a69404885570329bc4ecb894ed73a94
+rewrite_to_local_capability        18 82bfab5653df1612d8937866c8e016d8b38ef8793613240816c8b66d216a8c2a
+```
+
+The four predicted no-tail sets are also pairwise disjoint: delete
+`161/8f343f354e61d34f4b0fd27b04ff0ff2a849c7fc05de422035d3b2feaf067916`,
+modify
+`174/cf53aee5a8e93617b8253cfe8b9b8685e61fbc8eaeb2cb607cc8e51954f7317e`,
+add
+`1/7a7752d11fc47ec553e85e85099e24582e0ccbc610758b2381b4ca3a3b0b1e48`,
+and protected
+`22/debc51e928c3606b49e7306eac1dd5ecb8ec668039bcc2ab0a7c61f81da35d5e`.
+The only addition is the measured `LocalDataCapabilities` owner. Delete,
+modify, and protected partition all 357 tracked surface/no-PG handoff paths;
+the add path is absent from the source tree.
+
+### Independent grounding recapture
+
+A fresh frozen-source recapture reproduced backend
+`4394/b0285ee3a3d124c4bbe380ad0dea022ef09fa46b52b6a14a0375c5f2459a62fb`,
+frontend
+`1177/90f56093290c70a27369296ec8d8c7de99d084a091134994ae6451bc8e45743b`,
+routes
+`175/488231c63e8c9bb0a28a6baf5e972c959c7eeddf9cc5fa10cdffc3330bc95aea`,
+the 10,446-row candidate ledger, and the package witness byte-for-byte. The
+route cross-check again has 171 static and 171 dynamic product routes with
+zero unexplained row in either direction. The three encrypted blob identities
+remain equal to unlocked main before the separate zero-hit plaintext result
+is reused; no plaintext entered the packet.
+
+The frontend base preserves one reviewed canonical Vitest ID whose display
+name ends with one ASCII space. Fresh collection is byte-identical to the Task
+0 stream, so trimming that row would alter the admitted node identity. The
+pre-commit whitespace gate excludes only this exact generated base-stream
+file; every other changed file passes normally.
+
+The tracked inventory manifest covers 23 payloads and has SHA-256
+`dbc0a2ea96ca3867fe047a4fc8bbd6847f8cb1027caea32c17716d1c9b3d9e0c`.
+Task 3 validation reports PASS for every projection, disposition, path set,
+manifest row, and docs-only boundary.
+
+### Rejected attempts and packet boundary
+
+The first generator joined canonical frontend IDs directly to raw Vitest rows
+and was rejected before tracked output; the corrected version requires the
+reviewed `(suite, canonical_id)` mapping. One implementation-relative `cmp`
+from the frozen source tree and one mistyped packet-root suffix were also
+rejected read-only commands. A combined leak-scan command had invalid shell
+quoting and was replaced by separate literal-pattern scans. None changed an
+authority or source byte.
+
+Packet `/tmp/pg-runtime-inventory-task3-402ca66a/packet` contains 75 verified
+payloads; `SHA256SUMS` SHA-256 is
+`bae6cf74dc5e341002ba662f6e1f004584c4a651924b2f9ce3f872d916d3c350`.
+Its leak audit is clean except for the already reviewed public redaction-test
+node IDs. The source tree is clean and the implementation range has zero
+non-doc diff from `729d8514`. No test body, product/config byte, provider,
+socket, lifespan, scheduler, product database, secret value, encrypted
+plaintext artifact, archive mutation, merge, push, no-tail action, or CLI
+retirement occurred. Under the reviewed Batch B ruling, Task 4 independent
+admission now proceeds; Task 5 remains unauthorized.
