@@ -438,3 +438,31 @@ encrypted plaintext artifact, archive mutation, merge, push, no-tail action,
 or CLI retirement occurred. Task 2 remains blocked until focused Task 1R
 review is GREEN. The packet count and manifest SHA-256 are reported at that
 handoff rather than self-referenced here.
+
+## Task 2 Stop - Candidate Kind Schema Escape
+
+Focused Task 1R review returned GREEN and authorized Task 2. Before any
+classification authority was created, a closed-kind preflight found 33 rows
+whose `kind` is one of `path_semantic_camel_identifier`,
+`path_semantic_snake_prefix`, or `path_semantic_word`. Those are raw matcher
+labels, not members of the section 0.3 surface-kind vocabulary. The Task 1R
+scanner therefore contradicts both section 0.4's candidate schema and the
+amendment instruction to use the existing path-sensitive `candidate_kind`
+mapping.
+
+No candidate path is missing. The 33 matcher hits cover 22 distinct
+`(path, token)` groups; eleven documentation tokens match two path rules. A
+packet-only normalizer grouped each token's matcher names into bounded
+`match_kinds=` detail and mapped its semantic kind through the existing
+function. The prototype retains all 33 matcher observations, keeps the exact
+375-path stream byte-identical, and yields 10,446 unique rows at SHA-256
+`d1ab1f1a1c7001799bde2dcedcc2e4424af670e1ec1f2f38737f8a5fb671f8e9`.
+
+Task 1S must reproduce that result from immutable source inputs in two
+independent processes and prove the candidate path and exact backend/frontend
+node projections unchanged. Any projection drift requires full runtime
+re-execution. The committed Task 1R ledger remains unchanged pending focused
+review of this bounded amendment. No adjudication, surface, disposition,
+product/test/dependency/config edit, provider or database contact, production
+data access, secret read, archive mutation, merge, push, no-tail action, or CLI
+retirement occurred.
