@@ -1,12 +1,11 @@
 # PostgreSQL Runtime Consumer Inventory Evidence
 
-> **Status:** TASK 0 REVIEW GREEN; ZERO-TRACKED-RESIDUE RE-PIN REVIEW GREEN;
-> TASK 1 LEDGER SUPERSEDED; TASK 1R REVIEW GREEN; TASK 1S REVIEW GREEN; TASK 2
-> CLASSIFICATION REVIEW GREEN; TASK 3 CLOSED; TASK 4 INDEPENDENT ADMISSION
-> COMPLETE; COMBINED IMPLEMENTATION REVIEW NEXT; TASK 5 NOT STARTED
+> **Status:** TASKS 0-5 COMPLETE; IMPLEMENTATION REVIEW GREEN; LOCALLY
+> FAST-FORWARD MERGED AT `2b2f7fb7`; EXACT-MASTER RECONSTRUCTION COMPLETE;
+> FOCUSED CLOSEOUT REVIEW NEXT; NOT PUSHED
 >
 > **Last independently reviewed execution tip:**
-> `402ca66ac4d119b8574ec5c73f3e5fb2989d9fb2`
+> `2b2f7fb7ca18be7e923d180181311cb3f05e4c69`
 >
 > **Current design amendment tip:**
 > `b21b7b280108d6e1eff2562a204c27501bbda075`
@@ -821,3 +820,78 @@ docs-only from `729d8514`, and no authority row changed during admission.
 Tasks 0-4 are complete. This line now stops for combined implementation review.
 Task 5 merge, push, no-tail implementation planning, product/config/private
 file/archive mutation, remote access, and CLI retirement remain unauthorized.
+
+## Task 5 - Fast-Forward Merge and Exact-Master Closeout
+
+Fable's combined Tasks 3-4 implementation review returned GREEN after an
+independent byte reconstruction of the canonical projections, five-way
+partition algebra, four no-tail path sets, focused-node union, and tracked
+manifest. Before merge, local `master` was exactly
+`a1413ac4244056e819c43ce5bce90969e58c460b`, the reviewed implementation tip
+was `2b2f7fb7ca18be7e923d180181311cb3f05e4c69`, their merge base equalled the
+former, the 15-commit range contained zero merge commit, both trees were clean,
+and all 29 paths changed from design base `729d8514` were under `docs/`.
+
+Local `master` then fast-forwarded to `2b2f7fb7` without a merge commit.
+`origin/master` remained
+`e2ead4378189d277a40a61f7130730513980794e`; no push occurred.
+
+### Fresh exact-master reconstruction
+
+A new detached worktree at exact merged master and a new detached frozen-source
+worktree at `4c6b8d44ce2e768e95b822b11f618cc40f4bb9f0` reran the independently
+reviewed Task 4 tools into a new packet. Fresh collect-only/list identities are
+again backend
+`4394/b0285ee3a3d124c4bbe380ad0dea022ef09fa46b52b6a14a0375c5f2459a62fb`
+with zero test body and frontend
+`101 files/1177/90f56093290c70a27369296ec8d8c7de99d084a091134994ae6451bc8e45743b`
+with explicit Vitest `4.1.8`.
+
+Dynamic routes remain
+`175/488231c63e8c9bb0a28a6baf5e972c959c7eeddf9cc5fa10cdffc3330bc95aea`;
+171 product route rows match the static AST set and no network attempt
+occurred. Candidate recapture remains
+`10446/d1ab1f1a1c7001799bde2dcedcc2e4424af670e1ec1f2f38737f8a5fb671f8e9`.
+All 23 tracked authority payloads, all projections, all partitions, all path
+sets, focused
+`1897/57c1b5145529ae0b36f4068406c67d40a7610f5cd0b3472ec0bd9e88dfeefbf9`,
+and inventory manifest
+`dbc0a2ea96ca3867fe047a4fc8bbd6847f8cb1027caea32c17716d1c9b3d9e0c`
+are byte-identical to the reviewed tip.
+
+The frontend normalization observed by combined review is now explicit:
+`relative_path<TAB>display_name` maps to
+`apps/arkscope-web/{relative_path}::{display_name}`. All 170 canonical frontend
+test relationships map to 170 unique frontend base IDs with zero missing row.
+The later no-tail plan must use this exact mapping when consuming
+`pg_focused_base.nodes`.
+
+### Safety and packet
+
+The three encrypted blobs remain equal and the plaintext claim set remains
+empty. The private config metadata equals Task 0 without recording any value.
+The admitted safety run found zero surviving review process, production opener,
+provider request, or route-census network attempt. Both detached trees ended
+clean with empty real `data/`, no `.env`, and only the reviewed root
+`node_modules` link.
+
+One safety invocation was rejected before writing an admitted witness because
+its controlling parent shell ran from inside the exact-master worktree and was
+therefore correctly counted as a live review-worktree process. The tool and
+boundary were not weakened; the full check restarted from the packet root and
+passed. This rejected invocation is recorded in the operator notes.
+
+Packet `/tmp/pg-runtime-inventory-task5-2b2f7fb7/merged-packet` contains 104
+verified payloads. `SHA256SUMS` has SHA-256
+`436d226db2543c34232c1cf8ea0b9cdca280694a7e173d2878c5e56ee1c33d7c`.
+The leak audit scanned 103 pre-output payloads, admitted only the known public
+redaction fixtures, and reports zero violation.
+
+Tasks 0-5 are complete and the inventory is locally merged. This closeout is
+docs-only relative to the reviewed merge tip and changes no inventory
+authority byte. The line now stops for focused closeout review. Only after that
+GREEN may worktrees be removed and a separate PostgreSQL no-tail implementation
+plan consume delete `161`, modify `174`, add `1`, protected `22`, and the 18
+measured local-capability method contracts. Product edits, push, `.env`
+cleanup, archive/private/remote mutation, and CLI retirement remain outside
+Task 5.
