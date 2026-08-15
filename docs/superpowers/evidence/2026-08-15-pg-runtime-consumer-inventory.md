@@ -1,10 +1,13 @@
 # PostgreSQL Runtime Consumer Inventory Evidence
 
 > **Status:** TASK 0 REVIEW GREEN; BATCH A AUTHORIZED; TASK 1 STOPPED FOR
-> LOOPBACK-PROBE HARNESS AMENDMENT REVIEW
+> COMBINED LOOPBACK-HARNESS AND ZERO-TRACKED-RESIDUE AMENDMENT REVIEW
 >
-> **Reviewed amendment tip:**
+> **Last independently reviewed execution amendment tip:**
 > `da98626d295fe97bddb0a7a3bf478317d18e2f3f`
+>
+> **Current design amendment tip:**
+> `b21b7b280108d6e1eff2562a204c27501bbda075`
 >
 > **Product/design grounding base:**
 > `729d8514ac912b447f1892aefd3e897ea8a843b6`
@@ -148,3 +151,51 @@ Its leak audit has no home path, credential-bearing PostgreSQL URI, email, or
 non-digest long-hex finding; the one JWT-shaped string is the frozen public
 redaction-test node ID already present in the canonical backend base stream.
 The implementation and candidate-source trees remain clean.
+
+## User Scope Supersession - Zero Tracked PostgreSQL Residue
+
+The user clarified that the absent PostgreSQL service owns no current ArkScope
+capability. The final tracked tree must therefore retain no PostgreSQL-only
+code, test, dependency/config surface, comment, docstring, test name, fixture,
+Docker/SQL restore support, dump/manifest, archive/history document, or
+program-governance narrative. Mixed current files retain only local product
+behavior and remove PostgreSQL branches and historical contrast. Git history,
+not a second tracked archive workflow, is the repository record.
+
+The design was amended in two docs-only commits:
+
+```text
+379227cb94f96c1bf8bd97f64b515de62100f15e  zero tracked residue and five dispositions
+74b1aba79b26c81cab6c5616deb587d54e1eddbe  retire PG-named smoke; retain only a positive local-runtime gate if measured
+b21b7b280108d6e1eff2562a204c27501bbda075  make the later CLI census independent of retired PG inventory
+```
+
+The final amended design SHA-256 is
+`a13418721fbe1abd931d13477a204c1b30d50cec5e1785c38460a133422c3391`.
+The re-pinned inventory plan SHA-256 is
+`fa37140246a4d0e82e8347eb0de4a53db705d8dc5fc8b7d8a43857b0a90ee5f5`.
+It removes `retain_archive_asset`, `historical_reference`, and
+`archive_history`; every tracked archive/history candidate now maps to exact
+no-tail deletion, while a mixed current authority maps to bounded local-only
+rewrite. The current PG-named smoke path cannot survive closeout. Any measured
+positive startup/scheduler/dynamic-route behavior moves to a positively named
+local-runtime gate with no PG-specific comment, fixture, or negative contract.
+
+The inventory remains docs-only. Existing tracked archive/history candidates
+must stay byte-identical while being inventoried; no deletion is authorized in
+this line. The later reviewed no-tail plan must also append this program's
+post-source-tip generated design/plan/evidence/ledger paths to its closeout
+delete/modify ledger, because candidate-source freezing intentionally excluded
+self-generated authority. An untracked private dump and the three remote
+archive tables remain outside this tracked-tree operation and separately
+destructive-gated.
+
+The legacy-agent CLI census does not keep this inventory alive. It starts from
+post-no-tail master, independently re-scans surviving entrypoints, and may use
+only a neutral external-packet seed of surviving `path:symbol` identities.
+
+Task 0 and its immutable candidate-source tip remain valid because both design
+amendments are docs-only. Task 1 remains stopped. Focused review must accept
+the exact loopback interception and this schema/scope re-pin before Batch A
+resumes; no prior rejected runtime or partial candidate result becomes
+admitted evidence.
