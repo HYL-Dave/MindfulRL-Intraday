@@ -1,11 +1,11 @@
 # PostgreSQL Runtime Consumer Inventory Evidence
 
 > **Status:** TASK 0 REVIEW GREEN; ZERO-TRACKED-RESIDUE RE-PIN REVIEW GREEN;
-> TASK 1 LEDGER SUPERSEDED; TASK 1R COMPLETE - FOCUSED REVIEW NEXT; TASK 2
-> STOPPED BEFORE CLASSIFICATION
+> TASK 1 LEDGER SUPERSEDED; TASK 1R REVIEW GREEN; TASK 1S COMPLETE - FOCUSED
+> REVIEW NEXT; TASK 2 STOPPED BEFORE CLASSIFICATION
 >
 > **Last independently reviewed execution amendment tip:**
-> `a5fa97661dcfe03840ae1a1d0d67c7639eb50fdd`
+> `d21be01324d4a105cb5dc30de4161576f585a7f9`
 >
 > **Current design amendment tip:**
 > `b21b7b280108d6e1eff2562a204c27501bbda075`
@@ -466,3 +466,56 @@ review of this bounded amendment. No adjudication, surface, disposition,
 product/test/dependency/config edit, provider or database contact, production
 data access, secret read, archive mutation, merge, push, no-tail action, or CLI
 retirement occurred.
+
+## Task 1S - Closed Candidate-Kind Normalization
+
+Focused review accepted amendment `d21be013` and authorized only Task 1S. A
+fresh detached ciphertext worktree at immutable source tip
+`4c6b8d44ce2e768e95b822b11f618cc40f4bb9f0` supplied all tracked plaintext
+blobs except the three reviewed git-crypt paths, whose prior independent
+plaintext scan remains zero-candidate and whose source-tip blobs were not
+changed.
+
+Two independent scanners rebuilt the generic text source without importing
+one another's scanner or canonical writer. Their raw text-hit, 33-row semantic
+path-hit, binary-skip, and final text-candidate streams are byte-identical. The
+normalized text source contains 7,211 rows at SHA-256
+`35d83a2495f8162c353d870e36928a82020a45de1afaccb23927a69cb982f6b1`.
+All 33 semantic matcher observations are represented by 22 canonical rows;
+overlapping matcher names are sorted inside bounded `match_kinds=` detail and
+every candidate `kind` belongs to the section 0.3 closed vocabulary.
+
+Two independent union writers then joined the unchanged AST, CLI, route,
+encrypted, metadata, and test sources with the normalized text source. Their
+candidate JSONL, pairwise report, and summary are byte-identical. The admitted
+ledger is 10,446 rows at SHA-256
+`d1ab1f1a1c7001799bde2dcedcc2e4424af670e1ec1f2f38737f8a5fb671f8e9`:
+
+```text
+archive_manifest       16
+ast                  1200
+cli_registry           47
+documentation         272
+dynamic_route            2
+environment_metadata     2
+package_manifest          2
+test_collection        1966
+text_search            6939
+```
+
+The old and normalized ledgers both project exactly 375 candidate paths, and
+those path streams are byte-identical. Re-running the structured test
+projection produced byte-identical Task 1R artifacts for all six owning
+streams: 74 backend files, 11 frontend files, 1,796 backend exact nodes, 170
+frontend exact nodes, the complete node map, and `test_candidates.jsonl`.
+Under the reviewed amendment this exact equality admits the prior fail-closed
+runtime outcomes without executing test bodies again. Any projection drift
+would instead have required the full candidate runtimes.
+
+The detached source worktree remained clean and was removed. No adjudication,
+surface, disposition, product/test/dependency/config edit, runtime test,
+provider or database contact, production data access, secret read, encrypted
+plaintext artifact, archive mutation, merge, push, no-tail action, or CLI
+retirement occurred. Task 2 remains blocked until focused Task 1S review is
+GREEN. Packet count and manifest SHA-256 are reported at that handoff rather
+than self-referenced here.
