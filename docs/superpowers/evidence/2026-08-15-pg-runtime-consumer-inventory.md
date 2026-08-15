@@ -1,11 +1,11 @@
 # PostgreSQL Runtime Consumer Inventory Evidence
 
 > **Status:** TASK 0 REVIEW GREEN; ZERO-TRACKED-RESIDUE RE-PIN REVIEW GREEN;
-> TASK 1 LEDGER SUPERSEDED; TASK 2 STOPPED BEFORE CLASSIFICATION; TASK 1R
-> AMENDMENT REVIEW NEXT
+> TASK 1 LEDGER SUPERSEDED; TASK 1R COMPLETE - FOCUSED REVIEW NEXT; TASK 2
+> STOPPED BEFORE CLASSIFICATION
 >
 > **Last independently reviewed execution amendment tip:**
-> `a4f45a7e87030f8abc09d0122c14b90e123b3d81`
+> `a5fa97661dcfe03840ae1a1d0d67c7639eb50fdd`
 >
 > **Current design amendment tip:**
 > `b21b7b280108d6e1eff2562a204c27501bbda075`
@@ -345,3 +345,96 @@ Stop packet
 `/tmp/pg-runtime-inventory-task2-stop-pg-vocabulary-4a03c7ee` contains 26
 checksummed payloads. Its final manifest SHA-256 is reported at the focused
 review handoff rather than self-referenced from this amendment.
+
+## Task 1R - Complete PostgreSQL Vocabulary
+
+Focused review accepted amendment `a5fa9766` and authorized only a complete
+Task 1 rebuild. The corrected run recreated a detached, no-op-git-crypt source
+worktree at unchanged
+`4c6b8d44ce2e768e95b822b11f618cc40f4bb9f0`; it did not consume the old
+6,902-row ledger as an expectation. Fresh collect-only streams reproduce
+backend `4,394/b0285ee3...` with zero test body seen and frontend
+`101 files/1,177/90f56093...` through the explicit local Vitest 4.1.8 binary.
+
+### Corrected candidate closure
+
+The original fixed-term projection is unchanged at 3,721 text hits. The new
+bounded projections add 2,645 standalone ASCII-word `PG` hits, 551 identifier
+hits, and 33 semantic path hits. The identifier pass admits suffix and
+case-bound forms such as `sourcePg`, `SettingsPostPgExitStorage`, `never_pg`,
+and `PGID`, while rejecting unrelated `UPGRADE`. `package-lock.json` integrity
+values are excluded only from identifier morphology; its structured package
+projection and original fixed PostgreSQL terms remain active. Exactly five
+named PNG files are non-text skips.
+
+An independent immutable-blob closure scan finds zero unrepresented hit in
+all three projections:
+
+```text
+standalone ASCII-word PG  2,645 hits / 0 missing
+identifier morphology       551 hits / 0 missing
+semantic tracked paths       33 hits / 0 missing
+```
+
+The first previous miss, `src/macro_calendar/__init__.py`, is now represented.
+The generic scanner still excludes the three git-crypt paths. Their source-tip
+and unlocked-main tracked blobs were proved equal before a separate plaintext
+scan; it produced zero candidate and retained no plaintext.
+
+The corrected ledger contains 10,457 globally byte-sorted unique rows at
+SHA-256
+`c2823842b471f1b0f32388a7844b84e4e3ccae27477ecd13de1d9574103f2f82`:
+
+```text
+archive_manifest       16
+ast                  1200
+cli_registry           47
+documentation         272
+dynamic_route            2
+environment_metadata     2
+package_manifest          2
+test_collection        1966
+text_search            6950
+```
+
+Two independent processes rebuilt the text projection and final union
+byte-for-byte. All seven canonical raw source files remain pairwise disjoint.
+AST `1,200`, CLI `47`, metadata `20`, dynamic route `2`, and the sanitized
+package witness are byte-identical to the superseded attempt. The route
+witness remains 175 rows, with static and dynamic product projections both
+171 and no unexplained row in either direction.
+
+### Expanded runtime projection
+
+The corrected union projects 74 backend files with 1,796 nodes and 11 frontend
+files with 170 nodes. The exact loopback node first passed in a fresh process
+with one pre-operating-system refusal and no real socket call. The complete
+backend run then produced `1,768 passed / 28 skipped / 0 failed`; its 1,796
+runtime IDs equal the expected projection byte-for-byte, with exactly the one
+reviewed loopback refusal and zero unexpected socket attempt. The complete
+sequential frontend run produced `170 passed / 0 nonpassing`; its IDs likewise
+equal the expected projection. The Node preload guard loaded in 12 processes
+and recorded zero blocked network attempt. No delta-only runtime was used.
+
+### Cleanup and boundary
+
+The source run generated 493 ignored cache/test files and the isolated runtime
+roots generated four files. Both sets were recorded by relative path, size,
+and SHA-256 before exact removal. The source tree had no tracked delta, the
+root Node link and empty data root were removed, and the detached worktree was
+then removed. One rejected pytest-plugin invocation occurred before collection;
+because its traceback contained a local environment path, only its digest and
+bounded operator note remain. A candidate-ID collision caught by the first
+path projection was a packet-tool defect; no canonical file was written, the
+matcher kind was added to the path candidate identity, and the entire source
+was regenerated twice. An orchestration yield while pytest was still live was
+verified by process inspection; the original process completed and supplied
+the admitted full report rather than a partial or split result.
+
+The packet leak audit reports zero home path, main-tree path, credential-bearing
+PostgreSQL URI, or email. No product/test/dependency/config byte, provider,
+remote database, production SQLite file, FastAPI lifespan, scheduler, secret,
+encrypted plaintext artifact, archive mutation, merge, push, no-tail action,
+or CLI retirement occurred. Task 2 remains blocked until focused Task 1R
+review is GREEN. The packet count and manifest SHA-256 are reported at that
+handoff rather than self-referenced here.
