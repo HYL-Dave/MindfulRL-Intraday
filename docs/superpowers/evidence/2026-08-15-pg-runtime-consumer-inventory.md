@@ -1,6 +1,7 @@
 # PostgreSQL Runtime Consumer Inventory Evidence
 
-> **Status:** TASK 0 COMPLETE; INDEPENDENT REVIEW NEXT; TASK 1 NOT STARTED
+> **Status:** TASK 0 REVIEW GREEN; BATCH A AUTHORIZED; TASK 1 STOPPED FOR
+> LOOPBACK-PROBE HARNESS AMENDMENT REVIEW
 >
 > **Reviewed amendment tip:**
 > `da98626d295fe97bddb0a7a3bf478317d18e2f3f`
@@ -102,6 +103,48 @@ encrypted plaintext read into evidence, or product write ran. Packet
 `1b53c95c1124877598f3272ae2606a5e9a9de7b26634b928b81217e5ede6df4e`.
 
 The commit carrying this evidence is the immutable `CANDIDATE_SOURCE_TIP` for
-Task 1; its resolved commit ID is reported at the review handoff. Under the
-default per-task ruling, Task 1 remains unauthorized until independent Task 0
-review is GREEN.
+Task 1; its resolved commit ID is reported at the review handoff. At that
+commit, Task 1 remained unauthorized pending independent Task 0 review; the
+subsequent GREEN and batch ruling are recorded below.
+
+## Task 1 - Partial Candidate Extraction and Harness Stop
+
+Independent Task 0 review returned GREEN and byte-compared both base streams
+to the reviewer's independently collected copies. The user authorized Batch A
+(Tasks 1-2, then classification review) and Batch B (Tasks 3-4, then combined
+inventory review), without relaxing per-task commits/packets or any hard stop.
+
+Task 1 scanners ran only against detached exact candidate source
+`4c6b8d44ce2e768e95b822b11f618cc40f4bb9f0`. Raw candidate collection and
+cross-checking had reached the test-outcome gate; no canonical tracked
+`candidates.jsonl` or classification file was created. Two temporary-tool
+errors were rejected before admission: zero-node command scripts were first
+mistaken for pytest runtime files, and a pytest hook used a non-spec argument
+name. The corrected projection preserves those command paths as raw CLI/text
+candidates while selecting 64 backend runtime files solely from the 1,553
+actual base-stream node IDs.
+
+The complete backend candidate run produced `1,525 passed / 28 skipped`, but
+is rejected because its guard recorded one socket attempt. Exact-node replay
+proved the sole caller was
+`tests/test_data_scheduler.py::test_pg_reachable_probe_is_bounded`, whose
+existing contract deliberately probes local `127.0.0.1:9`. The guard raised
+before the operating-system call and recorded zero actual network traffic.
+The reviewed plan nevertheless had no named exception, so Task 1 stopped
+before frontend runtime, candidate union, commit, or Task 2.
+
+The bounded amendment admits only a pre-OS guard interception for that exact
+node, operation, loopback target, port, and timeout, recorded as
+`socket_guarded_loopback_refusal`. Every other socket guard hit remains a hard
+stop. Resume must rerun both the exact node and the entire backend candidate
+runtime; the rejected result is not reusable. No product, test, dependency,
+configuration, secret, provider, database, lifespan, scheduler, or archive
+action occurred.
+
+Partial packet `/tmp/pg-runtime-inventory-task1-4c6b8d44` has 50 checksummed
+payloads and manifest SHA-256
+`f54d8ef505b7cd19a58886e0a16e75c277770c0f7172686cae2cafa3e38c39d1`.
+Its leak audit has no home path, credential-bearing PostgreSQL URI, email, or
+non-digest long-hex finding; the one JWT-shaped string is the frozen public
+redaction-test node ID already present in the canonical backend base stream.
+The implementation and candidate-source trees remain clean.
