@@ -1,10 +1,10 @@
 # PostgreSQL Runtime Consumer Inventory Evidence
 
-> **Status:** TASK 0 REVIEW GREEN; BATCH A AUTHORIZED; TASK 1 STOPPED FOR
-> COMBINED LOOPBACK-HARNESS AND ZERO-TRACKED-RESIDUE AMENDMENT REVIEW
+> **Status:** TASK 0 REVIEW GREEN; ZERO-TRACKED-RESIDUE RE-PIN REVIEW GREEN;
+> TASK 1 COMPLETE; TASK 2 ACTIVE UNDER BATCH A
 >
 > **Last independently reviewed execution amendment tip:**
-> `da98626d295fe97bddb0a7a3bf478317d18e2f3f`
+> `a4f45a7e87030f8abc09d0122c14b90e123b3d81`
 >
 > **Current design amendment tip:**
 > `b21b7b280108d6e1eff2562a204c27501bbda075`
@@ -199,3 +199,87 @@ amendments are docs-only. Task 1 remains stopped. Focused review must accept
 the exact loopback interception and this schema/scope re-pin before Batch A
 resumes; no prior rejected runtime or partial candidate result becomes
 admitted evidence.
+
+## Task 1 - Complete Candidate Universe
+
+Independent review returned GREEN for `4c6b8d44..a4f45a7e`, including the
+exact loopback interception and the zero-tracked-residue re-pin. Batch A then
+resumed from the backend runtime gate. No rejected pre-review runtime was
+reused.
+
+### Runtime outcomes
+
+The exact loopback node passed in a fresh process with exactly one guarded
+`socket.create_connection(("127.0.0.1", 9), timeout=1.0)` refusal, no operating
+system socket call, and no unexpected guard hit. A second fresh process ran
+the complete 64-file backend candidate set: `1,525 passed / 28 skipped / 0
+failed`. Its 1,553 outcome IDs are byte-identical to the backend candidate
+projection at SHA-256
+`ce487d2ad37d05983925664d4774901b557379df4a7e29244635c72c92a5d5ef`.
+The only allowed interception is the reviewed node; all other socket attempt
+counts are zero.
+
+The frontend used the pinned root binary `vitest/4.1.8`, with no `npx`, package
+manager, install, or download fallback. The ten candidate files ran
+sequentially and produced `126 passed / 0 skipped / 0 failed`. Normalized
+runtime IDs are byte-identical to the frontend candidate projection at
+SHA-256
+`7ffa4e8129a50bf7ddac45c06263757cacc23df4dcfddb4678e54fc8fb76c256`.
+A packet-only Node preload guard loaded in 11 processes and recorded zero
+blocked network attempts; unmocked `fetch`, TCP, or UDP would have failed
+before an external request.
+
+### Candidate closure
+
+The dynamic route witness remains 175 rows at
+`488231c63e8c9bb0a28a6baf5e972c959c7eeddf9cc5fa10cdffc3330bc95aea`.
+Static and dynamic product projections each contain 171 route/method rows,
+with 25 mounted router modules and zero unexplained row on either side. The
+sanitized package witness remains byte-identical to Task 0. The three
+git-crypt paths produced zero PostgreSQL plaintext candidate, after their
+base/main blob equality had already been established.
+
+The committed unclassified ledger contains 6,902 unique rows at SHA-256
+`dcfa639236a64dbe23dcd537471c0cc050c0fdc378ea6dba63bff7661e546e1d`:
+
+```text
+archive_manifest       16
+ast                  1200
+cli_registry           47
+documentation         233
+dynamic_route            2
+environment_metadata     2
+package_manifest          2
+test_collection        1679
+text_search            3721
+```
+
+Seven canonical raw source files have pairwise-zero candidate-ID overlap. A
+second process rebuilt the ledger, source summary, and all 21 pairwise rows
+byte-for-byte. The raw source counts and SHA-256 values are in
+`candidate_union_summary.json`; classification has not yet begun.
+
+### Cleanup, rejected attempts, and boundary
+
+The candidate runtime generated 320 ignored cache/test files in the detached
+source worktree and three files in isolated packet runtime roots. Their
+path/size/SHA manifests are respectively
+`ade195af795d8ba0dddd86298e1caf4cc6eec5916541d4646900042d93163a0d` and
+`524400fa30e5b2b32076752889b219eed38478b566287a23150336b1682d5aec`.
+They were removed only after manifesting; the candidate source had no tracked
+delta, its real `data/` root was empty again, and the detached worktree was
+removed.
+
+Four bounded operator attempts are rejected and recorded: a command-policy
+rejection before pytest started, an unsupported Vitest option before test
+collection, a wrong-column frontend projection rejected by `cmp`, and a
+missing output redirection in the first cleanup-manifest loop. None changed a
+candidate, source byte, test body, or admitted outcome.
+
+Packet `/tmp/pg-runtime-inventory-task1-4c6b8d44` contains 77 checksummed
+payloads; `SHA256SUMS` SHA-256 is
+`8fde44271a2cfda261a2c2afe5ba569a8cec80747af7ba480a7945feadcbfc90`.
+No product/test/dependency/config byte, provider, remote database, production
+SQLite file, FastAPI lifespan, scheduler, tracked archive, private secret,
+merge, or push was touched. Task 2 classification now proceeds under Batch A
+and remains the required review stop.
