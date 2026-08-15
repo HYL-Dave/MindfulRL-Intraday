@@ -1,7 +1,7 @@
 # Settings Schedule Surface Ownership Evidence
 
-> **Status:** TASKS 0-3 COMPLETE; INDEPENDENT IMPLEMENTATION REVIEW NEXT;
-> NOT MERGED
+> **Status:** TASKS 0-4 COMPLETE; LOCALLY MERGED AT `6ea04e9a`;
+> FOCUSED CLOSEOUT REVIEW NEXT; NOT PUSHED
 >
 > **Reviewed plan tip:** `590ce355ae3f296e666a5dbcabd5b3694d7633a1`
 >
@@ -212,3 +212,65 @@ Packet: `/tmp/schedule-surface-ownership-task3-f7105482`, 108 payloads,
 all entries verify. Tasks 0-3 are complete. Independent implementation review
 is the only next gate; Task 4, merge, push, live/provider traffic, and
 production mutation remain unauthorized.
+
+## Task 4 - Fast-Forward Merge and Exact-Master Closeout
+
+Independent implementation review returned GREEN and explicitly authorized
+Task 4. Local `master` was clean and still exactly at reviewed base
+`e2ead4378189d277a40a61f7130730513980794e`; that base was the merge base and
+an ancestor of reviewed tip `6ea04e9a14d83991c62ced0822f3ba5297a21b38`.
+`git merge --ff-only codex/schedule-surface-ownership` moved master directly to
+that tip. The range contains ten linear commits and zero merge commits. Origin
+remains unchanged at `e2ead437`; no push occurred.
+
+The first fresh detached checkout was rejected at the known locked git-crypt
+smudge boundary and left neither a registration nor target directory. The
+admitted retry used command-local no-op clean/smudge filters, retained tracked
+ciphertext bytes, and changed no repository or global Git configuration.
+
+Fresh exact-master verification reproduced all reviewed identities:
+
+- frontend: `101 files / 1177 /
+  90f56093290c70a27369296ec8d8c7de99d084a091134994ae6451bc8e45743b`;
+- focused: `127 /
+  0d6eb25864d2c0a7a5ee76a9d05dacbc45e232106e62461a043b3d7196aac644`;
+- Settings: `249 /
+  ee6618dfc755f5ead79f6012967d3dda2c7a33f37ef87f62c5f98deff0f6c5cf`;
+  and
+- backend collect-only: `4394 /
+  b0285ee3a3d124c4bbe380ad0dea022ef09fa46b52b6a14a0375c5f2459a62fb`.
+
+Runtime passed focused `127/127`, Settings `249/249`, and one sequential full
+command `1177/1177` across 101 files. Typecheck and build exited zero; the i18n
+scanner returned `37/20/0/20`. Protected paths remain `13/13` at aggregate
+`b3b3ac3f2151d34bf3ce0e15a772ebb0a655e46fe63a43eccae142d4208602a1`.
+All six structural/retirement census artifacts are byte-identical to Task 3;
+Python delta, merge-commit list, and reviewed-tip-to-master delta are empty.
+The complete base-to-master changed-path list is byte-identical to the reviewed
+eleven product/test plus four governance paths.
+
+The hermetic browser matrix passed again at `1322x777` and `390x844`, in zh-TW
+and en. Rendered facts, geometry, disjoint `5+5` partitions, exact idle
+schedule-GET count, and all writes match the reviewed semantic contract at
+SHA-256
+`4ee53b6da667efaec64ff4d88a9316599b512d6f73ca3d8aee4b02a66053b9f3`.
+There are exactly two POSTs, one explicit Run click per viewport, and zero
+automatic POSTs, external traffic, errors, overlap, or page overflow. Raw
+results honestly differ only because mobile focus issued two legal GETs in
+Task 4 versus one in Task 3; exact focus GET count is not a plan contract. All
+four screenshots were inspected at original resolution.
+
+Rejected evidence preserves the initial git-crypt checkout, one malformed
+shell census command, two projection-shape corrections, and the over-strict
+raw browser byte-equality projection. None changed a product byte. The
+admitted exact-master worktree was restored clean after removing temporary
+node-module links, build output, empty data root, Chrome profiles, Vite, and
+port `8475`; it remains registered only for closeout review.
+
+Packet: `/tmp/schedule-surface-ownership-task4-master-6ea04e9a`, 58 payloads,
+`SHA256SUMS` SHA-256
+`7dd5376e4e4cc90bfdd559b340bd89ab35e0b103a755076ac637cd23d0e2c405`;
+all entries verify. This closeout changes documentation only. Focused closeout
+review is the sole next gate; the implementation branch/worktree remain until
+GREEN. Push, live/provider traffic, production mutation, and unrelated cleanup
+remain unauthorized.
