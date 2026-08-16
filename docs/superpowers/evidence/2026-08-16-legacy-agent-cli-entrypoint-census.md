@@ -1,7 +1,7 @@
 # Legacy-Agent CLI and Entrypoint Census Evidence
 
-> **Status:** TASK 0 COMPLETE; INDEPENDENT TASK 0 REVIEW NEXT; TASKS 1-4
-> NOT AUTHORIZED; NOT MERGED; NOT PUSHED
+> **Status:** TASK 0 REVIEWED GREEN; TASK 1 COMPLETE; INDEPENDENT TASK 1
+> REVIEW NEXT; TASKS 2-4 NOT AUTHORIZED; NOT MERGED; NOT PUSHED
 >
 > **Product/candidate source:**
 > `241ccdba6dc7c2cf1b162dd254ada88f25b6a9b0`
@@ -112,7 +112,83 @@ decision. This is decision context for Task 2 recommendations, not a Task 0
 classification or retirement authorization. CLI wrappers, Discord, skills,
 operator commands, and shared capabilities remain unclassified.
 
-Task 0 now stops for independent review. Task 1 candidate extraction, product
-or test edits, retirement, Track B/skill/Discord policy, merge, push, live
-commands, provider traffic, secret handling, and destructive operations remain
-unauthorized.
+Task 0 passed independent review. Task 1 was then authorized as the next
+docs-only census stage.
+
+## Task 1 - Raw candidate universe
+
+The accepted packet is
+`/tmp/legacy-agent-cli-census-task1-dd210d65`. It contains 69 manifested
+payloads. `SHA256SUMS` has SHA-256
+`a98d9f4b7be8d6595a5b4ccb4d7168c2d12e62d466056e594ab8d52434be6786`;
+every entry verifies.
+
+Two independent static extractor processes read the clean detached source
+worktree at `241ccdba` and produced byte-identical output files. The canonical
+raw stream contains 295 candidates across 14 source families and 90 paths,
+SHA-256
+`ed539ba7bef49350986a296cd2c134ecb75933e6f0344236c23e0507a401ed48`.
+No product module was imported or executed.
+
+```text
+browser_manifest                    20  b7d6afe635847d7bd5bf74f983b905ae92aeb6fd832009463826d62c28e20587
+desktop_manifest                     1  3e4c999b7b7ea5cf12cfa480acf9ab13f92c69892ad53224d2754e73eb7fe790
+documented_command                  52  659c181484c65936a8f4e524b4c4255b7ea8dc444746df49614db50e75eecbfe
+file_executable_mode                 2  144aed1cbaf76dbfb6ced8efc2f80c1acd3eef263f36dde8cf1c60bfffb26928
+file_shebang                        15  965d33af79afef76596e7280cdfd854763e9b43d32081e877df76d161eb05cdd
+generated_native_manifest_contract   6  f3f818b639b2a988ce4fc9520c86423fd42203a5a642c2bfd2c6358d7933c40e
+javascript_subprocess_target         3  058234a115b5295fd22870eb9a4755090b55c7f18f3dadf12a5440782eebeaae
+npm_script                          12  e4029dceaf0e016556575b2351d706d6880bdc9774b6041f48e80d2949ce5e69
+python_main_guard                   19  49a5aa8aa7ad852430ce8380fea0df0827605d390af26fd08b075fa0da9b3852
+python_module_wrapper                2  2d84510018a37e8c033c984244e3d101139166c68c2b6e9e21550a659e2149c1
+python_parser                       10  ce5560bff4fc7ab9bba53ad027777180a850eebf2e9ccde827f9b6fd628f791f
+python_subprocess_target            14  fa7a1a5c3b4b9d5b0b4c35f59571c67ce3cdde107140f7ec1fdfc0f94c3a84b8
+shell_path                           4  2ba21767a5bddf77e020510804df814747b118b21b78d424ef679a019a418118
+test_consumer                      135  6057505bc4d81e1623373c9fb56be91a51325d5cf6e3976fe162e9ad867f0d8e
+```
+
+The 135 test observations cover 32 files and join to 450 exact canonical test
+IDs, SHA-256
+`cf1c16316f0152ece67b38fc23d55e01c30044cc27bdb53fb9a886d3c7baf295`.
+Helper- and fixture-scoped observations follow same-file static reachability;
+they are not assigned to every test in a file. A discriminating synthetic
+contract reduced the CLI overflow helper's import from 39 false file-wide joins
+to its four actual callers. Task 2 still owns final exact capability test
+ownership; these raw joins are grounded search inputs, not dispositions.
+
+All 13 reconstructable literal/floor streams plus the capability and protected
+baselines pass the independent validator. The candidate universe contains 47
+explicit overlap groups. Seven unresolved dynamic launches remain present at
+`dc5ceadba15ee28e47961705fe1909642e9fc984318da0612c149cf940e8049b`;
+Task 2 must trace or stop on each rather than treating it as absent.
+
+## Extractor verification and safety
+
+Thirteen synthetic extractor contracts pass. Twelve branch mutations are each
+killed by their named owner. The additional contract distinguishes a helper's
+real callers from unrelated tests in the same file. Both full scanner runs,
+their family summaries, joins, overlaps, dynamics, source coverage, encrypted
+minimization records, and validation reports compare byte-for-byte.
+
+Six pre-admission generations were rejected for broad aliases, namespace
+prefix matching, missing global/local command resolution, an unresolved
+starred tail, file-wide helper joins, or copying a private absolute shebang.
+Only bounded count/hash receipts enter the admitted packet. Raw rejected output
+was quarantined outside it because it contained the private source shebang. The
+accepted row records only `python3` and a `private_absolute_redacted` marker.
+
+The final leak audit reports zero private path, email, provider credential,
+database URI, or non-fixture token matches. The one JWT-shaped value is only
+the already pinned synthetic redaction-test node ID in the canonical backend
+collection. The source, implementation parent, and main worktrees were clean;
+`master` remained `241ccdba`, origin remained `e2ead437`, the 942 protected
+rows stayed byte-identical, no product/test byte changed, and no census, CLI,
+Discord, provider, or app process remained.
+
+## Next gate
+
+Task 1 stops for independent review. Task 2 classification, canonical tracked
+inventory creation, recommendations, CLI/Discord/skill/operator disposition,
+product or test edits, retirement, merge, push, live commands, provider
+traffic, secret handling, and destructive operations remain unauthorized. The
+MCP/HTTP model-callable-interface direction remains recommendation context only.
