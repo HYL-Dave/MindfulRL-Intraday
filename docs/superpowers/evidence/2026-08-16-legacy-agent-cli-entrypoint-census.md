@@ -1,7 +1,7 @@
 # Legacy-Agent CLI and Entrypoint Census Evidence
 
-> **Status:** TASKS 0-1 REVIEWED GREEN; TASK 2 COMPLETE; INDEPENDENT
-> CLASSIFICATION REVIEW NEXT; TASKS 3-4 NOT AUTHORIZED; NOT MERGED; NOT PUSHED
+> **Status:** TASKS 0-2 REVIEWED GREEN; TASK 3 COMPLETE; COMBINED
+> IMPLEMENTATION REVIEW NEXT; TASK 4 NOT AUTHORIZED; NOT MERGED; NOT PUSHED
 >
 > **Product/candidate source:**
 > `241ccdba6dc7c2cf1b162dd254ada88f25b6a9b0`
@@ -298,11 +298,52 @@ The accepted Task 2 packet is
 payloads and its `SHA256SUMS` has SHA-256
 `3a39409781eb10b15f77ebcbfea5ddd4105cbf10a5f2c99bcca8d563b961d42b`.
 
+## Task 3 - Independent reconstruction and census admission
+
+Independent Task 2 classification review returned GREEN and unlocked Task 3.
+Two fresh detached worktrees at source `241ccdba` and Task 2 tip `f4830024`
+were inspected with a new packet-local scanner, closure validator, and
+projection generator written from the reviewed plan. The implementation did
+not copy or import the Task 1-2 executor tools; those tools ran only as a
+secondary validator control.
+
+Both independent generations are byte-identical. They reproduce the 295 raw
+candidates, every family/overlap/dynamic/test-join stream, all seven tracked
+machine authorities, the 80-entry human-summary count table, the authority
+manifest, and the 942-row protected aggregate. All 17 direct comparisons to
+Task 1-2 authority are byte-identical. The reconstructed classification remains
+80 entrypoints, 244 consumers, 42 capabilities, 499 exact test relations, 32
+current invocations, and 20 exclusions. Fourteen independent mutations and the
+31-mutation executor control are all killed.
+
+Fresh collect-only discovery reproduces backend
+`4278/ecafdab7a1cee8d6f64dd6763f017d2ef15dd414b80065950f949d8b471a09ce`
+with `seen=0`, `nonpassing=0`, exit zero, zero socket attempts, and zero
+dangerous-module import attempts. Explicit root-hoisted Vitest 4.1.8 reproduces
+frontend `101 files/1177/c570a551b64ed95155c02f83499e78eb3409f2cba66ea9d46862dffad0ea239b`.
+Seven dynamic launch candidates each resolve to one canonical row, and the
+28-item capability floor plus nine additions are all present.
+
+Safety admission reports zero CLI/Discord/product/test/provider/browser/
+scheduler/store execution, zero credential reads, zero remaining census
+processes, clean source/Task 2/main trees, and unchanged main tip `241ccdba`.
+The complete packet/tracked-artifact leak audit has zero private path, database
+URI, private environment value, or credentialed-URL matches. Its only token
+matches are the exact three existing synthetic redaction fixtures repeated in
+the three collect-only backend artifacts; the one email-shaped value is the
+public native-host identifier already documented in the priority map.
+
+The accepted Task 3 packet is
+`/tmp/legacy-agent-cli-census-task3-f4830024`; it contains 69 manifested
+payloads and its `SHA256SUMS` has SHA-256
+`e7f0b45a739f681023b95c4fd20e0df3d5964d96663bd3762764747d80b90efe`. Rejected packet-tool iterations are recorded in
+`admission/operator-notes.md`; none is used as admission evidence.
+
 ## Next gate
 
-Task 2 stops for independent classification review. Fable reviews both
-mechanical closure and judgment quality, especially operator protection,
-Discord liveness, exact App-equivalence owners, wrapper/shared-code separation,
-and decision gates. Task 3 independent reconstruction, Task 4 merge, product or
-test edits, retirement planning, push, live commands, provider traffic, secret
-handling, and destructive operations remain unauthorized.
+Tasks 0-3 now stop for combined independent implementation review. Fable
+reconstructs the packet and judges classification quality, especially operator
+protection, Discord liveness, CLI symbol ownership, App equivalence, side
+effects, and recommendation gates. Task 4 merge, product or test edits,
+retirement planning, push, live commands, provider traffic, secret handling,
+and destructive operations remain unauthorized.
