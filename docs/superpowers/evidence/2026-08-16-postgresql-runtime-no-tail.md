@@ -1,6 +1,7 @@
 # PostgreSQL Runtime No-Tail Evidence
 
-> **Status:** TASK 0 COMPLETE; USER-AUTHORIZED BATCH A TASK 1 ACTIVE;
+> **Status:** TASK 0 COMPLETE; TASK 1 STOPPED AT A SHARED-FIXTURE SCOPE GAP;
+> BOUNDED AMENDMENT AWAITS FOCUSED REVIEW;
 > TASKS 2-7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT
 > AUTHORIZED
 >
@@ -114,3 +115,36 @@ Tasks 2-5 only after that review returns GREEN. Per-task commits and packets,
 RED-first execution, every hard stop, Task 6 combined review, and Task 7 merge
 authorization remain unchanged. This ruling does not authorize push, live
 traffic, production/private/remote mutation, or legacy-agent CLI retirement.
+
+## 7. Task 1 shared-fixture stop
+
+Task 1 established its five RED contracts, implemented the direct local
+composition far enough for those five nodes to pass, and recollected the
+exact planned `4,382 / c7b9a77a...` stream with zero test bodies seen. The
+first native 444-node owner run then reported `438 passed / 1 skipped / 5
+failed`.
+
+Four failures are already within the reviewed edit ceiling. The fifth is
+`TestNewsTools::test_search_news_by_keyword`: its shared
+`_HermeticMarketBackend` lacks the now-direct `query_news_search` method, but
+that helper is absent from every Section 0.7a stream. Adding a product
+method-presence fallback would violate the local-capability design, so stop
+condition 19 was applied. Product and test edits remain uncommitted.
+
+The same run exposed an evidence-boundary failure: the stale SEC-cache fake
+raised at the newly direct cache call and the test reached the real SEC
+fallback, returning current AAPL data. This unplanned read-only request is
+rejected evidence. No further provider-capable runtime command is authorized;
+the bounded amendment requires socket-guarded replay after the local cache
+fixture is corrected.
+
+One sandboxed FastAPI/AnyIO owner stalled on both unchanged merged-master and
+Task 1 bytes, while the Task 1 node passed natively. That transcript is
+retained as rejected environment evidence rather than being attributed to
+product code.
+
+Partial Task 1 packet:
+`/tmp/arkscope-pg-no-tail-task1-d4677c3d`. It contains the exact collection
+stream, pre-amendment owner transcript and exit status, uncommitted product
+patch, and rejected sandbox stack. Task 1 may resume only after focused review
+accepts Section 0.7b; Tasks 2-7 remain unauthorized.
