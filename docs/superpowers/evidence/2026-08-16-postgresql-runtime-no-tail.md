@@ -1,11 +1,10 @@
 # PostgreSQL Runtime No-Tail Evidence
 
-> **Status:** TASK 0 COMPLETE; TASK 1 STOPPED AT AN INTERMEDIATE-RUNTIME /
-> FIXTURE-CEILING GAP; SECOND BOUNDED AMENDMENT AWAITS FOCUSED REVIEW;
-> TASKS 2-7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT
-> AUTHORIZED
+> **Status:** TASKS 0-1 COMPLETE THROUGH PRODUCT TIP `693cf7af`; BATCH A
+> STOPS FOR COMBINED IMPLEMENTATION REVIEW; TASKS 2-7, MERGE, PUSH, LIVE
+> TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT AUTHORIZED
 >
-> **Plan tip:** `05e159261a409da6451105d1d3bcf7e9a7d62661`
+> **Plan/amendment tip:** `06e952c4aa2f87c8b8ef4d464b65ba0cdb073f9c`
 >
 > **Product base:** `d4677c3d5b8579f95621a62ed056620a083ad1c8`
 
@@ -207,3 +206,55 @@ Section 0.7c.
 The updated partial packet remains
 `/tmp/arkscope-pg-no-tail-task1-d4677c3d`; its manifest is regenerated only
 after the amendment diff is final.
+
+## 9. Task 1 local-capability cutover complete
+
+Focused review accepted Section 0.7c at `06e952c4`. The resumed implementation
+changed exactly `62` inventory-authorized paths: `61` existing modify paths and
+the sole admitted addition, `src/tools/backends/local_capabilities.py`. The
+outside-authority path projection is empty. Product commit `693cf7af` creates
+the exact 36-callable non-runtime protocol, constructs the local market/SA
+composition directly, and cuts every measured retained consumer to its current
+local owner. It adds no DSN inference, nominal-type routing, method-presence
+probe, compatibility fallback, or provider request.
+
+All final identities and runtimes are admitted:
+
+```text
+backend collection       4,382  ce7c045fab7b4fde2598660e98c5e67964ac0c8871b8d8aca7d3d150c3e90cc8
+focused collection       1,885  19ff8f6027ed399b0701fb2840cb3e0658cee860f5de8334f68a6522f826bcca
+five new contracts           5  passed
+Task 1 owners               472  471 passed / 1 skipped / 0 failed
+backend survivors         1,614  1,612 passed / 2 skipped / 0 failed
+frontend survivors          170  170 passed / 0 failed
+recombined survivors      1,784  5bc41848aec5327b042c25248f1d6da46cb28c5e8a21faaf7e681d11bc1db0c5
+```
+
+The backend/frontend survivor streams recombine byte-for-byte to the literal
+1,784-node authority. The full 1,885-node stream remains collect-only because
+its 101 future whole-file retirements are intentionally not intermediate
+runtime contracts. Backend collection used the deterministic reporter with
+zero test bodies seen and matched the amended stream byte-for-byte.
+
+A packet-local import projection ran app, both agents, CLI, scheduler, native
+host, `LocalMarketBackend`, `SACaptureBackend`, `MacroCalendarLocalStore`, and
+`JobRunsLocalStore` in ten independent child processes. Every child installed
+the socket guard before import; all ten imported successfully and none loaded
+`src.tools.backends.db_backend`. Its first invocation is rejected because the
+packet directory accidentally became the import root. The admitted harness
+requires repository-root cwd explicitly, so the correction changes only the
+evidence seam and cannot mask a product import.
+
+All 22 protected paths reproduce aggregate
+`7e9fa65847e86c9296c541b546ce472d1a7d467b6392a089c116dc02563e5cb6`.
+Exact owner and complete delta pre/post hashes, the product patch, all runtime
+transcripts, the import projection, and the survivor recombination are in
+`/tmp/arkscope-pg-no-tail-task1-d4677c3d`. Its final manifest contains `66`
+payloads and has SHA-256
+`af8ef08e68469dc499c2a734102651f8b0e15e69373da5804a9c3e67f59bcb96`;
+all entries pass `sha256sum -c`.
+
+No native full-suite claim is made at this intermediate stage. No production,
+private, remote, provider, or live-route asset was read or mutated. Tasks 0-1
+now stop at the user-approved Batch A combined implementation-review gate;
+Tasks 2-7 remain unauthorized until that review returns GREEN.
