@@ -1,8 +1,9 @@
 # PostgreSQL Runtime No-Tail Evidence
 
-> **Status:** TASKS 0-1 COMPLETE THROUGH PRODUCT TIP `693cf7af`; BATCH A
-> STOPS FOR COMBINED IMPLEMENTATION REVIEW; TASKS 2-7, MERGE, PUSH, LIVE
-> TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT AUTHORIZED
+> **Status:** TASKS 0-2 COMPLETE THROUGH PRODUCT TIP `3e3cb90b`; BATCH B
+> TASKS 3-5 AUTHORIZED; TASK 6 REMAINS THE COMBINED IMPLEMENTATION-REVIEW
+> GATE; TASK 7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT
+> AUTHORIZED
 >
 > **Plan/amendment tip:** `06e952c4aa2f87c8b8ef4d464b65ba0cdb073f9c`
 >
@@ -258,3 +259,46 @@ No native full-suite claim is made at this intermediate stage. No production,
 private, remote, provider, or live-route asset was read or mutated. Tasks 0-1
 now stop at the user-approved Batch A combined implementation-review gate;
 Tasks 2-7 remain unauthorized until that review returns GREEN.
+
+## 10. Task 2 local-runtime cutover complete
+
+Batch A review returned GREEN and unlocked Tasks 2-5. Product commit
+`3e3cb90b` removes the five exact migration/probe paths, unmounts both
+migration routes, removes the unavailable news-write mode, and replaces the
+network reachability probe with scheduler-state-first plus unconditional local
+job-history supplementation. The renamed local-authority test has no alias or
+compatibility export.
+
+The admitted identities and runtimes are:
+
+```text
+backend collection       4,349  04e93190119d1134903182a61f6ea495d1445ebd5784878196bca2baa49bebc6
+focused collection       1,852  1c7f9a06d9518b48355ac952f4e09352862c6628dfaf0c5ff35cd7ae53ad73e0
+Task 2 owners               147  147 passed / 0 failed
+backend survivors         1,611  1,609 passed / 2 skipped / 0 failed
+frontend survivors          170  170 passed / 0 failed
+dynamic routes              173  e0d8bf3c01e57bfb5403c68c16aac376be225db56eb638ca44d7eb218acfb37e
+```
+
+The route stream came from the real FastAPI lifespan and scheduler under
+scratch stores, sealed providers, and a socket guard. It contains neither
+migration route and matches the literal target byte-for-byte. Removing the
+local-history supplement made the dedicated continuity owner fail because no
+last-attempt fact was admitted; restoring the complete source blob returned
+the owner to GREEN. All 22 protected paths retain aggregate
+`7e9fa65847e86c9296c541b546ce472d1a7d467b6392a089c116dc02563e5cb6`.
+
+Two operator probes are explicitly rejected: a process-name cleanup query
+matched its own command line, and an initial staging command named paths that
+had already been deleted. The admitted cleanup uses process cwd plus Python
+executable type and reports zero worktree Python process. The cached commit
+path set was required to equal the 14-path Task 2 delta before commit.
+
+Packet `/tmp/arkscope-pg-no-tail-task2-693cf7af` contains `57` payloads at
+manifest SHA-256
+`41e885b5860b69d47edd5bcbb45b7c517384762f176586b054d73d9fc85f07db`;
+all entries pass `sha256sum -c`. It includes exact last-containing and
+`git show` recovery receipts for all 14 rewritten or removed pre-commit
+surfaces. No live provider, production database, private configuration,
+remote service, merge, push, or legacy-agent CLI action occurred. Batch B now
+continues through Tasks 3-5 and then stops at Task 6 for combined review.
