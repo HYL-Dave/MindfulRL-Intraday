@@ -1,11 +1,12 @@
 # PostgreSQL Runtime No-Tail Evidence
 
 > **Status:** TASKS 0-3 COMPLETE THROUGH PRODUCT TIP `ac2d3395`; SECTIONS
-> 0.7D AND 0.7E CLASS A AMENDMENTS RECORDED; USER-APPROVED A/B CLASSIFICATION ACTIVE;
-> BATCH B TASKS 4-5 ACTIVE; TASK 6 REMAINS THE COMBINED REVIEW GATE; TASK 7,
-> MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT AUTHORIZED
+> 0.7D-0.7E CLASS A COMPLETE; SECTION 0.7F CLASS B AMENDMENT AWAITS FOCUSED
+> REVIEW; TASK 4 PRODUCT/TEST/DOC REWRITES REMAIN UNCOMMITTED; TASK 6 REMAINS
+> THE COMBINED REVIEW GATE; TASK 7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR
+> REMOTE MUTATION NOT AUTHORIZED
 >
-> **Plan/amendment tip:** `9dcbbe4c108f315e16a754bdf5454cef39996857`
+> **Pre-amendment plan tip:** `9b7f98a3`
 >
 > **Product base:** `d4677c3d5b8579f95621a62ed056620a083ad1c8`
 
@@ -385,3 +386,101 @@ classifies the bounded localized fallback plus behavior-preserving predicate
 relocation as Class A. All node IDs and staged hashes remain unchanged; the
 correction proceeds without an intermediate review wait and is replayed at
 Task 6.
+
+The exact correction is now GREEN: the two-file owner suite is `54/54`, the
+visible-literal scanner is `37/20/0/20`, and the sequential full frontend run
+is `1,177/1,177`. The admitted transcripts are
+`frontend-focused-post-0.7e.txt`, `i18n-visible-post-0.7e.txt`, and
+`frontend-full-post-0.7e.txt` in the Task 4 packet. An earlier focused command
+using an unsupported Vitest worker option ran no test and is rejected; the
+admitted commands use the explicit root Vitest `4.1.8` binary with
+`--maxWorkers=1 --no-file-parallelism`.
+
+## 13. Task 4 retained-owner and closed-bundle Class B stop
+
+After frontend admission, the exact 1,611-node backend portion of the final
+inventory-focused projection ran under the socket guard and returned:
+
+```text
+1,605 passed / 2 skipped / 4 failed
+```
+
+The complete transcript is
+`/tmp/arkscope-pg-no-tail-task4-1499d827/inventory-focused-backend.txt`.
+All four failures are deterministic and inside already tracked modify paths:
+
+```text
+tests/test_legacy_iv_retirement_boundaries.py::test_sql_init_and_current_backends_have_no_legacy_iv_schema
+tests/test_legacy_score_retirement.py::test_current_authorities_make_no_legacy_capability_claim
+tests/test_sa_tools.py::TestSAAlphaPicksStorageContract::test_sql_schema_preserves_dual_tab_membership_and_closed_date
+tests/test_sqlite_backend.py::test_inherited_vs_overridden_methods
+```
+
+The first and third still open SQL files that Task 4 correctly deletes. The
+second still opens the deleted agent tracker. The fourth still asserts an
+inherited `_connect` seam removed by the reviewed direct-composition design.
+No provider, network, production, private, or remote access occurred. Because
+three truthful test names and the final collection/focused hashes must change,
+the user-approved A/B rule classifies this as Class B. Product/test correction
+is stopped pending focused review.
+
+The literal three-row replacement stream is
+`/tmp/task4-b-replacements.tsv` at
+`32eb59c014c1d0f4127926c66dfa488737875622fa89d7337f00f21150155816`.
+Mechanical application to the immutable Task 3 streams yields:
+
+```text
+backend collection, final       4,278  ecafdab7a1cee8d6f64dd6763f017d2ef15dd414b80065950f949d8b471a09ce
+inventory-focused final         1,781  6220cb4e985dd3e2bc58b6fa369fe6a6fe7a456528089d9ce6c84134a7335a30
+Task 1 owners, final              472  483b65663a382e7ab03b73f3774acafbdf38e6fb21cbc4544fbc88733dcca6a1
+```
+
+Every old row occurs exactly once and every new row is absent. Counts and
+native arithmetic remain unchanged.
+
+The same closure audit proved that deleting only
+`docs/superpowers/evidence/2026-08-04-eir-006-deletion-manifest/consumer-census.tsv`
+would corrupt its retained evidence package: both `SHA256SUMS` and `README.md`
+name the deleted payload, and `census-result.json` consumes it. The exact
+complete bundle is 23 paths at
+`8171c42c61de9b3be2d235bd55ba23d48da8bf1e7538c11c2267e186dd792838`.
+Its inventory split is exactly `1` existing delete, `5` protected, and `17`
+previously unclassified. The line is closed, has no current product owner, and
+the user's delete-over-archive ruling makes complete `git rm` the only honest
+shape; Git history remains recovery.
+
+A separate deleted-reference census found exactly 17 current application,
+configuration, and current-authority documentation paths outside the
+inventory sets. Their exact path stream is
+`814ef7466c73e6f7f2e51bd8220fcc4404ed27d4593da1dedf98179d1a36caa6`.
+They require only comment/docstring/link cleanup and introduce no behavior or
+capability. Both literal path lists are stored in the Task 4 packet as
+`task4-b-eir006-delete.paths` and `task4-b-supplement-modify.paths`.
+
+The final path algebra is therefore:
+
+```text
+semantic paths       183 delete / 191 modify / 1 add / 17 protected
+--no-renames         185 D / 189 M / 3 A
+Task 4 deletion      171 paths after the 12 Task 2-3 deletions
+```
+
+The final protected path stream is `17` rows at
+`52944cdb212217833d0124f3b4e109b1314fc50c729816b430b69474b91c4993`;
+its path-ordered `sha256sum`-row aggregate is
+`0bfdd977f0d060075a21a9530e3b31be72ad0a22781cffd3ebd17e05759eb9fd`.
+All 17 current blobs match their grounding bytes. The five removed members are
+exactly closed-bundle producers; no sixth protected path moves.
+
+Plan Section 0.7f is the bounded amendment authority. Focused review must
+rebuild the three final identity streams, both exact supplement lists, bundle
+split, protected aggregate, and D/M/A algebra before implementation resumes.
+A fourth node-ID change, another path, partial bundle deletion, behavior hunk,
+or external contact remains a hard stop.
+
+Partial Task 4 packet:
+`/tmp/arkscope-pg-no-tail-task4-1499d827`. Its `53` payload rows all pass
+`sha256sum -c`; `SHA256SUMS` itself is
+`f5a9c9361029217a02d6231cf15d3e6ff5c74cb3954cb6542339915a241276e2`.
+The packet contains no Python cache after cleanup. It remains a stop packet,
+not final Task 4 admission evidence.
