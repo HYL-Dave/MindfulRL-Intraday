@@ -1,8 +1,7 @@
 # Legacy-Agent CLI and Entrypoint Census Evidence
 
-> **Status:** TASKS 0-1 REVIEWED GREEN; TASK 2 STOPPED BEFORE AUTHORITY
-> GENERATION FOR NORMALIZED-AUTHORITY AMENDMENT REVIEW; TASKS 3-4 NOT
-> AUTHORIZED; NOT MERGED; NOT PUSHED
+> **Status:** TASKS 0-1 REVIEWED GREEN; TASK 2 COMPLETE; INDEPENDENT
+> CLASSIFICATION REVIEW NEXT; TASKS 3-4 NOT AUTHORIZED; NOT MERGED; NOT PUSHED
 >
 > **Product/candidate source:**
 > `241ccdba6dc7c2cf1b162dd254ada88f25b6a9b0`
@@ -211,11 +210,99 @@ first generator run rejected an unmapped path-form test target rather than
 guessing a fallback. Packet-local draft outputs are untracked and will be
 recreated from scratch only after amendment review.
 
+## Task 2 - Canonical classification and capability comparison
+
+Focused review returned GREEN for normalized-authority amendment `57d44fd0`.
+Task 2 then resumed from untracked packet-local drafts and generated the complete
+authority twice. Accepted runs `run-g` and `run-h` are byte-identical for every
+file. The tracked validator reports:
+
+```text
+raw candidates               295
+canonical entrypoints         80
+consumer edges               244
+CLI/Discord capabilities      42
+exact test relations         499
+current invocation rows       32
+closed exclusions             20
+```
+
+The four normalized detail authorities close in both directions: each
+`consumer_id`, `(surface, capability_id)`, and `test_node_id` array in
+`entrypoints.jsonl` exactly equals its TSV projection, every detail row has a
+valid ledger foreign key, and every invocation points to a present source
+authority. `recommendations.tsv` is byte-reproducible from the ledger. Candidate
+closure is exact: every one of the 295 Task 1 candidates appears once as admitted
+evidence or once in the 20-row closed historical/governance exclusions set.
+
+The final authority hashes are:
+
+```text
+entrypoints.jsonl          d8180e88e7da79b1e0adfe3afe450902ca6dc84b4d29024eee9369650ea76e28
+consumers.tsv              b7655fa5686594208df5b4bc1b6f8c5c39c37a23e8af345fd4e394e691fa23bb
+capabilities.tsv           f1827a5eb2412ec0693cb3329bb4d39269eab9efc7860d01164706c1e80c6080
+tests.tsv                  fecdb7ea384e0031e184bb0764711f54c4b14ad82b84618f08954db51413e003
+current_invocations.tsv    0e5f642159e35b8ad30cdc74fab3e80d903ecc0cf4073f5cf76c4fe79b47b67e
+recommendations.tsv        796e01c7d77e54a78f0d6303f5bad2088688f9dad244af3bf14445bdcf3ed67a
+candidate_exclusions.tsv   94d29bca84203a8c079e06b370b893ae716b58d9ae587e8442e80f0989c7703a
+```
+
+### Classification findings
+
+The 80 entrypoints split into 10 current App runtimes, 12 operator commands, 27
+development/build tools, 16 integration install/host contracts, two legacy CLI
+rows, one legacy Discord row, five stale documented surfaces, and seven unowned
+diagnostics. Recommendations are 65 `retain_current`, seven
+`retirement_candidate`, five `remove_stale_invocation`, and three
+`fold_into_app_then_retire`. The three fold recommendations retain
+`track_b_skill_policy`; no recommendation authorizes deletion.
+
+The legacy CLI has 30 measured capabilities: 9 full App equivalents, 11 partial,
+and 10 absent. Discord has 12: 5 full, 1 partial, and 6 absent. Both surfaces
+retain explicit rows for manual skill use, skill auto-apply, and skill
+suggestion; Discord additionally retains its multi-user admin boundary. Shared
+tool/domain owners remain independent of wrapper disposition.
+
+The current product has zero importer of `src.agents.__main__` and zero non-test
+Discord constructor or `start_bot()` caller. Discord config, dependency, tests,
+and notifier injection are recorded without promoting them into liveness. The
+Polygon/Finnhub scheduler imports were corrected to shared-library evidence and
+do not promote either guarded CLI entrypoint to `app_started`. Seven dynamic
+launch observations were resolved to bounded current, test-only, injected, or
+unreachable owners; none was silently discarded.
+
+The user-direction boundary is explicit in the human census: preserve useful
+model-callable capability through clear MCP or HTTP contracts, leave possible
+interface convergence to another architecture decision, and do not preserve an
+obsolete CLI or inactive Discord wrapper merely because future alerts, skills,
+or unattended automation may need redesigned capabilities.
+
+### Validator discrimination and safety
+
+The final validator passes the tracked authority. Thirty-one independent
+mutations are killed, including missing/extra schema fields, candidate closure,
+stale/current inversion, false Discord liveness, operator auto-retirement,
+missing side effects, capability/test/consumer/invocation FK drift, a library
+import promoted into a CLI launch, missing skill-suggestion coverage, missing
+Discord authorization, recommendation drift, and manifest corruption.
+
+No product/test/current-authority byte changed. Product modules, CLI, Discord,
+tests, providers, browser, scheduler, desktop, sidecar, production stores, and
+credential values were not executed or read. The 942-row protected aggregate
+remains byte-identical. Rejected draft generations remain packet-local and are
+not authority: they exposed overly broad scheduler reachability and two missing
+capability distinctions before tracked output was written.
+
+The accepted Task 2 packet is
+`/tmp/legacy-agent-cli-census-task2-57d44fd0`; it contains 124 manifested
+payloads and its `SHA256SUMS` has SHA-256
+`3a39409781eb10b15f77ebcbfea5ddd4105cbf10a5f2c99bcca8d563b961d42b`.
+
 ## Next gate
 
-Focused review of the normalized-authority amendment is required before Task 2
-resumes. Canonical tracked inventory, recommendations, CLI/Discord/skill/operator
-disposition, product or test edits, retirement, merge, push, live commands,
-provider traffic, secret handling, and destructive operations remain
-unauthorized. The MCP/HTTP model-callable-interface direction remains
-recommendation context only.
+Task 2 stops for independent classification review. Fable reviews both
+mechanical closure and judgment quality, especially operator protection,
+Discord liveness, exact App-equivalence owners, wrapper/shared-code separation,
+and decision gates. Task 3 independent reconstruction, Task 4 merge, product or
+test edits, retirement planning, push, live commands, provider traffic, secret
+handling, and destructive operations remain unauthorized.
