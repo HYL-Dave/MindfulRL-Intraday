@@ -1,7 +1,7 @@
 # PostgreSQL Runtime No-Tail Evidence
 
-> **Status:** TASK 0 COMPLETE; TASK 1 STOPPED AT A SHARED-FIXTURE SCOPE GAP;
-> BOUNDED AMENDMENT AWAITS FOCUSED REVIEW;
+> **Status:** TASK 0 COMPLETE; TASK 1 STOPPED AT AN INTERMEDIATE-RUNTIME /
+> FIXTURE-CEILING GAP; SECOND BOUNDED AMENDMENT AWAITS FOCUSED REVIEW;
 > TASKS 2-7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT
 > AUTHORIZED
 >
@@ -45,6 +45,10 @@ manager, install, or download fallback was used.
 
 Two packet-local implementations independently rebuilt the plan ledgers and
 source projections:
+
+The following values are the immutable Task 0 generation. Section 8 records
+the later truthful-replacement re-pin; these dated values are not current
+admission identities after the second Task 1 stop.
 
 - path authorities: `161` delete, `174` modify, `1` add, and `22` protected;
 - measured DAL contract: `11` assigned surfaces and exactly `36` methods;
@@ -148,3 +152,58 @@ Partial Task 1 packet:
 stream, pre-amendment owner transcript and exit status, uncommitted product
 patch, and rejected sandbox stack. Task 1 may resume only after focused review
 accepts Section 0.7b; Tasks 2-7 remain unauthorized.
+
+## 8. Task 1 intermediate-runtime and fixture-ceiling stop
+
+Focused review accepted Section 0.7b at `38e447b0`. The resumed run corrected
+only its bounded fixtures: all five new contracts passed under the socket
+guard, and the exact first-generation owner set finished `443 passed / 1
+skipped`. Backend recollection remained the then-pinned 4,382-node stream.
+
+The next required inventory-focused backend partition contained 1,714 nodes
+after isolating the one reviewed loopback-refusal node. Its complete pytest
+summary was:
+
+```text
+1,639 passed / 19 skipped / 45 failed / 11 errors
+```
+
+That run is rejected evidence. Its shell wrapper piped through `tee` without
+`pipefail`, so a shell status cannot be used as an outcome. The pytest summary
+and per-node failures remain authoritative for diagnosis only. No product or
+test commit followed it.
+
+The failure set proved that the literal collection ledger and the intermediate
+runtime ledger had been incorrectly conflated. Three observed failures were
+already inside whole-file owners scheduled for atomic deletion, and all 101
+nodes in those six files are obsolete contracts rather than Task 1 runtime
+admission owners. Section 0.7c therefore keeps the full 1,885-node Task 1
+collection identity but defines an exact 1,784-node survivor runtime set. It
+also precomputes the analogous Task 2 survivor set, excluding only the 71
+whole-file nodes deleted in Task 3.
+
+The remaining failures split into already-authorized fixture evolution and
+exact ceiling gaps: a second hermetic news backend, one freshness body, one SA
+digest helper plus five direct-patch bodies, and six false surviving test IDs.
+No product method probe or compatibility fallback is authorized. The six IDs
+become one-for-one truthful replacements, yielding these mechanically rebuilt
+current authorities:
+
+```text
+backend replacements      46  f7ac08c4000baddaa9969d7895054ade3024ea224536bdb68286737891cf36ad
+Task 1 backend          4,382  ce7c045fab7b4fde2598660e98c5e67964ac0c8871b8d8aca7d3d150c3e90cc8
+Task 1 focused          1,885  19ff8f6027ed399b0701fb2840cb3e0658cee860f5de8334f68a6522f826bcca
+Task 1 owners             472  cb454b785b7fdfc645a4c5f3765cb8a70dc280ad5f63a76c4dcf0fbd8d246578
+Task 1 runtime          1,784  5bc41848aec5327b042c25248f1d6da46cb28c5e8a21faaf7e681d11bc1db0c5
+```
+
+The rejected run also created an untracked synthetic `MagicMock/` SQLite path
+because a stale fake exposed a mock instead of the current local path. It is a
+test artifact, not product state; its receipt is recorded and the directory is
+removed before amendment admission. Task 1 remains stopped with all product
+edits uncommitted. Tasks 2-7 remain unauthorized pending focused review of
+Section 0.7c.
+
+The updated partial packet remains
+`/tmp/arkscope-pg-no-tail-task1-d4677c3d`; its manifest is regenerated only
+after the amendment diff is final.
