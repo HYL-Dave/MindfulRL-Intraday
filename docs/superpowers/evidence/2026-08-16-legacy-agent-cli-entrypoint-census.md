@@ -1,7 +1,7 @@
 # Legacy-Agent CLI and Entrypoint Census Evidence
 
-> **Status:** TASKS 0-2 REVIEWED GREEN; TASK 3 COMPLETE; COMBINED
-> IMPLEMENTATION REVIEW NEXT; TASK 4 NOT AUTHORIZED; NOT MERGED; NOT PUSHED
+> **Status:** TASKS 0-4 COMPLETE; LOCALLY MERGED AT `e7851975`; EXACT-MASTER
+> VERIFIED; FOCUSED CLOSEOUT REVIEW NEXT; NOT PUSHED; NO RETIREMENT AUTHORIZED
 >
 > **Product/candidate source:**
 > `241ccdba6dc7c2cf1b162dd254ada88f25b6a9b0`
@@ -339,11 +339,58 @@ payloads and its `SHA256SUMS` has SHA-256
 `e7f0b45a739f681023b95c4fd20e0df3d5964d96663bd3762764747d80b90efe`. Rejected packet-tool iterations are recorded in
 `admission/operator-notes.md`; none is used as admission evidence.
 
+## Task 4 - Fast-forward merge and exact-master closeout
+
+Fable's combined Task 3 implementation review returned GREEN and authorized a
+local fast-forward merge. Clean `master` at `241ccdba` was an ancestor of
+reviewed tip `e7851975`; the seven intervening commits are linear, contain zero
+merge commits, and change exactly the 13 authorized census documentation paths.
+Local `master` fast-forwarded to `e7851975` without rebase, force, or push.
+`origin/master` remains `e2ead437`.
+
+Fresh detached worktrees at source `241ccdba` and exact merged master
+`e7851975` then repeated Task 3 with newly named packet-local tools. Two complete
+rebuilds again produce 80 entrypoints, 244 consumers, 42 capabilities, 499
+tests, 32 invocations, and 20 exclusions. Every candidate, family, overlap,
+dynamic, test-join, normalized-authority, projection, manifest, human-summary,
+and protected-row output is byte-identical across the two runs. Against the
+reviewed Task 3 packet, every rebuilt file and both node streams are
+byte-identical except `activity-boundary.json`: that witness now truthfully
+names merged tip `e7851975`; after removing only the tip-identity field, every
+remaining safety value is equal.
+
+Exact-master collect-only discovery reproduces backend
+`4278/ecafdab7a1cee8d6f64dd6763f017d2ef15dd414b80065950f949d8b471a09ce`
+with zero executed/nonpassing nodes, zero socket attempts, and zero dangerous
+imports. Explicit Vitest 4.1.8 reproduces frontend
+`101 files/1177/c570a551b64ed95155c02f83499e78eb3409f2cba66ea9d46862dffad0ea239b`.
+Fourteen exact-master mutations and the 31-mutation secondary control are all
+killed; the secondary validator remains `PASS` at `80/244/42/499/32/20`.
+
+The final safety and leak gates report zero CLI/Discord/product/test/provider/
+browser/scheduler/store execution, zero credential reads, zero remaining census
+processes, zero unauthorized or product/test paths, and unchanged git-crypt
+blobs with only the same two minimized command rows. The packet's nine token
+matches are exactly the three reviewed synthetic redaction fixtures repeated in
+the three backend collection artifacts; its one email-shaped value is the
+public native-host identifier.
+
+The exact-master packet is
+`/tmp/legacy-agent-cli-census-task4-master-e7851975`; it contains 76 manifested
+payloads and its `SHA256SUMS` has SHA-256
+`b937b75884e38d57adcccff14a8e61dde2b0ecdcc8ec60bca180389a403cc521`.
+Rejected packet-tool operations and the exact activity-witness identity
+distinction are recorded in
+`admission/operator-notes.md`.
+
+The Task 3/4 file lists now explicitly name the human-census status file that
+Task 3 changed. This closes the independent review's bookkeeping note; it does
+not change the five-file status boundary or any machine authority.
+
 ## Next gate
 
-Tasks 0-3 now stop for combined independent implementation review. Fable
-reconstructs the packet and judges classification quality, especially operator
-protection, Discord liveness, CLI symbol ownership, App equivalence, side
-effects, and recommendation gates. Task 4 merge, product or test edits,
-retirement planning, push, live commands, provider traffic, secret handling,
-and destructive operations remain unauthorized.
+Task 4 stops for focused closeout review. The census is complete even if the
+user defers product disposition. CLI/Discord retirement, Track B or skill
+policy, alert redesign, stale-command/diagnostic cleanup, operator workflow
+changes, product or test edits, push, live commands, provider traffic, secret
+handling, and destructive operations all remain unauthorized.
