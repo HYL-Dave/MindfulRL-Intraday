@@ -1,12 +1,12 @@
 # PostgreSQL Runtime No-Tail Evidence
 
 > **Status:** TASKS 0-4 COMPLETE THROUGH PRODUCT TIP `c6bafd07`; TASK 5
-> STOPPED AT SECTION 0.7I CLASS B PROVIDER-ENV FIXTURE ADMISSION REVIEW;
-> TASK 6 REMAINS
-> THE COMBINED REVIEW GATE; TASK 7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR
+> PRODUCT AND FINAL ADMISSION COMPLETE AT TEST TIP `2bb55c8e`; GOVERNANCE
+> SELF-RETIREMENT IS THE ONLY REMAINING TASK 5 STEP; TASK 6 REMAINS THE
+> COMBINED REVIEW GATE; TASK 7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR
 > REMOTE MUTATION NOT AUTHORIZED
 >
-> **Pre-amendment plan tip:** `9b7f98a3`
+> **Final admission plan tip:** `dc369f61`
 >
 > **Product base:** `d4677c3d5b8579f95621a62ed056620a083ad1c8`
 
@@ -628,3 +628,59 @@ natural complement records zero sockets, and both canonical full runs remain
 deterministic. Task 5 stays stopped before any fixture or evidence commit.
 The bounded packet contains 25 checksummed payload rows at manifest
 `7c49d1529704ad7b259532e25124c564353d0fb2301d78e3c7c35baecd327090`.
+
+## 18. Task 5 final admission complete
+
+Focused review accepted Section 0.7i. Test-only commit `2bb55c8e` changes one
+fixture-lifecycle hunk: the existing managed provider-key tuple now drives
+both setup deletion and post-yield cleanup. It changes no product code, test
+body, test ID, provider construction, network policy, allowlist, or staged
+identity.
+
+The discriminating post-fix gates are:
+
+```text
+provider config lifecycle       44P       final_present=false / 0 sockets
+provider + market sequence     114P       final_present=false / 0 sockets
+guarded natural complement    4272 seen   4260P / 12S / 0F / 0 sockets
+canonical full A              4278 seen   4266P / 12S / 0F
+canonical full B              4278 seen   4266P / 12S / 0F
+canonical report SHA-256                  599e595960c34afc76e05ae76e30256a23fcbcfc1aafc585b7fbc71afa7a0a42
+```
+
+The two canonical runs used separate detached worktrees and runtime roots.
+Their reporter JSON is byte-identical. The guarded complement is exactly
+`805ed70c...`; together with the separately admitted six-node localhost-only
+callback owner it is the complete 4,278-node suite. No broad localhost or
+destination exception was added.
+
+Final focused and frontend admission also passed: Task 1 owners are
+`472/483b6566...` at `471P/1S`, Task 2 owners are `147/7b719fcb...` at
+`147P`, and the combined inventory-focused stream is
+`1781/6220cb4e...` (`1609P/2S` backend plus `170P` frontend). Sequential
+frontend runtime is `1177/1177` across 101 files with collection
+`c570a551...`; typecheck and production build exit zero, and the i18n scanner
+is `37 candidates / 20 signatures / 0 debt / 20 allowlist`. All 26 protected
+rows reproduce aggregate `d567da56...`.
+
+M1-M8 retain their active RED and byte-exact restoration evidence. The
+sanitized `python -S` gate remains valid at unchanged product bytes: 81
+admitted distributions, 18,091 owned files, 173 dynamic routes, one real
+scheduler tick, and zero provider/network attempts. The fixture change was
+additionally covered by the complete guarded complement and both native full
+runs.
+
+Rejected operator artifacts remain explicitly marked: one pytest plugin-path
+mistake stopped before collection, one unsupported Vitest worker option
+stopped before test execution, and one intermediate focused-union projection
+omitted the documented frontend node-ID mapping. None is admission evidence.
+Generated runtime roots, detached worktrees, caches, and links were inventoried
+and removed.
+
+The complete Task 5 packet contains 275 checksummed payloads. Its manifest is
+`0d86245188df3277ca6891e801239e7ad0ec96d2bb52635baf109f181c2656a7`.
+Private home/repository paths, emails, and credential-token patterns are zero;
+the only DSN-shaped bytes are the two identical generic placeholders required
+to replay M3/M5, not local or secret values. No provider, production, private,
+or remote state was contacted or changed. Governance self-retirement is next;
+Task 6 remains the combined implementation-review stop.
