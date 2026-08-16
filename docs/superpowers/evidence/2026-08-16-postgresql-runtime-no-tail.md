@@ -535,3 +535,44 @@ The bounded amendment packet is
 `/tmp/arkscope-pg-no-tail-task4-1499d827/amendment-0.7g`. All `16` payload
 rows pass `sha256sum -c`; its manifest is
 `6be2af55cfb0d2d203f9202da547c83fff97f9d74142d33be9cb2035a20e055c`.
+
+## 15. Task 4 tracked residue retirement complete
+
+Focused review accepted Section 0.7g. Product commit `c6bafd07` then retired
+the exact remaining support and rewrote only admitted current owners. Its
+pre-commit patch is byte-identical to the committed patch. Relative to base,
+the semantic product ledger is exactly `183 delete / 182 modify / 1 add / 26
+protected`; with rename detection disabled it is `185 D / 180 M / 3 A`.
+Both bounded ownership renames are complete and no compatibility source
+remains.
+
+Post-commit collection and runtime admission are:
+
+```text
+backend collection     4,278  ecafdab7a1cee8d6f64dd6763f017d2ef15dd414b80065950f949d8b471a09ce
+frontend collection    1,177  c570a551b64ed95155c02f83499e78eb3409f2cba66ea9d46862dffad0ea239b  (101 files)
+inventory focused      1,781  6220cb4e985dd3e2bc58b6fa369fe6a6fe7a456528089d9ce6c84134a7335a30
+Task 1 owners            472  483b65663a382e7ab03b73f3774acafbdf38e6fb21cbc4544fbc88733dcca6a1
+frontend owners           54  83d681a7893416f1340d9dcb7eb1064ae664e8fbd0bf98d76b642105ee5590a3
+```
+
+Runtime passed backend focused `1,609P/2S`, Task 1 owners `471P/1S`, Task 2
+owners `147P`, frontend owners `54P`, and sequential frontend full
+`1,177/1,177`. Typecheck and production build pass. The visible-literal
+scanner is `37 candidates / 20 signatures / 0 debt / 20 allowlist`.
+
+The post-commit tracked scanner reports zero candidates, text hits, and path
+hits with only the five named PNGs unreadable. The owner-scoped backlink gate
+is zero. The unlocked-main scan of all three git-crypt plaintext files is
+zero and each implementation/main blob ID is equal. All 26 protected files
+reproduce aggregate
+`d567da56ede0dd49a9e9865be308fabcb1cd0bc7ca059bb21864c49c01dae0c3`.
+No provider, network, production, private, or remote asset was opened.
+
+The product worktree is clean after bounded scratch/cache cleanup; no Vitest
+or pytest process remains. The rejected scratch-removal and exact-path staging
+commands executed no mutation and are recorded in operator notes. Task 4's
+final packet contains `134` checksummed payloads at manifest
+`0d9702832110a44789a3b02c02dc4c95c4d7ef8f0467b97679ecf834dff39b7b`.
+Task 5 mutations and final admission are now active; Task 6 remains the
+combined implementation-review gate.
