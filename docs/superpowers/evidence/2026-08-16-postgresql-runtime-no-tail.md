@@ -1,9 +1,9 @@
 # PostgreSQL Runtime No-Tail Evidence
 
-> **Status:** TASKS 0-2 COMPLETE THROUGH PRODUCT TIP `3e3cb90b`; TASK 3
-> STOPPED AT THE LIVE-FRED ALIAS SEAM; FOCUSED AMENDMENT REVIEW IS NEXT;
-> TASKS 4-7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT
-> AUTHORIZED
+> **Status:** TASKS 0-2 COMPLETE THROUGH PRODUCT TIP `3e3cb90b`; SECTION
+> 0.7D REVIEW GREEN; USER-APPROVED A/B AMENDMENT CLASSIFICATION ACTIVE;
+> BATCH B TASKS 3-5 RESUMED; TASK 6 REMAINS THE COMBINED REVIEW GATE; TASK 7,
+> MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT AUTHORIZED
 >
 > **Plan/amendment tip:** `06e952c4aa2f87c8b8ef4d464b65ba0cdb073f9c`
 >
@@ -332,3 +332,10 @@ preserves all staged identities. Product edits remain uncommitted. The packet
 retains the overbroad diagnostic, alias-specific RED, complete runtime
 transcripts, structural projections, and pre-amendment product patch. Focused
 amendment review is the sole next gate; Tasks 4-7 remain unauthorized.
+
+Focused review returned GREEN for Section 0.7d and independently reproduced
+the broken seam, exact three-line correction, unchanged identities, and
+`48/48` packet manifest. The user then adopted the Class A/Class B amendment
+rule in plan Section 1.1. Section 0.7d meets all four Class A predicates and
+Batch B therefore resumes through Tasks 3-5; Task 6 remains the combined
+implementation-review gate.
