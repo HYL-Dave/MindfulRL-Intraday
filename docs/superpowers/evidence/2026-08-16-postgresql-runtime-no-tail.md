@@ -1,8 +1,8 @@
 # PostgreSQL Runtime No-Tail Evidence
 
-> **Status:** TASKS 0-3 COMPLETE THROUGH PRODUCT TIP `ac2d3395`; SECTIONS
-> 0.7D-0.7E CLASS A COMPLETE; SECTION 0.7F CLASS B AMENDMENT AWAITS FOCUSED
-> REVIEW; TASK 4 PRODUCT/TEST/DOC REWRITES REMAIN UNCOMMITTED; TASK 6 REMAINS
+> **Status:** TASKS 0-4 COMPLETE THROUGH PRODUCT TIP `c6bafd07`; TASK 5
+> STOPPED AT SECTION 0.7H CLASS B LOOPBACK-OWNER ADMISSION AMENDMENT REVIEW;
+> TASK 6 REMAINS
 > THE COMBINED REVIEW GATE; TASK 7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR
 > REMOTE MUTATION NOT AUTHORIZED
 >
@@ -574,5 +574,33 @@ or pytest process remains. The rejected scratch-removal and exact-path staging
 commands executed no mutation and are recorded in operator notes. Task 4's
 final packet contains `134` checksummed payloads at manifest
 `0d9702832110a44789a3b02c02dc4c95c4d7ef8f0467b97679ecf834dff39b7b`.
-Task 5 mutations and final admission are now active; Task 6 remains the
-combined implementation-review gate.
+Task 5 then entered mutations and final admission; Section 16 records the
+subsequent hard stop. Task 6 remains the combined implementation-review gate.
+
+## 16. Task 5 loopback-owner admission Class B stop
+
+M1-M8 completed their active RED cycles and byte-exact restoration before
+final admission. The sanitized dependency environment also passed with 81
+admitted distributions, 18,091 owned files, `python -S`, real app lifespan,
+173 routes, one scheduler tick, no original site-packages path, and zero
+provider or network attempts.
+
+The first full native run then installed the packet socket guard over all
+4,278 nodes. It completed at `4,265 passed / 12 skipped / 1 failed`; the sole
+nonpassing node was the current localhost-only OAuth callback capture test.
+The guard recorded ten loopback calls. Reporter collection and seen sets were
+complete, so the failure is not a partial-run artifact, but the run is rejected
+as canonical admission evidence.
+
+An isolated control of the unchanged callback module passed `6/6`. Its stream
+is `b6c3c718...`; the exact 4,272-node complement is `805ed70c...`. Section
+0.7h therefore replaces the blanket guard with an exact owner split: six
+loopback nodes run separately, the complement stays under a zero-exception
+guard, and two independent full canonical runs must still reproduce
+`4,266P/12S/0F`. It does not authorize a general localhost exception or any
+product/test/dependency edit.
+
+This is Class B because the admission protocol and hard-stop wording require
+review. Task 5 remains stopped before its evidence commit and governance
+self-retirement. The bounded packet has 12 payload rows at manifest
+`ddb8a88cba2a886a7d7cfa7546709d792fb270e98ba2a6e064ba0d01a0bf4793`.
