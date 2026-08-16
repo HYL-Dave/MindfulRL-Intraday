@@ -1,11 +1,11 @@
 # PostgreSQL Runtime No-Tail Evidence
 
-> **Status:** TASKS 0-2 COMPLETE THROUGH PRODUCT TIP `3e3cb90b`; SECTION
+> **Status:** TASKS 0-3 COMPLETE THROUGH PRODUCT TIP `ac2d3395`; SECTION
 > 0.7D REVIEW GREEN; USER-APPROVED A/B AMENDMENT CLASSIFICATION ACTIVE;
-> BATCH B TASKS 3-5 RESUMED; TASK 6 REMAINS THE COMBINED REVIEW GATE; TASK 7,
+> BATCH B TASKS 4-5 ACTIVE; TASK 6 REMAINS THE COMBINED REVIEW GATE; TASK 7,
 > MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT AUTHORIZED
 >
-> **Plan/amendment tip:** `06e952c4aa2f87c8b8ef4d464b65ba0cdb073f9c`
+> **Plan/amendment tip:** `9dcbbe4c108f315e16a754bdf5454cef39996857`
 >
 > **Product base:** `d4677c3d5b8579f95621a62ed056620a083ad1c8`
 
@@ -337,5 +337,31 @@ Focused review returned GREEN for Section 0.7d and independently reproduced
 the broken seam, exact three-line correction, unchanged identities, and
 `48/48` packet manifest. The user then adopted the Class A/Class B amendment
 rule in plan Section 1.1. Section 0.7d meets all four Class A predicates and
-Batch B therefore resumes through Tasks 3-5; Task 6 remains the combined
+was applied without another intermediate wait.
+
+Product commit `ac2d3395` deletes the seven exact foundation paths, removes
+the obsolete driver declaration and direct imports, keeps only current local
+macro/job-run behavior, and updates the live FRED smoke through its existing
+local-store injection seam. The resumed collection is byte-identical to the
+pinned Task 3 stream:
+
+```text
+backend collection       4,278  80037a1bd0d82270eeef633b0b2640c0a7fd2680b51de906811b85d87755f5e3
+focused/runtime union    1,781  19443b6f2665d5f1ec677de6430687e8f5a41d39bfe54dcbaba9d748fb46b2d5
+Task 1 owners              472  471 passed / 1 skipped / 0 failed
+Task 2 owners              147  147 passed / 0 failed
+backend survivors        1,611  1,609 passed / 2 skipped / 0 failed
+frontend survivors         170  170 passed / 0 failed
+```
+
+The final foundation gate and negative self-tests, narrowed AST projection,
+requirements closure, isolated `python -S` import probe, FRED owner suite,
+and all 22 protected paths are GREEN. The packet records all rejected command
+starts separately; none reached a provider, product runtime, private config,
+or production asset. Every one of the 16 rewritten or removed paths has an
+exact pre-tip/product-tip row and a successful `git show` recovery digest.
+Packet `/tmp/arkscope-pg-no-tail-task3-be16cdd3` contains `81` checksummed
+payloads; its `SHA256SUMS` SHA-256 is
+`4b991f16f3d7b09b6dad43c17d4c9ae905f3d429568c19836228c64cb572c8c9`.
+Batch B continues through Tasks 4-5; Task 6 remains the combined
 implementation-review gate.
