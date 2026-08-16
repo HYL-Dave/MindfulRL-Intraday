@@ -484,3 +484,54 @@ Partial Task 4 packet:
 `f5a9c9361029217a02d6231cf15d3e6ff5c74cb3954cb6542339915a241276e2`.
 The packet contains no Python cache after cleanup. It remains a stop packet,
 not final Task 4 admission evidence.
+
+## 14. Task 4 collection-only path-account Class B stop
+
+Section 0.7f focused review returned GREEN. Task 4 then completed all 183
+semantic deletions, current-authority rewrites, the exact 17-path backlink
+supplement, and the tracked plus unlocked-encrypted zero-residue scans. The
+product-path preflight was nevertheless `185 D / 180 M / 3 A`, not the
+predicted `185 D / 189 M / 3 A`.
+
+The nine-row difference is exact and non-behavioral. Each path was placed in
+the inventory modify set only by the broad `test_collection` candidate family;
+each has empty line references and measured methods, no other candidate
+family, no Task 1-4 fixture/body change, and bytes identical to base
+`d4677c3d`:
+
+```text
+tests/test_agents.py
+tests/test_analyst_tools.py
+tests/test_chatgpt_oauth_driver.py
+tests/test_compressor_layer5.py
+tests/test_macro_scheduler_integration.py
+tests/test_peer_comparison.py
+tests/test_sa_extension_diagnostics.py
+tests/test_sa_market_news_recovery.py
+tests/test_sec_tools.py
+```
+
+Their path stream is `9 / ea149566...`. Protecting them rather than creating
+unrelated edits changes the final path authority to `183 delete / 182 modify /
+1 add / 26 protected`, with product `--no-renames` status `185 D / 180 M /
+3 A`. The exact 182-row modify stream is `cde0cb8e...`; the 26-row protected
+stream is `d36eecf5...`, and its path-ordered `sha256sum`-row aggregate is
+`d567da56...`. Backend/frontend/focused identities and native arithmetic do
+not change.
+
+The tracked scanner reports zero candidates, hits, and path hits with exactly
+the five named PNG files unreadable. The unlocked-main scan of the three
+git-crypt plaintext files reports zero rows and zero unreadable files; all
+three implementation/main blob IDs remain equal. The retained-owner backlink
+scan is also zero. These GREEN results do not authorize Task 4 completion
+until the revised path ledger receives focused review.
+
+This is Class B because path and protected ledgers change. No product, test,
+or dependency byte was edited to manufacture the old count. Product work
+remains uncommitted; Task 5-7, merge, push, provider/network traffic, and
+production/private/remote mutation remain unauthorized.
+
+The bounded amendment packet is
+`/tmp/arkscope-pg-no-tail-task4-1499d827/amendment-0.7g`. All `16` payload
+rows pass `sha256sum -c`; its manifest is
+`6be2af55cfb0d2d203f9202da547c83fff97f9d74142d33be9cb2035a20e055c`.
