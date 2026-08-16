@@ -1,7 +1,7 @@
 # PostgreSQL Runtime No-Tail Evidence
 
 > **Status:** TASKS 0-4 COMPLETE THROUGH PRODUCT TIP `c6bafd07`; TASK 5
-> STOPPED AT SECTION 0.7H CLASS B LOOPBACK-OWNER ADMISSION AMENDMENT REVIEW;
+> STOPPED AT SECTION 0.7I CLASS B PROVIDER-ENV FIXTURE ADMISSION REVIEW;
 > TASK 6 REMAINS
 > THE COMBINED REVIEW GATE; TASK 7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR
 > REMOTE MUTATION NOT AUTHORIZED
@@ -604,3 +604,27 @@ This is Class B because the admission protocol and hard-stop wording require
 review. Task 5 remains stopped before its evidence commit and governance
 self-retirement. The bounded packet has 12 payload rows at manifest
 `ddb8a88cba2a886a7d7cfa7546709d792fb270e98ba2a6e064ba0d01a0bf4793`.
+
+## 17. Task 5 provider-env fixture lifecycle Class B stop
+
+After Section 0.7h review, the exact callback control passed `6/6`. A corrected
+natural-order complement then passed all product tests at `4,260P/12S`, but
+the guard blocked seven public-IP connection attempts. A node-aware guard
+attributed them to exactly three market-data-direct nodes with a `4/2/1`
+attempt split. The blocked run is rejected admission evidence.
+
+Those three nodes produce zero sockets in isolation. A packet-only lifecycle
+tracker then ran `tests/test_data_provider_config.py` `44/44` and identified
+the upstream leak: `test_apply_env_injects_and_tracks` changes the Polygon key
+from absent to present, and the key remains present after fixture teardown.
+Only key presence was observed; no value entered an artifact. The module run
+itself made zero socket attempts.
+
+Section 0.7i admits one test-fixture lifecycle hunk and no product/test-body
+change. It reuses the existing managed-key tuple for setup deletion and
+post-yield cleanup, after which monkeypatch may restore a genuine ambient
+value. Post-fix admission must prove the module ends with the key absent, the
+natural complement records zero sockets, and both canonical full runs remain
+deterministic. Task 5 stays stopped before any fixture or evidence commit.
+The bounded packet contains 25 checksummed payload rows at manifest
+`7c49d1529704ad7b259532e25124c564353d0fb2301d78e3c7c35baecd327090`.
