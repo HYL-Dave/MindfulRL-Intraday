@@ -1,8 +1,8 @@
 # PostgreSQL Runtime No-Tail Evidence
 
-> **Status:** TASKS 0-2 COMPLETE THROUGH PRODUCT TIP `3e3cb90b`; BATCH B
-> TASKS 3-5 AUTHORIZED; TASK 6 REMAINS THE COMBINED IMPLEMENTATION-REVIEW
-> GATE; TASK 7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT
+> **Status:** TASKS 0-2 COMPLETE THROUGH PRODUCT TIP `3e3cb90b`; TASK 3
+> STOPPED AT THE LIVE-FRED ALIAS SEAM; FOCUSED AMENDMENT REVIEW IS NEXT;
+> TASKS 4-7, MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT
 > AUTHORIZED
 >
 > **Plan/amendment tip:** `06e952c4aa2f87c8b8ef4d464b65ba0cdb073f9c`
@@ -302,3 +302,33 @@ all entries pass `sha256sum -c`. It includes exact last-containing and
 surfaces. No live provider, production database, private configuration,
 remote service, merge, push, or legacy-agent CLI action occurred. Batch B now
 continues through Tasks 3-5 and then stops at Task 6 for combined review.
+
+## 11. Task 3 live-FRED alias-seam stop
+
+Task 3 removed the exact seven foundation paths and reached its pinned
+`4,278 / 80037a1b...` backend collection. The exact runtime-survivor union is
+also GREEN: backend `1,609 passed / 2 skipped` and frontend `170 passed`.
+The first backend replay exposed two mixed IV-authority tests that still read
+the now-deleted backend path. That complete run is rejected collateral
+evidence. Replacing only the dead owner row with the current local capability
+and SA backend owners made both tests GREEN; the exact 1,611-node backend
+replay then reached its admitted result.
+
+The foundation gate, its negative self-tests, requirements closure, isolated
+`python -S` import probe, and protected-byte check all pass. A stricter AST
+projection initially rejected three arbitrary retired attribute references in
+`tests/live/smoke_fred.py`; that result is retained as an intentionally
+overbroad diagnostic because Task 4 still owns reviewed current-authority
+attribute and prose cleanup. After narrowing the projection to Task 3's
+declared import/inheritance/type/alias surface, one real executable alias
+remained: the live smoke saves and restores `ing.MacroCalendarStore`, although
+the current ingestion module exposes and constructs only
+`MacroCalendarLocalStore`.
+
+The inventory already owns the path and all three stale attribute coordinates
+under `retain_operator_remove_pg_branch`, but the Task 3 owner list omitted
+it. Section 0.7d admits only the exact three-line current-owner rewrite and
+preserves all staged identities. Product edits remain uncommitted. The packet
+retains the overbroad diagnostic, alias-specific RED, complete runtime
+transcripts, structural projections, and pre-amendment product patch. Focused
+amendment review is the sole next gate; Tasks 4-7 remain unauthorized.
