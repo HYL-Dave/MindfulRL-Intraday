@@ -1,7 +1,8 @@
 # Legacy-Agent CLI and Entrypoint Census Evidence
 
-> **Status:** TASK 0 REVIEWED GREEN; TASK 1 COMPLETE; INDEPENDENT TASK 1
-> REVIEW NEXT; TASKS 2-4 NOT AUTHORIZED; NOT MERGED; NOT PUSHED
+> **Status:** TASKS 0-1 REVIEWED GREEN; TASK 2 STOPPED BEFORE AUTHORITY
+> GENERATION FOR NORMALIZED-AUTHORITY AMENDMENT REVIEW; TASKS 3-4 NOT
+> AUTHORIZED; NOT MERGED; NOT PUSHED
 >
 > **Product/candidate source:**
 > `241ccdba6dc7c2cf1b162dd254ada88f25b6a9b0`
@@ -185,10 +186,36 @@ collection. The source, implementation parent, and main worktrees were clean;
 rows stayed byte-identical, no product/test byte changed, and no census, CLI,
 Discord, provider, or app process remained.
 
+## Task 2 stop - normalized authority was underspecified
+
+Independent Task 1 review returned GREEN and authorized Task 2. Before writing
+tracked census authority, the first classification generator run failed loud on
+an unmapped path-form test target. Corrected diagnostic runs then exposed a more
+fundamental plan defect: `capabilities.tsv`, `consumers.tsv`, `tests.tsv`, and
+`current_invocations.tsv` contain detail fields absent from the fixed
+`entrypoints.jsonl` schema. They therefore cannot be regenerated solely from
+that JSON ledger as plan Section 0.5 and validator item 20 originally required.
+
+Execution stopped before any tracked census authority or product byte was
+created or changed. The bounded amendment makes those four files normalized co-authorities
+generated with the entrypoint ledger from exact source/candidate inputs,
+retains `recommendations.tsv` as the pure ledger projection, and requires
+bidirectional foreign-key closure plus two byte-identical full generations.
+Task 3 still independently reconstructs every file. Candidate universe
+`295/14/90`, Task 1 joins, schemas, source base, product/test protection, and all
+retirement gates remain unchanged.
+
+Two rejected diagnostic attempts are not admission evidence: a shell cleanup
+command was rejected before execution by the command-safety boundary, and the
+first generator run rejected an unmapped path-form test target rather than
+guessing a fallback. Packet-local draft outputs are untracked and will be
+recreated from scratch only after amendment review.
+
 ## Next gate
 
-Task 1 stops for independent review. Task 2 classification, canonical tracked
-inventory creation, recommendations, CLI/Discord/skill/operator disposition,
-product or test edits, retirement, merge, push, live commands, provider
-traffic, secret handling, and destructive operations remain unauthorized. The
-MCP/HTTP model-callable-interface direction remains recommendation context only.
+Focused review of the normalized-authority amendment is required before Task 2
+resumes. Canonical tracked inventory, recommendations, CLI/Discord/skill/operator
+disposition, product or test edits, retirement, merge, push, live commands,
+provider traffic, secret handling, and destructive operations remain
+unauthorized. The MCP/HTTP model-callable-interface direction remains
+recommendation context only.
