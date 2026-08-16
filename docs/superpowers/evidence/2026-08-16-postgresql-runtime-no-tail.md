@@ -1,7 +1,7 @@
 # PostgreSQL Runtime No-Tail Evidence
 
-> **Status:** TASKS 0-3 COMPLETE THROUGH PRODUCT TIP `ac2d3395`; SECTION
-> 0.7D REVIEW GREEN; USER-APPROVED A/B AMENDMENT CLASSIFICATION ACTIVE;
+> **Status:** TASKS 0-3 COMPLETE THROUGH PRODUCT TIP `ac2d3395`; SECTIONS
+> 0.7D AND 0.7E CLASS A AMENDMENTS RECORDED; USER-APPROVED A/B CLASSIFICATION ACTIVE;
 > BATCH B TASKS 4-5 ACTIVE; TASK 6 REMAINS THE COMBINED REVIEW GATE; TASK 7,
 > MERGE, PUSH, LIVE TRAFFIC, AND PRIVATE OR REMOTE MUTATION NOT AUTHORIZED
 >
@@ -365,3 +365,23 @@ payloads; its `SHA256SUMS` SHA-256 is
 `4b991f16f3d7b09b6dad43c17d4c9ae905f3d429568c19836228c64cb572c8c9`.
 Batch B continues through Tasks 4-5; Task 6 remains the combined
 implementation-review gate.
+
+## 12. Task 4 presenter fallback Class A amendment
+
+Task 4's zero-residue scanner is GREEN over every tracked product path with
+the exact temporary-governance exclusion set. Backend and frontend collections
+match the pinned final identities, and the two frontend owner files pass
+`54/54`. The first sequential frontend full run completed `1,176 passed / 1
+failed`; the sole failure was the i18n foundation owner reporting
+`["src/marketDataDisplay.ts","presenter_return","normalized"]`.
+
+The rejected transcript is
+`/tmp/arkscope-pg-no-tail-task4-1499d827/frontend-full.txt`. It contains no
+provider request or production/private access. Direct scanner replay identified
+both the raw default return in `newsWriteRouteLabel` and the machine-value
+predicate embedded in `newsReadSurfaceLabel`'s return expression. Both are
+inside the exact inventory-owned presenter rewrite. Plan Section 0.7e
+classifies the bounded localized fallback plus behavior-preserving predicate
+relocation as Class A. All node IDs and staged hashes remain unchanged; the
+correction proceeds without an intermediate review wait and is replayed at
+Task 6.
