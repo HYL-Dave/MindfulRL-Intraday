@@ -1,0 +1,21 @@
+BASE 64af5092dd22523c672b8c42e3b84eaba04bec1f
+
+d77e24de docs: design trusted lifecycle automation
+285a046a docs: harden lifecycle SEC and rollback authority
+870aef12 docs: plan Tavily retirement
+43101804 feat: add Tavily retirement preflight
+5723b2ae refactor: retire lifecycle Tavily investigation
+f9d0904b docs: align Tavily registry catalog ownership
+f88ca070 refactor: retire generic Tavily tools
+01ecb87a refactor: remove Tavily compressor reducer
+6ef1ea0e docs: correct visible literal gate command
+d7178576 refactor: retire lifecycle Tavily controls
+ac974bd9 docs: align skill retirement ownership
+62f05529 docs: correct Tavily literal admission gate
+01404f81 docs: retire Tavily from current product contracts
+52ab0e60 test: preserve Tavily retirement node identities
+9a9eed34 test: align replay fixture with web browse schema
+f6b04581 docs: align final literal scanner command
+4f6959e2 docs: correct offline state admission
+
+No merge commit exists in this range. The evidence closeout commit follows this list and changes docs only.

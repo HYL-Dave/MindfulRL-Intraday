@@ -1,0 +1,19 @@
+Command:
+git grep -n -i tavily -- src apps config/.env.template config/user_profile.yaml requirements.txt resources
+
+Closed match classes:
+- apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx: two assertions that visible text does not contain the retired provider name.
+- src/security_lifecycle_retirement.py: explicit-path, read-only retirement preflight types, counters, SQL predicates, and exports.
+- src/security_lifecycle_schema.py: dormant legacy RUN_ADAPTERS storage vocabulary.
+
+No request client, route, tool, reducer, skill, configuration, resource copy, or dependency matches.
+
+Command:
+git grep -n 'TAVILY_API_KEY' -- src apps config/.env.template config/user_profile.yaml requirements.txt resources
+
+Result: zero matches.
+
+Command:
+rg -n -i "(^|[^a-z])(import tavily|from tavily|TavilyClient|tavily_search|tavily_fetch|run_tavily|startSecurityLifecycleInvestigation)" src apps resources config/.env.template config/user_profile.yaml requirements.txt
+
+Result: zero matches.

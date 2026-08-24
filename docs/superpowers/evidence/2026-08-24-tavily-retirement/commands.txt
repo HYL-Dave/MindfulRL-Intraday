@@ -1,0 +1,58 @@
+All commands ran from /tmp/arkscope-lifecycle-automation unless noted.
+
+COLLECTION
+pytest --collect-only -q --disable-warnings
+exit 0; 4294 nodes
+
+Base collection ran from /mnt/md0/PycharmProjects/ArkScope at exact base 64af5092.
+pytest --collect-only -q --disable-warnings
+exit 0; 4324 nodes
+
+BACKEND REJECTED (not admitted)
+pytest -q --basetemp=/tmp/arkscope-tavily-retirement-a
+exit 1; 4251 passed, 12 skipped, 31 failed, 3 warnings
+
+Focused diagnosis after the environment/fixture corrections:
+pytest -q tests/test_sa_extension_alpha_picks.py tests/test_sa_extension_article_identity.py tests/test_sa_extension_popup.py tests/test_sa_extension_reconciliation_ui.py
+exit 0; 40 passed
+
+pytest -q tests/test_replay_fixtures.py tests/test_replay.py tests/test_compressor_observability.py
+exit 0; 95 passed
+
+BACKEND A
+pytest -q --basetemp=/tmp/arkscope-tavily-retirement-a-final
+exit 0; 4282 passed, 12 skipped, 3 warnings; 223.89s
+
+BACKEND B
+pytest -q --basetemp=/tmp/arkscope-tavily-retirement-b-final
+exit 0; 4282 passed, 12 skipped, 3 warnings; 224.90s
+
+FRONTEND
+npm --prefix apps/arkscope-web test -- --run
+exit 0; 104 files, 1220 tests
+
+npm --prefix apps/arkscope-web run typecheck
+exit 0
+
+npm --prefix apps/arkscope-web run check:i18n-literals
+exit 0; {"candidateCount":37,"signatureCount":20,"debtSignatureCount":0,"allowlistCount":20,"migratedScopes":["src/**"]}
+
+npm --prefix apps/arkscope-web run build
+exit 0; existing >500 kB chunk warning only
+
+RUNTIME
+Python import/inventory assertion over create_app(), create_default_registry(), get_anthropic_tools(), and create_openai_tools(None)
+exit 0; 184 routes, 50 registry tools, 51/51 bridges, web_tools=[web_browse], no Tavily module loaded
+
+STATE
+realpath data
+exit 0; /tmp/arkscope-lifecycle-automation/data
+
+git rev-list --merges 64af5092..HEAD
+exit 0; no output
+
+git branch -r --contains HEAD
+exit 0; no output
+
+git merge-base --is-ancestor HEAD master
+exit 1; expected proof that this branch is not merged into master

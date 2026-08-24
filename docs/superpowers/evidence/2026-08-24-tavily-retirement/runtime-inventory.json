@@ -1,0 +1,26 @@
+{
+  "anthropic_tools": 51,
+  "lifecycle_routes": [
+    ["GET", "/security-lifecycle/cases"],
+    ["GET", "/security-lifecycle/cases/{case_id}"],
+    ["GET", "/security-lifecycle/cases/{case_id}/transition-preview"],
+    ["GET", "/security-lifecycle/investigations/{run_id}"],
+    ["POST", "/security-lifecycle/acknowledgements/{acknowledgement_id}/reopen"],
+    ["POST", "/security-lifecycle/action-proposals/{proposal_id}/dismiss"],
+    ["POST", "/security-lifecycle/assessments/{assessment_id}/accept"],
+    ["POST", "/security-lifecycle/cases/{case_id}/acknowledgements"],
+    ["POST", "/security-lifecycle/cases/{case_id}/approve-transition"],
+    ["POST", "/security-lifecycle/cases/{case_id}/assessments"],
+    ["POST", "/security-lifecycle/cases/{case_id}/evidence"],
+    ["POST", "/security-lifecycle/transitions/{transition_id}/cancel"],
+    ["POST", "/security-lifecycle/transitions/{transition_id}/retry"],
+    ["POST", "/security-lifecycle/transitions/{transition_id}/reverse"]
+  ],
+  "openai_tools": 51,
+  "registry_tools": 50,
+  "routes": 184,
+  "tavily_modules_loaded": [],
+  "web_tools": [
+    "web_browse"
+  ]
+}

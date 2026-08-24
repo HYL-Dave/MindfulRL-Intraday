@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-25T00:43:11+08:00",
+  "base_product_sha": "64af5092dd22523c672b8c42e3b84eaba04bec1f",
+  "admission_tip_before_evidence": "4f6959e2058bc546df12635a336ed1b7f31e5600",
+  "collection": {
+    "base": 4324,
+    "current": 4294,
+    "removed": 35,
+    "added": 5,
+    "closed_feature_removals": 34,
+    "manual_node_relocations": 1,
+    "preflight_additions": 4,
+    "unexpected_node_drift": 0
+  },
+  "backend": {
+    "run_a": {
+      "basetemp": "/tmp/arkscope-tavily-retirement-a-final",
+      "passed": 4282,
+      "skipped": 12,
+      "failed": 0,
+      "warnings": 3,
+      "seconds": 223.89
+    },
+    "run_b": {
+      "basetemp": "/tmp/arkscope-tavily-retirement-b-final",
+      "passed": 4282,
+      "skipped": 12,
+      "failed": 0,
+      "warnings": 3,
+      "seconds": 224.90
+    },
+    "warning_set": [
+      "edgar.files.html_documents deprecated before v6.0 removal",
+      "edgar.files.html deprecated before v6.0 removal",
+      "edgar.files.htmltools deprecated before v6.0 removal"
+    ]
+  },
+  "frontend": {
+    "files_passed": 104,
+    "tests_passed": 1220,
+    "typecheck_exit": 0,
+    "literal_scanner": {
+      "candidateCount": 37,
+      "signatureCount": 20,
+      "debtSignatureCount": 0,
+      "allowlistCount": 20
+    },
+    "build_exit": 0,
+    "existing_large_chunk_warning": true
+  },
+  "runtime": {
+    "routes": 184,
+    "registry_tools": 50,
+    "anthropic_bridge_tools": 51,
+    "openai_bridge_tools": 51,
+    "web_tools": [
+      "web_browse"
+    ],
+    "lifecycle_investigation_post_present": false,
+    "tavily_modules_loaded": []
+  },
+  "tracked_product_literals": {
+    "allowed_classes": [
+      "dormant_schema_authority",
+      "read_only_retirement_preflight",
+      "ui_absence_assertion"
+    ],
+    "tavily_api_key_matches": 0,
+    "live_request_owner_matches": 0
+  },
+  "state_boundary": {
+    "worktree_data_root": "/tmp/arkscope-lifecycle-automation/data",
+    "production_database_path_passed_to_tests": false,
+    "provider_calls": 0,
+    "live_preflight_reports": 0,
+    "live_migration_reports": 0,
+    "config_env_diff": false,
+    "merged": false,
+    "pushed": false
+  },
+  "rejected_run": {
+    "passed": 4251,
+    "skipped": 12,
+    "failed": 31,
+    "environment_failures": 30,
+    "fixture_contract_failures": 1,
+    "admitted": false
+  }
+}
