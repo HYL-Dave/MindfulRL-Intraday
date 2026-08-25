@@ -1,0 +1,26 @@
+{
+  "authorization_status": "AUTHORIZED_NOT_RUN",
+  "authorized_operations": {
+    "ibkr_read_only_sessions": 1,
+    "ibkr_symbols_max": [
+      "LC",
+      "HAPN"
+    ],
+    "production_profile_config_queries": 2,
+    "production_profile_config_rows_max": 8,
+    "sec_document_attempts_max": 4,
+    "sec_documents_max": 4
+  },
+  "forbidden_operations": {
+    "app_cutover": true,
+    "general_web_search": true,
+    "merge": true,
+    "news_provider_calls": true,
+    "production_database_migration": true,
+    "production_database_write": true,
+    "push": true,
+    "second_provider_run_without_new_authorization": true
+  },
+  "product_test_authority": "7cb479a8058793dc29cbb75bb4ab98b9d6a6f231",
+  "scope": "four_exact_sec_documents_and_one_ibkr_read_only_shape"
+}
