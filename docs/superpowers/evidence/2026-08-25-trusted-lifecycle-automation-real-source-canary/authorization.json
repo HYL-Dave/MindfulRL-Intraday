@@ -1,5 +1,5 @@
 {
-  "authorization_status": "AUTHORIZED_NOT_RUN",
+  "authorization_status": "CONSUMED",
   "authorized_operations": {
     "ibkr_read_only_sessions": 1,
     "ibkr_symbols_max": [
@@ -22,5 +22,8 @@
     "second_provider_run_without_new_authorization": true
   },
   "product_test_authority": "7cb479a8058793dc29cbb75bb4ab98b9d6a6f231",
-  "scope": "four_exact_sec_documents_and_one_ibkr_read_only_shape"
+  "scope": "four_exact_sec_documents_and_one_ibkr_read_only_shape",
+  "consumed_at": "2026-08-25T10:27:43.271225Z",
+  "execution_authority": "f6a7e12987f3614d1be1fb17afd8ecc0f1c9f96f",
+  "rerun_authorized": false
 }

@@ -1,0 +1,28 @@
+{
+  "authorized_remote_classes": {
+    "ibkr_configured_gateway": {
+      "contract_detail_requests": 2,
+      "read_only_sessions": 1
+    },
+    "sec_www": {
+      "document_attempts": 4,
+      "http_statuses": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "logical_documents": 4,
+      "submissions_requests": 0
+    }
+  },
+  "local_resolution_classes": [
+    "local_dns_stub",
+    "local_nscd_socket_probe"
+  ],
+  "raw_trace_committed": false,
+  "raw_trace_deleted_after_summary": true,
+  "raw_trace_sha256": "5a6683b27faf038a98c5cc87343658319618fc75c1e07ba7fdd2a7fd9e3e483e",
+  "unexpected_external_endpoint_classes": [],
+  "unexpected_external_endpoint_count": 0
+}
