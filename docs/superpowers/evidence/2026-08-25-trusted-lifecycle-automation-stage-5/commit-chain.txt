@@ -8,3 +8,6 @@ f9383a5e6c32679208c4735532e1454cbf1e9fd7 test(lifecycle): reject raw automation 
 07b38bbd75147fa65e931e0e35a6da63cd4daf01 fix(lifecycle): label closed automation facts
 0d4c86922888a53a08fa12f760d18911e0cd12ce docs(lifecycle): record bilingual browser admission
 ed2117f3616270ba70c725f02e8eab7478ef9945 docs(lifecycle): prepare migration authorization
+f4269b371b162d6c5eb7389015df3c3935cac19f docs(lifecycle): record stage 5 offline gates
+d1922018687b86fe324ccabc3e711229bc99167e docs(lifecycle): seal stage 5 evidence
+189c6939fff0d1e533dca034be21b77913dc913a docs(lifecycle): close stage 5 admission

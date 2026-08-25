@@ -23,7 +23,7 @@ ffccecd551b5a6bb4258fca7539cf68d356461350af64a38da9f33cfcd9f0437  ./browser/390x
 df3a1f2ffcedfade66686a18f5d6e9bb98a376aefd0813366adcc1ffff464c15  ./browser/390x844-zh-Hant-drawer-transition.png
 13e428845513d033f4cba7c66811801e6d13087e7641eedfce4936d8cd153bc0  ./browser/matrix.json
 ad617f4d1afcf4bab92dd969b4f37ff0e154a2203cd517ca3522200bbb05a4f4  ./commands.txt
-7fe698dae6b3ce3667a963009be78cf5769cf8579d48a59b0e1c72592eb60d03  ./commit-chain.txt
+5432b73014cf355999ce725f4a1132028ca3f10427b4a9fceacd9eec15e7bfa0  ./commit-chain.txt
 995f8907d61ab0c46cad1907acf36548124fe1442487c2d76e10eb2e39b43238  ./frontend-focused.json
 4d3bfdca43b495c0258e39b6d98026da4e5bdad217def98db4d057f102e045ca  ./frontend-full.json
 07acf0384c4798c128bffc09ed295c85cd79f8e0a20737bf90a84b7124586b44  ./grounded-shadow-network-summary.json
@@ -31,7 +31,7 @@ ad617f4d1afcf4bab92dd969b4f37ff0e154a2203cd517ca3522200bbb05a4f4  ./commands.txt
 f92b9bd29a264da9dc00c7daadb76669e3c03396e77d36904e82faf538408aa3  ./grounded-shadow.json
 8e5c026e2b237eb19313f973f38934994e5a8797d712cbe087716eac0ac69e49  ./live-migration-authorization-template.json
 8d132f8fbb92b4dd03cde605681fdd1652917542e1ada5fa4f7300996c414cf2  ./live-migration-runbook.md
-7bc92dcc8c030ace26dc297ad3f7acdb8181557136be7039b9b8cc7420b1ab62  ./ownership-summary.json
+417bcef506d7fd339052daad56fc1325ff1e5c094b0cb9405bcf043f2530d87e  ./ownership-summary.json
 e89466d8432cee387dc520b22c64a5b104acdbee6e13927e7c148909a7902bb3  ./protected-bytes.json
 fb44c69a3cbed8f8f1d89ac3bd48c2535f84f6ce5d4ff49ab3a16e443ba8a5ab  ./run_browser_matrix.py
 aa728ff2737f97184a67a010a77fffc4a710fc2eae650f2133c0e6975e7b144d  ./run_grounded_shadow.py
