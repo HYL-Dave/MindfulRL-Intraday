@@ -147,7 +147,7 @@ def build_report() -> dict:
             "network_calls": 0,
             "production_database_operations": 0,
             "provider_calls": 0,
-            "socket_policy": "denied",
+            "replay_socket_policy": "denied_after_offline_dependency_import",
         },
         "provenance": {
             "case_identity": "reviewed_repository_snapshot",

@@ -1,0 +1,55 @@
+3111527 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [4, 5]) = 0
+3111527 getsockname(4, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3111527 getsockname(5, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3111527 socket(AF_INET6, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_IP) = 6
+3111527 bind(6, {sa_family=AF_INET6, sin6_port=htons(0), sin6_flowinfo=htonl(0), inet_pton(AF_INET6, "::1", &sin6_addr), sin6_scope_id=0}, 28) = 0
+3111575 +++ exited with 0 +++
+3111527 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=3111575, si_uid=1001, si_status=0, si_utime=0, si_stime=0} ---
+3111528 +++ exited with 0 +++
+3111530 +++ exited with 0 +++
+3111531 +++ exited with 0 +++
+3111529 +++ exited with 0 +++
+3111532 +++ exited with 0 +++
+3111534 +++ exited with 0 +++
+3111533 +++ exited with 0 +++
+3111535 +++ exited with 0 +++
+3111537 +++ exited with 0 +++
+3111536 +++ exited with 0 +++
+3111538 +++ exited with 0 +++
+3111539 +++ exited with 0 +++
+3111540 +++ exited with 0 +++
+3111541 +++ exited with 0 +++
+3111542 +++ exited with 0 +++
+3111543 +++ exited with 0 +++
+3111544 +++ exited with 0 +++
+3111545 +++ exited with 0 +++
+3111546 +++ exited with 0 +++
+3111547 +++ exited with 0 +++
+3111550 +++ exited with 0 +++
+3111549 +++ exited with 0 +++
+3111548 +++ exited with 0 +++
+3111551 +++ exited with 0 +++
+3111553 +++ exited with 0 +++
+3111552 +++ exited with 0 +++
+3111555 +++ exited with 0 +++
+3111554 +++ exited with 0 +++
+3111557 +++ exited with 0 +++
+3111556 +++ exited with 0 +++
+3111558 +++ exited with 0 +++
+3111559 +++ exited with 0 +++
+3111561 +++ exited with 0 +++
+3111560 +++ exited with 0 +++
+3111562 +++ exited with 0 +++
+3111565 +++ exited with 0 +++
+3111564 +++ exited with 0 +++
+3111563 +++ exited with 0 +++
+3111566 +++ exited with 0 +++
+3111567 +++ exited with 0 +++
+3111568 +++ exited with 0 +++
+3111569 +++ exited with 0 +++
+3111570 +++ exited with 0 +++
+3111571 +++ exited with 0 +++
+3111572 +++ exited with 0 +++
+3111573 +++ exited with 0 +++
+3111574 +++ exited with 0 +++
+3111527 +++ exited with 0 +++
