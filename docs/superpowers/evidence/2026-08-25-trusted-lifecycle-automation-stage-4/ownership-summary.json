@@ -1,0 +1,18 @@
+{
+  "base_commit": "1af6bc69c6e2ccbe1cd1e25e899325ba758c671b",
+  "base_pin_errors": 0,
+  "changed_non_governance_paths": 32,
+  "changed_paths_total": 41,
+  "ledger_external_changed_paths": 0,
+  "merge_commits_after_base": 0,
+  "owned_paths": 34,
+  "owned_paths_not_changed": [
+    "apps/arkscope-web/src/lifecycle/lifecyclePresentation.test.ts",
+    "docs/design/PROJECT_PRIORITY_MAP.md"
+  ],
+  "protected_secret_value_inspected": false,
+  "protected_tracked_path_changes": 0,
+  "protected_tracked_paths": 15,
+  "remote_refs_containing_verified_head": 0,
+  "verified_head_before_packet": "884c06973ad4326fecfa59eedaa9854180f4f313"
+}

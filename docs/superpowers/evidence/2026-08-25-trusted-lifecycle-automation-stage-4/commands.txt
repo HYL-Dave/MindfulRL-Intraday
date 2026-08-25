@@ -1,0 +1,41 @@
+Stage 4 admission command record (executed from the isolated worktree)
+
+python -m pytest -q <20 exact backend additions>
+  20 passed
+
+python -m pytest -q <9 backend focused files>
+  146 passed
+
+python -m pytest --collect-only -q
+  4405 collected (run twice)
+
+python -m pytest -q --basetemp=/tmp/arkscope-stage4-backend-a-20260825
+  4393 passed, 12 skipped, 3 warnings
+
+python -m pytest -q --basetemp=/tmp/arkscope-stage4-backend-b-20260825
+  4393 passed, 12 skipped, 3 warnings
+
+npm test -- <5 focused files>
+  5 files, 60 passed
+
+npm test
+  105 files, 1227 passed
+
+npm run typecheck
+  passed
+
+npm run check:i18n-literals
+  candidateCount=37 signatureCount=20 debtSignatureCount=0 allowlistCount=20
+
+npm run build
+  passed; existing chunk-size warning only
+
+strace -f -e trace=network python -m pytest -q <20 exact backend additions>
+  20 passed; no AF_INET/AF_INET6/connect/bind/listen/accept syscall
+
+python docs/superpowers/evidence/2026-08-25-trusted-lifecycle-automation-stage-4/scratch_apply_ack_reverse.py
+  passed twice with byte-identical JSON output
+
+Python runtime inventory assertion over create_app(), create_default_registry(),
+get_anthropic_tools(), and create_openai_tools(None)
+  routes=187 lifecycle_routes=17 tools=50/51/51

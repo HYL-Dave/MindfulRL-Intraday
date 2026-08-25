@@ -1,0 +1,374 @@
+3077679 +++ exited with 0 +++
+3077678 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=3077679, si_uid=1001, si_status=0, si_utime=0, si_stime=0} ---
+3077750 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [12, 13]) = 0
+3077750 getsockname(12, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077750 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077750 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077750 recvfrom(12, 0x7a0dc8002650, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077750 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077750 recvfrom(12, 0x7a0dc8007490, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077751 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077750 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077750 recvfrom(12, 0x7a0dc8008780, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077751 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077750 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077750 recvfrom(12, 0x7a0dc80089d0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077750 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077750 recvfrom(12, 0x7a0dc800b000, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077751 +++ exited with 0 +++
+3077750 +++ exited with 0 +++
+3077752 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [12, 13]) = 0
+3077752 getsockname(12, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077752 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077752 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077752 recvfrom(12, 0x7a0dc800b030, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077752 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077752 recvfrom(12, 0x7a0dc800b060, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077753 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077752 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077752 recvfrom(12, 0x7a0dc800b090, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077753 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077752 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077752 recvfrom(12, 0x7a0dc8010060, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077752 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077752 recvfrom(12, 0x7a0dc8013310, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077753 +++ exited with 0 +++
+3077752 +++ exited with 0 +++
+3077754 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [12, 13]) = 0
+3077754 getsockname(12, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077754 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077754 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077754 recvfrom(12, 0x7a0dc8013310, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077754 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077754 recvfrom(12, 0x7a0dc8013340, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077755 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077754 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077754 recvfrom(12, 0x7a0dc8013370, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077755 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077754 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077754 recvfrom(12, 0x7a0dc8015460, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077754 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077754 recvfrom(12, 0x7a0dc8018960, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077755 +++ exited with 0 +++
+3077754 +++ exited with 0 +++
+3077756 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [12, 13]) = 0
+3077756 getsockname(12, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077756 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077756 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077756 recvfrom(12, 0x7a0dc80176d0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077756 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077756 recvfrom(12, 0x7a0dc8017700, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077757 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077756 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077756 recvfrom(12, 0x7a0dc8017730, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077757 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077756 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077756 recvfrom(12, 0x7a0dc8017760, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077756 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077756 recvfrom(12, 0x7a0dc8018990, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077757 +++ exited with 0 +++
+3077756 +++ exited with 0 +++
+3077758 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [12, 13]) = 0
+3077758 getsockname(12, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077758 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077758 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077758 recvfrom(12, 0x7a0dc80189c0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077758 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077758 recvfrom(12, 0x7a0dc8018e20, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077759 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077758 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077758 recvfrom(12, 0x7a0dc8018e20, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077759 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077758 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077758 recvfrom(12, 0x7a0dc8018e50, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077758 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077758 recvfrom(12, 0x7a0dc8018e80, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077759 +++ exited with 0 +++
+3077758 +++ exited with 0 +++
+3077760 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [12, 13]) = 0
+3077760 getsockname(12, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077760 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077760 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077760 recvfrom(12, 0x7a0dc8018e80, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077760 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077760 recvfrom(12, 0x7a0dc801a830, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077761 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077760 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077760 recvfrom(12, 0x7a0dc801b740, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077761 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077760 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077760 recvfrom(12, 0x7a0dc801b770, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077760 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077760 recvfrom(12, 0x7a0dc801c4b0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077761 +++ exited with 0 +++
+3077760 +++ exited with 0 +++
+3077762 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [15, 16]) = 0
+3077762 getsockname(15, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077762 getsockname(16, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(16, "\0", 1, 0, NULL, 0) = 1
+3077762 recvfrom(15, "\0", 4096, 0, NULL, NULL) = 1
+3077762 recvfrom(15, 0x7a0dc801c4b0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(16, "\0", 1, 0, NULL, 0) = 1
+3077762 recvfrom(15, "\0", 4096, 0, NULL, NULL) = 1
+3077762 recvfrom(15, 0x7a0dc801c910, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077763 sendto(16, "\0", 1, 0, NULL, 0) = 1
+3077762 recvfrom(15, "\0", 4096, 0, NULL, NULL) = 1
+3077762 recvfrom(15, 0x7a0dc801c910, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077763 sendto(16, "\0", 1, 0, NULL, 0) = 1
+3077762 recvfrom(15, "\0", 4096, 0, NULL, NULL) = 1
+3077762 recvfrom(15, 0x7a0dc801c940, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(16, "\0", 1, 0, NULL, 0) = 1
+3077762 recvfrom(15, "\0", 4096, 0, NULL, NULL) = 1
+3077762 recvfrom(15, 0x7a0dc801f610, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077763 +++ exited with 0 +++
+3077762 +++ exited with 0 +++
+3077764 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [15, 16]) = 0
+3077764 getsockname(15, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077764 getsockname(16, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(16, "\0", 1, 0, NULL, 0) = 1
+3077764 recvfrom(15, "\0", 4096, 0, NULL, NULL) = 1
+3077764 recvfrom(15, 0x7a0dc801e370, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(16, "\0", 1, 0, NULL, 0) = 1
+3077764 recvfrom(15, "\0", 4096, 0, NULL, NULL) = 1
+3077764 recvfrom(15, 0x7a0dc801e370, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077765 sendto(16, "\0", 1, 0, NULL, 0) = 1
+3077764 recvfrom(15, "\0", 4096, 0, NULL, NULL) = 1
+3077764 recvfrom(15, 0x7a0dc801e370, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077765 sendto(16, "\0", 1, 0, NULL, 0) = 1
+3077764 recvfrom(15, "\0", 4096, 0, NULL, NULL) = 1
+3077764 recvfrom(15, 0x7a0dc801e3a0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(16, "\0", 1, 0, NULL, 0) = 1
+3077764 recvfrom(15, "\0", 4096, 0, NULL, NULL) = 1
+3077764 recvfrom(15, 0x7a0dc801ea20, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077765 +++ exited with 0 +++
+3077764 +++ exited with 0 +++
+3077766 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [13, 14]) = 0
+3077766 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077766 getsockname(14, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077766 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077766 recvfrom(13, 0x7a0dc801e920, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077766 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077766 recvfrom(13, 0x7a0dc8020bc0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077767 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077766 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077766 recvfrom(13, 0x7a0dc8020bc0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077767 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077766 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077766 recvfrom(13, 0x7a0dc8020bf0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077767 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077766 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077766 recvfrom(13, 0x7a0dc8020c20, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077766 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077766 recvfrom(13, 0x7a0dc8020c20, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077767 +++ exited with 0 +++
+3077766 +++ exited with 0 +++
+3077768 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [13, 14]) = 0
+3077768 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077768 getsockname(14, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077768 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077768 recvfrom(13, 0x7a0dc8020c20, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077768 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077768 recvfrom(13, 0x7a0dc8020c20, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077769 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077768 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077768 recvfrom(13, 0x7a0dc8020c20, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077769 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077768 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077768 recvfrom(13, 0x7a0dc8020c50, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077768 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077768 recvfrom(13, 0x7a0dc8020c80, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077769 +++ exited with 0 +++
+3077768 +++ exited with 0 +++
+3077770 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [13, 14]) = 0
+3077770 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077770 getsockname(14, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077770 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077770 recvfrom(13, 0x7a0dc8020c80, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077770 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077770 recvfrom(13, 0x7a0dc8020c80, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077771 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077770 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077770 recvfrom(13, 0x7a0dc8020c80, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077771 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077770 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077770 recvfrom(13, 0x7a0dc8020cb0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077770 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077770 recvfrom(13, 0x7a0dc80210d0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077771 +++ exited with 0 +++
+3077770 +++ exited with 0 +++
+3077772 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [13, 14]) = 0
+3077772 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077772 getsockname(14, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077772 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077772 recvfrom(13, 0x7a0dc8020f90, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077772 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077772 recvfrom(13, 0x7a0dc80213f0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077773 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077772 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077772 recvfrom(13, 0x7a0dc80213f0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077773 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077772 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077772 recvfrom(13, 0x7a0dc8021420, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077773 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077772 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077772 recvfrom(13, 0x7a0dc8021450, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077772 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077772 recvfrom(13, 0x7a0dc8021450, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077773 +++ exited with 0 +++
+3077772 +++ exited with 0 +++
+3077774 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [13, 14]) = 0
+3077774 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077774 getsockname(14, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077774 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077774 recvfrom(13, 0x7a0dc8021450, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077774 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077774 recvfrom(13, 0x7a0dc80218b0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077775 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077774 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077774 recvfrom(13, 0x7a0dc80218b0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077774 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077774 recvfrom(13, 0x7a0dc8021ff0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077775 +++ exited with 0 +++
+3077774 +++ exited with 0 +++
+3077776 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [13, 14]) = 0
+3077776 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077776 getsockname(14, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077776 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077776 recvfrom(13, 0x7a0dc8022020, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077776 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077776 recvfrom(13, 0x7a0dc8022ec0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077777 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077776 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077776 recvfrom(13, 0x7a0dc8023550, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077777 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077776 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077776 recvfrom(13, 0x7a0dc8023580, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077776 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077776 recvfrom(13, 0x7a0dc80235b0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077777 +++ exited with 0 +++
+3077776 +++ exited with 0 +++
+3077778 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [13, 14]) = 0
+3077778 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077778 getsockname(14, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077778 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077778 recvfrom(13, 0x7a0dc8023800, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077778 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077778 recvfrom(13, 0x7a0dc8024d70, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077779 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077778 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077778 recvfrom(13, 0x7a0dc8025c80, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077779 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077778 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077778 recvfrom(13, 0x7a0dc8025cb0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(14, "\0", 1, 0, NULL, 0) = 1
+3077778 recvfrom(13, "\0", 4096, 0, NULL, NULL) = 1
+3077778 recvfrom(13, 0x7a0dc8025ce0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077779 +++ exited with 0 +++
+3077778 +++ exited with 0 +++
+3077780 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [12, 13]) = 0
+3077780 getsockname(12, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077780 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077780 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077780 recvfrom(12, 0x7a0dc8025c80, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077780 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077780 recvfrom(12, 0x7a0dc8025c80, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077781 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077780 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077780 recvfrom(12, 0x7a0dc8025c80, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077781 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077780 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077780 recvfrom(12, 0x7a0dc8025cb0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077678 sendto(13, "\0", 1, 0, NULL, 0) = 1
+3077780 recvfrom(12, "\0", 4096, 0, NULL, NULL) = 1
+3077780 recvfrom(12, 0x7a0dc8025ce0, 4096, 0, NULL, NULL) = -1 EAGAIN (Resource temporarily unavailable)
+3077781 +++ exited with 0 +++
+3077780 +++ exited with 0 +++
+3077703 +++ exited with 0 +++
+3077702 +++ exited with 0 +++
+3077704 +++ exited with 0 +++
+3077705 +++ exited with 0 +++
+3077706 +++ exited with 0 +++
+3077707 +++ exited with 0 +++
+3077708 +++ exited with 0 +++
+3077709 +++ exited with 0 +++
+3077710 +++ exited with 0 +++
+3077712 +++ exited with 0 +++
+3077711 +++ exited with 0 +++
+3077713 +++ exited with 0 +++
+3077715 +++ exited with 0 +++
+3077716 +++ exited with 0 +++
+3077714 +++ exited with 0 +++
+3077717 +++ exited with 0 +++
+3077718 +++ exited with 0 +++
+3077719 +++ exited with 0 +++
+3077720 +++ exited with 0 +++
+3077721 +++ exited with 0 +++
+3077722 +++ exited with 0 +++
+3077723 +++ exited with 0 +++
+3077724 +++ exited with 0 +++
+3077725 +++ exited with 0 +++
+3077726 +++ exited with 0 +++
+3077727 +++ exited with 0 +++
+3077728 +++ exited with 0 +++
+3077729 +++ exited with 0 +++
+3077730 +++ exited with 0 +++
+3077731 +++ exited with 0 +++
+3077732 +++ exited with 0 +++
+3077734 +++ exited with 0 +++
+3077733 +++ exited with 0 +++
+3077735 +++ exited with 0 +++
+3077736 +++ exited with 0 +++
+3077738 +++ exited with 0 +++
+3077739 +++ exited with 0 +++
+3077740 +++ exited with 0 +++
+3077737 +++ exited with 0 +++
+3077742 +++ exited with 0 +++
+3077741 +++ exited with 0 +++
+3077743 +++ exited with 0 +++
+3077744 +++ exited with 0 +++
+3077746 +++ exited with 0 +++
+3077745 +++ exited with 0 +++
+3077747 +++ exited with 0 +++
+3077748 +++ exited with 0 +++
+3077749 +++ exited with 0 +++
+3077678 +++ exited with 0 +++

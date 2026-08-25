@@ -1,0 +1,69 @@
+{
+  "authority": {
+    "merge_performed": false,
+    "production_database_operations": 0,
+    "provider_calls": 0,
+    "push_performed": false,
+    "scope": "offline_scratch_only"
+  },
+  "backend": {
+    "additions": {
+      "failed": 0,
+      "passed": 20,
+      "stream_sha256": "9c88df8e9c815a5dbbd1c5b92c0f7240e2b7783be935a35762addf92b53f9b3f"
+    },
+    "collection": {
+      "run_1": 4405,
+      "run_2": 4405,
+      "stream_sha256": "30bd9d54e08d7d406ff8a09bcfc208ca14bd0e79ccb33a4aa3f70cb180b2b36b"
+    },
+    "focused": {
+      "failed": 0,
+      "passed": 146,
+      "stream_sha256": "c92f267ecdc37fe09ce79448243d685b8fb556ff63550d202f8473313b4db37e"
+    },
+    "full_run_1": {
+      "failed": 0,
+      "passed": 4393,
+      "skipped": 12,
+      "warnings": 3
+    },
+    "full_run_2": {
+      "failed": 0,
+      "passed": 4393,
+      "skipped": 12,
+      "warnings": 3
+    }
+  },
+  "frontend": {
+    "build": "passed_with_existing_chunk_size_warning",
+    "focused": {
+      "failed": 0,
+      "files": 5,
+      "passed": 60
+    },
+    "full": {
+      "failed": 0,
+      "files": 105,
+      "passed": 1227
+    },
+    "literal_scanner": {
+      "allowlist_count": 20,
+      "candidate_count": 37,
+      "debt_signature_count": 0,
+      "signature_count": 20
+    },
+    "typecheck": "passed"
+  },
+  "product_test_authority": "b8c01499bfa90d11bc34288b2748f1a678ef20b0",
+  "routes": {
+    "lifecycle": 17,
+    "total": 187
+  },
+  "scratch_report_sha256": "abcaab252fef6ead206fd85084c46993686caea140afd738b4e64357a7c62f73",
+  "tools": {
+    "anthropic_bridge": 51,
+    "openai_bridge": 51,
+    "registry": 50
+  }
+}

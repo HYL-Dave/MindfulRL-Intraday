@@ -1,0 +1,37 @@
+{
+  "activity": {
+    "acknowledgement_is_explicit_and_idempotent": true,
+    "acknowledgement_preserved_after_reverse": true,
+    "apply_and_reverse_activity_share_profile_transactions": true,
+    "render_does_not_acknowledge": true,
+    "reverse_blockers_are_typed": [
+      "reverse_state_changed",
+      "successor_has_later_transition"
+    ],
+    "reverse_readiness_and_reverse_share_one_evaluator": true
+  },
+  "authority": {
+    "attended_approval_remains_attended": true,
+    "automation_assessment_author": "automation",
+    "automation_assessment_acceptance_authority": "automation_policy",
+    "automation_transition_approval_authority": "automation_policy",
+    "decision_provenance_recomputed_from_nonempty_persisted_material": true,
+    "incoherent_or_stale_authority_rejected": true,
+    "policy_version": "trusted-lifecycle-automation-v1",
+    "rule_id": "lifecycle.simple_symbol_continuation",
+    "rule_version": "1"
+  },
+  "translation": {
+    "cache_key_fields": [
+      "evidence_id",
+      "evidence_content_sha256",
+      "locale"
+    ],
+    "cache_hit_requires_no_permission_or_translator": true,
+    "evidence_hash_is_rechecked_after_translation": true,
+    "failure_changes_no_authoritative_evidence_or_case_state": true,
+    "original_excerpt_remains_visible": true,
+    "provider_model_and_harness_are_presented_as_derived_provenance": true,
+    "translator_runs_without_a_write_transaction": true
+  }
+}

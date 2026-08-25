@@ -1,0 +1,17 @@
+{
+  "af_inet6_syscalls": 0,
+  "af_inet_syscalls": 0,
+  "bind_syscalls": 0,
+  "connect_syscalls": 0,
+  "external_or_loopback_endpoints": 0,
+  "listen_or_accept_syscalls": 0,
+  "raw_trace_lines": 374,
+  "recvfrom_syscalls": 162,
+  "sendto_syscalls": 81,
+  "socketpair_af_unix_syscalls": 16,
+  "trace_scope": "stage_4_backend_additions",
+  "trace_test_result": {
+    "failed": 0,
+    "passed": 20
+  }
+}
