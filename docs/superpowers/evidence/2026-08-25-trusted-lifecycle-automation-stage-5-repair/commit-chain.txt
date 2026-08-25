@@ -5,3 +5,4 @@
 ada352abb0eb6b69ae1d333fe341467a1d530c8c docs(lifecycle): bind current-run blocker repair
 8a01f34d663471aeed4b4cd7f57ba3563dc3d9a4 test(lifecycle): bind blockers to displayed run
 7cb479a8058793dc29cbb75bb4ab98b9d6a6f231 fix(lifecycle): show blockers for the current run
+a1476481137dac128299967733a393f690476c69 docs(lifecycle): publish repaired stage 5 evidence
