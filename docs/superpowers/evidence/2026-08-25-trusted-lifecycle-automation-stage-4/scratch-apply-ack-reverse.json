@@ -1,0 +1,59 @@
+{
+  "authority": {
+    "network_attempts": 0,
+    "production_database_operations": 0,
+    "provider_calls": 0,
+    "scope": "scratch_only"
+  },
+  "drift_path": {
+    "block_reasons": [
+      "reverse_state_changed"
+    ],
+    "later_edit_preserved": true,
+    "post_attempt_user_rows_sha256": "72ed382ceb582cc32352bf0bc0151eaf9930881cd9b0da8f1d55b63502a6ad64",
+    "pre_attempt_user_rows_sha256": "72ed382ceb582cc32352bf0bc0151eaf9930881cd9b0da8f1d55b63502a6ad64",
+    "transition_id": "tit_1",
+    "transition_status_after_block": "applied"
+  },
+  "happy_path": {
+    "activity": {
+      "acknowledged_applied_survives": true,
+      "activity_count_after_apply": 1,
+      "activity_count_after_reverse": 2,
+      "activity_types_after_reverse": [
+        "reversed",
+        "applied"
+      ],
+      "initial_acknowledged_at_is_null": true,
+      "unacknowledged_count_after_reverse": 1
+    },
+    "case_id": "slc_dcd57d51b0c29d05ab40efbbb5f0183c950de55e8b67710f839c5b5b4a51327e",
+    "history_rows_after_reverse_sha256": "da89040758284376d6f4f3b70090121f8aa7c34023c966d5add4fe92127501a5",
+    "history_rows_before_apply_sha256": "da89040758284376d6f4f3b70090121f8aa7c34023c966d5add4fe92127501a5",
+    "history_rows_unchanged": true,
+    "permission_action_count": 1,
+    "scheduler": {
+      "already_applied": 0,
+      "applied": 1,
+      "due": 1,
+      "needs_review": 0,
+      "status": "succeeded"
+    },
+    "transition_id": "tit_1",
+    "transition_status_after_reverse": "reversed",
+    "user_owned_rows_after_reverse_sha256": "0f37cb4411032bb6679bcbae0f29e73c5fc4a6971c8be75543b30d79a848e027",
+    "user_owned_rows_before_apply_sha256": "0f37cb4411032bb6679bcbae0f29e73c5fc4a6971c8be75543b30d79a848e027",
+    "user_owned_rows_exactly_restored": true,
+    "worker": {
+      "accepted": 1,
+      "blocked": 0,
+      "drafted": 0,
+      "failed": 0,
+      "processed": 1,
+      "selected": 1
+    }
+  },
+  "report_schema_version": 1,
+  "scratch_cleanup_complete": true,
+  "scratch_database_count": 4
+}
