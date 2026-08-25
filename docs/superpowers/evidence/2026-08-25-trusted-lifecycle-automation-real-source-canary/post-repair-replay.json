@@ -1,0 +1,705 @@
+{
+  "admission": {
+    "blbd_asset_purchase_no_tracked_security_change": true,
+    "ccl_no_tracked_security_change": true,
+    "extractor_rule_version": "2",
+    "hapn_real_a_to_b_transition_eligible": true,
+    "qbts_same_symbol_venue_transfer_requires_market_corroboration": true,
+    "real_production_transition_apply_exercised": false
+  },
+  "cases": {
+    "BLBD": {
+      "decision": {
+        "action_readiness": "not_applicable",
+        "cash_per_security_decimal": null,
+        "conclusion": "The cited event does not change the tracked security identity.",
+        "confidence": "high",
+        "consideration_currency": null,
+        "counterparty_cik": null,
+        "counterparty_name": "Detroit Chassis LLC",
+        "counterparty_ticker": null,
+        "decision_issues": [
+          "transaction_terms_partial"
+        ],
+        "decision_tier": "verified_automatic",
+        "destination_venue": null,
+        "effective_date": null,
+        "exchange_ratio_decimal": null,
+        "impact_summary": "Keep tracking the existing symbol; no transition is proposed. Only some counterparty or consideration terms were deterministically extracted.",
+        "outcomes": [
+          "no_tracked_security_change"
+        ],
+        "relevance": "issuer_related",
+        "rule_id": "lifecycle.no_identity_change",
+        "rule_version": "1",
+        "successor_ticker": null,
+        "transition_requested": false
+      },
+      "evidence": [
+        {
+          "adapter": "sec_edgar",
+          "content_sha256": "ed128eca211c5f90a046327de58eaacce45cfe5cbd99a6837650c9e407c98ce7",
+          "evidence_id": "sle_c05f6d318d881797a20e54cf6aaea644",
+          "kind": "regulator_excerpt",
+          "source_document_sha256": null,
+          "source_family": "regulator",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1589526/000158952626000044/blbd-20260731.htm"
+        }
+      ],
+      "facts": [
+        {
+          "cited_text_sha256": "8d311d543499fe3e6488edece0a945ccdfcc60290da1b38bd1f14ad1c34f0f99",
+          "evidence_id": "sle_c05f6d318d881797a20e54cf6aaea644",
+          "fact_type": "issuer_cik",
+          "rule_id": "sec.inline_xbrl_cik_token",
+          "rule_version": "2",
+          "span_end_byte": 129,
+          "span_start_byte": 0,
+          "value": "0001589526"
+        },
+        {
+          "cited_text_sha256": "046aa3a4df29e4009f3cbb70e0ea1279e6c710020b4a4c5f420f0fd436cc40f8",
+          "evidence_id": "sle_c05f6d318d881797a20e54cf6aaea644",
+          "fact_type": "security_class",
+          "rule_id": "sec.explicit_security_class",
+          "rule_version": "2",
+          "span_end_byte": 971,
+          "span_start_byte": 130,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "046aa3a4df29e4009f3cbb70e0ea1279e6c710020b4a4c5f420f0fd436cc40f8",
+          "evidence_id": "sle_c05f6d318d881797a20e54cf6aaea644",
+          "fact_type": "source_ticker",
+          "rule_id": "sec.registered_security_symbol",
+          "rule_version": "2",
+          "span_end_byte": 971,
+          "span_start_byte": 130,
+          "value": "BLBD"
+        },
+        {
+          "cited_text_sha256": "046aa3a4df29e4009f3cbb70e0ea1279e6c710020b4a4c5f420f0fd436cc40f8",
+          "evidence_id": "sle_c05f6d318d881797a20e54cf6aaea644",
+          "fact_type": "source_venue",
+          "rule_id": "sec.registered_security_venue",
+          "rule_version": "2",
+          "span_end_byte": 971,
+          "span_start_byte": 130,
+          "value": "NASDAQ"
+        },
+        {
+          "cited_text_sha256": "10056cb81ff32b66b0bdf0da86f97ca5a7e887aaea84ead4b12645b24d6abaa8",
+          "evidence_id": "sle_c05f6d318d881797a20e54cf6aaea644",
+          "fact_type": "tracked_security_effect",
+          "rule_id": "sec.derived_asset_purchase_registrant_continuity",
+          "rule_version": "2",
+          "span_end_byte": 1626,
+          "span_start_byte": 972,
+          "value": "asset_acquisition_no_registrant_change"
+        },
+        {
+          "cited_text_sha256": "10056cb81ff32b66b0bdf0da86f97ca5a7e887aaea84ead4b12645b24d6abaa8",
+          "evidence_id": "sle_c05f6d318d881797a20e54cf6aaea644",
+          "fact_type": "transaction_structure",
+          "rule_id": "sec.explicit_asset_acquisition",
+          "rule_version": "2",
+          "span_end_byte": 1626,
+          "span_start_byte": 972,
+          "value": {
+            "counterparty_name": "Detroit Chassis LLC",
+            "kind": "asset_acquisition",
+            "terms_status": "partial"
+          }
+        }
+      ],
+      "sec_diagnostics": {
+        "attempt_count": 2,
+        "body_bytes": 43954,
+        "document_count": 1
+      },
+      "sec_symbol_transitions": [],
+      "source_aliases": [
+        "BLBD"
+      ],
+      "source_ticker": "BLBD",
+      "transition_preview_calls": []
+    },
+    "CCL": {
+      "decision": {
+        "action_readiness": "not_applicable",
+        "cash_per_security_decimal": null,
+        "conclusion": "The cited event does not change the tracked security identity.",
+        "confidence": "high",
+        "consideration_currency": null,
+        "counterparty_cik": null,
+        "counterparty_name": null,
+        "counterparty_ticker": null,
+        "decision_issues": [
+          "transaction_terms_not_extracted"
+        ],
+        "decision_tier": "verified_automatic",
+        "destination_venue": null,
+        "effective_date": null,
+        "exchange_ratio_decimal": null,
+        "impact_summary": "Keep tracking the existing symbol; no transition is proposed. Counterparty and consideration terms were not deterministically extracted.",
+        "outcomes": [
+          "no_tracked_security_change"
+        ],
+        "relevance": "issuer_related",
+        "rule_id": "lifecycle.no_identity_change",
+        "rule_version": "1",
+        "successor_ticker": null,
+        "transition_requested": false
+      },
+      "evidence": [
+        {
+          "adapter": "sec_edgar",
+          "content_sha256": "2075f40a054a5ed91159bb747c8e28afc6f7a84162cf29549fc0b3c0d1323c6d",
+          "evidence_id": "sle_7e181667b719a3da4bf279f17446c72a",
+          "kind": "regulator_excerpt",
+          "source_document_sha256": null,
+          "source_family": "regulator",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/815097/000110465926057200/tm2613680d1_8k.htm"
+        }
+      ],
+      "facts": [
+        {
+          "cited_text_sha256": "b9f4bb13d2e2c7cc4bcf78073349b61fc4d3c2c401aa1a9c5e5ff9860c61a7e7",
+          "evidence_id": "sle_7e181667b719a3da4bf279f17446c72a",
+          "fact_type": "issuer_cik",
+          "rule_id": "sec.inline_xbrl_cik_token",
+          "rule_version": "2",
+          "span_end_byte": 307,
+          "span_start_byte": 0,
+          "value": "0000815097"
+        },
+        {
+          "cited_text_sha256": "465e15f3eeb725f51f65189c2c094882106e13e0318c2927867f92232f1a44dc",
+          "evidence_id": "sle_7e181667b719a3da4bf279f17446c72a",
+          "fact_type": "security_class",
+          "rule_id": "sec.explicit_security_class",
+          "rule_version": "2",
+          "span_end_byte": 2500,
+          "span_start_byte": 2210,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "e31087b06ecb9e3daa3edf7d194ad3f696ce06ca1c8df9cd1c6e1fed85258d18",
+          "evidence_id": "sle_7e181667b719a3da4bf279f17446c72a",
+          "fact_type": "source_ticker",
+          "rule_id": "sec.registered_security_symbol",
+          "rule_version": "2",
+          "span_end_byte": 1578,
+          "span_start_byte": 308,
+          "value": "CCL"
+        },
+        {
+          "cited_text_sha256": "e31087b06ecb9e3daa3edf7d194ad3f696ce06ca1c8df9cd1c6e1fed85258d18",
+          "evidence_id": "sle_7e181667b719a3da4bf279f17446c72a",
+          "fact_type": "source_venue",
+          "rule_id": "sec.registered_security_venue",
+          "rule_version": "2",
+          "span_end_byte": 1578,
+          "span_start_byte": 308,
+          "value": "NYSE"
+        },
+        {
+          "cited_text_sha256": "465e15f3eeb725f51f65189c2c094882106e13e0318c2927867f92232f1a44dc",
+          "evidence_id": "sle_7e181667b719a3da4bf279f17446c72a",
+          "fact_type": "tracked_security_effect",
+          "rule_id": "sec.derived_unification_share_continuity",
+          "rule_version": "2",
+          "span_end_byte": 2500,
+          "span_start_byte": 2210,
+          "value": "no_identity_change"
+        },
+        {
+          "cited_text_sha256": "fa17ac290a15a800c09918a6d0f1d859b8b6a2b17dfba780774c8ddcd0dff842",
+          "evidence_id": "sle_7e181667b719a3da4bf279f17446c72a",
+          "fact_type": "transaction_structure",
+          "rule_id": "sec.explicit_corporate_unification",
+          "rule_version": "2",
+          "span_end_byte": 2209,
+          "span_start_byte": 1579,
+          "value": {
+            "kind": "corporate_unification",
+            "terms_status": "not_extracted"
+          }
+        }
+      ],
+      "sec_diagnostics": {
+        "attempt_count": 2,
+        "body_bytes": 60187,
+        "document_count": 1
+      },
+      "sec_symbol_transitions": [],
+      "source_aliases": [
+        "CCL"
+      ],
+      "source_ticker": "CCL",
+      "transition_preview_calls": []
+    },
+    "HAPN": {
+      "decision": {
+        "action_readiness": "transition_eligible",
+        "cash_per_security_decimal": null,
+        "conclusion": "The tracked security will continue from LC to HAPN.",
+        "confidence": "high",
+        "consideration_currency": null,
+        "counterparty_cik": null,
+        "counterparty_name": null,
+        "counterparty_ticker": null,
+        "decision_issues": [],
+        "decision_tier": "verified_automatic",
+        "destination_venue": "NASDAQ",
+        "effective_date": "2026-06-22",
+        "exchange_ratio_decimal": null,
+        "impact_summary": "The cited identity transition is eligible for scheduling.",
+        "outcomes": [
+          "symbol_changed",
+          "venue_transfer"
+        ],
+        "relevance": "direct_tracked_security",
+        "rule_id": "lifecycle.simple_symbol_continuation",
+        "rule_version": "1",
+        "successor_ticker": "HAPN",
+        "transition_requested": true
+      },
+      "evidence": [
+        {
+          "adapter": "ibkr_contract",
+          "content_sha256": "ca7f8f5df6a906531818adfc3801aa128deb05a42d2dd1e04a7468bdd60fb51e",
+          "evidence_id": "sle_ca7f8f5df6a906531818adfc3801aa12",
+          "kind": "market_infrastructure_snapshot",
+          "source_document_sha256": null,
+          "source_family": "market_infrastructure",
+          "source_url": null
+        },
+        {
+          "adapter": "sec_edgar",
+          "content_sha256": "55f0dc04d9c2e3b4d9b1910b6c5bd217627e0fad3f09a002577e9f163f5e53d4",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "kind": "regulator_excerpt",
+          "source_document_sha256": null,
+          "source_family": "regulator",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1409970/000140997026000087/lc-20260602.htm"
+        }
+      ],
+      "facts": [
+        {
+          "cited_text_sha256": "eca0cbd04ed7a485cccdf023f810f2a782fd5929180966befce2e8592a9a8fb9",
+          "evidence_id": "sle_ca7f8f5df6a906531818adfc3801aa12",
+          "fact_type": "destination_venue",
+          "rule_id": "ibkr.contract_snapshot.destination_venue",
+          "rule_version": "1",
+          "span_end_byte": 83,
+          "span_start_byte": 75,
+          "value": "NASDAQ"
+        },
+        {
+          "cited_text_sha256": "1ba164994bc1fc2270357991b89c90dd552f69e5473234ba852c80d45d286b89",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "destination_venue",
+          "rule_id": "sec.explicit_venue_transfer",
+          "rule_version": "2",
+          "span_end_byte": 1907,
+          "span_start_byte": 1408,
+          "value": "NASDAQ"
+        },
+        {
+          "cited_text_sha256": "6095e8e148df12b81d5cd176cc787d0e2e13ebf69989b047c76834a1f3ecacdc",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "effective_date",
+          "rule_id": "sec.explicit_trading_start_date",
+          "rule_version": "2",
+          "span_end_byte": 2271,
+          "span_start_byte": 1908,
+          "value": "2026-06-22"
+        },
+        {
+          "cited_text_sha256": "7cabb6f21be3023375b4bf209536524c2bdf7861713e79d495a18dc93cf58fbb",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "issuer_cik",
+          "rule_id": "sec.inline_xbrl_cik_token",
+          "rule_version": "2",
+          "span_end_byte": 127,
+          "span_start_byte": 0,
+          "value": "0001409970"
+        },
+        {
+          "cited_text_sha256": "59049ef22a47423f853a3f24c00cb73db4e5a34a068431a5a645e96ebfdf7821",
+          "evidence_id": "sle_ca7f8f5df6a906531818adfc3801aa12",
+          "fact_type": "security_class",
+          "rule_id": "ibkr.contract_snapshot.security_class",
+          "rule_version": "1",
+          "span_end_byte": 144,
+          "span_start_byte": 139,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "08125d2becf213b8244617df1f0824d3418b80d3f9ef3d5a6772bc01ee1fcee9",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "security_class",
+          "rule_id": "sec.explicit_security_class",
+          "rule_version": "2",
+          "span_end_byte": 1407,
+          "span_start_byte": 128,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "1ba164994bc1fc2270357991b89c90dd552f69e5473234ba852c80d45d286b89",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "security_class",
+          "rule_id": "sec.explicit_security_class",
+          "rule_version": "2",
+          "span_end_byte": 1907,
+          "span_start_byte": 1408,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "6095e8e148df12b81d5cd176cc787d0e2e13ebf69989b047c76834a1f3ecacdc",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "security_class",
+          "rule_id": "sec.explicit_security_class",
+          "rule_version": "2",
+          "span_end_byte": 2271,
+          "span_start_byte": 1908,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "87c2da14753cddf735f2efaae69e8caef9d189e3818217c42acff20bce592ccd",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "security_class",
+          "rule_id": "sec.explicit_security_class",
+          "rule_version": "2",
+          "span_end_byte": 2463,
+          "span_start_byte": 2272,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "08125d2becf213b8244617df1f0824d3418b80d3f9ef3d5a6772bc01ee1fcee9",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "source_ticker",
+          "rule_id": "sec.registered_security_symbol",
+          "rule_version": "2",
+          "span_end_byte": 1407,
+          "span_start_byte": 128,
+          "value": "LC"
+        },
+        {
+          "cited_text_sha256": "08125d2becf213b8244617df1f0824d3418b80d3f9ef3d5a6772bc01ee1fcee9",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "source_venue",
+          "rule_id": "sec.registered_security_venue",
+          "rule_version": "2",
+          "span_end_byte": 1407,
+          "span_start_byte": 128,
+          "value": "NYSE"
+        },
+        {
+          "cited_text_sha256": "1ba164994bc1fc2270357991b89c90dd552f69e5473234ba852c80d45d286b89",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "source_venue",
+          "rule_id": "sec.explicit_venue_transfer",
+          "rule_version": "2",
+          "span_end_byte": 1907,
+          "span_start_byte": 1408,
+          "value": "NYSE"
+        },
+        {
+          "cited_text_sha256": "a1106470c25c21f16c6631ffdc7cb417831680cb62ef200c117658831aa801b4",
+          "evidence_id": "sle_ca7f8f5df6a906531818adfc3801aa12",
+          "fact_type": "successor_ticker",
+          "rule_id": "ibkr.contract_snapshot.successor_ticker",
+          "rule_version": "1",
+          "span_end_byte": 160,
+          "span_start_byte": 154,
+          "value": "HAPN"
+        },
+        {
+          "cited_text_sha256": "6095e8e148df12b81d5cd176cc787d0e2e13ebf69989b047c76834a1f3ecacdc",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "successor_ticker",
+          "rule_id": "sec.explicit_postfix_ticker_symbol",
+          "rule_version": "2",
+          "span_end_byte": 2271,
+          "span_start_byte": 1908,
+          "value": "HAPN"
+        },
+        {
+          "cited_text_sha256": "6095e8e148df12b81d5cd176cc787d0e2e13ebf69989b047c76834a1f3ecacdc",
+          "evidence_id": "sle_ea3cffd7d2cdeec23117e06c9e68f699",
+          "fact_type": "tracked_security_effect",
+          "rule_id": "sec.derived_explicit_identity_shape",
+          "rule_version": "2",
+          "span_end_byte": 2271,
+          "span_start_byte": 1908,
+          "value": "symbol_and_venue_change"
+        }
+      ],
+      "sec_diagnostics": {
+        "attempt_count": 2,
+        "body_bytes": 31570,
+        "document_count": 1
+      },
+      "sec_symbol_transitions": [
+        [
+          "LC",
+          "HAPN"
+        ]
+      ],
+      "source_aliases": [
+        "LC"
+      ],
+      "source_ticker": "LC",
+      "transition_preview_calls": [
+        {
+          "effective_date": "2026-06-22",
+          "outcomes": [
+            "symbol_changed",
+            "venue_transfer"
+          ],
+          "source_ticker": "LC",
+          "successor_ticker": "HAPN",
+          "transition_kind": "symbol_continuation"
+        }
+      ]
+    },
+    "QBTS": {
+      "decision": {
+        "action_readiness": "action_blocked",
+        "cash_per_security_decimal": null,
+        "conclusion": "Regulator evidence indicates a venue transfer.",
+        "confidence": "medium",
+        "consideration_currency": null,
+        "counterparty_cik": null,
+        "counterparty_name": null,
+        "counterparty_ticker": null,
+        "decision_issues": [
+          "market_corroboration_missing"
+        ],
+        "decision_tier": "review_suggested",
+        "destination_venue": "NASDAQ",
+        "effective_date": "2026-07-27",
+        "exchange_ratio_decimal": null,
+        "impact_summary": "Market-infrastructure corroboration is still required.",
+        "outcomes": [
+          "venue_transfer"
+        ],
+        "relevance": "direct_tracked_security",
+        "rule_id": "lifecycle.venue_transfer",
+        "rule_version": "1",
+        "successor_ticker": "QBTS",
+        "transition_requested": false
+      },
+      "evidence": [
+        {
+          "adapter": "sec_edgar",
+          "content_sha256": "a9843e1b37e1070b0a321f336c8bf8e1e3ea47a4b4429fe377649ff1da36cd90",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "kind": "regulator_excerpt",
+          "source_document_sha256": null,
+          "source_family": "regulator",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1907982/000190798226000099/qbts-20260714.htm"
+        }
+      ],
+      "facts": [
+        {
+          "cited_text_sha256": "2285e2506d46494991981b2ba8ea681757e7488a2ad86c67bdfcdf775bde3279",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "destination_venue",
+          "rule_id": "sec.explicit_venue_transfer",
+          "rule_version": "2",
+          "span_end_byte": 1817,
+          "span_start_byte": 1464,
+          "value": "NASDAQ"
+        },
+        {
+          "cited_text_sha256": "1c36e531f8c2d77d1430168257a6c766e814553da747339f864c0363a1ff41b4",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "effective_date",
+          "rule_id": "sec.explicit_trading_start_date",
+          "rule_version": "2",
+          "span_end_byte": 2011,
+          "span_start_byte": 1818,
+          "value": "2026-07-27"
+        },
+        {
+          "cited_text_sha256": "5421b7c58347507619506d175ca489ea5ec3823bb5b211ea33d9ba70a4ffaff8",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "issuer_cik",
+          "rule_id": "sec.inline_xbrl_cik_token",
+          "rule_version": "2",
+          "span_end_byte": 129,
+          "span_start_byte": 0,
+          "value": "0001907982"
+        },
+        {
+          "cited_text_sha256": "fd2a5a0ce17979dd933c8474ca282dab85363f2153867ac595f012df182b3e26",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "security_class",
+          "rule_id": "sec.explicit_security_class",
+          "rule_version": "2",
+          "span_end_byte": 1463,
+          "span_start_byte": 130,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "2285e2506d46494991981b2ba8ea681757e7488a2ad86c67bdfcdf775bde3279",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "security_class",
+          "rule_id": "sec.explicit_security_class",
+          "rule_version": "2",
+          "span_end_byte": 1817,
+          "span_start_byte": 1464,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "1c36e531f8c2d77d1430168257a6c766e814553da747339f864c0363a1ff41b4",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "security_class",
+          "rule_id": "sec.explicit_security_class",
+          "rule_version": "2",
+          "span_end_byte": 2011,
+          "span_start_byte": 1818,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "c42e21ae86d699c6d7485fed5a596e32411d3d26e889638facaa2dac07ff73ec",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "security_class",
+          "rule_id": "sec.explicit_security_class",
+          "rule_version": "2",
+          "span_end_byte": 2142,
+          "span_start_byte": 2012,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "27d9e58a045abbfc496138fb8236151749152cebe9d0a115c581f18128b47265",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "security_class",
+          "rule_id": "sec.explicit_security_class",
+          "rule_version": "2",
+          "span_end_byte": 2307,
+          "span_start_byte": 2143,
+          "value": "common_stock"
+        },
+        {
+          "cited_text_sha256": "fd2a5a0ce17979dd933c8474ca282dab85363f2153867ac595f012df182b3e26",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "source_ticker",
+          "rule_id": "sec.registered_security_symbol",
+          "rule_version": "2",
+          "span_end_byte": 1463,
+          "span_start_byte": 130,
+          "value": "QBTS"
+        },
+        {
+          "cited_text_sha256": "c42e21ae86d699c6d7485fed5a596e32411d3d26e889638facaa2dac07ff73ec",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "source_ticker",
+          "rule_id": "sec.explicit_symbol_continuity",
+          "rule_version": "2",
+          "span_end_byte": 2142,
+          "span_start_byte": 2012,
+          "value": "QBTS"
+        },
+        {
+          "cited_text_sha256": "fd2a5a0ce17979dd933c8474ca282dab85363f2153867ac595f012df182b3e26",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "source_venue",
+          "rule_id": "sec.registered_security_venue",
+          "rule_version": "2",
+          "span_end_byte": 1463,
+          "span_start_byte": 130,
+          "value": "NYSE"
+        },
+        {
+          "cited_text_sha256": "2285e2506d46494991981b2ba8ea681757e7488a2ad86c67bdfcdf775bde3279",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "source_venue",
+          "rule_id": "sec.explicit_venue_transfer",
+          "rule_version": "2",
+          "span_end_byte": 1817,
+          "span_start_byte": 1464,
+          "value": "NYSE"
+        },
+        {
+          "cited_text_sha256": "fd2a5a0ce17979dd933c8474ca282dab85363f2153867ac595f012df182b3e26",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "successor_ticker",
+          "rule_id": "sec.derived_explicit_identity_shape",
+          "rule_version": "2",
+          "span_end_byte": 1463,
+          "span_start_byte": 130,
+          "value": "QBTS"
+        },
+        {
+          "cited_text_sha256": "2285e2506d46494991981b2ba8ea681757e7488a2ad86c67bdfcdf775bde3279",
+          "evidence_id": "sle_87af115b03653261a79dbd3dbd4e6510",
+          "fact_type": "tracked_security_effect",
+          "rule_id": "sec.derived_explicit_identity_shape",
+          "rule_version": "2",
+          "span_end_byte": 1817,
+          "span_start_byte": 1464,
+          "value": "venue_change_only"
+        }
+      ],
+      "sec_diagnostics": {
+        "attempt_count": 2,
+        "body_bytes": 31364,
+        "document_count": 1
+      },
+      "sec_symbol_transitions": [],
+      "source_aliases": [
+        "QBTS"
+      ],
+      "source_ticker": "QBTS",
+      "transition_preview_calls": []
+    }
+  },
+  "execution": {
+    "external_network_calls": 0,
+    "general_web_search_calls": 0,
+    "production_database_operations": 0,
+    "provider_calls": 0,
+    "replay_source": "captured_public_sec_bytes_and_secret_safe_ibkr_receipt",
+    "socket_policy": "denied_after_offline_dependency_import"
+  },
+  "git_head": "76edcab43a18076a0a942e2528ce40ed03b0831f",
+  "inputs": {
+    "authorization_sha256": "feb1f276109457ab51f6f4661d017f38791644f31b2378d8bf1510ccc8653d28",
+    "canary_report_sha256": "68e2807032d3ee8fcec253e1a6d1b104f1f562aedf6892d2125d354c6ccf044f",
+    "ibkr_evidence_source": "consumed_read_only_canary_report",
+    "sec_source_bytes": {
+      "BLBD": {
+        "bytes": 43663,
+        "file": "BLBD-0001589526-26-000044.html",
+        "sha256": "14bc650057c6d857e8fee1eb9402aa7645bd9edb82a9bb10eba76d98d913298e"
+      },
+      "CCL": {
+        "bytes": 59857,
+        "file": "CCL-0001104659-26-057200.html",
+        "sha256": "892bb9f6cf6f9547006d1c6e4514d34afea644651cfced8025f65d8a30ed39a8"
+      },
+      "HAPN": {
+        "bytes": 31285,
+        "file": "HAPN-0001409970-26-000087.html",
+        "sha256": "48ebd4ef3533760ecbc807f0342dfddf934da5bc686237d742568379c20b732f"
+      },
+      "QBTS": {
+        "bytes": 31068,
+        "file": "QBTS-0001907982-26-000099.html",
+        "sha256": "bf1046a33ed9a67e555a483d5f640bbe59e24417bce3805bfe64b89fabf5bc43"
+      }
+    }
+  },
+  "limitations": [
+    "This is an offline replay of the one consumed canary, not another provider call.",
+    "Only HAPN has captured market-infrastructure corroboration in this packet.",
+    "No production database, migration, transition apply, reverse, merge, push, or cutover occurred.",
+    "One real A-to-B example does not establish broad A-to-B precision."
+  ],
+  "product_test_authority": "1ec76167b70cffd3e9bd55c54de7dd2c5fd05c95",
+  "schema_version": 1
+}

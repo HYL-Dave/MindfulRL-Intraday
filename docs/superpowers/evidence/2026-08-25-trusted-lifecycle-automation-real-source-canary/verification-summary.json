@@ -1,0 +1,127 @@
+{
+  "authority": {
+    "app_cutover_performed": false,
+    "canary_execution_authority": "f6a7e12987f3614d1be1fb17afd8ecc0f1c9f96f",
+    "canary_rerun_authorized": false,
+    "merge_performed": false,
+    "production_database_migrations": 0,
+    "production_database_writes": 0,
+    "production_profile_config_queries": 2,
+    "production_profile_config_rows": 8,
+    "push_performed": false,
+    "replay_execution_authority": "76edcab43a18076a0a942e2528ce40ed03b0831f",
+    "scope": "one_consumed_read_only_canary_then_offline_repair_and_replay"
+  },
+  "backend": {
+    "collection": {
+      "run_1": 4420,
+      "run_2": 4420,
+      "streams_byte_identical": true,
+      "stream_sha256": "46deb0cd4a50515fdf81b6ade2e8ba39cbb9bdc6a3b2b3bf138a5c39a8bddbf1"
+    },
+    "focused": {
+      "failed": 0,
+      "files": 7,
+      "passed": 70
+    },
+    "full": {
+      "failed": 0,
+      "passed": 4408,
+      "skipped": 12,
+      "warnings": 3,
+      "warnings_scope": "existing_edgar_v6_deprecations"
+    },
+    "real_source_additions": {
+      "failed": 0,
+      "passed": 4
+    }
+  },
+  "canary": {
+    "general_web_search_calls": 0,
+    "ibkr": {
+      "contract_detail_requests": 2,
+      "hapn_contract_status": "found",
+      "lc_contract_status": "missing",
+      "readonly_sessions": 1
+    },
+    "news_provider_calls": 0,
+    "reruns": 0,
+    "sec": {
+      "attempts": 4,
+      "body_bytes": 165873,
+      "documents": 4,
+      "http_200": 4,
+      "live_submissions_calls": 0,
+      "rate_limit_retries": 0
+    }
+  },
+  "frontend": {
+    "build": "passed_with_existing_chunk_size_warning",
+    "files": 105,
+    "literal_scanner": {
+      "allowlist_count": 20,
+      "candidate_count": 37,
+      "debt_signature_count": 0,
+      "signature_count": 20
+    },
+    "passed": 1229,
+    "product_tree_equal_to_pre_repair_authority": true,
+    "product_tree_git_object_id": "9d9e2fcd81b8329c58ed036b3e2c3ff02c7aac0a",
+    "typecheck": "passed"
+  },
+  "grounded_shadow_regression": {
+    "report_sha256": "a588befaa6523ee885889bd1f60626f22b5dab5fcc8bb4cf774d2823092b4356",
+    "runs": 2,
+    "runs_byte_identical": true
+  },
+  "product_test_authority": "1ec76167b70cffd3e9bd55c54de7dd2c5fd05c95",
+  "real_source_replay": {
+    "blbd": {
+      "decision_tier": "verified_automatic",
+      "rule_id": "lifecycle.no_identity_change",
+      "transition_requested": false
+    },
+    "ccl": {
+      "decision_tier": "verified_automatic",
+      "rule_id": "lifecycle.no_identity_change",
+      "transition_requested": false
+    },
+    "extractor_rule_version": "2",
+    "hapn": {
+      "action_readiness": "transition_eligible",
+      "destination_venue": "NASDAQ",
+      "effective_date": "2026-06-22",
+      "source_ticker": "LC",
+      "successor_ticker": "HAPN",
+      "transition_preview_calls": 1
+    },
+    "external_network_calls": 0,
+    "network_trace": {
+      "connect_listen_accept_send_receive_calls": 0,
+      "dependency_import_loopback_binds": 1,
+      "external_endpoints": 0,
+      "unix_socketpairs": 1
+    },
+    "production_database_operations": 0,
+    "provider_calls": 0,
+    "qbts": {
+      "action_readiness": "action_blocked",
+      "decision_issue": "market_corroboration_missing",
+      "destination_venue": "NASDAQ",
+      "effective_date": "2026-07-27",
+      "transition_requested": false
+    },
+    "report_sha256": "8094aeeb3997ea87804d339d94788178fda757d296e06674ef97a0a3212e88dd",
+    "runs": 2,
+    "runs_byte_identical": true
+  },
+  "routes": {
+    "lifecycle": 17,
+    "total": 187
+  },
+  "tools": {
+    "anthropic_bridge": 51,
+    "openai_bridge": 51,
+    "registry": 50
+  }
+}

@@ -1,0 +1,68 @@
+Trusted lifecycle automation real-source canary and repair command record
+
+Authorized live canary
+  python run_canary.py --output <fixed scratch path>
+  wrapped by a bounded network syscall trace
+  result: 4 exact SEC documents / 4 attempts / 4 HTTP 200 / 165873 bytes;
+          1 IBKR read-only session / 2 contract-detail requests; no retry
+
+Real-source RED / GREEN
+  pytest -q <4 exact real-source nodes>
+  RED: four failures against pre-repair extractor bytes
+  GREEN: 4 passed
+
+Backend focused
+  pytest -q tests/test_security_lifecycle_automation_schema.py
+            tests/test_security_lifecycle_fact_kernel.py
+            tests/test_security_lifecycle_sec_evidence.py
+            tests/test_security_lifecycle_decision_policy.py
+            tests/test_security_lifecycle_automation_worker.py
+            tests/test_security_lifecycle_ibkr_evidence.py
+            tests/test_security_lifecycle_grounded_shadow.py
+  result: 70 passed
+
+Backend collection
+  pytest --collect-only -q
+  result A: 4420 collected
+  result B: 4420 collected
+  normalized node streams: byte-identical, SHA-256 46deb0cd...ddbf1
+
+Backend full
+  pytest -q --basetemp=/tmp/arkscope-pytest-1ec76167-b
+  result: 4408 passed / 12 skipped / 0 failed / 3 existing edgar warnings
+
+Frontend
+  npm test -- --reporter=dot
+  result: 105 files / 1229 passed
+  npm run typecheck
+  result: passed
+  npm run check:i18n-literals
+  result: candidateCount=37 signatureCount=20 debtSignatureCount=0 allowlistCount=20
+  npm run build
+  result: passed with existing chunk-size warning
+  git tree identity: apps/arkscope-web is byte-identical to 7cb479a8
+
+Real-source offline replay
+  python run_post_repair_replay.py <output-a>
+  python run_post_repair_replay.py <output-b>
+  result: byte-identical, SHA-256 8094aeeb...e88dd
+  network sockets denied after offline dependency import
+  syscall trace: one dependency-import ::1 bind and one AF_UNIX socketpair;
+                 zero connect/listen/accept/send/receive/external calls
+
+Grounded-shadow regression
+  python ../2026-08-25-trusted-lifecycle-automation-stage-5-repair/run_grounded_shadow.py <output-a>
+  python ../2026-08-25-trusted-lifecycle-automation-stage-5-repair/run_grounded_shadow.py <output-b>
+  result: byte-identical, SHA-256 a588befa...b4356
+
+Runtime inventory
+  create_app(), create_default_registry(), get_anthropic_tools(), create_openai_tools(None)
+  explicit absent scratch ARKSCOPE_PROFILE_DB and ARKSCOPE_MARKET_DB paths
+  result: routes=187 lifecycle_routes=17 tools=50/51/51; scratch paths remained absent
+
+Hard-stop accounting after the consumed canary
+  provider/external-network calls: 0
+  production database writes/preflights/backups/restores/migrations: 0
+  app cutover: 0
+  merge: 0
+  push: 0
