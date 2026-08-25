@@ -315,8 +315,8 @@ def build_report() -> dict[str, object]:
             "ibkr_evidence_source": "consumed_read_only_canary_report",
         },
         "execution": {
+            "external_network_calls": 0,
             "general_web_search_calls": 0,
-            "network_calls": 0,
             "production_database_operations": 0,
             "provider_calls": 0,
             "replay_source": "captured_public_sec_bytes_and_secret_safe_ibkr_receipt",
