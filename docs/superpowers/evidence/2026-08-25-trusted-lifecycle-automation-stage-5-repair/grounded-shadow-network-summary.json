@@ -1,0 +1,12 @@
+{
+  "connect_calls": 0,
+  "external_endpoints": 0,
+  "provider_calls": 0,
+  "replay_socket_policy": "denied_after_offline_dependency_import",
+  "runtime_initialization": {
+    "af_unix_socketpairs": 1,
+    "loopback_binds": 1,
+    "loopback_connects": 0
+  },
+  "trace_scope": "complete_grounded_shadow_process"
+}

@@ -1,0 +1,1 @@
+apps/arkscope-web/src/lifecycle/lifecyclePresentation.test.ts::Lifecycle presentation > labels transition revalidation without collapsing it into eligibility or a generic block

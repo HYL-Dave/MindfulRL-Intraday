@@ -1,0 +1,7 @@
+3503331b074088671a05a259cb14a35e48dd5293 docs(lifecycle): reopen stage 5 admission repairs
+2e5adc6f37e32cc5e98a01b942da3d261df22425 test(lifecycle): expose grounded admission dead paths
+5dbe69786b1329b7e695975507108c7d657c1e2f fix(lifecycle): reopen grounded automation paths
+7d27824fcfb3a6e5b51c7494f26995f09495d753 fix(lifecycle): keep fact summaries resource owned
+ada352abb0eb6b69ae1d333fe341467a1d530c8c docs(lifecycle): bind current-run blocker repair
+8a01f34d663471aeed4b4cd7f57ba3563dc3d9a4 test(lifecycle): bind blockers to displayed run
+7cb479a8058793dc29cbb75bb4ab98b9d6a6f231 fix(lifecycle): show blockers for the current run

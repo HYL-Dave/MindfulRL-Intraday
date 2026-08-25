@@ -1,0 +1,17 @@
+{
+  "base_commit": "e1f7a394ca95926ebf93caa58d455f8a2c65174d",
+  "base_pin_errors": [],
+  "changed_non_governance_paths": 23,
+  "changed_paths_total_before_packet": 29,
+  "ledger_external_changed_paths": [],
+  "merge_commits_after_base": 0,
+  "owned_paths": 25,
+  "owned_paths_not_changed": [
+    "tests/fixtures/security_lifecycle_grounded_shadow.json",
+    "tests/test_security_lifecycle_grounded_shadow.py"
+  ],
+  "protected_tracked_path_changes": [],
+  "protected_tracked_paths": 7,
+  "remote_refs_containing_verified_head": 0,
+  "verified_product_test_head": "7cb479a8058793dc29cbb75bb4ab98b9d6a6f231"
+}

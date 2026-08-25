@@ -1,0 +1,1352 @@
+{
+  "app_url": "http://127.0.0.1:4197/",
+  "entries": [
+    {
+      "captures": {
+        "activity": {
+          "file": "1440x900-en-activity.png",
+          "geometry": {
+            "bodyScrollWidth": 1440,
+            "controls": [
+              {
+                "bottom": 455.75,
+                "left": 247,
+                "right": 454.015625,
+                "tag": "BUTTON",
+                "text": "Reverse tracking change",
+                "top": 427.75
+              },
+              {
+                "bottom": 483.75,
+                "left": 247,
+                "right": 375.828125,
+                "tag": "BUTTON",
+                "text": "Acknowledge",
+                "top": 455.75
+              }
+            ],
+            "documentScrollWidth": 1440,
+            "drawer": null,
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              20.91,
+              23.351,
+              26.231
+            ],
+            "extrema": [
+              [
+                11,
+                230
+              ],
+              [
+                16,
+                237
+              ],
+              [
+                21,
+                255
+              ]
+            ],
+            "size": [
+              1440,
+              900
+            ]
+          }
+        },
+        "drawer-automation": {
+          "file": "1440x900-en-drawer-automation.png",
+          "geometry": {
+            "bodyScrollWidth": 1440,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 1396,
+                "right": 1428,
+                "tag": "BUTTON",
+                "text": "Close",
+                "top": 8
+              },
+              {
+                "bottom": 927,
+                "left": 1033,
+                "right": 1263.578125,
+                "tag": "BUTTON",
+                "text": "Record insufficient evidence",
+                "top": 899
+              }
+            ],
+            "documentScrollWidth": 1440,
+            "drawer": {
+              "left": 1020,
+              "right": 1440,
+              "width": 420
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              21.043,
+              22.097,
+              23.253
+            ],
+            "extrema": [
+              [
+                4,
+                230
+              ],
+              [
+                6,
+                237
+              ],
+              [
+                7,
+                243
+              ]
+            ],
+            "size": [
+              1440,
+              900
+            ]
+          }
+        },
+        "drawer-evidence": {
+          "file": "1440x900-en-drawer-evidence.png",
+          "geometry": {
+            "bodyScrollWidth": 1440,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 1396,
+                "right": 1428,
+                "tag": "BUTTON",
+                "text": "Close",
+                "top": 8
+              },
+              {
+                "bottom": 271.75,
+                "left": 1045,
+                "right": 1161.796875,
+                "tag": "A",
+                "text": "Open evidence",
+                "top": 252.25
+              },
+              {
+                "bottom": 845,
+                "left": 1045,
+                "right": 1161.796875,
+                "tag": "A",
+                "text": "Open evidence",
+                "top": 825.5
+              }
+            ],
+            "documentScrollWidth": 1440,
+            "drawer": {
+              "left": 1020,
+              "right": 1440,
+              "width": 420
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              25.803,
+              27.441,
+              29.478
+            ],
+            "extrema": [
+              [
+                4,
+                230
+              ],
+              [
+                6,
+                237
+              ],
+              [
+                7,
+                255
+              ]
+            ],
+            "size": [
+              1440,
+              900
+            ]
+          }
+        },
+        "drawer-facts-review": {
+          "file": "1440x900-en-drawer-facts-review.png",
+          "geometry": {
+            "bodyScrollWidth": 1440,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 1396,
+                "right": 1428,
+                "tag": "BUTTON",
+                "text": "Close",
+                "top": 8
+              },
+              {
+                "bottom": 724,
+                "left": 1033,
+                "right": 1263.578125,
+                "tag": "BUTTON",
+                "text": "Record insufficient evidence",
+                "top": 696
+              }
+            ],
+            "documentScrollWidth": 1440,
+            "drawer": {
+              "left": 1020,
+              "right": 1440,
+              "width": 420
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              21.252,
+              22.425,
+              23.733
+            ],
+            "extrema": [
+              [
+                4,
+                230
+              ],
+              [
+                6,
+                237
+              ],
+              [
+                7,
+                243
+              ]
+            ],
+            "size": [
+              1440,
+              900
+            ]
+          }
+        },
+        "drawer-transition": {
+          "file": "1440x900-en-drawer-transition.png",
+          "geometry": {
+            "bodyScrollWidth": 1440,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 1396,
+                "right": 1428,
+                "tag": "BUTTON",
+                "text": "Close",
+                "top": 8
+              },
+              {
+                "bottom": 434.75,
+                "left": 1045,
+                "right": 1208.90625,
+                "tag": "BUTTON",
+                "text": "Reverse transition",
+                "top": 406.75
+              },
+              {
+                "bottom": 907.25,
+                "left": 1056,
+                "right": 1221.5,
+                "tag": "BUTTON",
+                "text": "Reverse tracking change",
+                "top": 863.25
+              }
+            ],
+            "documentScrollWidth": 1440,
+            "drawer": {
+              "left": 1020,
+              "right": 1440,
+              "width": 420
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              24.713,
+              26.203,
+              27.895
+            ],
+            "extrema": [
+              [
+                4,
+                230
+              ],
+              [
+                6,
+                237
+              ],
+              [
+                7,
+                243
+              ]
+            ],
+            "size": [
+              1440,
+              900
+            ]
+          }
+        }
+      },
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "page_errors": [],
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "captures": {
+        "activity": {
+          "file": "1440x900-zh-Hant-activity.png",
+          "geometry": {
+            "bodyScrollWidth": 1440,
+            "controls": [
+              {
+                "bottom": 455.75,
+                "left": 247,
+                "right": 358,
+                "tag": "BUTTON",
+                "text": "還原追蹤變更",
+                "top": 427.75
+              },
+              {
+                "bottom": 483.75,
+                "left": 247,
+                "right": 322,
+                "tag": "BUTTON",
+                "text": "知道了",
+                "top": 455.75
+              }
+            ],
+            "documentScrollWidth": 1440,
+            "drawer": null,
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              19.316,
+              21.412,
+              23.667
+            ],
+            "extrema": [
+              [
+                11,
+                230
+              ],
+              [
+                16,
+                237
+              ],
+              [
+                21,
+                255
+              ]
+            ],
+            "size": [
+              1440,
+              900
+            ]
+          }
+        },
+        "drawer-automation": {
+          "file": "1440x900-zh-Hant-drawer-automation.png",
+          "geometry": {
+            "bodyScrollWidth": 1440,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 1396,
+                "right": 1428,
+                "tag": "BUTTON",
+                "text": "關閉",
+                "top": 8
+              },
+              {
+                "bottom": 849,
+                "left": 1033,
+                "right": 1156,
+                "tag": "BUTTON",
+                "text": "記錄為證據不足",
+                "top": 821
+              }
+            ],
+            "documentScrollWidth": 1440,
+            "drawer": {
+              "left": 1020,
+              "right": 1440,
+              "width": 420
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              20.824,
+              21.854,
+              22.939
+            ],
+            "extrema": [
+              [
+                4,
+                230
+              ],
+              [
+                6,
+                237
+              ],
+              [
+                7,
+                243
+              ]
+            ],
+            "size": [
+              1440,
+              900
+            ]
+          }
+        },
+        "drawer-evidence": {
+          "file": "1440x900-zh-Hant-drawer-evidence.png",
+          "geometry": {
+            "bodyScrollWidth": 1440,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 1396,
+                "right": 1428,
+                "tag": "BUTTON",
+                "text": "關閉",
+                "top": 8
+              },
+              {
+                "bottom": 271.75,
+                "left": 1045,
+                "right": 1116,
+                "tag": "A",
+                "text": "開啟證據",
+                "top": 252.25
+              },
+              {
+                "bottom": 845,
+                "left": 1045,
+                "right": 1116,
+                "tag": "A",
+                "text": "開啟證據",
+                "top": 825.5
+              }
+            ],
+            "documentScrollWidth": 1440,
+            "drawer": {
+              "left": 1020,
+              "right": 1440,
+              "width": 420
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              24.754,
+              26.345,
+              28.299
+            ],
+            "extrema": [
+              [
+                4,
+                230
+              ],
+              [
+                6,
+                237
+              ],
+              [
+                7,
+                255
+              ]
+            ],
+            "size": [
+              1440,
+              900
+            ]
+          }
+        },
+        "drawer-facts-review": {
+          "file": "1440x900-zh-Hant-drawer-facts-review.png",
+          "geometry": {
+            "bodyScrollWidth": 1440,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 1396,
+                "right": 1428,
+                "tag": "BUTTON",
+                "text": "關閉",
+                "top": 8
+              },
+              {
+                "bottom": 685,
+                "left": 1033,
+                "right": 1156,
+                "tag": "BUTTON",
+                "text": "記錄為證據不足",
+                "top": 657
+              }
+            ],
+            "documentScrollWidth": 1440,
+            "drawer": {
+              "left": 1020,
+              "right": 1440,
+              "width": 420
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              21.044,
+              22.147,
+              23.332
+            ],
+            "extrema": [
+              [
+                4,
+                230
+              ],
+              [
+                6,
+                237
+              ],
+              [
+                7,
+                243
+              ]
+            ],
+            "size": [
+              1440,
+              900
+            ]
+          }
+        },
+        "drawer-transition": {
+          "file": "1440x900-zh-Hant-drawer-transition.png",
+          "geometry": {
+            "bodyScrollWidth": 1440,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 1396,
+                "right": 1428,
+                "tag": "BUTTON",
+                "text": "關閉",
+                "top": 8
+              },
+              {
+                "bottom": 78.5,
+                "left": 1044,
+                "right": 1143,
+                "tag": "BUTTON",
+                "text": "不採用建議",
+                "top": 50.5
+              },
+              {
+                "bottom": 457.25,
+                "left": 1045,
+                "right": 1156,
+                "tag": "BUTTON",
+                "text": "反轉代號轉移",
+                "top": 429.25
+              },
+              {
+                "bottom": 799.25,
+                "left": 1056,
+                "right": 1167,
+                "tag": "BUTTON",
+                "text": "還原追蹤變更",
+                "top": 771.25
+              },
+              {
+                "bottom": 827.25,
+                "left": 1056,
+                "right": 1131,
+                "tag": "BUTTON",
+                "text": "知道了",
+                "top": 799.25
+              }
+            ],
+            "documentScrollWidth": 1440,
+            "drawer": {
+              "left": 1020,
+              "right": 1440,
+              "width": 420
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 900,
+              "width": 1440
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              23.395,
+              24.823,
+              26.411
+            ],
+            "extrema": [
+              [
+                4,
+                230
+              ],
+              [
+                6,
+                237
+              ],
+              [
+                7,
+                243
+              ]
+            ],
+            "size": [
+              1440,
+              900
+            ]
+          }
+        }
+      },
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "page_errors": [],
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "captures": {
+        "activity": {
+          "file": "390x844-en-activity.png",
+          "geometry": {
+            "bodyScrollWidth": 390,
+            "controls": [
+              {
+                "bottom": 535.25,
+                "left": 23,
+                "right": 367,
+                "tag": "BUTTON",
+                "text": "Reverse tracking change",
+                "top": 507.25
+              },
+              {
+                "bottom": 563.25,
+                "left": 23,
+                "right": 151.828125,
+                "tag": "BUTTON",
+                "text": "Acknowledge",
+                "top": 535.25
+              }
+            ],
+            "documentScrollWidth": 390,
+            "drawer": null,
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 844,
+              "width": 390
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              34.017,
+              40.67,
+              50.465
+            ],
+            "extrema": [
+              [
+                11,
+                230
+              ],
+              [
+                16,
+                237
+              ],
+              [
+                22,
+                255
+              ]
+            ],
+            "size": [
+              390,
+              844
+            ]
+          }
+        },
+        "drawer-automation": {
+          "file": "390x844-en-drawer-automation.png",
+          "geometry": {
+            "bodyScrollWidth": 390,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 346,
+                "right": 378,
+                "tag": "BUTTON",
+                "text": "Close",
+                "top": 8
+              },
+              {
+                "bottom": 857.75,
+                "left": 13,
+                "right": 243.578125,
+                "tag": "BUTTON",
+                "text": "Record insufficient evidence",
+                "top": 829.75
+              }
+            ],
+            "documentScrollWidth": 390,
+            "drawer": {
+              "left": 0,
+              "right": 390,
+              "width": 390
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 844,
+              "width": 390
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              33.778,
+              34.018,
+              33.887
+            ],
+            "extrema": [
+              [
+                22,
+                230
+              ],
+              [
+                27,
+                237
+              ],
+              [
+                33,
+                243
+              ]
+            ],
+            "size": [
+              390,
+              844
+            ]
+          }
+        },
+        "drawer-evidence": {
+          "file": "390x844-en-drawer-evidence.png",
+          "geometry": {
+            "bodyScrollWidth": 390,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 346,
+                "right": 378,
+                "tag": "BUTTON",
+                "text": "Close",
+                "top": 8
+              },
+              {
+                "bottom": 271.75,
+                "left": 25,
+                "right": 141.796875,
+                "tag": "A",
+                "text": "Open evidence",
+                "top": 252.25
+              }
+            ],
+            "documentScrollWidth": 390,
+            "drawer": {
+              "left": 0,
+              "right": 390,
+              "width": 390
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 844,
+              "width": 390
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              41.504,
+              42.265,
+              43.083
+            ],
+            "extrema": [
+              [
+                21,
+                230
+              ],
+              [
+                27,
+                237
+              ],
+              [
+                34,
+                255
+              ]
+            ],
+            "size": [
+              390,
+              844
+            ]
+          }
+        },
+        "drawer-facts-review": {
+          "file": "390x844-en-drawer-facts-review.png",
+          "geometry": {
+            "bodyScrollWidth": 390,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 346,
+                "right": 378,
+                "tag": "BUTTON",
+                "text": "Close",
+                "top": 8
+              },
+              {
+                "bottom": 628.75,
+                "left": 13,
+                "right": 243.578125,
+                "tag": "BUTTON",
+                "text": "Record insufficient evidence",
+                "top": 600.75
+              }
+            ],
+            "documentScrollWidth": 390,
+            "drawer": {
+              "left": 0,
+              "right": 390,
+              "width": 390
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 844,
+              "width": 390
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              34.537,
+              34.966,
+              34.917
+            ],
+            "extrema": [
+              [
+                21,
+                230
+              ],
+              [
+                26,
+                237
+              ],
+              [
+                33,
+                243
+              ]
+            ],
+            "size": [
+              390,
+              844
+            ]
+          }
+        },
+        "drawer-transition": {
+          "file": "390x844-en-drawer-transition.png",
+          "geometry": {
+            "bodyScrollWidth": 390,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 346,
+                "right": 378,
+                "tag": "BUTTON",
+                "text": "Close",
+                "top": 8
+              },
+              {
+                "bottom": 434.25,
+                "left": 25,
+                "right": 378,
+                "tag": "BUTTON",
+                "text": "Reverse transition",
+                "top": 406.25
+              },
+              {
+                "bottom": 756.5,
+                "left": 36,
+                "right": 367,
+                "tag": "BUTTON",
+                "text": "Reverse tracking change",
+                "top": 728.5
+              },
+              {
+                "bottom": 784.5,
+                "left": 36,
+                "right": 164.828125,
+                "tag": "BUTTON",
+                "text": "Acknowledge",
+                "top": 756.5
+              }
+            ],
+            "documentScrollWidth": 390,
+            "drawer": {
+              "left": 0,
+              "right": 390,
+              "width": 390
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 844,
+              "width": 390
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              40.331,
+              40.836,
+              41.065
+            ],
+            "extrema": [
+              [
+                22,
+                230
+              ],
+              [
+                27,
+                237
+              ],
+              [
+                34,
+                243
+              ]
+            ],
+            "size": [
+              390,
+              844
+            ]
+          }
+        }
+      },
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "page_errors": [],
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    },
+    {
+      "captures": {
+        "activity": {
+          "file": "390x844-zh-Hant-activity.png",
+          "geometry": {
+            "bodyScrollWidth": 390,
+            "controls": [
+              {
+                "bottom": 518.25,
+                "left": 23,
+                "right": 367,
+                "tag": "BUTTON",
+                "text": "還原追蹤變更",
+                "top": 490.25
+              },
+              {
+                "bottom": 546.25,
+                "left": 23,
+                "right": 98,
+                "tag": "BUTTON",
+                "text": "知道了",
+                "top": 518.25
+              }
+            ],
+            "documentScrollWidth": 390,
+            "drawer": null,
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 844,
+              "width": 390
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              31.53,
+              38.64,
+              48.868
+            ],
+            "extrema": [
+              [
+                11,
+                230
+              ],
+              [
+                16,
+                237
+              ],
+              [
+                22,
+                255
+              ]
+            ],
+            "size": [
+              390,
+              844
+            ]
+          }
+        },
+        "drawer-automation": {
+          "file": "390x844-zh-Hant-drawer-automation.png",
+          "geometry": {
+            "bodyScrollWidth": 390,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 346,
+                "right": 378,
+                "tag": "BUTTON",
+                "text": "關閉",
+                "top": 8
+              },
+              {
+                "bottom": 838.25,
+                "left": 13,
+                "right": 136,
+                "tag": "BUTTON",
+                "text": "記錄為證據不足",
+                "top": 810.25
+              }
+            ],
+            "documentScrollWidth": 390,
+            "drawer": {
+              "left": 0,
+              "right": 390,
+              "width": 390
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 844,
+              "width": 390
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              33.39,
+              33.671,
+              33.529
+            ],
+            "extrema": [
+              [
+                22,
+                230
+              ],
+              [
+                27,
+                237
+              ],
+              [
+                33,
+                243
+              ]
+            ],
+            "size": [
+              390,
+              844
+            ]
+          }
+        },
+        "drawer-evidence": {
+          "file": "390x844-zh-Hant-drawer-evidence.png",
+          "geometry": {
+            "bodyScrollWidth": 390,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 346,
+                "right": 378,
+                "tag": "BUTTON",
+                "text": "關閉",
+                "top": 8
+              },
+              {
+                "bottom": 271.75,
+                "left": 25,
+                "right": 96,
+                "tag": "A",
+                "text": "開啟證據",
+                "top": 252.25
+              }
+            ],
+            "documentScrollWidth": 390,
+            "drawer": {
+              "left": 0,
+              "right": 390,
+              "width": 390
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 844,
+              "width": 390
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              39.923,
+              40.682,
+              41.517
+            ],
+            "extrema": [
+              [
+                21,
+                230
+              ],
+              [
+                27,
+                237
+              ],
+              [
+                34,
+                255
+              ]
+            ],
+            "size": [
+              390,
+              844
+            ]
+          }
+        },
+        "drawer-facts-review": {
+          "file": "390x844-zh-Hant-drawer-facts-review.png",
+          "geometry": {
+            "bodyScrollWidth": 390,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 346,
+                "right": 378,
+                "tag": "BUTTON",
+                "text": "關閉",
+                "top": 8
+              },
+              {
+                "bottom": 629.25,
+                "left": 13,
+                "right": 136,
+                "tag": "BUTTON",
+                "text": "記錄為證據不足",
+                "top": 601.25
+              }
+            ],
+            "documentScrollWidth": 390,
+            "drawer": {
+              "left": 0,
+              "right": 390,
+              "width": 390
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 844,
+              "width": 390
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              32.987,
+              33.381,
+              33.315
+            ],
+            "extrema": [
+              [
+                21,
+                230
+              ],
+              [
+                26,
+                237
+              ],
+              [
+                33,
+                243
+              ]
+            ],
+            "size": [
+              390,
+              844
+            ]
+          }
+        },
+        "drawer-transition": {
+          "file": "390x844-zh-Hant-drawer-transition.png",
+          "geometry": {
+            "bodyScrollWidth": 390,
+            "controls": [
+              {
+                "bottom": 40,
+                "left": 346,
+                "right": 378,
+                "tag": "BUTTON",
+                "text": "關閉",
+                "top": 8
+              },
+              {
+                "bottom": 437.25,
+                "left": 25,
+                "right": 378,
+                "tag": "BUTTON",
+                "text": "反轉代號轉移",
+                "top": 409.25
+              },
+              {
+                "bottom": 742.5,
+                "left": 36,
+                "right": 367,
+                "tag": "BUTTON",
+                "text": "還原追蹤變更",
+                "top": 714.5
+              },
+              {
+                "bottom": 770.5,
+                "left": 36,
+                "right": 111,
+                "tag": "BUTTON",
+                "text": "知道了",
+                "top": 742.5
+              }
+            ],
+            "documentScrollWidth": 390,
+            "drawer": {
+              "left": 0,
+              "right": 390,
+              "width": 390
+            },
+            "overlaps": [],
+            "textOverflow": [],
+            "viewport": {
+              "height": 844,
+              "width": 390
+            }
+          },
+          "pixels": {
+            "channel_stddev": [
+              37.86,
+              38.391,
+              38.675
+            ],
+            "extrema": [
+              [
+                22,
+                230
+              ],
+              [
+                27,
+                237
+              ],
+              [
+                34,
+                243
+              ]
+            ],
+            "size": [
+              390,
+              844
+            ]
+          }
+        }
+      },
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "page_errors": [],
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    }
+  ],
+  "fixture_only": true,
+  "production_backend_started": false,
+  "schema_version": 1
+}

@@ -1,0 +1,323 @@
+"""Produce the bounded repaired Stage 5 shadow report offline."""
+
+from __future__ import annotations
+
+import argparse
+import dataclasses
+import hashlib
+import json
+from pathlib import Path
+import runpy
+import socket
+import subprocess
+import sys
+from types import SimpleNamespace
+from typing import Any
+
+
+PACKET_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = PACKET_DIR.parents[3]
+TEST_MODULE = PROJECT_ROOT / "tests/test_security_lifecycle_grounded_shadow.py"
+MANIFEST = PROJECT_ROOT / "tests/fixtures/security_lifecycle_grounded_shadow.json"
+SOURCE_SHAPES = PROJECT_ROOT / "tests/fixtures/security_lifecycle_automation_sec.json"
+LEGACY_SNAPSHOT = PROJECT_ROOT / "tests/fixtures/security_lifecycle_legacy_37.json"
+STAGE4_MANIFEST = (
+    PROJECT_ROOT
+    / "docs/superpowers/evidence/2026-08-25-trusted-lifecycle-automation-stage-4/SHA256SUMS"
+)
+MAX_REPORT_BYTES = 64 * 1024
+sys.path.insert(0, str(PROJECT_ROOT))
+
+
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _field(value: object, name: str, default: Any = None) -> Any:
+    if isinstance(value, dict):
+        return value.get(name, default)
+    return getattr(value, name, default)
+
+
+def _fact_value(fact: object) -> Any:
+    value = _field(fact, "normalized_value", None)
+    if value is not None:
+        return value
+    return _field(fact, "value", None)
+
+
+def _deny_network() -> None:
+    def denied(*_args, **_kwargs):
+        raise AssertionError("network_disabled_for_grounded_shadow")
+
+    socket.socket = denied  # type: ignore[assignment]
+    socket.create_connection = denied  # type: ignore[assignment]
+    socket.getaddrinfo = denied  # type: ignore[assignment]
+
+
+def _git_head() -> str:
+    return subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=PROJECT_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+
+def _case_report(name: str, manifest_case: dict, shadow) -> dict:
+    decision, sec, evidence, facts, preview_calls = shadow(name)
+    decision_data = dataclasses.asdict(decision)
+    return {
+        "ticker": name,
+        "reviewed_source_pointers": manifest_case["snapshot_rows"],
+        "historical_identity_change": manifest_case["historical_identity_change"],
+        "extracted_fact_types": sorted({str(_field(fact, "fact_type")) for fact in facts}),
+        "extracted_facts": [
+            {
+                "evidence_id": str(_field(fact, "evidence_id")),
+                "fact_type": str(_field(fact, "fact_type")),
+                "rule_id": str(
+                    _field(fact, "extractor_rule_id", _field(fact, "rule_id"))
+                ),
+                "value": _fact_value(fact),
+            }
+            for fact in sorted(
+                facts,
+                key=lambda item: (
+                    str(_field(item, "fact_type")),
+                    str(_fact_value(item)),
+                    str(_field(item, "evidence_id")),
+                ),
+            )
+        ],
+        "evidence": [
+            {
+                "adapter": str(_field(item, "adapter")),
+                "content_sha256": str(_field(item, "content_sha256")),
+                "evidence_id": str(_field(item, "evidence_id")),
+                "kind": str(_field(item, "kind")),
+                "source_family": str(_field(item, "source_family")),
+                "source_url": _field(item, "source_url"),
+            }
+            for item in sorted(evidence, key=lambda row: str(_field(row, "evidence_id")))
+        ],
+        "sec_diagnostics": dict(sec.diagnostics),
+        "decision": {
+            key: decision_data[key]
+            for key in (
+                "decision_tier",
+                "action_readiness",
+                "relevance",
+                "confidence",
+                "outcomes",
+                "successor_ticker",
+                "destination_venue",
+                "effective_date",
+                "rule_id",
+                "rule_version",
+                "decision_issues",
+                "transition_requested",
+            )
+        },
+        "transition_preview_calls": preview_calls,
+    }
+
+
+class _FirstDiscoveryGateway:
+    def __init__(self, snapshot: dict):
+        self.detail = SimpleNamespace(
+            contract=SimpleNamespace(
+                symbol=snapshot["symbol"],
+                localSymbol=snapshot["local_symbol"],
+                conId=snapshot["con_id"],
+                secType=snapshot["security_type"],
+                primaryExchange=snapshot["primary_exchange"],
+                currency=snapshot["currency"],
+            ),
+            validExchanges=snapshot["valid_exchanges"],
+        )
+        self.query_symbols: list[str] = []
+
+    def isConnected(self):
+        return True
+
+    def reqContractDetails(self, contract):
+        symbol = str(getattr(contract, "symbol", "") or "")
+        self.query_symbols.append(symbol)
+        return [self.detail] if symbol == "HAPN" else []
+
+
+def _first_discovery_report(test_module: dict[str, Any]) -> dict:
+    from src.security_lifecycle_decision_policy import evaluate_automation_decision
+    from src.security_lifecycle_ibkr_evidence import (
+        contract_snapshot_facts,
+        read_ibkr_contract_evidence,
+    )
+    from src.security_lifecycle_sec_evidence import (
+        build_identity_context,
+        collect_sec_evidence,
+    )
+
+    source_case = json.loads(SOURCE_SHAPES.read_text(encoding="utf-8"))["cases"]["HAPN"]
+    manifest_case = json.loads(MANIFEST.read_text(encoding="utf-8"))["cases"]["HAPN"]
+    observation = {**source_case["observation"], "ticker": "LC"}
+    context = build_identity_context(
+        case_id="case-first-discovery",
+        observation=observation,
+        ticker_aliases=("LC",),
+        ibkr_conids=(),
+    )
+    sec = collect_sec_evidence(
+        context=context,
+        transport=test_module["_SecTransport"](source_case),
+        retrieved_at="2026-08-25T01:02:03.123456Z",
+    )
+    regulator_successors = tuple(
+        str(fact.value)
+        for fact in sec.facts
+        if fact.fact_type == "successor_ticker"
+    )
+    gateway = _FirstDiscoveryGateway(manifest_case["market_snapshot"])
+    market = read_ibkr_contract_evidence(
+        gateway=gateway,
+        gateway_lock=test_module["_ibkr_lock"],
+        context=context,
+        candidate_tickers=regulator_successors,
+        retrieved_at="2026-08-25T01:02:03.123456Z",
+    )
+    evidence = (*sec.evidence, *market.evidence)
+    facts = (
+        *sec.facts,
+        *(
+            fact
+            for row in market.evidence
+            for fact in contract_snapshot_facts(
+                row,
+                regulator_successors=regulator_successors,
+            )
+        ),
+    )
+    preview_calls: list[dict[str, object]] = []
+
+    def preview(request):
+        preview_calls.append(dict(request))
+        return {
+            "transition_kind": request["transition_kind"],
+            "eligible": True,
+            "block_reasons": [],
+        }
+
+    decision = evaluate_automation_decision(
+        case={
+            "case_id": context.case_id,
+            "ticker": "LC",
+            "cik": observation["cik"],
+            "issuer_name": observation["issuer_name"],
+            "filing_date": observation["filing_date"],
+            "event_kinds": observation["event_kinds"],
+        },
+        evidence=evidence,
+        facts=facts,
+        current_date="2026-08-25",
+        active_sources=("manual_lists",),
+        transition_preview=preview,
+    )
+    expected = {
+        "decision_tier": "verified_automatic",
+        "action_readiness": "transition_eligible",
+        "successor_ticker": "HAPN",
+        "transition_requested": True,
+    }
+    actual = {key: getattr(decision, key) for key in expected}
+    if actual != expected:
+        raise AssertionError({"first_discovery_expected": expected, "actual": actual})
+    if context.ticker_aliases != ("LC",):
+        raise AssertionError("candidate_successor_was_persisted_as_alias")
+    if gateway.query_symbols != ["LC", "HAPN"]:
+        raise AssertionError({"unexpected_ibkr_queries": gateway.query_symbols})
+    if len(preview_calls) != 1:
+        raise AssertionError({"unexpected_preview_calls": preview_calls})
+
+    return {
+        "initial_aliases": ["LC"],
+        "aliases_after_evaluation": list(context.ticker_aliases),
+        "regulator_declared_successors": list(regulator_successors),
+        "ibkr_query_symbols": gateway.query_symbols,
+        "market_contract_status": market.contract_status,
+        "decision": actual,
+        "transition_preview_calls": preview_calls,
+    }
+
+
+def build_report() -> dict:
+    test_module = runpy.run_path(str(TEST_MODULE))
+    for module in (
+        "src.security_lifecycle_decision_policy",
+        "src.security_lifecycle_ibkr_evidence",
+        "src.security_lifecycle_sec_evidence",
+    ):
+        __import__(module)
+    _deny_network()
+    shadow = test_module["_shadow"]
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    return {
+        "schema_version": 2,
+        "git_head": _git_head(),
+        "authority": {
+            "grounded_manifest_sha256": _sha256(MANIFEST),
+            "legacy_snapshot_sha256": _sha256(LEGACY_SNAPSHOT),
+            "source_shape_fixture_sha256": _sha256(SOURCE_SHAPES),
+            "stage4_execution_manifest_sha256": _sha256(STAGE4_MANIFEST),
+        },
+        "execution": {
+            "network_calls": 0,
+            "production_database_operations": 0,
+            "provider_calls": 0,
+            "replay_socket_policy": "denied_after_offline_dependency_import",
+        },
+        "provenance": {
+            "case_identity": "reviewed_repository_snapshot",
+            "sec_source_text": "synthetic_source_shape_not_captured_provider_bytes",
+            "ibkr_contract_snapshot": "synthetic_ibkr_contract_shape",
+        },
+        "coverage": {
+            "historical_a_to_b_cases": 1,
+            "historical_a_to_b_ticker": "HAPN",
+            "first_discovery_a_to_b_transition_eligible": True,
+            "real_production_a_to_b_apply_exercised": False,
+            "execution_reverse_authority": "stage_4_scratch_apply_ack_reverse",
+        },
+        "limitations": [
+            "No fresh SEC, IBKR, news, model, or general-search response was obtained.",
+            "Synthetic filing prose and IBKR reply shapes are not captured provider bytes.",
+            "HAPN is already keyed by its successor ticker, so no real HAPN-to-HAPN transition is requested.",
+            "One historical A-to-B example plus synthetic execution does not establish broad A-to-B precision.",
+        ],
+        "first_discovery_capability": _first_discovery_report(test_module),
+        "cases": [
+            _case_report(name, manifest["cases"][name], shadow)
+            for name in sorted(manifest["cases"])
+        ],
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("output", type=Path)
+    args = parser.parse_args()
+    payload = json.dumps(
+        build_report(),
+        ensure_ascii=False,
+        allow_nan=False,
+        indent=2,
+        sort_keys=True,
+    ).encode("utf-8") + b"\n"
+    if len(payload) > MAX_REPORT_BYTES:
+        raise RuntimeError("grounded_shadow_report_exceeds_limit")
+    args.output.write_bytes(payload)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

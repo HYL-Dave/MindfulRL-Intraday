@@ -1,0 +1,30 @@
+{
+  "original_stage_5": {
+    "manifest_sha256": "0d3de88a415b227a656f764e24ec8cd76250cee187ebc9b28a6cbbd487f282ad",
+    "packet": "docs/superpowers/evidence/2026-08-25-trusted-lifecycle-automation-stage-5",
+    "status": "rejected_for_migration_and_cutover_authority"
+  },
+  "reproduced_blockers": [
+    "first_discovery_required_the_successor_to_already_be_an_alias",
+    "terminal_delisting_had_no_reachable_complete_chain_fact",
+    "transition_approval_failure_left_a_durable_false_success",
+    "transaction_structure_scalar_was_silently_collapsed_to_an_empty_mapping"
+  ],
+  "red_first_authorities": {
+    "blocking_repairs": "2e5adc6f37e32cc5e98a01b942da3d261df22425",
+    "current_run_blocker_owner": "8a01f34d663471aeed4b4cd7f57ba3563dc3d9a4"
+  },
+  "rejected_full_frontend": {
+    "failed_node": "I18N-0 foundation boundaries closes remaining localization with global src scope and exact empty-debt arithmetic",
+    "failed_tests": 1,
+    "passed_tests": 1228,
+    "reason": "dynamic_visible_transaction_separator",
+    "report": "rejected-frontend-full-dynamic-literal.json",
+    "report_sha256": "c316cc062b59923388c8518ce0b4b6f0d8bc90f38205b02472aa403a6d9750ab"
+  },
+  "superseded_blocker_witness": {
+    "failure": "historical_source_and_market_blockers_were_displayed_beside_the_latest_run",
+    "final_rule": "display_blockers_from_the_displayed_run_only",
+    "owner": "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::Lifecycle workflow > renders automation provenance grouped facts and typed blockers"
+  }
+}

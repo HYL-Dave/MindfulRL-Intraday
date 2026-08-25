@@ -1,0 +1,47 @@
+{
+  "base_commit": "e1f7a394ca95926ebf93caa58d455f8a2c65174d",
+  "paths": [
+    {
+      "base_sha256": "2172c28c4ce3d2fde45d9e2e984d4f39baf12915bfd7142f924761148b499d91",
+      "current_sha256": "2172c28c4ce3d2fde45d9e2e984d4f39baf12915bfd7142f924761148b499d91",
+      "equal": true,
+      "path": "src/security_lifecycle_automation_migration.py"
+    },
+    {
+      "base_sha256": "008f0f7d7043be3ed73f7c7a4ea60d93156e16e79f54a54e278da13211aed7b7",
+      "current_sha256": "008f0f7d7043be3ed73f7c7a4ea60d93156e16e79f54a54e278da13211aed7b7",
+      "equal": true,
+      "path": "src/ticker_identity_schema.py"
+    },
+    {
+      "base_sha256": "a7ffac6937bbe4c97f554095eca329deb89bb2611b11bebddba734ea18b5463d",
+      "current_sha256": "a7ffac6937bbe4c97f554095eca329deb89bb2611b11bebddba734ea18b5463d",
+      "equal": true,
+      "path": "src/ticker_identity_transition.py"
+    },
+    {
+      "base_sha256": "aa881b500159b8d495f5b2d38ff453574fdbb284cc3ec7485c325e26579e60cb",
+      "current_sha256": "aa881b500159b8d495f5b2d38ff453574fdbb284cc3ec7485c325e26579e60cb",
+      "equal": true,
+      "path": "src/ticker_identity_service.py"
+    },
+    {
+      "base_sha256": "85cb842eb77c87d476f48264bac97e580c4b618ecf4fcea5153307a39e0ac954",
+      "current_sha256": "85cb842eb77c87d476f48264bac97e580c4b618ecf4fcea5153307a39e0ac954",
+      "equal": true,
+      "path": "tests/test_security_lifecycle_automation_migration.py"
+    },
+    {
+      "base_sha256": "87c29781e2428e9ab9b3f838b70780431453245f692946c93a5c6c88b95a7055",
+      "current_sha256": "87c29781e2428e9ab9b3f838b70780431453245f692946c93a5c6c88b95a7055",
+      "equal": true,
+      "path": "tests/fixtures/security_lifecycle_automation_sec.json"
+    },
+    {
+      "base_sha256": "775da71c719c69a5c266ac7e827588dd5418d12e62a0df5247f48625b2f67655",
+      "current_sha256": "775da71c719c69a5c266ac7e827588dd5418d12e62a0df5247f48625b2f67655",
+      "equal": true,
+      "path": "tests/fixtures/security_lifecycle_legacy_37.json"
+    }
+  ]
+}

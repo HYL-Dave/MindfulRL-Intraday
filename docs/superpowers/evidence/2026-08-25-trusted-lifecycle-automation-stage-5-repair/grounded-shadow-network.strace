@@ -1,0 +1,55 @@
+3266118 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [4, 5]) = 0
+3266118 getsockname(4, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3266118 getsockname(5, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3266118 socket(AF_INET6, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_IP) = 6
+3266118 bind(6, {sa_family=AF_INET6, sin6_port=htons(0), sin6_flowinfo=htonl(0), inet_pton(AF_INET6, "::1", &sin6_addr), sin6_scope_id=0}, 28) = 0
+3266166 +++ exited with 0 +++
+3266118 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=3266166, si_uid=1001, si_status=0, si_utime=0, si_stime=0} ---
+3266119 +++ exited with 0 +++
+3266120 +++ exited with 0 +++
+3266121 +++ exited with 0 +++
+3266122 +++ exited with 0 +++
+3266123 +++ exited with 0 +++
+3266124 +++ exited with 0 +++
+3266125 +++ exited with 0 +++
+3266126 +++ exited with 0 +++
+3266127 +++ exited with 0 +++
+3266128 +++ exited with 0 +++
+3266129 +++ exited with 0 +++
+3266131 +++ exited with 0 +++
+3266130 +++ exited with 0 +++
+3266132 +++ exited with 0 +++
+3266133 +++ exited with 0 +++
+3266134 +++ exited with 0 +++
+3266136 +++ exited with 0 +++
+3266135 +++ exited with 0 +++
+3266137 +++ exited with 0 +++
+3266138 +++ exited with 0 +++
+3266139 +++ exited with 0 +++
+3266140 +++ exited with 0 +++
+3266141 +++ exited with 0 +++
+3266142 +++ exited with 0 +++
+3266143 +++ exited with 0 +++
+3266144 +++ exited with 0 +++
+3266145 +++ exited with 0 +++
+3266146 +++ exited with 0 +++
+3266147 +++ exited with 0 +++
+3266148 +++ exited with 0 +++
+3266149 +++ exited with 0 +++
+3266150 +++ exited with 0 +++
+3266151 +++ exited with 0 +++
+3266152 +++ exited with 0 +++
+3266153 +++ exited with 0 +++
+3266154 +++ exited with 0 +++
+3266155 +++ exited with 0 +++
+3266156 +++ exited with 0 +++
+3266157 +++ exited with 0 +++
+3266158 +++ exited with 0 +++
+3266159 +++ exited with 0 +++
+3266161 +++ exited with 0 +++
+3266160 +++ exited with 0 +++
+3266162 +++ exited with 0 +++
+3266163 +++ exited with 0 +++
+3266165 +++ exited with 0 +++
+3266164 +++ exited with 0 +++
+3266118 +++ exited with 0 +++

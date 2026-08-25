@@ -1,0 +1,130 @@
+{
+  "authority": {
+    "app_cutover_performed": false,
+    "merge_performed": false,
+    "production_database_backups": 0,
+    "production_database_migrations": 0,
+    "production_database_preflights": 0,
+    "production_database_reads": 0,
+    "production_database_restores": 0,
+    "production_database_writes": 0,
+    "provider_calls": 0,
+    "push_performed": false,
+    "scope": "offline_fixture_and_scratch_only"
+  },
+  "backend": {
+    "additions": {
+      "failed": 0,
+      "passed": 5,
+      "stream_sha256": "4e2532de3b6ddf5ca940e8012a3eaebac8e691c3f140b8ef34ae08a2d742d6f2"
+    },
+    "collection": {
+      "run_1": 4416,
+      "run_2": 4416,
+      "streams_byte_identical": true,
+      "stream_sha256": "7dabbf20072cd514d96a8322c2d3bb722ae8973f16d4c5cdde78457ddab9865f"
+    },
+    "focused": {
+      "failed": 0,
+      "passed": 66,
+      "stream_sha256": "5bfcc2d11bab2942ea360441cf90e203cefcd2ed55d8e3847e2592e8dc2ec1e5"
+    },
+    "full_run_1": {
+      "failed": 0,
+      "passed": 4404,
+      "skipped": 12,
+      "warnings": 3
+    },
+    "full_run_2": {
+      "failed": 0,
+      "passed": 4404,
+      "skipped": 12,
+      "warnings": 3
+    }
+  },
+  "browser": {
+    "console_errors": 0,
+    "entries": 4,
+    "external_requests": 0,
+    "matrix_sha256": "3832c135781f8a8d54f727bb3bf29d7085c6ad921d06234d300ffbca47aea00a",
+    "page_errors": 0,
+    "render_acknowledgements": 0,
+    "screenshots": 20,
+    "unique_screenshot_sha256": 20,
+    "viewports": [
+      "1440x900 en",
+      "1440x900 zh-Hant",
+      "390x844 en",
+      "390x844 zh-Hant"
+    ],
+    "visually_inspected": 20,
+    "writes": 0
+  },
+  "frontend": {
+    "additions": {
+      "failed": 0,
+      "passed": 1,
+      "stream_sha256": "e6a10861a6d76bb99155f88ceff3ff3f405cda96587fd80d55c614b4188ea218"
+    },
+    "build": "passed_with_existing_chunk_size_warning",
+    "focused": {
+      "failed": 0,
+      "files": 4,
+      "passed": 67,
+      "report_sha256": "78f70bb413cb53ef049bd9f9356b1f872944f47d54bd035871aadb4a3fbbd225"
+    },
+    "full": {
+      "failed": 0,
+      "files": 105,
+      "passed": 1229,
+      "report_sha256": "92c6c1199c95a4db4aec5043746bf339c472660027620dece6d3641cb3b3669b"
+    },
+    "literal_scanner": {
+      "allowlist_count": 20,
+      "candidate_count": 37,
+      "debt_signature_count": 0,
+      "signature_count": 20
+    },
+    "typecheck": "passed"
+  },
+  "grounded_shadow": {
+    "cases": 4,
+    "first_discovery_aliases_after": [
+      "LC"
+    ],
+    "first_discovery_ibkr_queries": [
+      "LC",
+      "HAPN"
+    ],
+    "first_discovery_transition_previews": 1,
+    "ibkr_payload_strength": "synthetic_source_shape",
+    "provider_calls": 0,
+    "real_production_a_to_b_apply_exercised": false,
+    "report_sha256": "a07280e3434ec80bbe95ad5fe96cc29d12aa763179661b2006e563f824ca9933",
+    "sec_payload_strength": "synthetic_source_shape_not_captured_provider_bytes"
+  },
+  "migration_template": {
+    "live_fields": "UNAUTHORIZED_OR_NOT_RUN",
+    "production_paths_read": 0,
+    "real_ibkr_shape_canary": "UNAUTHORIZED_NOT_RUN",
+    "real_sec_source_bytes": "UNAUTHORIZED_NOT_RUN",
+    "status": "PREPARED_OFFLINE_NOT_AUTHORIZED"
+  },
+  "network": {
+    "backend_additions_connect_calls": 0,
+    "backend_additions_external_calls": 0,
+    "grounded_shadow_connect_calls": 0,
+    "grounded_shadow_external_calls": 0,
+    "provider_calls": 0
+  },
+  "product_test_authority": "7cb479a8058793dc29cbb75bb4ab98b9d6a6f231",
+  "routes": {
+    "lifecycle": 17,
+    "total": 187
+  },
+  "tools": {
+    "anthropic_bridge": 51,
+    "openai_bridge": 51,
+    "registry": 50
+  }
+}

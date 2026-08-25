@@ -1,0 +1,55 @@
+3265887 +++ exited with 0 +++
+3265885 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=3265887, si_uid=1001, si_status=0, si_utime=0, si_stime=0} ---
+3265885 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [12, 13]) = 0
+3265885 getsockname(12, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3265885 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3265885 socket(AF_INET6, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_IP) = 14
+3265885 bind(14, {sa_family=AF_INET6, sin6_port=htons(0), sin6_flowinfo=htonl(0), inet_pton(AF_INET6, "::1", &sin6_addr), sin6_scope_id=0}, 28) = 0
+3265889 +++ exited with 0 +++
+3265888 +++ exited with 0 +++
+3265891 +++ exited with 0 +++
+3265890 +++ exited with 0 +++
+3265892 +++ exited with 0 +++
+3265893 +++ exited with 0 +++
+3265894 +++ exited with 0 +++
+3265895 +++ exited with 0 +++
+3265896 +++ exited with 0 +++
+3265899 +++ exited with 0 +++
+3265897 +++ exited with 0 +++
+3265898 +++ exited with 0 +++
+3265900 +++ exited with 0 +++
+3265901 +++ exited with 0 +++
+3265902 +++ exited with 0 +++
+3265903 +++ exited with 0 +++
+3265904 +++ exited with 0 +++
+3265905 +++ exited with 0 +++
+3265906 +++ exited with 0 +++
+3265907 +++ exited with 0 +++
+3265908 +++ exited with 0 +++
+3265909 +++ exited with 0 +++
+3265911 +++ exited with 0 +++
+3265910 +++ exited with 0 +++
+3265913 +++ exited with 0 +++
+3265912 +++ exited with 0 +++
+3265914 +++ exited with 0 +++
+3265915 +++ exited with 0 +++
+3265916 +++ exited with 0 +++
+3265917 +++ exited with 0 +++
+3265918 +++ exited with 0 +++
+3265919 +++ exited with 0 +++
+3265920 +++ exited with 0 +++
+3265921 +++ exited with 0 +++
+3265922 +++ exited with 0 +++
+3265923 +++ exited with 0 +++
+3265924 +++ exited with 0 +++
+3265925 +++ exited with 0 +++
+3265926 +++ exited with 0 +++
+3265927 +++ exited with 0 +++
+3265928 +++ exited with 0 +++
+3265929 +++ exited with 0 +++
+3265930 +++ exited with 0 +++
+3265931 +++ exited with 0 +++
+3265932 +++ exited with 0 +++
+3265933 +++ exited with 0 +++
+3265934 +++ exited with 0 +++
+3265885 +++ exited with 0 +++
