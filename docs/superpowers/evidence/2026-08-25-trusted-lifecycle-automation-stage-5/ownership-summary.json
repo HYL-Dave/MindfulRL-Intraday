@@ -1,0 +1,16 @@
+{
+  "base_commit": "beca52e75f248ed293f646f6f89a843a19d02a0c",
+  "base_pin_errors": [],
+  "changed_non_governance_paths": 14,
+  "changed_paths_total": 46,
+  "ledger_external_changed_paths": [],
+  "merge_commits_after_base": 0,
+  "owned_paths": 15,
+  "owned_paths_not_changed": [
+    "docs/design/PROJECT_PRIORITY_MAP.md"
+  ],
+  "protected_tracked_path_changes": [],
+  "protected_tracked_paths": 16,
+  "remote_refs_containing_verified_head": 0,
+  "verified_head_before_packet": "ed2117f3616270ba70c725f02e8eab7478ef9945"
+}

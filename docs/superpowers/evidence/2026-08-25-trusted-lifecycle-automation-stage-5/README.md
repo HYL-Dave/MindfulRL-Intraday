@@ -32,4 +32,13 @@ from a restored scratch copy; and state the post-cutover profile-write loss of a
 backup restore. Every live path, digest, quiescence witness, backup, restore,
 approval, and migration result remains `UNAUTHORIZED` or `NOT_RUN`.
 
+Final offline admission at product/test authority `07b38bbd` is additions `6P`,
+focused backend `38P`, collection `4411` twice with byte-identical node streams,
+and two isolated full backend runs of `4399P / 12S / 0F`. Frontend admission is
+`105 files / 1228P`, with focused `3 files / 55P`, typecheck, visible-literal
+scanner, and production build passing. Runtime inventory remains `187` routes,
+`17` lifecycle routes, and registry/Anthropic/OpenAI tool counts `50/51/51`.
+All 16 protected paths match the Stage 5 base byte for byte, and every changed
+non-governance path is owned.
+
 `SHA256SUMS` is the final packet manifest and intentionally excludes itself.

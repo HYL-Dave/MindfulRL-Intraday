@@ -4,7 +4,7 @@
   "scope": "trusted_lifecycle_automation_profile_v1_to_v2",
   "authority": {
     "product_test_git_head": "07b38bbd75147fa65e931e0e35a6da63cd4daf01",
-    "packet_git_head": "TO_BE_RECORDED_AFTER_FINAL_OFFLINE_ADMISSION",
+    "packet_binding": "FINAL_STAGE5_SHA256SUMS",
     "migration_module": {
       "entrypoint": "migrate_automation_profile_schema",
       "path": "src/security_lifecycle_automation_migration.py",

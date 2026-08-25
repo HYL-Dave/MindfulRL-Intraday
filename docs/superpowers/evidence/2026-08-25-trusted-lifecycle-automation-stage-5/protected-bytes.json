@@ -1,0 +1,101 @@
+{
+  "base_commit": "beca52e75f248ed293f646f6f89a843a19d02a0c",
+  "paths": [
+    {
+      "base_sha256": "418db787bc4573c3a76c6638d0779e30305ea07b63bb673835b082569dd69962",
+      "current_sha256": "418db787bc4573c3a76c6638d0779e30305ea07b63bb673835b082569dd69962",
+      "equal": true,
+      "path": "apps/arkscope-web/src/api.ts"
+    },
+    {
+      "base_sha256": "20a676b5a3e5ce975b9af993cf313eb75e869d6de62cf8d93d0b564c18c7d38d",
+      "current_sha256": "20a676b5a3e5ce975b9af993cf313eb75e869d6de62cf8d93d0b564c18c7d38d",
+      "equal": true,
+      "path": "apps/arkscope-web/src/lifecycle/LifecycleActivityBand.tsx"
+    },
+    {
+      "base_sha256": "6c33085f6c0e230a9ccd9adbf9cc09cd3602afc51cbdcf32f7c35f3b979db943",
+      "current_sha256": "6c33085f6c0e230a9ccd9adbf9cc09cd3602afc51cbdcf32f7c35f3b979db943",
+      "equal": true,
+      "path": "apps/arkscope-web/src/lifecycle/tickerIdentityPresentation.ts"
+    },
+    {
+      "base_sha256": "e435e87a0f2c59b373e45c958a6880862e5e8b163a952be6f6172cca4da7667a",
+      "current_sha256": "e435e87a0f2c59b373e45c958a6880862e5e8b163a952be6f6172cca4da7667a",
+      "equal": true,
+      "path": "apps/arkscope-web/src/styles.css"
+    },
+    {
+      "base_sha256": "2172c28c4ce3d2fde45d9e2e984d4f39baf12915bfd7142f924761148b499d91",
+      "current_sha256": "2172c28c4ce3d2fde45d9e2e984d4f39baf12915bfd7142f924761148b499d91",
+      "equal": true,
+      "path": "src/security_lifecycle_automation_migration.py"
+    },
+    {
+      "base_sha256": "e19b976ec0518728517cf1c6683a652fbe107774984a190fb9576e50c47e28fc",
+      "current_sha256": "e19b976ec0518728517cf1c6683a652fbe107774984a190fb9576e50c47e28fc",
+      "equal": true,
+      "path": "src/security_lifecycle_fact_kernel.py"
+    },
+    {
+      "base_sha256": "2b0319d687b16cd3489a4a7ad65143825da5aafdee6358081415d299fd1551b4",
+      "current_sha256": "2b0319d687b16cd3489a4a7ad65143825da5aafdee6358081415d299fd1551b4",
+      "equal": true,
+      "path": "src/security_lifecycle_investigation.py"
+    },
+    {
+      "base_sha256": "b5c2e222c6a561385d80e8eb1d5f3f1e1398b3d103c4a44c01416a895a68adcb",
+      "current_sha256": "b5c2e222c6a561385d80e8eb1d5f3f1e1398b3d103c4a44c01416a895a68adcb",
+      "equal": true,
+      "path": "src/security_lifecycle_migration.py"
+    },
+    {
+      "base_sha256": "61e6ddcc692266d677cb6a08d02ddc51a30182949be00a5bc8ab166f5e92a2b6",
+      "current_sha256": "61e6ddcc692266d677cb6a08d02ddc51a30182949be00a5bc8ab166f5e92a2b6",
+      "equal": true,
+      "path": "src/security_lifecycle_schema.py"
+    },
+    {
+      "base_sha256": "a8c0187b01e56169be9622e82a688b2e9f69445bbc8eef13941258bf8143b0a3",
+      "current_sha256": "a8c0187b01e56169be9622e82a688b2e9f69445bbc8eef13941258bf8143b0a3",
+      "equal": true,
+      "path": "src/security_lifecycle_translation.py"
+    },
+    {
+      "base_sha256": "a8eecaba34dac6093050fbdc8d5c658c85a470fb6f2251419efa49f2011a5fb2",
+      "current_sha256": "a8eecaba34dac6093050fbdc8d5c658c85a470fb6f2251419efa49f2011a5fb2",
+      "equal": true,
+      "path": "src/ticker_identity_migration.py"
+    },
+    {
+      "base_sha256": "008f0f7d7043be3ed73f7c7a4ea60d93156e16e79f54a54e278da13211aed7b7",
+      "current_sha256": "008f0f7d7043be3ed73f7c7a4ea60d93156e16e79f54a54e278da13211aed7b7",
+      "equal": true,
+      "path": "src/ticker_identity_schema.py"
+    },
+    {
+      "base_sha256": "aa881b500159b8d495f5b2d38ff453574fdbb284cc3ec7485c325e26579e60cb",
+      "current_sha256": "aa881b500159b8d495f5b2d38ff453574fdbb284cc3ec7485c325e26579e60cb",
+      "equal": true,
+      "path": "src/ticker_identity_service.py"
+    },
+    {
+      "base_sha256": "a7ffac6937bbe4c97f554095eca329deb89bb2611b11bebddba734ea18b5463d",
+      "current_sha256": "a7ffac6937bbe4c97f554095eca329deb89bb2611b11bebddba734ea18b5463d",
+      "equal": true,
+      "path": "src/ticker_identity_transition.py"
+    },
+    {
+      "base_sha256": "87c29781e2428e9ab9b3f838b70780431453245f692946c93a5c6c88b95a7055",
+      "current_sha256": "87c29781e2428e9ab9b3f838b70780431453245f692946c93a5c6c88b95a7055",
+      "equal": true,
+      "path": "tests/fixtures/security_lifecycle_automation_sec.json"
+    },
+    {
+      "base_sha256": "775da71c719c69a5c266ac7e827588dd5418d12e62a0df5247f48625b2f67655",
+      "current_sha256": "775da71c719c69a5c266ac7e827588dd5418d12e62a0df5247f48625b2f67655",
+      "equal": true,
+      "path": "tests/fixtures/security_lifecycle_legacy_37.json"
+    }
+  ]
+}

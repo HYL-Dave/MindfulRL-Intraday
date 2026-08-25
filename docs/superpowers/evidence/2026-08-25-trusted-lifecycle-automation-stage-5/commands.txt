@@ -1,0 +1,70 @@
+Stage 5 offline admission command record
+
+Backend additions
+  python -m pytest -q <6 exact additions>
+  result: 6 passed
+
+Backend focused
+  python -m pytest -q <5 focused backend files>
+  result: 38 passed
+
+Backend collection
+  python -m pytest --collect-only -q
+  result A: 4411 collected
+  result B: 4411 collected
+  node streams: byte-identical
+
+Backend full
+  python -m pytest -q --basetemp=/tmp/arkscope-stage5-backend-a-20260825-1
+  result: 4399 passed, 12 skipped, 3 warnings
+  python -m pytest -q --basetemp=/tmp/arkscope-stage5-backend-b-20260825-1
+  result: 4399 passed, 12 skipped, 3 warnings
+  warnings: existing edgar v6 deprecation notices only
+
+Frontend focused
+  npm test -- src/lifecycle/LifecycleView.test.tsx src/lifecycle/lifecyclePresentation.test.ts src/i18n/resources.test.ts --reporter=json
+  result: 3 files, 55 passed
+
+Frontend full
+  npm test -- --reporter=json
+  result: 105 files, 1228 passed
+
+Frontend static and build gates
+  npm run typecheck
+  result: passed
+  npm run check:i18n-literals
+  result: candidateCount=37 signatureCount=20 debtSignatureCount=0 allowlistCount=20
+  npm run build
+  result: passed; existing chunk-size warning only
+
+Grounded shadow
+  python docs/superpowers/evidence/2026-08-25-trusted-lifecycle-automation-stage-5/run_grounded_shadow.py <scratch-output>
+  result: two clean-tree outputs byte-identical; 4 cases; sockets denied after offline dependency import
+  report SHA-256: f92b9bd29a264da9dc00c7daadb76669e3c03396e77d36904e82faf538408aa3
+
+Browser matrix
+  npm run dev -- --host 127.0.0.1 --port 4197
+  python docs/superpowers/evidence/2026-08-25-trusted-lifecycle-automation-stage-5/run_browser_matrix.py
+  result: 4 entries, 16 screenshots, 0 writes, 0 external requests, 0 console/page errors, 0 render acknowledgements
+  server: feature-tree Vite only; stopped after replay; port 4197 confirmed closed
+  visual review: all 16 screenshots inspected via four locale/viewport contact sheets; one mobile Traditional Chinese source-evidence frame also inspected at original resolution
+
+Network classification
+  strace -f -e trace=network python -m pytest -q <6 exact additions>
+  result: 6 passed; one ::1 dependency-import bind and one AF_UNIX socketpair; 0 connect/send/receive/listen/accept/provider/external calls
+
+Runtime inventory
+  create_app(), create_default_registry(), get_anthropic_tools(), create_openai_tools(None)
+  explicit absent scratch ARKSCOPE_PROFILE_DB and ARKSCOPE_MARKET_DB paths
+  result: routes=187 lifecycle_routes=17 tools=50/51/51; scratch paths remained absent
+
+Authority and ownership
+  compare every owned base pin and protected byte against beca52e7
+  result: 0 pin errors, 0 ledger-external changed paths, 0 protected changes, 0 merge commits, 0 observed remote refs containing feature tip
+
+Hard-stop accounting
+  provider calls: 0
+  production database reads/writes/preflights/backups/restores/migrations: 0
+  app/backend/scheduler feature-tree starts: 0
+  merge: 0
+  push: 0

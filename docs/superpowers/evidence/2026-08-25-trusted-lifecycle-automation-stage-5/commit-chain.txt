@@ -1,0 +1,10 @@
+d671b718da00d53fdf0059233ee9a00ed24e3cb7 docs(lifecycle): plan grounded admission
+3c7c58914a898b1d797de76337e081c1c593d7b4 test(lifecycle): add grounded shadow admission
+496b61e67ae1f4fe5ca1ddc2c1c8a94f272c32c9 feat(lifecycle): ground automation admission
+6e892e1b2a6e3616019ef08c9a68caa83404aa42 docs(lifecycle): add grounded shadow replay
+632b2822fa83bbeebcffd03be3fce5509f27b0fd docs(lifecycle): record grounded shadow evidence
+3c12f8b1a31b9c0b26815df24ca5abc20b869a3c docs(lifecycle): amend grounded UI admission
+f9383a5e6c32679208c4735532e1454cbf1e9fd7 test(lifecycle): reject raw automation fact codes
+07b38bbd75147fa65e931e0e35a6da63cd4daf01 fix(lifecycle): label closed automation facts
+0d4c86922888a53a08fa12f760d18911e0cd12ce docs(lifecycle): record bilingual browser admission
+ed2117f3616270ba70c725f02e8eab7478ef9945 docs(lifecycle): prepare migration authorization

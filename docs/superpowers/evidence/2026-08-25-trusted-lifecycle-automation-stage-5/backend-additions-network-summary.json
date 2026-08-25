@@ -1,0 +1,13 @@
+{
+  "classification": "dependency_import_loopback_initialization_only",
+  "connect_calls": 0,
+  "external_endpoint_calls": 0,
+  "fixture_nodes_passed": 6,
+  "ipv6_loopback_bind_calls": 1,
+  "listen_accept_calls": 0,
+  "provider_calls": 0,
+  "receive_calls": 0,
+  "send_calls": 0,
+  "trace_scope": "complete_process_tree",
+  "unix_socketpair_calls": 1
+}

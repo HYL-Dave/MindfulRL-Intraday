@@ -1,0 +1,55 @@
+3150274 +++ exited with 0 +++
+3150273 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=3150274, si_uid=1001, si_status=0, si_utime=0, si_stime=0} ---
+3150273 socket(AF_INET6, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_IP) = 11
+3150273 bind(11, {sa_family=AF_INET6, sin6_port=htons(0), sin6_flowinfo=htonl(0), inet_pton(AF_INET6, "::1", &sin6_addr), sin6_scope_id=0}, 28) = 0
+3150273 socketpair(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC, 0, [13, 14]) = 0
+3150273 getsockname(13, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3150273 getsockname(14, {sa_family=AF_UNIX}, [128 => 2]) = 0
+3150276 +++ exited with 0 +++
+3150275 +++ exited with 0 +++
+3150278 +++ exited with 0 +++
+3150279 +++ exited with 0 +++
+3150277 +++ exited with 0 +++
+3150280 +++ exited with 0 +++
+3150281 +++ exited with 0 +++
+3150282 +++ exited with 0 +++
+3150283 +++ exited with 0 +++
+3150286 +++ exited with 0 +++
+3150287 +++ exited with 0 +++
+3150284 +++ exited with 0 +++
+3150285 +++ exited with 0 +++
+3150290 +++ exited with 0 +++
+3150288 +++ exited with 0 +++
+3150289 +++ exited with 0 +++
+3150291 +++ exited with 0 +++
+3150292 +++ exited with 0 +++
+3150293 +++ exited with 0 +++
+3150294 +++ exited with 0 +++
+3150295 +++ exited with 0 +++
+3150296 +++ exited with 0 +++
+3150298 +++ exited with 0 +++
+3150297 +++ exited with 0 +++
+3150300 +++ exited with 0 +++
+3150299 +++ exited with 0 +++
+3150302 +++ exited with 0 +++
+3150301 +++ exited with 0 +++
+3150303 +++ exited with 0 +++
+3150305 +++ exited with 0 +++
+3150304 +++ exited with 0 +++
+3150306 +++ exited with 0 +++
+3150307 +++ exited with 0 +++
+3150308 +++ exited with 0 +++
+3150309 +++ exited with 0 +++
+3150310 +++ exited with 0 +++
+3150311 +++ exited with 0 +++
+3150312 +++ exited with 0 +++
+3150313 +++ exited with 0 +++
+3150315 +++ exited with 0 +++
+3150314 +++ exited with 0 +++
+3150316 +++ exited with 0 +++
+3150317 +++ exited with 0 +++
+3150318 +++ exited with 0 +++
+3150320 +++ exited with 0 +++
+3150319 +++ exited with 0 +++
+3150321 +++ exited with 0 +++
+3150273 +++ exited with 0 +++

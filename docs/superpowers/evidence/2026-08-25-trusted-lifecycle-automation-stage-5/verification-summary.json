@@ -1,0 +1,117 @@
+{
+  "authority": {
+    "app_cutover_performed": false,
+    "merge_performed": false,
+    "production_database_backups": 0,
+    "production_database_migrations": 0,
+    "production_database_preflights": 0,
+    "production_database_reads": 0,
+    "production_database_restores": 0,
+    "production_database_writes": 0,
+    "provider_calls": 0,
+    "push_performed": false,
+    "scope": "offline_fixture_and_scratch_only"
+  },
+  "backend": {
+    "additions": {
+      "failed": 0,
+      "passed": 6,
+      "stream_sha256": "55ae2841dcc1a48e1e1bb033cfd46ae4fd378cee36b7bf5a1763a0c5c0031fa0"
+    },
+    "collection": {
+      "run_1": 4411,
+      "run_2": 4411,
+      "streams_byte_identical": true,
+      "stream_sha256": "59dccc9e9dee5c2da47003b2514caf9e1f0714533720f10ce35a1af463430970"
+    },
+    "focused": {
+      "failed": 0,
+      "passed": 38,
+      "stream_sha256": "3220ece6f3740a5a2e241c8a4e1ec1f154d34fc8db2a234908d0d773e8f10460"
+    },
+    "full_run_1": {
+      "failed": 0,
+      "passed": 4399,
+      "skipped": 12,
+      "warnings": 3
+    },
+    "full_run_2": {
+      "failed": 0,
+      "passed": 4399,
+      "skipped": 12,
+      "warnings": 3
+    }
+  },
+  "browser": {
+    "console_errors": 0,
+    "entries": 4,
+    "external_requests": 0,
+    "matrix_sha256": "13e428845513d033f4cba7c66811801e6d13087e7641eedfce4936d8cd153bc0",
+    "page_errors": 0,
+    "render_acknowledgements": 0,
+    "screenshots": 16,
+    "unique_screenshot_sha256": 16,
+    "viewports": [
+      "1440x900 en",
+      "1440x900 zh-Hant",
+      "390x844 en",
+      "390x844 zh-Hant"
+    ],
+    "visually_inspected": 16,
+    "writes": 0
+  },
+  "frontend": {
+    "build": "passed_with_existing_chunk_size_warning",
+    "focused": {
+      "failed": 0,
+      "files": 3,
+      "passed": 55,
+      "report_sha256": "995f8907d61ab0c46cad1907acf36548124fe1442487c2d76e10eb2e39b43238"
+    },
+    "full": {
+      "failed": 0,
+      "files": 105,
+      "passed": 1228,
+      "report_sha256": "4d3bfdca43b495c0258e39b6d98026da4e5bdad217def98db4d057f102e045ca"
+    },
+    "literal_scanner": {
+      "allowlist_count": 20,
+      "candidate_count": 37,
+      "debt_signature_count": 0,
+      "signature_count": 20
+    },
+    "typecheck": "passed"
+  },
+  "grounded_shadow": {
+    "cases": 4,
+    "historical_a_to_b_examples": 1,
+    "historical_a_to_b_ticker": "HAPN",
+    "ibkr_payload_strength": "synthetic_source_shape",
+    "provider_calls": 0,
+    "real_production_a_to_b_apply_exercised": false,
+    "report_sha256": "f92b9bd29a264da9dc00c7daadb76669e3c03396e77d36904e82faf538408aa3",
+    "sec_payload_strength": "synthetic_source_shape_not_captured_provider_bytes"
+  },
+  "migration_template": {
+    "live_fields": "UNAUTHORIZED_OR_NOT_RUN",
+    "production_paths_read": 0,
+    "status": "PREPARED_OFFLINE_NOT_AUTHORIZED"
+  },
+  "network": {
+    "backend_additions_connect_calls": 0,
+    "backend_additions_external_calls": 0,
+    "grounded_shadow_connect_calls": 0,
+    "grounded_shadow_external_calls": 0,
+    "provider_calls": 0
+  },
+  "product_test_authority": "07b38bbd75147fa65e931e0e35a6da63cd4daf01",
+  "routes": {
+    "lifecycle": 17,
+    "total": 187
+  },
+  "tools": {
+    "anthropic_bridge": 51,
+    "openai_bridge": 51,
+    "registry": 50
+  }
+}
