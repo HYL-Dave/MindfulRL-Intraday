@@ -25,4 +25,11 @@ control overlap, or user-visible closed storage code. All 16 screenshots passed
 dimension and nonblank-pixel checks and were visually inspected. Rendering
 acknowledged zero activity rows.
 
+The live-migration runbook and JSON are unexecuted authorization templates.
+They bind the reviewed product/test, migration, V1/V2 schema, and rollback-code
+authorities; specify the exact four-row legacy mapping; require an old-code boot
+from a restored scratch copy; and state the post-cutover profile-write loss of a
+backup restore. Every live path, digest, quiescence witness, backup, restore,
+approval, and migration result remains `UNAUTHORIZED` or `NOT_RUN`.
+
 `SHA256SUMS` is the final packet manifest and intentionally excludes itself.

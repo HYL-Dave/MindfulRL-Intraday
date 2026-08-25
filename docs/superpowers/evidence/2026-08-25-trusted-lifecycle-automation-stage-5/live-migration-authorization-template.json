@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "status": "PREPARED_OFFLINE_NOT_AUTHORIZED",
+  "scope": "trusted_lifecycle_automation_profile_v1_to_v2",
+  "authority": {
+    "product_test_git_head": "07b38bbd75147fa65e931e0e35a6da63cd4daf01",
+    "packet_git_head": "TO_BE_RECORDED_AFTER_FINAL_OFFLINE_ADMISSION",
+    "migration_module": {
+      "entrypoint": "migrate_automation_profile_schema",
+      "path": "src/security_lifecycle_automation_migration.py",
+      "sha256": "2172c28c4ce3d2fde45d9e2e984d4f39baf12915bfd7142f924761148b499d91"
+    },
+    "profile_schema": {
+      "path": "src/security_lifecycle_schema.py",
+      "sha256": "61e6ddcc692266d677cb6a08d02ddc51a30182949be00a5bc8ab166f5e92a2b6"
+    },
+    "ticker_identity_schema": {
+      "path": "src/ticker_identity_schema.py",
+      "sha256": "008f0f7d7043be3ed73f7c7a4ea60d93156e16e79f54a54e278da13211aed7b7"
+    },
+    "migration_test": {
+      "path": "tests/test_security_lifecycle_automation_migration.py",
+      "sha256": "85cb842eb77c87d476f48264bac97e580c4b618ecf4fcea5153307a39e0ac954"
+    },
+    "design": {
+      "path": "docs/superpowers/specs/2026-08-24-trusted-lifecycle-automation-design.md",
+      "sha256": "298df68ead19a6c83f86e588f0beda698e6f8ddf06bac217d04cccdd1a334ce3",
+      "section": "11. Schema Evolution and Live Cutover"
+    },
+    "rollback_product_git_head": "64af5092dd22523c672b8c42e3b84eaba04bec1f"
+  },
+  "expected_source": {
+    "schema_version": "v1",
+    "accepted_legacy_assessment_count": 4,
+    "stored_tavily_run_count": 0,
+    "retired_web_evidence_count": 0,
+    "integrity": "ok",
+    "foreign_key_violation_count": 0,
+    "unowned_owned_dependency_count": 0
+  },
+  "expected_four_row_mapping": {
+    "assessment_ids": "UNAUTHORIZED_NOT_READ",
+    "source_row_digest": "UNAUTHORIZED_NOT_READ",
+    "cardinality": 4,
+    "for_each_row": {
+      "all_v1_columns": "PRESERVE_EXACTLY",
+      "author": "legacy_review",
+      "status": "accepted",
+      "acceptance_authority": "legacy_migration",
+      "automation_method": null,
+      "automation_run_id": null,
+      "rule_id": null,
+      "rule_version": null,
+      "decision_provenance_sha256": null
+    },
+    "invent_automation_history": false
+  },
+  "expected_other_mapping": {
+    "manual_evidence": {
+      "all_v1_columns": "PRESERVE_EXACTLY",
+      "source_family": "manual",
+      "automation_run_id": null,
+      "source_document_sha256": null,
+      "source_locator_json": null,
+      "evidence_dedupe_key": "legacy-evidence:<evidence_id>"
+    },
+    "attended_transitions": {
+      "all_v1_columns": "PRESERVE_EXACTLY",
+      "approval_authority": "attended_user",
+      "automation_policy_version": null,
+      "rule_id": null,
+      "rule_version": null,
+      "decision_provenance_sha256": "COPY_APPROVED_ASSESSMENT_FINGERPRINT"
+    },
+    "unowned_schema_and_rows": "PRESERVE_EXACTLY"
+  },
+  "live_preflight": {
+    "authorization": "UNAUTHORIZED",
+    "status": "NOT_RUN",
+    "profile_path": "UNAUTHORIZED_NOT_READ",
+    "app_quiesced_witness": "NOT_RUN",
+    "schema_version": "NOT_RUN",
+    "owned_schema_sha256": "NOT_RUN",
+    "owned_rows_sha256": "NOT_RUN",
+    "approval_sha256": "NOT_RUN",
+    "owned_table_counts": "NOT_RUN",
+    "owned_table_row_sha256": "NOT_RUN",
+    "four_row_mapping": "NOT_RUN"
+  },
+  "durable_backup": {
+    "authorization": "UNAUTHORIZED",
+    "status": "NOT_RUN",
+    "backup_path": "NOT_RUN",
+    "backup_sha256": "NOT_RUN",
+    "source_approval_sha256": "NOT_RUN",
+    "source_schema_version": "NOT_RUN",
+    "created_at": "NOT_RUN"
+  },
+  "restore_probe": {
+    "authorization": "UNAUTHORIZED",
+    "status": "NOT_RUN",
+    "target": "EXPLICIT_ABSENT_SCRATCH_PATH_ONLY",
+    "backup_byte_digest_verified": "NOT_RUN",
+    "v1_logical_digest_verified": "NOT_RUN",
+    "old_product_git_head": "64af5092dd22523c672b8c42e3b84eaba04bec1f",
+    "old_profile_verifier": "NOT_RUN",
+    "old_ticker_identity_verifier": "NOT_RUN",
+    "old_lifecycle_read_surface_four_rows": "NOT_RUN",
+    "old_code_boot_with_explicit_scratch_profile_and_market_paths": "NOT_RUN",
+    "schedulers_disabled": "NOT_RUN",
+    "provider_and_network_denied": "NOT_RUN",
+    "production_paths_opened": "NOT_RUN"
+  },
+  "live_migration": {
+    "authorization": "UNAUTHORIZED",
+    "status": "NOT_RUN",
+    "approved_preflight_sha256": "NOT_RUN",
+    "approved_backup_sha256": "NOT_RUN",
+    "locked_digest_revalidation": "NOT_RUN",
+    "source_schema_version": "NOT_RUN",
+    "target_schema_version": "NOT_RUN",
+    "postflight_approval_sha256": "NOT_RUN",
+    "postflight_integrity": "NOT_RUN",
+    "postflight_foreign_key_violation_count": "NOT_RUN"
+  },
+  "cutover": {
+    "merge_authorization": "UNAUTHORIZED",
+    "push_authorization": "UNAUTHORIZED",
+    "app_restart_authorization": "UNAUTHORIZED",
+    "provider_call_authorization": "UNAUTHORIZED",
+    "ordered_steps": [
+      "stop_app_and_scheduler",
+      "approve_fresh_live_preflight",
+      "create_and_probe_durable_backup",
+      "migrate_with_exact_reviewed_authority",
+      "fast_forward_reviewed_product_tree",
+      "run_merged_tree_gates",
+      "start_app"
+    ]
+  },
+  "rollback_warning": {
+    "acknowledgement": "UNAUTHORIZED",
+    "code_only_rollback_supported": false,
+    "required_sequence": [
+      "stop_new_app",
+      "restore_explicitly_authorized_pre_migration_profile_backup",
+      "start_rollback_product_git_head"
+    ],
+    "data_loss_consequence": "Restoring the pre-migration profile backup discards every profile write made after cutover.",
+    "forward_down_conversion_available": false
+  },
+  "operations_performed_while_preparing_template": {
+    "provider_calls": 0,
+    "production_database_reads": 0,
+    "production_database_writes": 0,
+    "production_preflights": 0,
+    "production_backups": 0,
+    "production_restore_probes": 0,
+    "production_migrations": 0,
+    "merges": 0,
+    "pushes": 0
+  }
+}
