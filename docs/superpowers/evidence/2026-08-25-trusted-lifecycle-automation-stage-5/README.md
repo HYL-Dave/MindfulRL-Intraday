@@ -15,4 +15,14 @@ one local `AF_UNIX` socketpair and one `::1` bind. It records no `connect`,
 external endpoint, or provider call. The four-case replay runs only after the
 Python socket API is changed to fail closed.
 
+The browser packet contains four fixture-only entries: English and Traditional
+Chinese at `1440x900` and `390x844`. Each entry captures the activity band,
+grouped source evidence with adjacent labeled translations, extracted facts and
+review state, and transition/reversal state. The harness intercepted every API
+request, issued zero writes, aborted every non-loopback request, and observed no
+external request, console error, page error, horizontal overflow, incoherent
+control overlap, or user-visible closed storage code. All 16 screenshots passed
+dimension and nonblank-pixel checks and were visually inspected. Rendering
+acknowledged zero activity rows.
+
 `SHA256SUMS` is the final packet manifest and intentionally excludes itself.
