@@ -1,76 +1,100 @@
-# Lifecycle Honesty Repair Offline Admission
+# Lifecycle Honesty Repair Final Fix Admission
 
-This self-hashed packet admits the repaired lifecycle seams for independent
-review entirely offline. It grants no live authority.
+This self-hashed packet admits product/test authority
+`51b97b8e4f8d6f33aff495adc3423529b210a9d3` entirely offline. It replaces,
+and does not extend, the packet previously sealed at `7e218783`.
 
 ## Authority
 
 - Product base: `11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb`
-- Product/test authority: `b05ea4a2abe2fc2e1fbebd845de624804f46f3d1`
-- Topology: 12 linear commits and zero merge commits from product base to
+- Product/test authority: `51b97b8e4f8d6f33aff495adc3423529b210a9d3`
+- Topology: 14 linear commits and zero merge commits from product base to
   product/test authority
 - Policy: `trusted-lifecycle-automation-v3`
 - Shared SEC rule version: `3`
 - Deadline-only SEC rule version: `4`
-- Browser app: transient isolated-worktree Vite fixture server on
-  `127.0.0.1:4206`, stopped after the matrix
+- Browser app: transient loopback Vite fixture server at `127.0.0.1:4206`,
+  stopped immediately after capture
 - Browser API: fixture responses intercepted at the page boundary; no
   production backend was started
 
-`offline-authority.json` was generated twice with byte-identical output from
-temporary SQLite files. It contains the exact zero-live authority block from
-the reviewed Task 6 contract.
+`commands.txt` is directly replayable with Bash from any repository directory.
+It backgrounds and cleans up the loopback server and runs npm commands through
+`--prefix`, so no manual directory or process step is required.
+
+## Repaired Seams
+
+The admitted product and test range owns all final-review findings:
+
+- latest unambiguous market receipt selection while retaining old receipts;
+- valid conflict authority and Needs-attention precedence;
+- durable terminal decision recovery across assessment, acceptance, proposal,
+  and approval boundaries;
+- current observation/evidence/provenance projection for terminal artifacts;
+- immutable initial and bounded latest-attempt execution revision identity;
+- deadline-only final market acquisition and schedule capping;
+- newest-only frontend queue response commits;
+- stale-policy daily transition revalidation;
+- distinct IBKR missing-receipt and ambiguity source states; and
+- typed frontend fixtures plus replayable packet commands.
+
+Terminal recovery stores a bounded decision and provenance in the existing
+`query_context_json`. It creates no table, column, index, migration, or startup
+DDL. Later sequential worker ticks replay only finalization and do not reacquire
+providers. Durable assessment, proposal, and transition records are reused
+idempotently; profile mutation remains zero before transition application.
 
 ## Mutation Admission
 
-All 16 specified mutations were applied independently. Every mutation was
+All 28 mutations were applied and restored independently. Every mutation was
 killed by its exact expected owner node, unexpected owner drift is empty, and
-every touched product file was restored byte-identically before the next
-mutation. `mutation-ledger.json` records expected and actual failure counts,
-owner node IDs, output tails, and before/after SHA-256 values.
+every touched product file was restored byte-identically. The added mutations
+cover latest-market selection, conflict routing and projection, terminal
+recovery reservation, run and transition current-artifact binding,
+latest-attempt replay eligibility, both deadline-only seams, newest-response
+frontend commits, stale approval timing, and IBKR source-state semantics.
 
 ## Scratch Authority
 
-The scratch capture proves:
+Two temporary-SQLite captures were byte-identical. They prove:
 
-- one legacy failed row has no execution revision;
-- one r1 replay occurs under unchanged semantic policy v3;
-- the predecessor's canonical bytes are identical before and after replay;
-- the successful replacement prevents r2 fan-out;
-- r0 and r1 decision provenance are equal;
+- legacy failed-run replay remains bounded by execution revision;
+- decision provenance remains equal across r0 and r1;
+- `r0 blocked -> r1 retry fails -> r1 no replay` uses one row;
+- initial `execution_revision` remains r0 while
+  `latest_attempt_execution_revision` becomes r1;
 - valid pre-deadline and final citations cross the producer/kernel boundary;
 - a forged citation rolls back with zero evidence, fact, or blocker rows;
 - source deadline `2026-04-01` remains distinct from completed check
   `2026-08-27`;
-- final projection is `not_confirmed_yet + history +
-  disposition_as_of=2026-08-27`; and
+- final projection remains truthful dated History; and
 - transition preview, approval, apply, reverse, and acknowledgement calls are
-  all zero.
+  all zero in the scratch authority capture.
 
 ## Fresh Gates
 
-Focused backend collection was performed twice. The persisted node-only files
-contain 192 identical node IDs; only pytest's nondeterministic collection-time
-summary line was removed before the byte comparison.
+Focused node collection was performed twice and produced 205 byte-identical
+node IDs.
 
 ```text
-focused A: 192 passed in 11.32s
-focused B: 192 passed in 11.48s
-full backend A: 4510 passed, 12 skipped, 3 warnings in 242.55s
-full backend B: 4510 passed, 12 skipped, 3 warnings in 242.93s
-frontend: 106 files / 1241 passed
+focused A: 205 passed in 12.15s
+focused B: 205 passed in 12.20s
+full backend A: 4523 passed, 12 skipped, 3 warnings in 244.61s
+full backend B: 4523 passed, 12 skipped, 3 warnings in 244.22s
+frontend: 106 files / 1242 passed
 typecheck: passed
 visible i18n literal scanner: passed; debtSignatureCount=0
 production build: passed; 2193 modules
 ```
 
-The three backend warnings are the existing `edgar` v6 deprecation notices.
-The existing frontend large-chunk build warning remains non-blocking.
+The three backend warnings are existing EDGAR v6 deprecation notices. The
+frontend build retains the existing non-blocking warning for a chunk larger
+than 500 kB after minification.
 
 ## Schema And Protected Authority
 
-Fresh in-memory schema captures from the local product-base archive and repaired
-head prove:
+Fresh in-memory schema captures from a local product-base archive and the
+product/test authority prove:
 
 ```text
 owned sqlite_master diff = empty
@@ -86,14 +110,15 @@ SEC shared _RULE_VERSION = 3
 deadline-only rule version = 4
 ```
 
-No existing database file was read. The capture creates clean in-memory schema
-instances only.
+`security_lifecycle_decision_policy.py` differs from the product base only as
+expected for latest-current-market selection; its policy version is unchanged
+and mutation/test authority owns the new behavior. No existing database file
+was read. Schema captures instantiate clean in-memory databases only.
 
 ## Browser Matrix
 
-The offline fixture matrix covers six scenarios, including final-unconfirmed
-History, in English and Traditional Chinese at `1440x900` and `390x844`.
-Across 24 entries it records:
+The rebuilt offline fixture matrix covers six scenarios in English and
+Traditional Chinese at `1440x900` and `390x844`. Across all 24 entries:
 
 ```text
 external requests = 0
@@ -105,25 +130,21 @@ visible-control overlaps = 0
 clipped visible text = 0
 ```
 
-Every entry has a nonblank screenshot. The final-unconfirmed row and drawer
-contain the exact reviewed bilingual dated copy and do not contain the locale's
-confirmed-complete label. Representative desktop/mobile images in both locales
-were visually inspected. Two packet-runner development attempts failed before
-authority completion; the final run deleted the partial screenshot directory
-and rebuilt all 24 entries from scratch.
+Every screenshot is nonblank. The final-unconfirmed row and drawer contain the
+exact bilingual dated copy and exclude confirmed-complete language.
 
-## Limitations And Authorization Boundary
+## Limitations And Hard Stops
 
-- no provider call or production scheduler replay was performed;
-- operator-triggered replay remains unimplemented;
-- broader legal-language extraction remains precision-first and intentionally
-  incomplete;
-- no production migration is needed because schema authority is unchanged; and
-- App restart, merge, push, and the Priority Map GREEN entry remain separate
-  authorization events.
-
-The original untyped legacy `CASES` fixture minor that omits
-`disposition_as_of` remains deferred and is not part of Task 6.
+- No provider call or production scheduler replay was performed.
+- Persistence recovery was exercised with local temporary SQLite and later
+  sequential worker ticks; concurrent multi-worker fault injection is outside
+  this packet.
+- The browser matrix uses fixture interception; out-of-order queue sequencing
+  is owned by the focused Vitest interface test.
+- Broader legal-language extraction remains intentionally precision-first.
+- No production migration is needed because schema authority is unchanged.
+- No production database operation, production App restart, merge, or push was
+  performed.
 
 `SHA256SUMS` covers every packet payload except itself. Its own digest is
-reported separately in the Task 6 report and closeout.
+reported separately in the final fix report.

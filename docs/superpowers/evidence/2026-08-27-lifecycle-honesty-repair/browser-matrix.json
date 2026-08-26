@@ -82,7 +82,7 @@
       "request_count": 22,
       "scenario": "pending-frozen",
       "screenshot": "browser/1440x900-en-pending-frozen.png",
-      "screenshot_sha256": "5b3be4cdb7e2152864ac56472948d99991ac8f9663f2e0a660adc4c4c6819c6b",
+      "screenshot_sha256": "5a6326b55237e6a10e726bae5a3cc49c3b2b930b33107637a30e38fc274be445",
       "viewport": [
         1440,
         900

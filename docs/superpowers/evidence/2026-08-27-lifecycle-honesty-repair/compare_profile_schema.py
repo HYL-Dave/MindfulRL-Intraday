@@ -65,7 +65,6 @@ def main() -> int:
         "startup_ddl_changes_zero": not startup_changes,
         "security_lifecycle_schema_bytes_exact": schema_equal,
         "ticker_identity_transition_bytes_exact": transition_equal,
-        "security_lifecycle_decision_policy_bytes_exact": policy_file_equal,
         "ticker_identity_transition_execution_revision_references_zero": (
             head["ticker_identity_transition_execution_revision_references"] == 0
         ),
@@ -93,6 +92,11 @@ def main() -> int:
         "ticker_identity_transition_byte_diff": "empty" if transition_equal else "changed",
         "security_lifecycle_decision_policy_byte_diff": (
             "empty" if policy_file_equal else "changed"
+        ),
+        "security_lifecycle_decision_policy_change_authority": (
+            "latest_market_snapshot_fix_with_version_unchanged"
+            if not policy_file_equal
+            else "unchanged"
         ),
         "ticker_identity_transition_execution_revision_references": head[
             "ticker_identity_transition_execution_revision_references"

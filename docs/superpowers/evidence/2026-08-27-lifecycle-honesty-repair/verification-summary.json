@@ -14,11 +14,11 @@
   },
   "backend": {
     "focused_collection_byte_identical": true,
-    "focused_collection_node_count": 192,
-    "focused_pass_a": "192 passed in 11.32s",
-    "focused_pass_b": "192 passed in 11.48s",
-    "full_pass_a": "4510 passed, 12 skipped, 3 warnings in 242.55s",
-    "full_pass_b": "4510 passed, 12 skipped, 3 warnings in 242.93s"
+    "focused_collection_node_count": 205,
+    "focused_pass_a": "205 passed in 12.15s",
+    "focused_pass_b": "205 passed in 12.20s",
+    "full_pass_a": "4523 passed, 12 skipped, 3 warnings in 244.61s (0:04:04)",
+    "full_pass_b": "4523 passed, 12 skipped, 3 warnings in 244.22s (0:04:04)"
   },
   "browser_matrix": {
     "clipped_text_count": 0,
@@ -35,34 +35,39 @@
     "build": "passed; 2193 modules",
     "i18n_literal_gate": "passed; debtSignatureCount=0",
     "test_files": 106,
-    "tests_passed": 1241,
+    "tests_passed": 1242,
     "typecheck": "passed"
   },
   "limitations": [
     "no provider call or production scheduler replay was performed",
-    "operator-triggered replay remains unimplemented",
+    "all persistence recovery tests use local temporary SQLite and later sequential worker ticks",
+    "the browser matrix uses fixture interception; out-of-order queue sequencing is owned by Vitest",
     "broader legal-language extraction remains precision-first and intentionally incomplete",
     "no production migration is needed because schema authority is unchanged",
-    "App restart, merge, push, and the Priority Map GREEN entry remain separate authorization events",
-    "the untyped legacy CASES fixture omitting disposition_as_of remains deferred"
+    "App restart, merge, push, and production database operations remain prohibited"
   ],
   "mutation_ledger": {
     "all_mutations_killed": true,
     "all_product_files_restored_byte_identically": true,
-    "killed_count": 16,
-    "mutation_count": 16,
+    "killed_count": 28,
+    "mutation_count": 28,
     "unexpected_owner_drift": []
   },
   "offline_authority": {
     "byte_identical_across_two_captures": true,
+    "cross_revision_due_blocked_retry": {
+      "initial_execution_revision": "trusted-lifecycle-execution-r0",
+      "latest_attempt_execution_revision": "trusted-lifecycle-execution-r1",
+      "ordinary_retry_reused_run": true,
+      "run_count": 1,
+      "same_revision_replay": false
+    },
     "decision_provenance_equal_across_r0_r1": true,
     "forged_citation_rollback_rows": {
       "blockers": 0,
       "evidence": 0,
       "facts": 0
     },
-    "legacy_execution_revision_present": false,
-    "r2_fanout_after_success": false,
     "transition_and_acknowledgement_calls": 0
   },
   "packet": {
@@ -71,11 +76,12 @@
     "sha256sum_check": "passed"
   },
   "product_base": "11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb",
-  "product_test_authority": "b05ea4a2abe2fc2e1fbebd845de624804f46f3d1",
+  "product_test_authority": "51b97b8e4f8d6f33aff495adc3423529b210a9d3",
   "schema_and_protected_authority": {
     "all_checks_passed": true,
     "automation_policy_version": "trusted-lifecycle-automation-v3",
     "deadline_only_rule_version": "4",
+    "decision_policy_change_authority": "latest_market_snapshot_fix_with_version_unchanged",
     "index_sql_diff": "empty",
     "new_mutable_disposition_column_count": 0,
     "owned_sqlite_master_diff": "empty",
@@ -83,8 +89,7 @@
     "security_lifecycle_schema_byte_diff": "empty",
     "shared_sec_rule_version": "3",
     "startup_ddl_changes": 0,
-    "ticker_identity_transition_byte_diff": "empty",
-    "ticker_identity_transition_execution_revision_references": 0
+    "ticker_identity_transition_byte_diff": "empty"
   },
-  "schema_version": 1
+  "schema_version": 2
 }

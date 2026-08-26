@@ -31,6 +31,8 @@ class Mutation:
 
 
 KERNEL = "src/security_lifecycle_fact_kernel.py"
+WORKER = "src/security_lifecycle_automation_worker.py"
+DECISION = "src/security_lifecycle_decision_policy.py"
 SEC = "src/security_lifecycle_sec_evidence.py"
 SCHEDULER = "src/service/security_lifecycle_automation_scheduler.py"
 DISPOSITION = "src/security_lifecycle_disposition.py"
@@ -372,6 +374,269 @@ MUTATIONS = (
             "-q",
             "tests/test_security_lifecycle_sec_evidence.py::"
             "test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation",
+        ),
+    ),
+    Mutation(
+        "M17",
+        "retain every historical market snapshot in current decision quality",
+        DECISION,
+        "    if len(market) <= 1:\n"
+        "        return evidence, facts\n",
+        "    if len(market) >= 1:\n"
+        "        return evidence, facts\n",
+        (
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_market_recheck_uses_latest_snapshot_and_converges_from_frozen_to_fresh",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_market_recheck_uses_latest_snapshot_and_converges_from_frozen_to_fresh",
+        ),
+    ),
+    Mutation(
+        "M18",
+        "skip decision authority whenever a source conflict blocker is present",
+        WORKER,
+        '                if not blockers or "source_conflict" in blocker_codes:\n',
+        "                if not blockers:\n",
+        (
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_source_conflict_crosses_worker_kernel_and_attention_projection[conflict_only]",
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_source_conflict_crosses_worker_kernel_and_attention_projection[conflict_plus_pending]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_source_conflict_crosses_worker_kernel_and_attention_projection",
+        ),
+    ),
+    Mutation(
+        "M19",
+        "skip succeeded runs whose terminal finalization marker is pending",
+        KERNEL,
+        '                if row["status"] == "succeeded" and _terminal_finalization_pending(\n'
+        "                    context\n"
+        "                ):\n",
+        '                if False and row["status"] == "succeeded" and _terminal_finalization_pending(\n'
+        "                    context\n"
+        "                ):\n",
+        (
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_approval_boundary_recovery_deduplicates_real_transition_and_mutates_no_profile",
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_terminal_finalization_recovers_idempotently_after_each_boundary[acceptance]",
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_terminal_finalization_recovers_idempotently_after_each_boundary[approval]",
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_terminal_finalization_recovers_idempotently_after_each_boundary[assessment]",
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_terminal_finalization_recovers_idempotently_after_each_boundary[proposal]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_worker.py",
+            "-k",
+            "terminal_finalization_recovers_idempotently_after_each_boundary or "
+            "approval_boundary_recovery_deduplicates_real_transition_and_mutates_no_profile",
+        ),
+    ),
+    Mutation(
+        "M20",
+        "project the newest historical run without current observation binding",
+        DISPOSITION,
+        "    return next((run for run in runs if _artifact_is_current(case, run)), None)\n",
+        "    return runs[0] if runs else None\n",
+        (
+            "tests/test_security_lifecycle_tools.py::"
+            "test_new_observation_keeps_old_terminal_run_and_transition_as_activity_only",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_tools.py::"
+            "test_new_observation_keeps_old_terminal_run_and_transition_as_activity_only",
+        ),
+    ),
+    Mutation(
+        "M21",
+        "project a settled transition without current artifact binding",
+        DISPOSITION,
+        "    if transition is not None and not _artifact_is_current(\n"
+        "        case,\n"
+        "        transition,\n"
+        "        assessment,\n"
+        "    ):\n",
+        "    if False and transition is not None and not _artifact_is_current(\n"
+        "        case,\n"
+        "        transition,\n"
+        "        assessment,\n"
+        "    ):\n",
+        (
+            "tests/test_security_lifecycle_tools.py::"
+            "test_new_observation_keeps_old_terminal_run_and_transition_as_activity_only",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_tools.py::"
+            "test_new_observation_keeps_old_terminal_run_and_transition_as_activity_only",
+        ),
+    ),
+    Mutation(
+        "M22",
+        "use immutable initial execution revision for failed replay eligibility",
+        KERNEL,
+        "                existing_revision = str(\n"
+        "                    context.get(\n"
+        "                        _LATEST_ATTEMPT_REVISION_KEY,\n"
+        '                        context.get("execution_revision", "unknown"),\n'
+        "                    )\n"
+        "                )\n",
+        "                existing_revision = str(\n"
+        '                    context.get("execution_revision", "unknown")\n'
+        "                )\n",
+        (
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_cross_revision_due_blocked_failure_does_not_replay_same_attempt_revision",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_cross_revision_due_blocked_failure_does_not_replay_same_attempt_revision",
+        ),
+    ),
+    Mutation(
+        "M23",
+        "omit deadline-only market acquisition eligibility",
+        SCHEDULER,
+        "            or deadline_due\n",
+        "            or False\n",
+        (
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_deadline_without_effective_date_caps_schedule_and_triggers_final_market_check",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_deadline_without_effective_date_caps_schedule_and_triggers_final_market_check",
+        ),
+    ),
+    Mutation(
+        "M24",
+        "allow pre-deadline monitoring to schedule after the deadline",
+        SCHEDULER,
+        "        next_check = min(next_check, deadline_check)\n",
+        "        next_check = max(next_check, deadline_check)\n",
+        (
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_deadline_without_effective_date_caps_schedule_and_triggers_final_market_check",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_deadline_without_effective_date_caps_schedule_and_triggers_final_market_check",
+        ),
+    ),
+    Mutation(
+        "M25",
+        "allow an older queue success response to commit after a newer response",
+        VIEW,
+        "      const response = await listSecurityLifecycleCases(requestFilters);\n"
+        "      if (requestId !== caseRequestRef.current) return;\n"
+        "      setCases(response.cases);\n",
+        "      const response = await listSecurityLifecycleCases(requestFilters);\n"
+        "      setCases(response.cases);\n",
+        (
+            "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::"
+            "Lifecycle workflow::commits only the newest queue response when requests "
+            "resolve out of order",
+        ),
+        (
+            "npm",
+            "test",
+            "--",
+            "src/lifecycle/LifecycleView.test.tsx",
+            "-t",
+            "commits only the newest queue response when requests resolve out of order",
+            "--reporter=json",
+        ),
+        cwd="apps/arkscope-web",
+        runner="vitest",
+    ),
+    Mutation(
+        "M26",
+        "let approved execute_on mask stale-policy daily revalidation",
+        DISPOSITION,
+        "                if not _automation_transition_is_stale(transition):\n"
+        "                    return transition_execute_at\n",
+        "                if True:\n"
+        "                    return transition_execute_at\n",
+        (
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_stale_automation_transition_rechecks_before_later_execute_on",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_stale_automation_transition_rechecks_before_later_execute_on",
+        ),
+    ),
+    Mutation(
+        "M27",
+        "classify a typed IBKR missing receipt as provider unavailability",
+        DISPOSITION,
+        '    "ibkr_gateway_unavailable": "market_infrastructure",\n'
+        '    "ibkr_entitlement_denied": "market_infrastructure",\n',
+        '    "ibkr_gateway_unavailable": "market_infrastructure",\n'
+        '    "ibkr_contract_missing": "market_infrastructure",\n'
+        '    "ibkr_entitlement_denied": "market_infrastructure",\n',
+        (
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_ibkr_missing_is_present_evidence_while_ambiguity_is_conflict",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_ibkr_missing_is_present_evidence_while_ambiguity_is_conflict",
+        ),
+    ),
+    Mutation(
+        "M28",
+        "allow pending monitoring to mask source-conflict attention",
+        DISPOSITION,
+        '    elif "source_conflict" in blocker_codes:\n'
+        "        disposition, bucket, reason = (\n"
+        '            "exception_required",\n'
+        '            "attention",\n'
+        '            "source_conflict",\n'
+        "        )\n",
+        '    elif False and "source_conflict" in blocker_codes:\n'
+        "        disposition, bucket, reason = (\n"
+        '            "exception_required",\n'
+        '            "attention",\n'
+        '            "source_conflict",\n'
+        "        )\n",
+        (
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_source_conflict_crosses_worker_kernel_and_attention_projection[conflict_only]",
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_source_conflict_crosses_worker_kernel_and_attention_projection[conflict_plus_pending]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_source_conflict_crosses_worker_kernel_and_attention_projection",
         ),
     ),
 )

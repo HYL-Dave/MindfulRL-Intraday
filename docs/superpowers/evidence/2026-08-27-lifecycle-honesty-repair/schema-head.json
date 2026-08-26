@@ -1755,12 +1755,12 @@
     ]
   },
   "protected_file_sha256": {
-    "src/security_lifecycle_decision_policy.py": "47e0115fa84e4e92e3f56b4e29c769a1aa2193aca8c7798a30145f1c23322961",
+    "src/security_lifecycle_decision_policy.py": "4ad8c704ea0a2b067c2d578bfd1e271a96371ef9bf8ec6913f1e67af4fced354",
     "src/security_lifecycle_schema.py": "80b42fad0b56814ce64f2550edd3592c3ce47b43398a23d45c043a57c2b5d1b0",
     "src/ticker_identity_schema.py": "008f0f7d7043be3ed73f7c7a4ea60d93156e16e79f54a54e278da13211aed7b7",
     "src/ticker_identity_transition.py": "25da8a622ef66b6dd793bb88766417921bbe2205319ed3914b51e84e4df302e3"
   },
-  "revision": "b05ea4a2abe2fc2e1fbebd845de624804f46f3d1",
+  "revision": "51b97b8e4f8d6f33aff495adc3423529b210a9d3",
   "schema_version": 1,
   "sqlite_master_owned": [
     {

@@ -29,6 +29,7 @@ AUTHORITY = {
     "merges": 0,
     "pushes": 0,
 }
+PRODUCT_TEST_AUTHORITY = "51b97b8e4f8d6f33aff495adc3423529b210a9d3"
 
 
 def _canonical(value: object) -> str:
@@ -214,6 +215,76 @@ def _successful_provenance(path: Path, revision: str) -> dict:
         connection.close()
 
 
+def _cross_revision_due_blocked_retry(path: Path) -> dict:
+    from src.security_lifecycle_fact_kernel import AutomationBlocker
+
+    connection, store, kernel, case_id = _scratch(path)
+    try:
+        initial = _reserve(
+            kernel,
+            case_id,
+            revision="trusted-lifecycle-execution-r0",
+            at="2026-08-25T00:00:00Z",
+        )
+        kernel.complete_run(
+            run_id=initial.run_id,
+            evidence=(),
+            facts=(),
+            blockers=(
+                AutomationBlocker(
+                    code="sec_transport_unavailable",
+                    retryable=True,
+                    context={"attempts": 1},
+                ),
+            ),
+            decision_tier=None,
+            action_readiness=None,
+            retry_at="2026-08-26T00:00:00Z",
+            diagnostics={"sec_attempts": 1},
+            at="2026-08-25T01:00:00Z",
+        )
+        retry = _reserve(
+            kernel,
+            case_id,
+            revision="trusted-lifecycle-execution-r1",
+            at="2026-08-26T00:00:00Z",
+        )
+        retry_context = json.loads(
+            store.get_automation_run(retry.run_id)["query_context_json"]
+        )
+        kernel.fail_run(
+            run_id=retry.run_id,
+            failure_code="persistence_failed",
+            diagnostics={"persist_failures": 1},
+            at="2026-08-26T01:00:00Z",
+        )
+        repeated = _reserve(
+            kernel,
+            case_id,
+            revision="trusted-lifecycle-execution-r1",
+            at="2026-08-27T00:00:00Z",
+        )
+        report = {
+            "initial_execution_revision": retry_context["execution_revision"],
+            "latest_attempt_execution_revision": retry_context[
+                "latest_attempt_execution_revision"
+            ],
+            "ordinary_retry_reused_run": retry.run_id == initial.run_id,
+            "same_revision_replay": repeated.should_execute,
+            "run_count": len(store.list_automation_runs(case_id)),
+        }
+        assert report == {
+            "initial_execution_revision": "trusted-lifecycle-execution-r0",
+            "latest_attempt_execution_revision": "trusted-lifecycle-execution-r1",
+            "ordinary_retry_reused_run": True,
+            "same_revision_replay": False,
+            "run_count": 1,
+        }
+        return report
+    finally:
+        connection.close()
+
+
 def _deadline_owner(*, deadline: str, at: str):
     from src.security_lifecycle_sec_evidence import SecSourceDeadline
     from src.service import security_lifecycle_automation_scheduler as scheduler
@@ -367,6 +438,9 @@ def main() -> None:
     with TemporaryDirectory(prefix="arkscope-honesty-authority-") as temp:
         root = Path(temp)
         replay = _capture_replay(root / "replay.sqlite")
+        due_retry = _cross_revision_due_blocked_retry(
+            root / "cross-revision-due-retry.sqlite"
+        )
         r0 = _successful_provenance(root / "provenance-r0.sqlite", "trusted-lifecycle-execution-r0")
         r1 = _successful_provenance(root / "provenance-r1.sqlite", "trusted-lifecycle-execution-r1")
         pre_deadline, _ = _persist_deadline(
@@ -407,9 +481,11 @@ def main() -> None:
         }
         payload = {
             "schema_version": 1,
+            "product_test_authority": PRODUCT_TEST_AUTHORITY,
             "authority": AUTHORITY,
             "scratch_database_kind": "temporary_sqlite_only",
             "legacy_failed_replay": replay,
+            "cross_revision_due_blocked_retry": due_retry,
             "decision_provenance": provenance,
             "producer_to_kernel_citations": {
                 "pre_deadline": pre_deadline,

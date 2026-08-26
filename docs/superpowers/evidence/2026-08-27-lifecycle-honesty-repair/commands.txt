@@ -1,65 +1,148 @@
-# Resumed Task 6 authority at b05ea4a2abe2fc2e1fbebd845de624804f46f3d1
-# No provider/network call, production database operation, production App
-# restart, merge, or push was performed.
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Discard aborted generated packet artifacts; helper source was retained.
-find docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair -mindepth 1 -maxdepth 1 ! -name '*.py' -exec rm -rf -- {} +
-find docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair -type d -name '__pycache__' -prune -exec rm -rf -- {} +
+# Replayable offline packet build for product/test authority 51b97b8e.
+# This script performs no provider call, production database operation,
+# production App restart, merge, or push.
 
-# 16 independent mutations, exact owner comparison, byte-identical restores.
-python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/run_mutations.py --output docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/mutation-ledger.json
+ROOT="$(git rev-parse --show-toplevel)"
+PACKET="$ROOT/docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair"
+PRODUCT_BASE="11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb"
+PRODUCT_AUTHORITY="51b97b8e4f8d6f33aff495adc3423529b210a9d3"
+APP_URL="http://127.0.0.1:4206/"
+BASE_TREE="$(mktemp -d /tmp/arkscope-honesty-base.XXXXXX)"
+SERVER_LOG="$(mktemp /tmp/arkscope-honesty-vite.XXXXXX.log)"
+SERVER_PID=""
 
-# Temporary-SQLite authority, run twice and compared byte-for-byte.
-python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/capture_offline_authority.py --output /tmp/arkscope-honesty-offline-authority-resumed-a.json
-python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/capture_offline_authority.py --output docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/offline-authority.json
-cmp /tmp/arkscope-honesty-offline-authority-resumed-a.json docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/offline-authority.json
+cleanup() {
+  if [[ -n "$SERVER_PID" ]] && kill -0 "$SERVER_PID" 2>/dev/null; then
+    kill "$SERVER_PID"
+    wait "$SERVER_PID" || true
+  fi
+  rm -rf "$BASE_TREE"
+  rm -f "$SERVER_LOG"
+}
+trap cleanup EXIT
 
-# Focused node collection twice. The timing-only summary is excluded so the
-# persisted files contain node IDs only and can be compared byte-for-byte.
-pytest --collect-only -q tests/test_security_lifecycle_fact_kernel.py tests/test_security_lifecycle_sec_evidence.py tests/test_security_lifecycle_automation_scheduler.py tests/test_security_lifecycle_automation_worker.py tests/test_security_lifecycle_disposition.py tests/test_security_lifecycle_tools.py tests/test_security_lifecycle_routes.py tests/test_ticker_identity_transition.py | sed -E '/^[0-9]+ tests collected in [0-9.]+s$/d' > docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-focused-a.nodes
-pytest --collect-only -q tests/test_security_lifecycle_fact_kernel.py tests/test_security_lifecycle_sec_evidence.py tests/test_security_lifecycle_automation_scheduler.py tests/test_security_lifecycle_automation_worker.py tests/test_security_lifecycle_disposition.py tests/test_security_lifecycle_tools.py tests/test_security_lifecycle_routes.py tests/test_ticker_identity_transition.py | sed -E '/^[0-9]+ tests collected in [0-9.]+s$/d' > docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-focused-b.nodes
-cmp docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-focused-a.nodes docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-focused-b.nodes
-test "$(rg -c '^tests/' docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-focused-a.nodes)" = "192"
+cd "$ROOT"
+rm -rf \
+  "$PACKET/browser" \
+  "$PACKET/SHA256SUMS" \
+  "$PACKET/backend-focused-a.nodes" \
+  "$PACKET/backend-focused-b.nodes" \
+  "$PACKET/backend-focused-a.txt" \
+  "$PACKET/backend-focused-b.txt" \
+  "$PACKET/backend-full-a.txt" \
+  "$PACKET/backend-full-b.txt" \
+  "$PACKET/browser-matrix.json" \
+  "$PACKET/frontend-build.txt" \
+  "$PACKET/frontend-full.txt" \
+  "$PACKET/frontend-i18n-literals.txt" \
+  "$PACKET/frontend-typecheck.txt" \
+  "$PACKET/mutation-ledger.json" \
+  "$PACKET/offline-authority.json" \
+  "$PACKET/schema-base.json" \
+  "$PACKET/schema-comparison.json" \
+  "$PACKET/schema-head.json" \
+  "$PACKET/verification-summary.json"
+find "$PACKET" -type d -name __pycache__ -prune -exec rm -rf -- {} +
 
-# Focused backend gates with isolated basetemp roots.
-pytest --basetemp=/tmp/arkscope-honesty-focused-a tests/test_security_lifecycle_fact_kernel.py tests/test_security_lifecycle_sec_evidence.py tests/test_security_lifecycle_automation_scheduler.py tests/test_security_lifecycle_automation_worker.py tests/test_security_lifecycle_disposition.py tests/test_security_lifecycle_tools.py tests/test_security_lifecycle_routes.py tests/test_ticker_identity_transition.py -q
-pytest --basetemp=/tmp/arkscope-honesty-focused-b tests/test_security_lifecycle_fact_kernel.py tests/test_security_lifecycle_sec_evidence.py tests/test_security_lifecycle_automation_scheduler.py tests/test_security_lifecycle_automation_worker.py tests/test_security_lifecycle_disposition.py tests/test_security_lifecycle_tools.py tests/test_security_lifecycle_routes.py tests/test_ticker_identity_transition.py -q
+# Apply and restore every mutation independently.
+python "$PACKET/run_mutations.py" --output "$PACKET/mutation-ledger.json"
 
-# Complete backend gates with isolated basetemp roots and packet logs.
-set -o pipefail
-pytest --basetemp=/tmp/arkscope-honesty-full-a -q | tee docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-full-a.txt
-pytest --basetemp=/tmp/arkscope-honesty-full-b -q | tee docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-full-b.txt
+# Generate temporary-SQLite authority twice and compare exact bytes.
+python "$PACKET/capture_offline_authority.py" \
+  --output /tmp/arkscope-honesty-offline-authority-a.json
+python "$PACKET/capture_offline_authority.py" \
+  --output "$PACKET/offline-authority.json"
+cmp /tmp/arkscope-honesty-offline-authority-a.json "$PACKET/offline-authority.json"
+rm -f /tmp/arkscope-honesty-offline-authority-a.json
 
-# Complete frontend gates from apps/arkscope-web.
-set -o pipefail
-npm test | tee ../../docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/frontend-full.txt
-npm run typecheck | tee ../../docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/frontend-typecheck.txt
-npm run check:i18n-literals | tee ../../docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/frontend-i18n-literals.txt
-npm run build | tee ../../docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/frontend-build.txt
+FOCUSED_TESTS=(
+  tests/test_security_lifecycle_fact_kernel.py
+  tests/test_security_lifecycle_sec_evidence.py
+  tests/test_security_lifecycle_automation_scheduler.py
+  tests/test_security_lifecycle_automation_worker.py
+  tests/test_security_lifecycle_disposition.py
+  tests/test_security_lifecycle_tools.py
+  tests/test_security_lifecycle_routes.py
+  tests/test_ticker_identity_transition.py
+)
 
-# Fresh local product-base archive and exact in-memory schema comparison.
-mkdir /tmp/arkscope-honesty-base-11e7a5d4-resumed
-git archive 11e7a5d4 src | tar -x -C /tmp/arkscope-honesty-base-11e7a5d4-resumed
-python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/capture_profile_schema.py --repo /tmp/arkscope-honesty-base-11e7a5d4-resumed --revision 11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb --output docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/schema-base.json
-python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/capture_profile_schema.py --repo . --revision b05ea4a2abe2fc2e1fbebd845de624804f46f3d1 --output docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/schema-head.json
-python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/compare_profile_schema.py --base docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/schema-base.json --head docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/schema-head.json --output docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/schema-comparison.json
+# Collect the focused node set twice, excluding only pytest's timing summary.
+pytest --collect-only -q "${FOCUSED_TESTS[@]}" \
+  | sed -E '/^[0-9]+ tests collected in [0-9.]+s$/d' \
+  > "$PACKET/backend-focused-a.nodes"
+pytest --collect-only -q "${FOCUSED_TESTS[@]}" \
+  | sed -E '/^[0-9]+ tests collected in [0-9.]+s$/d' \
+  > "$PACKET/backend-focused-b.nodes"
+cmp "$PACKET/backend-focused-a.nodes" "$PACKET/backend-focused-b.nodes"
 
-# Transient loopback fixture server only; stopped immediately after the matrix.
-cd apps/arkscope-web
-npm run dev -- --host 127.0.0.1 --port 4206 --strictPort
-cd ../..
-ARKSCOPE_HONESTY_APP_URL=http://127.0.0.1:4206/ python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/run_browser_matrix.py
-# The first two packet-runner development invocations failed before complete
-# authority. Every invocation removes browser/ first; the final invocation
-# completed all 24 entries and is the only retained matrix authority.
+# Run focused and complete backend gates twice with isolated temp roots.
+pytest --basetemp=/tmp/arkscope-honesty-focused-a "${FOCUSED_TESTS[@]}" -q \
+  2>&1 | tee "$PACKET/backend-focused-a.txt"
+pytest --basetemp=/tmp/arkscope-honesty-focused-b "${FOCUSED_TESTS[@]}" -q \
+  2>&1 | tee "$PACKET/backend-focused-b.txt"
+pytest --basetemp=/tmp/arkscope-honesty-full-a -q \
+  2>&1 | tee "$PACKET/backend-full-a.txt"
+pytest --basetemp=/tmp/arkscope-honesty-full-b -q \
+  2>&1 | tee "$PACKET/backend-full-b.txt"
 
-# Seal and verify after removing generated Python caches.
-find docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair -type d -name '__pycache__' -prune -exec rm -rf -- {} +
-python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/seal_packet.py
-cd docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair
-sha256sum -c SHA256SUMS
-cd ../../../..
+# Run complete frontend gates from the repository root.
+npm --prefix apps/arkscope-web test \
+  2>&1 | tee "$PACKET/frontend-full.txt"
+npm --prefix apps/arkscope-web run typecheck \
+  2>&1 | tee "$PACKET/frontend-typecheck.txt"
+npm --prefix apps/arkscope-web run check:i18n-literals \
+  2>&1 | tee "$PACKET/frontend-i18n-literals.txt"
+npm --prefix apps/arkscope-web run build \
+  2>&1 | tee "$PACKET/frontend-build.txt"
 
-# Commit only after every verification passes.
-git add docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair
-git commit -m "test(lifecycle): seal honesty repair admission"
+# Normalize generated text artifacts to one terminal newline.
+for generated_text in \
+  "$PACKET"/backend-focused-*.nodes \
+  "$PACKET"/backend-focused-*.txt \
+  "$PACKET"/backend-full-*.txt \
+  "$PACKET"/frontend-*.txt; do
+  perl -0pi -e 's/\n+\z/\n/' "$generated_text"
+done
+
+# Compare fresh in-memory schema authority with the local product-base archive.
+git archive "$PRODUCT_BASE" src | tar -x -C "$BASE_TREE"
+python "$PACKET/capture_profile_schema.py" \
+  --repo "$BASE_TREE" \
+  --revision "$PRODUCT_BASE" \
+  --output "$PACKET/schema-base.json"
+python "$PACKET/capture_profile_schema.py" \
+  --repo "$ROOT" \
+  --revision "$PRODUCT_AUTHORITY" \
+  --output "$PACKET/schema-head.json"
+python "$PACKET/compare_profile_schema.py" \
+  --base "$PACKET/schema-base.json" \
+  --head "$PACKET/schema-head.json" \
+  --output "$PACKET/schema-comparison.json"
+
+# Start only a transient loopback Vite fixture server and stop it after capture.
+npm --prefix apps/arkscope-web run dev -- \
+  --host 127.0.0.1 --port 4206 --strictPort >"$SERVER_LOG" 2>&1 &
+SERVER_PID="$!"
+for _ in $(seq 1 80); do
+  if curl --fail --silent --show-error "$APP_URL" >/dev/null; then
+    break
+  fi
+  sleep 0.25
+done
+kill -0 "$SERVER_PID"
+ARKSCOPE_HONESTY_APP_URL="$APP_URL" python "$PACKET/run_browser_matrix.py"
+kill "$SERVER_PID"
+wait "$SERVER_PID" || true
+SERVER_PID=""
+
+# Summarize, seal the exact payload file set, and verify every digest.
+python "$PACKET/write_verification_summary.py"
+find "$PACKET" -type d -name __pycache__ -prune -exec rm -rf -- {} +
+python "$PACKET/seal_packet.py"
+(
+  cd "$PACKET"
+  sha256sum -c SHA256SUMS
+)
