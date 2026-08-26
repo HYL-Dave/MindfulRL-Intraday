@@ -1,0 +1,64 @@
+{
+  "base_commit": "ff795454429d63121f21a53ab14e6f911ce06ab2",
+  "product_test_authority_commit": "f63a044c3495dcd95db2e996345082eb492baf7d",
+  "branch_commit_count": 12,
+  "merge_commit_count": 0,
+  "policy_version": "trusted-lifecycle-automation-v3",
+  "focused_backend": [
+    {"passed": 127, "failed": 0, "seconds": 9.01},
+    {"passed": 127, "failed": 0, "seconds": 9.10}
+  ],
+  "full_backend": {
+    "collected": 4487,
+    "passed": 4475,
+    "skipped": 12,
+    "failed": 0,
+    "warnings": 3,
+    "seconds": 238.65
+  },
+  "frontend": {
+    "files": 106,
+    "passed": 1239,
+    "failed": 0,
+    "typecheck": "passed",
+    "i18n_literal_scanner": {
+      "candidateCount": 37,
+      "signatureCount": 20,
+      "debtSignatureCount": 0,
+      "allowlistCount": 20
+    },
+    "build": {
+      "status": "passed",
+      "modules": 2193,
+      "existing_chunk_size_warning": true
+    }
+  },
+  "schema": {
+    "sqlite_master_owned_object_diff": "empty",
+    "pragma_table_info_diff": "empty",
+    "prohibited_projection_column_count": 0,
+    "startup_ddl_changes": 0
+  },
+  "browser": {
+    "entries": 20,
+    "screenshots": 20,
+    "external_requests": 0,
+    "writes": 0,
+    "render_acknowledgements": 0,
+    "console_errors": 0,
+    "page_errors": 0,
+    "overlap_count": 0,
+    "clipped_text_count": 0
+  },
+  "authority": {
+    "provider_calls": 0,
+    "production_database_reads": 0,
+    "production_database_writes": 0,
+    "production_database_migrations": 0,
+    "production_database_backups": 0,
+    "production_database_restores": 0,
+    "app_restarts": 0,
+    "merges": 0,
+    "pushes": 0
+  }
+}

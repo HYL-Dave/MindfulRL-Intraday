@@ -1,0 +1,79 @@
+{
+  "production_database_backups": 0,
+  "production_database_migrations": 0,
+  "production_database_reads": 0,
+  "production_database_restores": 0,
+  "production_database_writes": 0,
+  "provider_calls": 0,
+  "scope": "offline_fixture_and_scratch_only",
+  "stale_v2_transition_apply": {
+    "apply_status": "blocked",
+    "block_reasons": [
+      "preview_changed"
+    ],
+    "current_policy_version": "trusted-lifecycle-automation-v3",
+    "profile_owned_rows_after_sha256": "1d1d68c76177fd42ced5cc189acc8dae86a5d11cecbf75e8963119bb2fb67373",
+    "profile_owned_rows_before_sha256": "1d1d68c76177fd42ced5cc189acc8dae86a5d11cecbf75e8963119bb2fb67373",
+    "profile_state_drift": false,
+    "stored_policy_version": "trusted-lifecycle-automation-v2",
+    "transition_status": "needs_review"
+  },
+  "v2_replay": {
+    "after": {
+      "assessments": [
+        {
+          "run_policy_version": "trusted-lifecycle-automation-v3",
+          "status": "draft"
+        },
+        {
+          "run_policy_version": "trusted-lifecycle-automation-v2",
+          "status": "draft"
+        }
+      ],
+      "old_assessment_projection_stale": true,
+      "old_assessment_storage_preserved_exactly": true,
+      "runs": [
+        {
+          "policy_version": "trusted-lifecycle-automation-v3",
+          "status": "succeeded"
+        },
+        {
+          "policy_version": "trusted-lifecycle-automation-v2",
+          "status": "succeeded"
+        }
+      ],
+      "worker_result": {
+        "accepted": 0,
+        "blocked": 0,
+        "drafted": 1,
+        "failed": 0,
+        "processed": 1,
+        "selected": 1,
+        "skipped_current": 0
+      }
+    },
+    "before": {
+      "assessments": [
+        {
+          "run_policy_version": "trusted-lifecycle-automation-v2",
+          "status": "draft"
+        }
+      ],
+      "runs": [
+        {
+          "policy_version": "trusted-lifecycle-automation-v2",
+          "status": "succeeded"
+        }
+      ],
+      "worker_result": {
+        "accepted": 0,
+        "blocked": 0,
+        "drafted": 1,
+        "failed": 0,
+        "processed": 1,
+        "selected": 1,
+        "skipped_current": 0
+      }
+    }
+  }
+}

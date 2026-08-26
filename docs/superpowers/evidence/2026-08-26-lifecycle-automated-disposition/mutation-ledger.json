@@ -1,0 +1,123 @@
+{
+  "mutations": [
+    {
+      "id": "M1",
+      "mutation": "map retryable blocker to attention",
+      "result": "1 failed, 23 passed",
+      "owners": [
+        "tests/test_security_lifecycle_disposition.py::test_disposition_projection_is_exhaustive[fixture4-not_confirmed_yet-monitoring-retryable_source_unavailable]"
+      ],
+      "restore_sha256": "c0ed49e9b654251dd263d6200994b80fa9fd4af5ff369401120b65830ff020b6"
+    },
+    {
+      "id": "M2",
+      "mutation": "map resolved no-change to monitoring",
+      "result": "1 failed, 23 passed",
+      "owners": [
+        "tests/test_security_lifecycle_disposition.py::test_disposition_projection_is_exhaustive[fixture8-confirmed_effective-history-resolved_no_change]"
+      ],
+      "restore_sha256": "c0ed49e9b654251dd263d6200994b80fa9fd4af5ff369401120b65830ff020b6"
+    },
+    {
+      "id": "M3",
+      "mutation": "let delayed price satisfy fresh=True",
+      "result": "1 failed, 23 passed",
+      "owners": [
+        "tests/test_security_lifecycle_ibkr_evidence.py::test_market_data_type_and_freshness_are_preserved[3-delayed]"
+      ],
+      "restore_sha256": "6f093fbfae9900b0b01d8f660da91d9a608a4ded9016229da710da15d05423d8"
+    },
+    {
+      "id": "M4",
+      "mutation": "let publisher price override missing IBKR contract",
+      "result": "1 failed, 9 passed",
+      "owners": [
+        "tests/test_security_lifecycle_decision_policy.py::test_terminal_delisting_separates_conclusion_from_action_readiness"
+      ],
+      "restore_sha256": "47e0115fa84e4e92e3f56b4e29c769a1aa2193aca8c7798a30145f1c23322961"
+    },
+    {
+      "id": "M5",
+      "mutation": "render automation stored English conclusion in zh-Hant",
+      "result": "1 failed, 35 skipped",
+      "owners": [
+        "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::LifecycleView::renders automation conclusions from structured bilingual copy"
+      ],
+      "restore_sha256": "36cd398fef70ee5d8941136da7ed2aed4c118b7c373c45c8aa78b29d9a29cf75"
+    },
+    {
+      "id": "M6",
+      "mutation": "make History rendering acknowledge activity",
+      "result": "1 failed, 35 skipped",
+      "owners": [
+        "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::LifecycleView::separates attention monitoring history and all without acknowledging history"
+      ],
+      "restore_sha256": "36cd398fef70ee5d8941136da7ed2aed4c118b7c373c45c8aa78b29d9a29cf75"
+    },
+    {
+      "id": "M7",
+      "mutation": "treat effective date as a source termination deadline",
+      "initial_result": "survived: 11 passed",
+      "owner_amendment": "added the isolated effective-date-without-source-deadline case",
+      "result": "1 failed, 11 passed",
+      "owners": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_effective_date_never_substitutes_for_source_termination_deadline"
+      ],
+      "restore_sha256": "7c32da2b8c6e9a08f9f912fbd18ad1fa36060a1f43ee2475f1f761e703a05179"
+    },
+    {
+      "id": "M8",
+      "mutation": "remove market_data from the hash-bound canonical excerpt",
+      "result": "7 failed, 7 passed",
+      "owners": [
+        "tests/test_security_lifecycle_ibkr_evidence.py::test_ibkr_adapter_persists_one_bounded_contract_snapshot",
+        "tests/test_security_lifecycle_ibkr_evidence.py::test_market_data_type_and_freshness_are_preserved[1-live]",
+        "tests/test_security_lifecycle_ibkr_evidence.py::test_market_data_type_and_freshness_are_preserved[2-frozen]",
+        "tests/test_security_lifecycle_ibkr_evidence.py::test_market_data_type_and_freshness_are_preserved[3-delayed]",
+        "tests/test_security_lifecycle_ibkr_evidence.py::test_market_data_type_and_freshness_are_preserved[4-delayed_frozen]",
+        "tests/test_security_lifecycle_ibkr_evidence.py::test_live_quote_outside_freshness_window_is_not_fresh",
+        "tests/test_security_lifecycle_ibkr_evidence.py::test_invalid_or_missing_quote_is_hash_bound_as_unavailable"
+      ],
+      "restore_sha256": "6f093fbfae9900b0b01d8f660da91d9a608a4ded9016229da710da15d05423d8"
+    },
+    {
+      "id": "M9",
+      "mutation": "map an approved not-yet-applied transition to History",
+      "result": "1 failed, 23 passed",
+      "owners": [
+        "tests/test_security_lifecycle_disposition.py::test_disposition_projection_is_exhaustive[fixture10-confirmed_monitoring-monitoring-waiting_effective_date]"
+      ],
+      "restore_sha256": "c0ed49e9b654251dd263d6200994b80fa9fd4af5ff369401120b65830ff020b6"
+    },
+    {
+      "id": "M10",
+      "mutation": "map event_completion_not_confirmed to provider-unavailable copy",
+      "result": "1 failed, 12 passed",
+      "owners": [
+        "apps/arkscope-web/src/lifecycle/lifecyclePresentation.test.ts::Lifecycle presentation::labels every disposition, wait reason, and source-family state"
+      ],
+      "restore_sha256": "191d6a0bb576718d20ce60082665e17850f2d7104d6ca3fe2baf9b3479d7ed23"
+    },
+    {
+      "id": "M11",
+      "mutation": "keep a v2 automation assessment current under v3",
+      "result": "1 failed, 18 passed",
+      "owners": [
+        "tests/test_security_lifecycle_automation_worker.py::test_v3_reprocesses_human_accepted_v2_automation_without_rewriting_it"
+      ],
+      "restore_sha256": "681aade27e53e2626fc0094813a14f744e7bbdd77e5e1d72b068dcaf25d4c647"
+    },
+    {
+      "id": "M12",
+      "mutation": "let a v2 automation-approved transition pass the v3 apply guard",
+      "result": "1 failed, 41 passed",
+      "owners": [
+        "tests/test_ticker_identity_transition.py::test_v2_automation_transition_fails_closed_at_v3_apply"
+      ],
+      "restore_sha256": "25da8a622ef66b6dd793bb88766417921bbe2205319ed3914b51e84e4df302e3"
+    }
+  ],
+  "unexpected_owner_drift": [],
+  "all_mutations_killed": true,
+  "all_product_files_restored_byte_identically": true
+}

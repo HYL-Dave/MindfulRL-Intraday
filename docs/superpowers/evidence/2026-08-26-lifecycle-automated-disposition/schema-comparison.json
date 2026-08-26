@@ -1,0 +1,9 @@
+{
+  "base_owned_object_count": 33,
+  "head_owned_object_count": 33,
+  "pragma_table_info_diff": "empty",
+  "prohibited_projection_column_count": 0,
+  "prohibited_projection_columns": [],
+  "sqlite_master_owned_object_diff": "empty",
+  "startup_ddl_changes": 0
+}

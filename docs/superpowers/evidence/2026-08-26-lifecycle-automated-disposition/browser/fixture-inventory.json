@@ -1,0 +1,37 @@
+{
+  "dispositions": [
+    "confirmed_effective",
+    "confirmed_monitoring",
+    "exception_required",
+    "not_confirmed_yet"
+  ],
+  "frozen_quote": {
+    "fresh": false,
+    "last": "9.50",
+    "provider_time": "2026-08-26T07:30:00Z",
+    "retrieved_at": "2026-08-26T08:00:00Z",
+    "status": "frozen"
+  },
+  "future_effective_date": "2026-09-30T00:00:00Z",
+  "post_date_market_wait": "waiting_market_confirmation",
+  "settled_history": "transition_applied",
+  "source_conflict": "source_conflict",
+  "source_family_states": [
+    "confirmed",
+    "conflict",
+    "missing",
+    "present",
+    "unavailable"
+  ],
+  "source_missing_integrity": "source_missing",
+  "stale_reopened_history": [
+    {
+      "acknowledged_at": "2026-08-20T08:00:00Z",
+      "acknowledgement_id": "ack-reopened",
+      "note": null,
+      "reason": "evidence_insufficient",
+      "reopened_at": "2026-08-21T08:00:00Z",
+      "stale": true
+    }
+  ]
+}

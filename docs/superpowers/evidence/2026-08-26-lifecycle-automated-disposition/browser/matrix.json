@@ -1,0 +1,850 @@
+{
+  "app_url": "http://127.0.0.1:4201/",
+  "entries": [
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          24.588,
+          26.384,
+          28.753
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "scenario": "attention-conflict",
+      "screenshot": "1440x900-en-attention-conflict.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          25.14,
+          26.932,
+          29.278
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "pending-frozen",
+      "screenshot": "1440x900-en-pending-frozen.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          24.423,
+          26.24,
+          28.638
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "future-effective",
+      "screenshot": "1440x900-en-future-effective.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.824,
+          25.517,
+          27.65
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "settled-history",
+      "screenshot": "1440x900-en-settled-history.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.671,
+          23.904,
+          25.306
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            243
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "source-missing",
+      "screenshot": "1440x900-en-source-missing.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.54,
+          25.279,
+          27.561
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "scenario": "attention-conflict",
+      "screenshot": "1440x900-zh-Hant-attention-conflict.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.96,
+          25.705,
+          27.983
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "pending-frozen",
+      "screenshot": "1440x900-zh-Hant-pending-frozen.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.096,
+          24.867,
+          27.199
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "future-effective",
+      "screenshot": "1440x900-zh-Hant-future-effective.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.929,
+          24.545,
+          26.572
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "settled-history",
+      "screenshot": "1440x900-zh-Hant-settled-history.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          21.86,
+          23.047,
+          24.383
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            243
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "source-missing",
+      "screenshot": "1440x900-zh-Hant-source-missing.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          35.347,
+          36.091,
+          36.721
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "scenario": "attention-conflict",
+      "screenshot": "390x844-en-attention-conflict.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          35.821,
+          36.565,
+          37.185
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "pending-frozen",
+      "screenshot": "390x844-en-pending-frozen.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.619,
+          35.37,
+          36.023
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "future-effective",
+      "screenshot": "390x844-en-future-effective.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          35.779,
+          36.529,
+          37.148
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "settled-history",
+      "screenshot": "390x844-en-settled-history.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.805,
+          35.187,
+          35.076
+        ],
+        "extrema": [
+          [
+            22,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            243
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "source-missing",
+      "screenshot": "390x844-en-source-missing.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.107,
+          34.868,
+          35.568
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "scenario": "attention-conflict",
+      "screenshot": "390x844-zh-Hant-attention-conflict.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          33.748,
+          34.426,
+          34.96
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "pending-frozen",
+      "screenshot": "390x844-zh-Hant-pending-frozen.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.474,
+          33.156,
+          33.724
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "future-effective",
+      "screenshot": "390x844-zh-Hant-future-effective.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          33.901,
+          34.581,
+          35.11
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "settled-history",
+      "screenshot": "390x844-zh-Hant-settled-history.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.033,
+          32.387,
+          32.285
+        ],
+        "extrema": [
+          [
+            22,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            243
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "source-missing",
+      "screenshot": "390x844-zh-Hant-source-missing.png",
+      "viewport": [
+        390,
+        844
+      ],
+      "writes": []
+    }
+  ],
+  "fixture_only": true,
+  "production_backend_started": false,
+  "production_database_operations": 0,
+  "provider_calls": 0,
+  "schema_version": 1
+}
