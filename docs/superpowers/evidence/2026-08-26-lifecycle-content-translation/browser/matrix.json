@@ -1,0 +1,1186 @@
+{
+  "app_url": "http://127.0.0.1:4198/",
+  "entries": [
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.051,
+          23.522,
+          25.274
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 23,
+      "scenario": "success",
+      "screenshot": "success-en-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": true,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.096,
+          32.721,
+          33.532
+        ],
+        "extrema": [
+          [
+            11,
+            230
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 23,
+      "scenario": "success",
+      "screenshot": "success-en-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": true,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          21.148,
+          22.544,
+          24.176
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 23,
+      "scenario": "success",
+      "screenshot": "success-zh-Hant-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": true,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          30.934,
+          31.531,
+          32.308
+        ],
+        "extrema": [
+          [
+            11,
+            230
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 23,
+      "scenario": "success",
+      "screenshot": "success-zh-Hant-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": true,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.051,
+          23.522,
+          25.274
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "cached",
+      "screenshot": "cached-en-1440x900.png",
+      "translation_posts": 0,
+      "translation_visible": true,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.096,
+          32.721,
+          33.532
+        ],
+        "extrema": [
+          [
+            11,
+            230
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "cached",
+      "screenshot": "cached-en-390x844.png",
+      "translation_posts": 0,
+      "translation_visible": true,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          21.148,
+          22.544,
+          24.176
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "cached",
+      "screenshot": "cached-zh-Hant-1440x900.png",
+      "translation_posts": 0,
+      "translation_visible": true,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          30.934,
+          31.531,
+          32.308
+        ],
+        "extrema": [
+          [
+            11,
+            230
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "cached",
+      "screenshot": "cached-zh-Hant-390x844.png",
+      "translation_posts": 0,
+      "translation_visible": true,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.82,
+          24.259,
+          28.037
+        ],
+        "extrema": [
+          [
+            4,
+            248
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "timeout",
+      "screenshot": "timeout-en-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.786,
+          34.386,
+          40.462
+        ],
+        "extrema": [
+          [
+            11,
+            248
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "timeout",
+      "screenshot": "timeout-en-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          21.837,
+          22.505,
+          25.194
+        ],
+        "extrema": [
+          [
+            4,
+            248
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "timeout",
+      "screenshot": "timeout-zh-Hant-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          31.527,
+          31.591,
+          35.336
+        ],
+        "extrema": [
+          [
+            11,
+            248
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "timeout",
+      "screenshot": "timeout-zh-Hant-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.414,
+          25.642,
+          30.69
+        ],
+        "extrema": [
+          [
+            4,
+            248
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "auth-rejected",
+      "screenshot": "auth-rejected-en-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.317,
+          37.807,
+          46.753
+        ],
+        "extrema": [
+          [
+            10,
+            248
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "auth-rejected",
+      "screenshot": "auth-rejected-en-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.51,
+          23.575,
+          26.836
+        ],
+        "extrema": [
+          [
+            4,
+            248
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "auth-rejected",
+      "screenshot": "auth-rejected-zh-Hant-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.955,
+          33.857,
+          38.89
+        ],
+        "extrema": [
+          [
+            10,
+            248
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "auth-rejected",
+      "screenshot": "auth-rejected-zh-Hant-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.049,
+          25.302,
+          30.4
+        ],
+        "extrema": [
+          [
+            4,
+            248
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "quota-exhausted",
+      "screenshot": "quota-exhausted-en-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          33.798,
+          37.219,
+          46.045
+        ],
+        "extrema": [
+          [
+            10,
+            248
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "quota-exhausted",
+      "screenshot": "quota-exhausted-en-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.266,
+          23.338,
+          26.624
+        ],
+        "extrema": [
+          [
+            4,
+            248
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "quota-exhausted",
+      "screenshot": "quota-exhausted-zh-Hant-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.43,
+          33.362,
+          38.474
+        ],
+        "extrema": [
+          [
+            10,
+            248
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "quota-exhausted",
+      "screenshot": "quota-exhausted-zh-Hant-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.707,
+          24.006,
+          27.738
+        ],
+        "extrema": [
+          [
+            4,
+            248
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "invalid-output",
+      "screenshot": "invalid-output-en-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          33.186,
+          34.625,
+          40.478
+        ],
+        "extrema": [
+          [
+            11,
+            248
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "invalid-output",
+      "screenshot": "invalid-output-en-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.105,
+          22.773,
+          25.44
+        ],
+        "extrema": [
+          [
+            4,
+            248
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "invalid-output",
+      "screenshot": "invalid-output-zh-Hant-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.124,
+          32.183,
+          35.856
+        ],
+        "extrema": [
+          [
+            11,
+            248
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "invalid-output",
+      "screenshot": "invalid-output-zh-Hant-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.793,
+          22.872,
+          24.294
+        ],
+        "extrema": [
+          [
+            4,
+            248
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "evidence-changed",
+      "screenshot": "evidence-changed-en-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "en",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          33.618,
+          32.026,
+          32.247
+        ],
+        "extrema": [
+          [
+            11,
+            248
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "evidence-changed",
+      "screenshot": "evidence-changed-en-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          21.877,
+          21.912,
+          23.186
+        ],
+        "extrema": [
+          [
+            4,
+            248
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "request_count": 21,
+      "scenario": "evidence-changed",
+      "screenshot": "evidence-changed-zh-Hant-1440x900.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "console_errors": [],
+      "external_requests": [],
+      "locale": "zh-Hant",
+      "original_visible": true,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.492,
+          30.798,
+          30.942
+        ],
+        "extrema": [
+          [
+            11,
+            248
+          ],
+          [
+            14,
+            237
+          ],
+          [
+            17,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "request_count": 21,
+      "scenario": "evidence-changed",
+      "screenshot": "evidence-changed-zh-Hant-390x844.png",
+      "translation_posts": 1,
+      "translation_visible": null,
+      "unexpected_mutations": [],
+      "viewport": [
+        390,
+        844
+      ]
+    }
+  ],
+  "fixture_only": true,
+  "production_backend_started": false,
+  "production_database_operations": 0,
+  "provider_calls": 0,
+  "schema_version": 1
+}
