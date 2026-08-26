@@ -1,0 +1,65 @@
+# Resumed Task 6 authority at b05ea4a2abe2fc2e1fbebd845de624804f46f3d1
+# No provider/network call, production database operation, production App
+# restart, merge, or push was performed.
+
+# Discard aborted generated packet artifacts; helper source was retained.
+find docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair -mindepth 1 -maxdepth 1 ! -name '*.py' -exec rm -rf -- {} +
+find docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair -type d -name '__pycache__' -prune -exec rm -rf -- {} +
+
+# 16 independent mutations, exact owner comparison, byte-identical restores.
+python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/run_mutations.py --output docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/mutation-ledger.json
+
+# Temporary-SQLite authority, run twice and compared byte-for-byte.
+python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/capture_offline_authority.py --output /tmp/arkscope-honesty-offline-authority-resumed-a.json
+python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/capture_offline_authority.py --output docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/offline-authority.json
+cmp /tmp/arkscope-honesty-offline-authority-resumed-a.json docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/offline-authority.json
+
+# Focused node collection twice. The timing-only summary is excluded so the
+# persisted files contain node IDs only and can be compared byte-for-byte.
+pytest --collect-only -q tests/test_security_lifecycle_fact_kernel.py tests/test_security_lifecycle_sec_evidence.py tests/test_security_lifecycle_automation_scheduler.py tests/test_security_lifecycle_automation_worker.py tests/test_security_lifecycle_disposition.py tests/test_security_lifecycle_tools.py tests/test_security_lifecycle_routes.py tests/test_ticker_identity_transition.py | sed -E '/^[0-9]+ tests collected in [0-9.]+s$/d' > docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-focused-a.nodes
+pytest --collect-only -q tests/test_security_lifecycle_fact_kernel.py tests/test_security_lifecycle_sec_evidence.py tests/test_security_lifecycle_automation_scheduler.py tests/test_security_lifecycle_automation_worker.py tests/test_security_lifecycle_disposition.py tests/test_security_lifecycle_tools.py tests/test_security_lifecycle_routes.py tests/test_ticker_identity_transition.py | sed -E '/^[0-9]+ tests collected in [0-9.]+s$/d' > docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-focused-b.nodes
+cmp docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-focused-a.nodes docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-focused-b.nodes
+test "$(rg -c '^tests/' docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-focused-a.nodes)" = "192"
+
+# Focused backend gates with isolated basetemp roots.
+pytest --basetemp=/tmp/arkscope-honesty-focused-a tests/test_security_lifecycle_fact_kernel.py tests/test_security_lifecycle_sec_evidence.py tests/test_security_lifecycle_automation_scheduler.py tests/test_security_lifecycle_automation_worker.py tests/test_security_lifecycle_disposition.py tests/test_security_lifecycle_tools.py tests/test_security_lifecycle_routes.py tests/test_ticker_identity_transition.py -q
+pytest --basetemp=/tmp/arkscope-honesty-focused-b tests/test_security_lifecycle_fact_kernel.py tests/test_security_lifecycle_sec_evidence.py tests/test_security_lifecycle_automation_scheduler.py tests/test_security_lifecycle_automation_worker.py tests/test_security_lifecycle_disposition.py tests/test_security_lifecycle_tools.py tests/test_security_lifecycle_routes.py tests/test_ticker_identity_transition.py -q
+
+# Complete backend gates with isolated basetemp roots and packet logs.
+set -o pipefail
+pytest --basetemp=/tmp/arkscope-honesty-full-a -q | tee docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-full-a.txt
+pytest --basetemp=/tmp/arkscope-honesty-full-b -q | tee docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/backend-full-b.txt
+
+# Complete frontend gates from apps/arkscope-web.
+set -o pipefail
+npm test | tee ../../docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/frontend-full.txt
+npm run typecheck | tee ../../docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/frontend-typecheck.txt
+npm run check:i18n-literals | tee ../../docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/frontend-i18n-literals.txt
+npm run build | tee ../../docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/frontend-build.txt
+
+# Fresh local product-base archive and exact in-memory schema comparison.
+mkdir /tmp/arkscope-honesty-base-11e7a5d4-resumed
+git archive 11e7a5d4 src | tar -x -C /tmp/arkscope-honesty-base-11e7a5d4-resumed
+python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/capture_profile_schema.py --repo /tmp/arkscope-honesty-base-11e7a5d4-resumed --revision 11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb --output docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/schema-base.json
+python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/capture_profile_schema.py --repo . --revision b05ea4a2abe2fc2e1fbebd845de624804f46f3d1 --output docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/schema-head.json
+python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/compare_profile_schema.py --base docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/schema-base.json --head docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/schema-head.json --output docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/schema-comparison.json
+
+# Transient loopback fixture server only; stopped immediately after the matrix.
+cd apps/arkscope-web
+npm run dev -- --host 127.0.0.1 --port 4206 --strictPort
+cd ../..
+ARKSCOPE_HONESTY_APP_URL=http://127.0.0.1:4206/ python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/run_browser_matrix.py
+# The first two packet-runner development invocations failed before complete
+# authority. Every invocation removes browser/ first; the final invocation
+# completed all 24 entries and is the only retained matrix authority.
+
+# Seal and verify after removing generated Python caches.
+find docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair -type d -name '__pycache__' -prune -exec rm -rf -- {} +
+python docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair/seal_packet.py
+cd docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair
+sha256sum -c SHA256SUMS
+cd ../../../..
+
+# Commit only after every verification passes.
+git add docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair
+git commit -m "test(lifecycle): seal honesty repair admission"

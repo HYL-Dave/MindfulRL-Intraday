@@ -1,0 +1,1079 @@
+{
+  "app_url": "http://127.0.0.1:4206/",
+  "entries": [
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          24.588,
+          26.384,
+          28.753
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "scenario": "attention-conflict",
+      "screenshot": "browser/1440x900-en-attention-conflict.png",
+      "screenshot_sha256": "56b22413da9a5f3d8261c2b40eae05207a534a32f04ba2dc423d11db423e5bce",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          25.14,
+          26.932,
+          29.278
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "pending-frozen",
+      "screenshot": "browser/1440x900-en-pending-frozen.png",
+      "screenshot_sha256": "5b3be4cdb7e2152864ac56472948d99991ac8f9663f2e0a660adc4c4c6819c6b",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          24.423,
+          26.24,
+          28.638
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "future-effective",
+      "screenshot": "browser/1440x900-en-future-effective.png",
+      "screenshot_sha256": "854698959ddf9c58d684d08d141a62b7564c18a3b3edc6f5522652acccc54ab4",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.973,
+          25.653,
+          27.766
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "settled-history",
+      "screenshot": "browser/1440x900-en-settled-history.png",
+      "screenshot_sha256": "d4c43b2ec514c6b046e596828af331d5c7e099e001241ea3a50bf4d577252565",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.671,
+          23.904,
+          25.306
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            243
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "source-missing",
+      "screenshot": "browser/1440x900-en-source-missing.png",
+      "screenshot_sha256": "ccc8c5c3ff936deab54b5ce880239a6f7855dbd7153925f1a309c9d244fd7e53",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": "UNCHECKED\nUnconfirmed Completion Corp.\n\t2026-08-20\tListing-status review\t\nNot yet confirmed\nNot confirmed as of 2026-08-27; active checking stopped.\nLast checked: 2026-08-27T12:00:00Z\n\tUndetermined\tManual lists\nUNCHECKED · Unconfirmed Completion Corp.\nCurrent status\nDecision state\nNot yet confirmed\nAction readiness\nNot confirmed as of 2026-08-27; active checking stopped.\nLast checked\n2026-08-27T12:00:00Z\nRegulatory filing\nAvailable\nMarket infrastructure\nAvailable\nPublisher reporting\nAvailable\nSource observation\n\nSource observation available\n\n8-K · 2026-08-20\n\nFixture evidence for UNCHECKED.\n\nOpen evidence\nEvidence and searches\nRegulatory filing\nRegulator fixture: UNCHECKED\nRegulatory filing\n\nU.S. Securities and Exchange Commission · 2026-06-27T12:00:00Z\n\nOriginal source evidence\n\nReviewed regulator fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\nOpen evidenceTranslate evidence\nMarket infrastructure\nMarket Infrastructure fixture: UNCHECKED\nMarket infrastructure\n\nInteractive Brokers · 2026-06-27T12:00:00Z\n\nOriginal source evidence\n\nReviewed market infrastructure fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\nTranslate evidence\nPublisher reporting\nPublisher fixture: UNCHECKED\nPublisher reporting\n\nReviewed publisher fixture · 2026-06-27T12:00:00Z\n\nOriginal source evidence\n\nReviewed publisher fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\nOpen evidenceTranslate evidence\nManual evidence text\nAdd text evidence\nManual evidence URL\nAdd URL evidence\nInconclusive review\nRecord insufficient evidence\nAssessment\nAssessment relevance\nUndetermined\nDirectly concerns the tracked security\nIssuer-related; may have indirect impact\nNot related to the tracked security\nAssessment confidence\nUnknown\nLow\nMedium\nHigh\nAssessment outcome\nUndetermined\nListing ended (delisted)\nListing or trading venue changed\nTicker symbol changed\nCash acquisition\nStock acquisition\nMixed-consideration acquisition\nAcquisition terms unknown\nIssuer security change\nNo tracked-security change\nOther\nNot applicable\nCounterparty name\nCounterparty ticker\nCounterparty CIK\nSuccessor ticker\nDestination venue\nEffective date\nConsideration currency\nCash per security\nExchange ratio\nAssessment conclusion\nInvestment impact\nSource observation · 8-K\nReviewed regulator fixture evidence for UNCHECKED in the final-unconfirmed scenario.\nReviewed market infrastructure fixture evidence for UNCHECKED in the final-unconfirmed scenario.\nReviewed publisher fixture evidence for UNCHECKED in the final-unconfirmed scenario.\nSave assessment draft\nAction recommendations\nTicker tracking transition",
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          25.155,
+          26.807,
+          28.855
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "final-unconfirmed",
+      "screenshot": "browser/1440x900-en-final-unconfirmed.png",
+      "screenshot_sha256": "c380611738dcd70363e05ab59c2e3831cad3dcd316e3ad3f0d36f30e3b89b7e8",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.54,
+          25.279,
+          27.561
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "scenario": "attention-conflict",
+      "screenshot": "browser/1440x900-zh-Hant-attention-conflict.png",
+      "screenshot_sha256": "bffbbb050c505981723b9dd4d355b7a994314f967cd1216de0a82b24d379e4f1",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.96,
+          25.705,
+          27.983
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "pending-frozen",
+      "screenshot": "browser/1440x900-zh-Hant-pending-frozen.png",
+      "screenshot_sha256": "cd172d1ab9b2d42bbe65fbff2a4cf07c9989043c8223cb8f5b9a3ecc21abd297",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.096,
+          24.867,
+          27.199
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "future-effective",
+      "screenshot": "browser/1440x900-zh-Hant-future-effective.png",
+      "screenshot_sha256": "6d8af966b8711d29c972f16559445ae82348a519dbd5105683bcb962c2f82cf9",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.083,
+          24.686,
+          26.694
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "settled-history",
+      "screenshot": "browser/1440x900-zh-Hant-settled-history.png",
+      "screenshot_sha256": "a2eac51239219aacf12f828767b9888481c9734b6ccf56d31ba617bcb94a10c1",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          21.86,
+          23.047,
+          24.383
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            243
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "source-missing",
+      "screenshot": "browser/1440x900-zh-Hant-source-missing.png",
+      "screenshot_sha256": "5bc8883c98180dace94155397a677d744a6d63e6d05f7837523c3106c586c01a",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": "UNCHECKED\nUnconfirmed Completion Corp.\n\t2026-08-20\t上市狀態覆核\t\n尚未確認發生\n截至 2026-08-27 尚未確認；已停止主動追查。\n上次查核: 2026-08-27T12:00:00Z\n\t尚未判定\t手動清單\nUNCHECKED · Unconfirmed Completion Corp.\n目前狀態\n判定狀態\n尚未確認發生\n動作準備狀態\n截至 2026-08-27 尚未確認；已停止主動追查。\n上次查核\n2026-08-27T12:00:00Z\n監管申報\n可用\n市場基礎設施\n可用\n新聞出版來源\n可用\n來源觀察\n\n原始觀察可用\n\n8-K · 2026-08-20\n\nFixture evidence for UNCHECKED.\n\n開啟證據\n證據與搜尋\n監管申報\nRegulator fixture: UNCHECKED\n監管申報\n\nU.S. Securities and Exchange Commission · 2026-06-27T12:00:00Z\n\n來源原文證據\n\nReviewed regulator fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\n開啟證據翻譯證據\n市場基礎設施\nMarket Infrastructure fixture: UNCHECKED\n市場基礎設施\n\nInteractive Brokers · 2026-06-27T12:00:00Z\n\n來源原文證據\n\nReviewed market infrastructure fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\n翻譯證據\n新聞出版來源\nPublisher fixture: UNCHECKED\n新聞出版來源\n\nReviewed publisher fixture · 2026-06-27T12:00:00Z\n\n來源原文證據\n\nReviewed publisher fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\n開啟證據翻譯證據\n手動文字證據\n加入文字證據\n手動證據網址\n加入網址證據\n證據不足，未能定論\n記錄為證據不足\n判定\n判定相關性\n尚未判定\n直接涉及追蹤證券\n與發行人相關，可能間接影響\n與追蹤證券無關\n判定信心\n未知\n低\n中\n高\n判定結果\n尚未判定\n上市已終止（下市）\n轉換上市／交易市場\n標的代號變更\n現金收購\n換股收購\n混合對價收購\n收購條件未知\n發行人證券異動\n追蹤證券未變更\n其他\n不適用\n交易對手名稱\n交易對手代號\n交易對手 CIK\n承接標的代號\n轉往市場\n生效日期\n對價幣別\n每單位現金對價\n換股比例\n判定結論\n投資影響\n來源觀察 · 8-K\nReviewed regulator fixture evidence for UNCHECKED in the final-unconfirmed scenario.\nReviewed market infrastructure fixture evidence for UNCHECKED in the final-unconfirmed scenario.\nReviewed publisher fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n儲存判定草稿\n處置建議\n標的追蹤轉移",
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.986,
+          25.565,
+          27.523
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "final-unconfirmed",
+      "screenshot": "browser/1440x900-zh-Hant-final-unconfirmed.png",
+      "screenshot_sha256": "584a19c171337b419cb810ef39375892c5fe3f4fc8602b2c2a94d5d3e6cd738f",
+      "viewport": [
+        1440,
+        900
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          35.347,
+          36.091,
+          36.721
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "scenario": "attention-conflict",
+      "screenshot": "browser/390x844-en-attention-conflict.png",
+      "screenshot_sha256": "b286db18953b74faa702cc7598a862f1cdde5ae6467ca61123638d625362e0cf",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          35.821,
+          36.565,
+          37.185
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "pending-frozen",
+      "screenshot": "browser/390x844-en-pending-frozen.png",
+      "screenshot_sha256": "c626fbbe94cf86d0073ab71f324327b932665d760685b2d69320b8a37e6881ae",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.619,
+          35.37,
+          36.023
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "future-effective",
+      "screenshot": "browser/390x844-en-future-effective.png",
+      "screenshot_sha256": "084bf4e0edeccf738a751da9bfad6adeaa009456df5d282b600bf20e253cdeda",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          35.779,
+          36.529,
+          37.148
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "settled-history",
+      "screenshot": "browser/390x844-en-settled-history.png",
+      "screenshot_sha256": "05a0f80fb6e0f1436a52eb0429fc0764d5709ac9676d787e8f01ff4b0cead6c5",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.805,
+          35.187,
+          35.076
+        ],
+        "extrema": [
+          [
+            22,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            243
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "source-missing",
+      "screenshot": "browser/390x844-en-source-missing.png",
+      "screenshot_sha256": "fafeace14350fb70df797927e42d0001da36d39bfe7f4568063afe0fe8f8b0f5",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": "UNCHECKED\nUnconfirmed Completion Corp.\n\t2026-08-20\tListing-status review\t\nNot yet confirmed\nNot confirmed as of 2026-08-27; active checking stopped.\nLast checked: 2026-08-27T12:00:00Z\n\tUndetermined\tManual lists\nUNCHECKED · Unconfirmed Completion Corp.\nCurrent status\nDecision state\nNot yet confirmed\nAction readiness\nNot confirmed as of 2026-08-27; active checking stopped.\nLast checked\n2026-08-27T12:00:00Z\nRegulatory filing\nAvailable\nMarket infrastructure\nAvailable\nPublisher reporting\nAvailable\nSource observation\n\nSource observation available\n\n8-K · 2026-08-20\n\nFixture evidence for UNCHECKED.\n\nOpen evidence\nEvidence and searches\nRegulatory filing\nRegulator fixture: UNCHECKED\nRegulatory filing\n\nU.S. Securities and Exchange Commission · 2026-06-27T12:00:00Z\n\nOriginal source evidence\n\nReviewed regulator fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\nOpen evidenceTranslate evidence\nMarket infrastructure\nMarket Infrastructure fixture: UNCHECKED\nMarket infrastructure\n\nInteractive Brokers · 2026-06-27T12:00:00Z\n\nOriginal source evidence\n\nReviewed market infrastructure fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\nTranslate evidence\nPublisher reporting\nPublisher fixture: UNCHECKED\nPublisher reporting\n\nReviewed publisher fixture · 2026-06-27T12:00:00Z\n\nOriginal source evidence\n\nReviewed publisher fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\nOpen evidenceTranslate evidence\nManual evidence text\nAdd text evidence\nManual evidence URL\nAdd URL evidence\nInconclusive review\nRecord insufficient evidence\nAssessment\nAssessment relevance\nUndetermined\nDirectly concerns the tracked security\nIssuer-related; may have indirect impact\nNot related to the tracked security\nAssessment confidence\nUnknown\nLow\nMedium\nHigh\nAssessment outcome\nUndetermined\nListing ended (delisted)\nListing or trading venue changed\nTicker symbol changed\nCash acquisition\nStock acquisition\nMixed-consideration acquisition\nAcquisition terms unknown\nIssuer security change\nNo tracked-security change\nOther\nNot applicable\nCounterparty name\nCounterparty ticker\nCounterparty CIK\nSuccessor ticker\nDestination venue\nEffective date\nConsideration currency\nCash per security\nExchange ratio\nAssessment conclusion\nInvestment impact\nSource observation · 8-K\nReviewed regulator fixture evidence for UNCHECKED in the final-unconfirmed scenario.\nReviewed market infrastructure fixture evidence for UNCHECKED in the final-unconfirmed scenario.\nReviewed publisher fixture evidence for UNCHECKED in the final-unconfirmed scenario.\nSave assessment draft\nAction recommendations\nTicker tracking transition",
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          36.907,
+          37.648,
+          38.233
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "final-unconfirmed",
+      "screenshot": "browser/390x844-en-final-unconfirmed.png",
+      "screenshot_sha256": "b94b560cdcd30f42e971432f6ac4d4b5e8e9c13dc0677c9c932f7fc812cf8836",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.107,
+          34.868,
+          35.568
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 21,
+      "scenario": "attention-conflict",
+      "screenshot": "browser/390x844-zh-Hant-attention-conflict.png",
+      "screenshot_sha256": "6c8edcc34ff100faf0c85f82fae75f79f70b8151d6bd86b241ef0bf84d7fc555",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          33.748,
+          34.426,
+          34.96
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "pending-frozen",
+      "screenshot": "browser/390x844-zh-Hant-pending-frozen.png",
+      "screenshot_sha256": "948b5aa78118cbd55cf8c534699403f50f809a482e2bda264d76f6daffb0408e",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.474,
+          33.156,
+          33.724
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "future-effective",
+      "screenshot": "browser/390x844-zh-Hant-future-effective.png",
+      "screenshot_sha256": "a21abd23b0a9a108e7e06a062367e869220941ec4dea0cbe2f0a4d3f304ba6bb",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          33.901,
+          34.581,
+          35.11
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "settled-history",
+      "screenshot": "browser/390x844-zh-Hant-settled-history.png",
+      "screenshot_sha256": "f1fc04af00589c8113de7e9349e5c58744096aadfed559be940d4ce510002e21",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": null,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.033,
+          32.387,
+          32.285
+        ],
+        "extrema": [
+          [
+            22,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            243
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "source-missing",
+      "screenshot": "browser/390x844-zh-Hant-source-missing.png",
+      "screenshot_sha256": "33b218f45bf243b1294767413239030968245412b83ca1988653e8ac0f7484a0",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "final_unconfirmed_text": "UNCHECKED\nUnconfirmed Completion Corp.\n\t2026-08-20\t上市狀態覆核\t\n尚未確認發生\n截至 2026-08-27 尚未確認；已停止主動追查。\n上次查核: 2026-08-27T12:00:00Z\n\t尚未判定\t手動清單\nUNCHECKED · Unconfirmed Completion Corp.\n目前狀態\n判定狀態\n尚未確認發生\n動作準備狀態\n截至 2026-08-27 尚未確認；已停止主動追查。\n上次查核\n2026-08-27T12:00:00Z\n監管申報\n可用\n市場基礎設施\n可用\n新聞出版來源\n可用\n來源觀察\n\n原始觀察可用\n\n8-K · 2026-08-20\n\nFixture evidence for UNCHECKED.\n\n開啟證據\n證據與搜尋\n監管申報\nRegulator fixture: UNCHECKED\n監管申報\n\nU.S. Securities and Exchange Commission · 2026-06-27T12:00:00Z\n\n來源原文證據\n\nReviewed regulator fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\n開啟證據翻譯證據\n市場基礎設施\nMarket Infrastructure fixture: UNCHECKED\n市場基礎設施\n\nInteractive Brokers · 2026-06-27T12:00:00Z\n\n來源原文證據\n\nReviewed market infrastructure fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\n翻譯證據\n新聞出版來源\nPublisher fixture: UNCHECKED\n新聞出版來源\n\nReviewed publisher fixture · 2026-06-27T12:00:00Z\n\n來源原文證據\n\nReviewed publisher fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n\n開啟證據翻譯證據\n手動文字證據\n加入文字證據\n手動證據網址\n加入網址證據\n證據不足，未能定論\n記錄為證據不足\n判定\n判定相關性\n尚未判定\n直接涉及追蹤證券\n與發行人相關，可能間接影響\n與追蹤證券無關\n判定信心\n未知\n低\n中\n高\n判定結果\n尚未判定\n上市已終止（下市）\n轉換上市／交易市場\n標的代號變更\n現金收購\n換股收購\n混合對價收購\n收購條件未知\n發行人證券異動\n追蹤證券未變更\n其他\n不適用\n交易對手名稱\n交易對手代號\n交易對手 CIK\n承接標的代號\n轉往市場\n生效日期\n對價幣別\n每單位現金對價\n換股比例\n判定結論\n投資影響\n來源觀察 · 8-K\nReviewed regulator fixture evidence for UNCHECKED in the final-unconfirmed scenario.\nReviewed market infrastructure fixture evidence for UNCHECKED in the final-unconfirmed scenario.\nReviewed publisher fixture evidence for UNCHECKED in the final-unconfirmed scenario.\n儲存判定草稿\n處置建議\n標的追蹤轉移",
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.997,
+          35.67,
+          36.168
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "render_acknowledgements": 0,
+      "request_count": 22,
+      "scenario": "final-unconfirmed",
+      "screenshot": "browser/390x844-zh-Hant-final-unconfirmed.png",
+      "screenshot_sha256": "7e9634b2bf5f3e09400fd55dff797a419c6886330ab3bb895ce74432cd924201",
+      "viewport": [
+        390,
+        844
+      ],
+      "write_requests": []
+    }
+  ],
+  "fixture_only": true,
+  "production_app_restart": false,
+  "production_backend_started": false,
+  "production_database_operations": 0,
+  "provider_calls": 0,
+  "schema_version": 1,
+  "summary": {
+    "clipped_text_count": 0,
+    "console_errors": 0,
+    "entry_count": 24,
+    "external_requests": 0,
+    "overlap_count": 0,
+    "page_errors": 0,
+    "render_acknowledgements": 0,
+    "screenshot_count": 24,
+    "write_requests": 0
+  },
+  "transient_frontend_fixture_server": true
+}

@@ -1,0 +1,1966 @@
+{
+  "authority_constants": {
+    "AUTOMATION_POLICY_VERSION": "trusted-lifecycle-automation-v3",
+    "SEC_shared_RULE_VERSION": "3",
+    "SEC_source_deadline_RULE_VERSION": "4"
+  },
+  "index_sql": {
+    "idx_security_lifecycle_assessments_case_revision": "CREATE INDEX idx_security_lifecycle_assessments_case_revision\n        ON security_lifecycle_assessments(case_id, revision DESC)\n    ",
+    "idx_security_lifecycle_automation_blockers_run": "CREATE INDEX idx_security_lifecycle_automation_blockers_run\n        ON security_lifecycle_automation_run_blockers(automation_run_id, blocker_code)\n    ",
+    "idx_security_lifecycle_automation_runs_case_created": "CREATE INDEX idx_security_lifecycle_automation_runs_case_created\n        ON security_lifecycle_automation_runs(case_id, created_at)\n    ",
+    "idx_security_lifecycle_cases_identity": "CREATE INDEX idx_security_lifecycle_cases_identity\n        ON security_lifecycle_cases(source, source_ref, ticker)\n    ",
+    "idx_security_lifecycle_evidence_automation_run": "CREATE INDEX idx_security_lifecycle_evidence_automation_run\n        ON security_lifecycle_evidence(automation_run_id, created_at)\n    ",
+    "idx_security_lifecycle_evidence_case_created": "CREATE INDEX idx_security_lifecycle_evidence_case_created\n        ON security_lifecycle_evidence(case_id, created_at)\n    ",
+    "idx_security_lifecycle_facts_run_type": "CREATE INDEX idx_security_lifecycle_facts_run_type\n        ON security_lifecycle_automation_facts(automation_run_id, fact_type)\n    ",
+    "idx_security_lifecycle_one_current_ack": "CREATE UNIQUE INDEX idx_security_lifecycle_one_current_ack\n        ON security_lifecycle_case_acknowledgements(case_id)\n        WHERE reopened_at IS NULL\n    ",
+    "idx_security_lifecycle_runs_case_created": "CREATE INDEX idx_security_lifecycle_runs_case_created\n        ON security_lifecycle_investigation_runs(case_id, created_at)\n    ",
+    "idx_security_lifecycle_translations_evidence_locale": "CREATE INDEX idx_security_lifecycle_translations_evidence_locale\n        ON security_lifecycle_evidence_translations(evidence_id, locale)\n    ",
+    "idx_ticker_identity_activity_transition": "CREATE INDEX idx_ticker_identity_activity_transition\n        ON ticker_identity_transition_activity(transition_id, occurred_at)\n    ",
+    "idx_ticker_identity_activity_unacknowledged": "CREATE INDEX idx_ticker_identity_activity_unacknowledged\n        ON ticker_identity_transition_activity(acknowledged_at, occurred_at)\n    ",
+    "idx_ticker_identity_attempts_transition": "CREATE INDEX idx_ticker_identity_attempts_transition\n        ON ticker_identity_transition_attempts(transition_id, attempted_at)\n    ",
+    "idx_ticker_identity_links_source": "CREATE INDEX idx_ticker_identity_links_source\n        ON ticker_identity_links(source_ticker, reversed_at)\n    ",
+    "idx_ticker_identity_links_successor": "CREATE INDEX idx_ticker_identity_links_successor\n        ON ticker_identity_links(successor_ticker, reversed_at)\n    ",
+    "idx_ticker_identity_transitions_due": "CREATE INDEX idx_ticker_identity_transitions_due\n        ON ticker_identity_transitions(status, execute_on)\n    "
+  },
+  "pragma_table_info": {
+    "security_lifecycle_action_proposals": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "proposal_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "case_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "assessment_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "action_type",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "status",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "source_ticker",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "replacement_ticker",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "source_snapshot_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 8,
+        "default": null,
+        "name": "reason",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 9,
+        "default": null,
+        "name": "block_reason",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 10,
+        "default": null,
+        "name": "assessment_fingerprint_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 11,
+        "default": null,
+        "name": "proposal_dedupe_key",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 12,
+        "default": null,
+        "name": "created_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 13,
+        "default": null,
+        "name": "dismissed_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_assessment_evidence": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "assessment_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "reference_kind",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "evidence_id",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "cited_content_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_assessment_outcomes": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "assessment_id",
+        "notnull": 1,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "outcome",
+        "notnull": 1,
+        "pk": 2,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_assessments": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "assessment_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "case_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "revision",
+        "notnull": 1,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "status",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "relevance",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "confidence",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "author",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "conclusion",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 8,
+        "default": null,
+        "name": "impact_summary",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 9,
+        "default": null,
+        "name": "counterparty_name",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 10,
+        "default": null,
+        "name": "counterparty_ticker",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 11,
+        "default": null,
+        "name": "counterparty_cik",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 12,
+        "default": null,
+        "name": "successor_ticker",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 13,
+        "default": null,
+        "name": "destination_venue",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 14,
+        "default": null,
+        "name": "effective_date",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 15,
+        "default": null,
+        "name": "consideration_currency",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 16,
+        "default": null,
+        "name": "cash_per_security_decimal",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 17,
+        "default": null,
+        "name": "exchange_ratio_decimal",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 18,
+        "default": null,
+        "name": "observation_fingerprint_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 19,
+        "default": null,
+        "name": "evidence_set_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 20,
+        "default": null,
+        "name": "created_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 21,
+        "default": null,
+        "name": "accepted_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 22,
+        "default": null,
+        "name": "superseded_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 23,
+        "default": null,
+        "name": "automation_method",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 24,
+        "default": null,
+        "name": "acceptance_authority",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 25,
+        "default": null,
+        "name": "automation_run_id",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 26,
+        "default": null,
+        "name": "rule_id",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 27,
+        "default": null,
+        "name": "rule_version",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 28,
+        "default": null,
+        "name": "decision_provenance_sha256",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_automation_facts": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "fact_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "automation_run_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "case_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "evidence_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "fact_type",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "normalized_value_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "source_span_start",
+        "notnull": 1,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "source_span_end",
+        "notnull": 1,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 8,
+        "default": null,
+        "name": "cited_text_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 9,
+        "default": null,
+        "name": "extractor_rule_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 10,
+        "default": null,
+        "name": "extractor_rule_version",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 11,
+        "default": null,
+        "name": "fact_dedupe_key",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 12,
+        "default": null,
+        "name": "created_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_automation_run_blockers": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "automation_run_id",
+        "notnull": 1,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "blocker_code",
+        "notnull": 1,
+        "pk": 2,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "retryable",
+        "notnull": 1,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "context_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "created_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_automation_runs": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "run_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "case_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "mode",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "observation_fingerprint_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "policy_version",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "run_key",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "status",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "decision_tier",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 8,
+        "default": null,
+        "name": "action_readiness",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 9,
+        "default": null,
+        "name": "query_context_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 10,
+        "default": null,
+        "name": "diagnostics_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 11,
+        "default": null,
+        "name": "retry_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 12,
+        "default": null,
+        "name": "failure_code",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 13,
+        "default": null,
+        "name": "started_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 14,
+        "default": null,
+        "name": "finished_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 15,
+        "default": null,
+        "name": "created_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 16,
+        "default": null,
+        "name": "updated_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_case_acknowledgements": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "acknowledgement_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "case_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "reason",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "note",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "author",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "observation_fingerprint_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "evidence_set_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "acknowledged_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 8,
+        "default": null,
+        "name": "reopened_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_cases": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "case_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "source",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "source_ref",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "ticker",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "created_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "updated_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_evidence": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "evidence_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "case_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "run_id",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "automation_run_id",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "source_family",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "kind",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "source_url",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "title",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 8,
+        "default": null,
+        "name": "publisher",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 9,
+        "default": null,
+        "name": "domain",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 10,
+        "default": null,
+        "name": "source_published_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 11,
+        "default": null,
+        "name": "retrieved_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 12,
+        "default": null,
+        "name": "adapter",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 13,
+        "default": null,
+        "name": "excerpt",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 14,
+        "default": null,
+        "name": "content_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 15,
+        "default": null,
+        "name": "source_document_sha256",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 16,
+        "default": null,
+        "name": "source_locator_json",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 17,
+        "default": null,
+        "name": "evidence_dedupe_key",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 18,
+        "default": null,
+        "name": "mime_type",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 19,
+        "default": null,
+        "name": "document_status",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 20,
+        "default": null,
+        "name": "created_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_evidence_translations": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "evidence_id",
+        "notnull": 1,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "evidence_content_sha256",
+        "notnull": 1,
+        "pk": 2,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "locale",
+        "notnull": 1,
+        "pk": 3,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "translated_text",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "provider",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "model",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "harness",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "translated_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_investigation_runs": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "run_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "case_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "trigger",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "adapter",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "status",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "query_plan_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "query_count",
+        "notnull": 1,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "result_count",
+        "notnull": 0,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 8,
+        "default": null,
+        "name": "fetch_count",
+        "notnull": 1,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 9,
+        "default": null,
+        "name": "usage_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 10,
+        "default": null,
+        "name": "failure_code",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 11,
+        "default": null,
+        "name": "started_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 12,
+        "default": null,
+        "name": "finished_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 13,
+        "default": null,
+        "name": "created_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "security_lifecycle_migration_receipts": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "migration_key",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "market_snapshot_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "legacy_mapping_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "phase",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "expected_legacy_rows",
+        "notnull": 1,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "expected_observations",
+        "notnull": 1,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "expected_kinds",
+        "notnull": 1,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "expected_legacy_assessments",
+        "notnull": 1,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 8,
+        "default": null,
+        "name": "started_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 9,
+        "default": null,
+        "name": "updated_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 10,
+        "default": null,
+        "name": "completed_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "ticker_identity_links": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "link_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "transition_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "source_ticker",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "successor_ticker",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "relationship",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "effective_date",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "created_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "reversed_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "ticker_identity_transition_activity": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "activity_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "transition_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "activity_type",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "source_ticker",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "successor_ticker",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "effective_date",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "user_owned_changes_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "provider_owned_retained_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 8,
+        "default": null,
+        "name": "state_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 9,
+        "default": null,
+        "name": "rule_id",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 10,
+        "default": null,
+        "name": "rule_version",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 11,
+        "default": null,
+        "name": "decision_provenance_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 12,
+        "default": null,
+        "name": "occurred_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 13,
+        "default": null,
+        "name": "acknowledged_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 14,
+        "default": null,
+        "name": "created_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "ticker_identity_transition_attempts": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "attempt_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "transition_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "trigger",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "status",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "block_reasons_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "observed_preview_sha256",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "attempted_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ],
+    "ticker_identity_transitions": [
+      {
+        "cid": 0,
+        "default": null,
+        "name": "transition_id",
+        "notnull": 0,
+        "pk": 1,
+        "type": "TEXT"
+      },
+      {
+        "cid": 1,
+        "default": null,
+        "name": "case_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 2,
+        "default": null,
+        "name": "assessment_id",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 3,
+        "default": null,
+        "name": "proposal_ids_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 4,
+        "default": null,
+        "name": "transition_dedupe_key",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 5,
+        "default": null,
+        "name": "kind",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 6,
+        "default": null,
+        "name": "status",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 7,
+        "default": null,
+        "name": "source_ticker",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 8,
+        "default": null,
+        "name": "successor_ticker",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 9,
+        "default": null,
+        "name": "execute_on",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 10,
+        "default": null,
+        "name": "priority_resolution",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 11,
+        "default": null,
+        "name": "unhide_successor",
+        "notnull": 1,
+        "pk": 0,
+        "type": "INTEGER"
+      },
+      {
+        "cid": 12,
+        "default": null,
+        "name": "approved_observation_fingerprint_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 13,
+        "default": null,
+        "name": "approved_assessment_fingerprint_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 14,
+        "default": null,
+        "name": "approved_preview_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 15,
+        "default": null,
+        "name": "approved_preview_json",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 16,
+        "default": null,
+        "name": "before_snapshot_json",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 17,
+        "default": null,
+        "name": "after_snapshot_sha256",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 18,
+        "default": null,
+        "name": "approved_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 19,
+        "default": null,
+        "name": "updated_at",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 20,
+        "default": null,
+        "name": "applied_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 21,
+        "default": null,
+        "name": "cancelled_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 22,
+        "default": null,
+        "name": "reversed_at",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 23,
+        "default": null,
+        "name": "approval_authority",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 24,
+        "default": null,
+        "name": "automation_policy_version",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 25,
+        "default": null,
+        "name": "rule_id",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 26,
+        "default": null,
+        "name": "rule_version",
+        "notnull": 0,
+        "pk": 0,
+        "type": "TEXT"
+      },
+      {
+        "cid": 27,
+        "default": null,
+        "name": "decision_provenance_sha256",
+        "notnull": 1,
+        "pk": 0,
+        "type": "TEXT"
+      }
+    ]
+  },
+  "protected_file_sha256": {
+    "src/security_lifecycle_decision_policy.py": "47e0115fa84e4e92e3f56b4e29c769a1aa2193aca8c7798a30145f1c23322961",
+    "src/security_lifecycle_schema.py": "80b42fad0b56814ce64f2550edd3592c3ce47b43398a23d45c043a57c2b5d1b0",
+    "src/ticker_identity_schema.py": "008f0f7d7043be3ed73f7c7a4ea60d93156e16e79f54a54e278da13211aed7b7",
+    "src/ticker_identity_transition.py": "25da8a622ef66b6dd793bb88766417921bbe2205319ed3914b51e84e4df302e3"
+  },
+  "revision": "b05ea4a2abe2fc2e1fbebd845de624804f46f3d1",
+  "schema_version": 1,
+  "sqlite_master_owned": [
+    {
+      "name": "idx_security_lifecycle_assessments_case_revision",
+      "sql": "CREATE INDEX idx_security_lifecycle_assessments_case_revision\n        ON security_lifecycle_assessments(case_id, revision DESC)\n    ",
+      "table": "security_lifecycle_assessments",
+      "type": "index"
+    },
+    {
+      "name": "idx_security_lifecycle_automation_blockers_run",
+      "sql": "CREATE INDEX idx_security_lifecycle_automation_blockers_run\n        ON security_lifecycle_automation_run_blockers(automation_run_id, blocker_code)\n    ",
+      "table": "security_lifecycle_automation_run_blockers",
+      "type": "index"
+    },
+    {
+      "name": "idx_security_lifecycle_automation_runs_case_created",
+      "sql": "CREATE INDEX idx_security_lifecycle_automation_runs_case_created\n        ON security_lifecycle_automation_runs(case_id, created_at)\n    ",
+      "table": "security_lifecycle_automation_runs",
+      "type": "index"
+    },
+    {
+      "name": "idx_security_lifecycle_cases_identity",
+      "sql": "CREATE INDEX idx_security_lifecycle_cases_identity\n        ON security_lifecycle_cases(source, source_ref, ticker)\n    ",
+      "table": "security_lifecycle_cases",
+      "type": "index"
+    },
+    {
+      "name": "idx_security_lifecycle_evidence_automation_run",
+      "sql": "CREATE INDEX idx_security_lifecycle_evidence_automation_run\n        ON security_lifecycle_evidence(automation_run_id, created_at)\n    ",
+      "table": "security_lifecycle_evidence",
+      "type": "index"
+    },
+    {
+      "name": "idx_security_lifecycle_evidence_case_created",
+      "sql": "CREATE INDEX idx_security_lifecycle_evidence_case_created\n        ON security_lifecycle_evidence(case_id, created_at)\n    ",
+      "table": "security_lifecycle_evidence",
+      "type": "index"
+    },
+    {
+      "name": "idx_security_lifecycle_facts_run_type",
+      "sql": "CREATE INDEX idx_security_lifecycle_facts_run_type\n        ON security_lifecycle_automation_facts(automation_run_id, fact_type)\n    ",
+      "table": "security_lifecycle_automation_facts",
+      "type": "index"
+    },
+    {
+      "name": "idx_security_lifecycle_one_current_ack",
+      "sql": "CREATE UNIQUE INDEX idx_security_lifecycle_one_current_ack\n        ON security_lifecycle_case_acknowledgements(case_id)\n        WHERE reopened_at IS NULL\n    ",
+      "table": "security_lifecycle_case_acknowledgements",
+      "type": "index"
+    },
+    {
+      "name": "idx_security_lifecycle_runs_case_created",
+      "sql": "CREATE INDEX idx_security_lifecycle_runs_case_created\n        ON security_lifecycle_investigation_runs(case_id, created_at)\n    ",
+      "table": "security_lifecycle_investigation_runs",
+      "type": "index"
+    },
+    {
+      "name": "idx_security_lifecycle_translations_evidence_locale",
+      "sql": "CREATE INDEX idx_security_lifecycle_translations_evidence_locale\n        ON security_lifecycle_evidence_translations(evidence_id, locale)\n    ",
+      "table": "security_lifecycle_evidence_translations",
+      "type": "index"
+    },
+    {
+      "name": "idx_ticker_identity_activity_transition",
+      "sql": "CREATE INDEX idx_ticker_identity_activity_transition\n        ON ticker_identity_transition_activity(transition_id, occurred_at)\n    ",
+      "table": "ticker_identity_transition_activity",
+      "type": "index"
+    },
+    {
+      "name": "idx_ticker_identity_activity_unacknowledged",
+      "sql": "CREATE INDEX idx_ticker_identity_activity_unacknowledged\n        ON ticker_identity_transition_activity(acknowledged_at, occurred_at)\n    ",
+      "table": "ticker_identity_transition_activity",
+      "type": "index"
+    },
+    {
+      "name": "idx_ticker_identity_attempts_transition",
+      "sql": "CREATE INDEX idx_ticker_identity_attempts_transition\n        ON ticker_identity_transition_attempts(transition_id, attempted_at)\n    ",
+      "table": "ticker_identity_transition_attempts",
+      "type": "index"
+    },
+    {
+      "name": "idx_ticker_identity_links_source",
+      "sql": "CREATE INDEX idx_ticker_identity_links_source\n        ON ticker_identity_links(source_ticker, reversed_at)\n    ",
+      "table": "ticker_identity_links",
+      "type": "index"
+    },
+    {
+      "name": "idx_ticker_identity_links_successor",
+      "sql": "CREATE INDEX idx_ticker_identity_links_successor\n        ON ticker_identity_links(successor_ticker, reversed_at)\n    ",
+      "table": "ticker_identity_links",
+      "type": "index"
+    },
+    {
+      "name": "idx_ticker_identity_transitions_due",
+      "sql": "CREATE INDEX idx_ticker_identity_transitions_due\n        ON ticker_identity_transitions(status, execute_on)\n    ",
+      "table": "ticker_identity_transitions",
+      "type": "index"
+    },
+    {
+      "name": "security_lifecycle_action_proposals",
+      "sql": "CREATE TABLE security_lifecycle_action_proposals (\n            proposal_id TEXT PRIMARY KEY,\n            case_id TEXT NOT NULL REFERENCES security_lifecycle_cases(case_id) ON DELETE CASCADE,\n            assessment_id TEXT NOT NULL REFERENCES security_lifecycle_assessments(assessment_id) ON DELETE CASCADE,\n            action_type TEXT NOT NULL CHECK (action_type IN ('archive_manual_memberships', 'hide_from_active_universe', 'keep_tracking', 'no_action', 'notify', 'remap_symbol', 'review_portfolio_position')),\n            status TEXT NOT NULL CHECK (status IN ('dismissed', 'proposed')),\n            source_ticker TEXT NOT NULL,\n            replacement_ticker TEXT,\n            source_snapshot_json TEXT NOT NULL,\n            reason TEXT NOT NULL CHECK (length(reason) BETWEEN 1 AND 2000),\n            block_reason TEXT CHECK (block_reason IS NULL OR block_reason IN ('action_executor_not_available', 'portfolio_position_open', 'source_context_unavailable', 'stale_assessment', 'successor_evidence_missing')),\n            assessment_fingerprint_sha256 TEXT NOT NULL CHECK (length(assessment_fingerprint_sha256) = 64),\n            proposal_dedupe_key TEXT NOT NULL UNIQUE,\n            created_at TEXT NOT NULL,\n            dismissed_at TEXT\n        )",
+      "table": "security_lifecycle_action_proposals",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_assessment_evidence",
+      "sql": "CREATE TABLE security_lifecycle_assessment_evidence (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            assessment_id TEXT NOT NULL REFERENCES security_lifecycle_assessments(assessment_id) ON DELETE CASCADE,\n            reference_kind TEXT NOT NULL CHECK (reference_kind IN ('observation', 'evidence')),\n            evidence_id TEXT REFERENCES security_lifecycle_evidence(evidence_id),\n            cited_content_sha256 TEXT NOT NULL CHECK (length(cited_content_sha256) = 64),\n            CHECK ((reference_kind = 'observation' AND evidence_id IS NULL) OR (reference_kind = 'evidence' AND evidence_id IS NOT NULL))\n        )",
+      "table": "security_lifecycle_assessment_evidence",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_assessment_outcomes",
+      "sql": "CREATE TABLE security_lifecycle_assessment_outcomes (\n            assessment_id TEXT NOT NULL REFERENCES security_lifecycle_assessments(assessment_id) ON DELETE CASCADE,\n            outcome TEXT NOT NULL CHECK (outcome IN ('acquisition_cash', 'acquisition_mixed', 'acquisition_stock', 'acquisition_terms_unknown', 'issuer_security_change', 'listing_ended', 'no_tracked_security_change', 'not_applicable', 'other', 'symbol_changed', 'symbol_or_venue_changed', 'undetermined', 'venue_transfer')),\n            PRIMARY KEY(assessment_id, outcome)\n        )",
+      "table": "security_lifecycle_assessment_outcomes",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_assessments",
+      "sql": "CREATE TABLE security_lifecycle_assessments (\n            assessment_id TEXT PRIMARY KEY,\n            case_id TEXT NOT NULL REFERENCES security_lifecycle_cases(case_id) ON DELETE CASCADE,\n            revision INTEGER NOT NULL CHECK (revision >= 1),\n            status TEXT NOT NULL CHECK (status IN ('accepted', 'draft', 'superseded')),\n            relevance TEXT NOT NULL CHECK (relevance IN ('direct_tracked_security', 'issuer_related', 'undetermined', 'unrelated')),\n            confidence TEXT NOT NULL CHECK (confidence IN ('high', 'low', 'medium', 'unknown')),\n            author TEXT NOT NULL CHECK (author IN ('automation', 'human', 'legacy_review')),\n            conclusion TEXT NOT NULL CHECK (length(conclusion) BETWEEN 1 AND 4000),\n            impact_summary TEXT NOT NULL CHECK (length(impact_summary) BETWEEN 1 AND 4000),\n            counterparty_name TEXT CHECK (counterparty_name IS NULL OR length(counterparty_name) <= 240),\n            counterparty_ticker TEXT CHECK (counterparty_ticker IS NULL OR length(counterparty_ticker) <= 20),\n            counterparty_cik TEXT CHECK (counterparty_cik IS NULL OR (length(counterparty_cik) = 10 AND counterparty_cik NOT GLOB '*[^0-9]*')),\n            successor_ticker TEXT CHECK (successor_ticker IS NULL OR length(successor_ticker) <= 20),\n            destination_venue TEXT CHECK (destination_venue IS NULL OR length(destination_venue) <= 120),\n            effective_date TEXT CHECK (effective_date IS NULL OR length(effective_date) = 10),\n            consideration_currency TEXT CHECK (consideration_currency IS NULL OR (length(consideration_currency) = 3 AND consideration_currency NOT GLOB '*[^A-Z]*')),\n            cash_per_security_decimal TEXT,\n            exchange_ratio_decimal TEXT,\n            observation_fingerprint_sha256 TEXT NOT NULL CHECK (length(observation_fingerprint_sha256) = 64 AND observation_fingerprint_sha256 NOT GLOB '*[^0-9a-f]*'),\n            evidence_set_sha256 TEXT NOT NULL CHECK (length(evidence_set_sha256) = 64 AND evidence_set_sha256 NOT GLOB '*[^0-9a-f]*'),\n            created_at TEXT NOT NULL,\n            accepted_at TEXT,\n            superseded_at TEXT,\n            automation_method TEXT CHECK (automation_method IS NULL OR automation_method IN ('deterministic_rule', 'model_assisted')),\n            acceptance_authority TEXT CHECK (acceptance_authority IS NULL OR acceptance_authority IN ('automation_policy', 'human', 'legacy_migration')),\n            automation_run_id TEXT REFERENCES security_lifecycle_automation_runs(run_id) ON DELETE RESTRICT,\n            rule_id TEXT CHECK (rule_id IS NULL OR (length(rule_id) BETWEEN 1 AND 160 AND instr(rule_id, char(0)) = 0)),\n            rule_version TEXT CHECK (rule_version IS NULL OR (length(rule_version) BETWEEN 1 AND 120 AND instr(rule_version, char(0)) = 0)),\n            decision_provenance_sha256 TEXT CHECK (decision_provenance_sha256 IS NULL OR (length(decision_provenance_sha256) = 64 AND decision_provenance_sha256 NOT GLOB '*[^0-9a-f]*')),\n            UNIQUE(case_id, revision),\n            CHECK (\n                (status = 'draft' AND acceptance_authority IS NULL AND accepted_at IS NULL AND superseded_at IS NULL)\n                OR (status = 'accepted' AND acceptance_authority IS NOT NULL AND accepted_at IS NOT NULL AND superseded_at IS NULL)\n                OR (status = 'superseded' AND acceptance_authority IS NOT NULL AND accepted_at IS NOT NULL AND superseded_at IS NOT NULL)\n            ),\n            CHECK (\n                (author = 'human' AND automation_method IS NULL AND automation_run_id IS NULL AND rule_id IS NULL AND rule_version IS NULL AND decision_provenance_sha256 IS NULL AND (acceptance_authority IS NULL OR acceptance_authority = 'human'))\n                OR (author = 'legacy_review' AND automation_method IS NULL AND automation_run_id IS NULL AND rule_id IS NULL AND rule_version IS NULL AND decision_provenance_sha256 IS NULL AND (acceptance_authority IS NULL OR acceptance_authority = 'legacy_migration'))\n                OR (author = 'automation' AND automation_method IS NOT NULL AND automation_run_id IS NOT NULL AND rule_id IS NOT NULL AND rule_version IS NOT NULL AND decision_provenance_sha256 IS NOT NULL AND (acceptance_authority IS NULL OR acceptance_authority IN ('human', 'automation_policy')))\n            ),\n            CHECK (acceptance_authority <> 'automation_policy' OR automation_method = 'deterministic_rule')\n        )",
+      "table": "security_lifecycle_assessments",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_automation_facts",
+      "sql": "CREATE TABLE security_lifecycle_automation_facts (\n            fact_id TEXT PRIMARY KEY CHECK (length(fact_id) BETWEEN 1 AND 120),\n            automation_run_id TEXT NOT NULL REFERENCES security_lifecycle_automation_runs(run_id) ON DELETE CASCADE,\n            case_id TEXT NOT NULL REFERENCES security_lifecycle_cases(case_id) ON DELETE CASCADE,\n            evidence_id TEXT NOT NULL REFERENCES security_lifecycle_evidence(evidence_id) ON DELETE RESTRICT,\n            fact_type TEXT NOT NULL CHECK (fact_type IN ('destination_venue', 'effective_date', 'issuer_cik', 'security_class', 'source_ticker', 'source_venue', 'successor_ticker', 'tracked_security_effect', 'transaction_structure')),\n            normalized_value_json TEXT NOT NULL CHECK (length(normalized_value_json) BETWEEN 1 AND 4096),\n            source_span_start INTEGER NOT NULL CHECK (source_span_start >= 0),\n            source_span_end INTEGER NOT NULL CHECK (source_span_end > source_span_start),\n            cited_text_sha256 TEXT NOT NULL CHECK (length(cited_text_sha256) = 64 AND cited_text_sha256 NOT GLOB '*[^0-9a-f]*'),\n            extractor_rule_id TEXT NOT NULL CHECK (length(extractor_rule_id) BETWEEN 1 AND 160 AND instr(extractor_rule_id, char(0)) = 0),\n            extractor_rule_version TEXT NOT NULL CHECK (length(extractor_rule_version) BETWEEN 1 AND 120 AND instr(extractor_rule_version, char(0)) = 0),\n            fact_dedupe_key TEXT NOT NULL UNIQUE CHECK (length(fact_dedupe_key) BETWEEN 1 AND 500 AND instr(fact_dedupe_key, char(0)) = 0),\n            created_at TEXT NOT NULL\n        )",
+      "table": "security_lifecycle_automation_facts",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_automation_run_blockers",
+      "sql": "CREATE TABLE security_lifecycle_automation_run_blockers (\n            automation_run_id TEXT NOT NULL REFERENCES security_lifecycle_automation_runs(run_id) ON DELETE CASCADE,\n            blocker_code TEXT NOT NULL CHECK (blocker_code IN ('ibkr_contract_ambiguous', 'ibkr_contract_missing', 'ibkr_entitlement_denied', 'ibkr_gateway_unavailable', 'impact_context_requested', 'internal_news_schema_mismatch', 'internal_news_unavailable', 'market_confirmation_missing', 'sec_access_denied', 'sec_document_unavailable', 'sec_evidence_insufficient', 'sec_governor_unavailable', 'sec_identity_unconfigured', 'sec_rate_limited', 'sec_request_budget_exhausted', 'sec_transport_unavailable', 'source_conflict', 'transition_approval_changed', 'transition_approval_unavailable')),\n            retryable INTEGER NOT NULL CHECK (retryable IN (0, 1)),\n            context_json TEXT NOT NULL CHECK (length(context_json) BETWEEN 2 AND 4096),\n            created_at TEXT NOT NULL,\n            PRIMARY KEY(automation_run_id, blocker_code)\n        )",
+      "table": "security_lifecycle_automation_run_blockers",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_automation_runs",
+      "sql": "CREATE TABLE security_lifecycle_automation_runs (\n            run_id TEXT PRIMARY KEY CHECK (length(run_id) BETWEEN 1 AND 120),\n            case_id TEXT NOT NULL REFERENCES security_lifecycle_cases(case_id) ON DELETE CASCADE,\n            mode TEXT NOT NULL CHECK (mode IN ('historical', 'live')),\n            observation_fingerprint_sha256 TEXT NOT NULL CHECK (length(observation_fingerprint_sha256) = 64 AND observation_fingerprint_sha256 NOT GLOB '*[^0-9a-f]*'),\n            policy_version TEXT NOT NULL CHECK (length(policy_version) BETWEEN 1 AND 120 AND instr(policy_version, char(0)) = 0),\n            run_key TEXT NOT NULL UNIQUE CHECK (length(run_key) BETWEEN 1 AND 500 AND instr(run_key, char(0)) = 0),\n            status TEXT NOT NULL CHECK (status IN ('blocked', 'cancelled', 'failed', 'queued', 'running', 'succeeded')),\n            decision_tier TEXT CHECK (decision_tier IS NULL OR decision_tier IN ('review_suggested', 'verified_automatic')),\n            action_readiness TEXT CHECK (action_readiness IS NULL OR action_readiness IN ('action_blocked', 'not_applicable', 'transition_eligible', 'waiting_effective_date', 'waiting_market_confirmation', 'waiting_transition_revalidation')),\n            query_context_json TEXT NOT NULL CHECK (length(query_context_json) BETWEEN 2 AND 16384),\n            diagnostics_json TEXT NOT NULL CHECK (length(diagnostics_json) BETWEEN 2 AND 8192),\n            retry_at TEXT,\n            failure_code TEXT CHECK (failure_code IS NULL OR failure_code IN ('extractor_failed', 'internal_error', 'persistence_failed', 'profile_schema_mismatch', 'source_payload_invalid')),\n            started_at TEXT,\n            finished_at TEXT,\n            created_at TEXT NOT NULL,\n            updated_at TEXT NOT NULL,\n            CHECK (retry_at IS NULL OR status = 'blocked'),\n            CHECK (\n                (status = 'queued' AND decision_tier IS NULL AND action_readiness IS NULL AND failure_code IS NULL AND started_at IS NULL AND finished_at IS NULL)\n                OR (status = 'running' AND decision_tier IS NULL AND action_readiness IS NULL AND failure_code IS NULL AND started_at IS NOT NULL AND finished_at IS NULL)\n                OR (status = 'succeeded' AND decision_tier IS NOT NULL AND action_readiness IS NOT NULL AND failure_code IS NULL AND started_at IS NOT NULL AND finished_at IS NOT NULL)\n                OR (status = 'blocked' AND failure_code IS NULL AND started_at IS NOT NULL AND finished_at IS NOT NULL)\n                OR (status = 'failed' AND failure_code IS NOT NULL AND started_at IS NOT NULL AND finished_at IS NOT NULL)\n                OR (status = 'cancelled' AND failure_code IS NULL AND finished_at IS NOT NULL)\n            )\n        )",
+      "table": "security_lifecycle_automation_runs",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_case_acknowledgements",
+      "sql": "CREATE TABLE security_lifecycle_case_acknowledgements (\n            acknowledgement_id TEXT PRIMARY KEY,\n            case_id TEXT NOT NULL REFERENCES security_lifecycle_cases(case_id) ON DELETE CASCADE,\n            reason TEXT NOT NULL CHECK (reason IN ('evidence_insufficient')),\n            note TEXT CHECK (note IS NULL OR length(note) <= 2000),\n            author TEXT NOT NULL CHECK (author = 'human'),\n            observation_fingerprint_sha256 TEXT NOT NULL CHECK (length(observation_fingerprint_sha256) = 64),\n            evidence_set_sha256 TEXT NOT NULL CHECK (length(evidence_set_sha256) = 64),\n            acknowledged_at TEXT NOT NULL,\n            reopened_at TEXT\n        )",
+      "table": "security_lifecycle_case_acknowledgements",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_cases",
+      "sql": "CREATE TABLE security_lifecycle_cases (\n            case_id TEXT PRIMARY KEY,\n            source TEXT NOT NULL,\n            source_ref TEXT NOT NULL CHECK (instr(source_ref, char(0)) = 0),\n            ticker TEXT NOT NULL,\n            created_at TEXT NOT NULL,\n            updated_at TEXT NOT NULL,\n            UNIQUE(source, source_ref, ticker)\n        )",
+      "table": "security_lifecycle_cases",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_evidence",
+      "sql": "CREATE TABLE security_lifecycle_evidence (\n            evidence_id TEXT PRIMARY KEY,\n            case_id TEXT NOT NULL REFERENCES security_lifecycle_cases(case_id) ON DELETE CASCADE,\n            run_id TEXT REFERENCES security_lifecycle_investigation_runs(run_id),\n            automation_run_id TEXT REFERENCES security_lifecycle_automation_runs(run_id),\n            source_family TEXT NOT NULL CHECK (source_family IN ('general_web', 'manual', 'market_infrastructure', 'publisher', 'regulator')),\n            kind TEXT NOT NULL CHECK (kind IN ('document_reference', 'hosted_search_citation', 'manual_text', 'manual_url', 'market_infrastructure_snapshot', 'publisher_excerpt', 'regulator_excerpt')),\n            source_url TEXT CHECK (source_url IS NULL OR length(source_url) <= 1000),\n            title TEXT CHECK (title IS NULL OR length(title) <= 500),\n            publisher TEXT CHECK (publisher IS NULL OR length(publisher) <= 240),\n            domain TEXT CHECK (domain IS NULL OR length(domain) <= 253),\n            source_published_at TEXT,\n            retrieved_at TEXT,\n            adapter TEXT NOT NULL CHECK (adapter IN ('hosted_search', 'ibkr_contract', 'internal_news', 'manual', 'sec_edgar')),\n            excerpt TEXT NOT NULL CHECK (length(excerpt) <= 16000),\n            content_sha256 TEXT NOT NULL CHECK (length(content_sha256) = 64 AND content_sha256 NOT GLOB '*[^0-9a-f]*'),\n            source_document_sha256 TEXT CHECK (source_document_sha256 IS NULL OR (length(source_document_sha256) = 64 AND source_document_sha256 NOT GLOB '*[^0-9a-f]*')),\n            source_locator_json TEXT CHECK (source_locator_json IS NULL OR length(source_locator_json) BETWEEN 2 AND 4096),\n            evidence_dedupe_key TEXT NOT NULL UNIQUE CHECK (length(evidence_dedupe_key) BETWEEN 1 AND 500 AND instr(evidence_dedupe_key, char(0)) = 0),\n            mime_type TEXT CHECK (mime_type IS NULL OR length(mime_type) <= 127),\n            document_status TEXT CHECK (document_status IS NULL OR document_status IN ('extraction_needed', 'not_inspected')),\n            created_at TEXT NOT NULL,\n            UNIQUE(evidence_id, content_sha256),\n            CHECK (run_id IS NULL OR automation_run_id IS NULL),\n            CHECK ((kind = 'document_reference' AND document_status IS NOT NULL) OR (kind <> 'document_reference' AND document_status IS NULL)),\n            CHECK (\n                (adapter = 'manual' AND source_family = 'manual' AND kind IN ('manual_url', 'manual_text', 'document_reference') AND automation_run_id IS NULL)\n                OR (adapter = 'sec_edgar' AND source_family = 'regulator' AND kind = 'regulator_excerpt' AND run_id IS NULL AND automation_run_id IS NOT NULL AND source_document_sha256 IS NOT NULL AND source_locator_json IS NOT NULL)\n                OR (adapter = 'internal_news' AND source_family = 'publisher' AND kind = 'publisher_excerpt' AND run_id IS NULL AND automation_run_id IS NOT NULL)\n                OR (adapter = 'ibkr_contract' AND source_family = 'market_infrastructure' AND kind = 'market_infrastructure_snapshot' AND run_id IS NULL AND automation_run_id IS NOT NULL)\n                OR (adapter = 'hosted_search' AND source_family = 'general_web' AND kind = 'hosted_search_citation' AND run_id IS NULL AND automation_run_id IS NOT NULL)\n            )\n        )",
+      "table": "security_lifecycle_evidence",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_evidence_translations",
+      "sql": "CREATE TABLE security_lifecycle_evidence_translations (\n            evidence_id TEXT NOT NULL,\n            evidence_content_sha256 TEXT NOT NULL CHECK (length(evidence_content_sha256) = 64 AND evidence_content_sha256 NOT GLOB '*[^0-9a-f]*'),\n            locale TEXT NOT NULL CHECK (length(locale) BETWEEN 2 AND 32 AND instr(locale, char(0)) = 0),\n            translated_text TEXT NOT NULL CHECK (length(translated_text) BETWEEN 1 AND 16000),\n            provider TEXT NOT NULL CHECK (length(provider) BETWEEN 1 AND 64 AND instr(provider, char(0)) = 0),\n            model TEXT NOT NULL CHECK (length(model) BETWEEN 1 AND 160 AND instr(model, char(0)) = 0),\n            harness TEXT NOT NULL CHECK (length(harness) BETWEEN 1 AND 160 AND instr(harness, char(0)) = 0),\n            translated_at TEXT NOT NULL,\n            PRIMARY KEY(evidence_id, evidence_content_sha256, locale),\n            FOREIGN KEY(evidence_id, evidence_content_sha256)\n                REFERENCES security_lifecycle_evidence(evidence_id, content_sha256)\n                ON DELETE CASCADE\n        )",
+      "table": "security_lifecycle_evidence_translations",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_investigation_runs",
+      "sql": "CREATE TABLE security_lifecycle_investigation_runs (\n            run_id TEXT PRIMARY KEY,\n            case_id TEXT NOT NULL REFERENCES security_lifecycle_cases(case_id) ON DELETE CASCADE,\n            trigger TEXT NOT NULL CHECK (trigger IN ('attended_user')),\n            adapter TEXT NOT NULL CHECK (adapter IN ('manual')),\n            status TEXT NOT NULL CHECK (status IN ('cancelled', 'failed', 'queued', 'running', 'succeeded')),\n            query_plan_json TEXT NOT NULL CHECK (length(query_plan_json) <= 6000),\n            query_count INTEGER NOT NULL CHECK (query_count BETWEEN 0 AND 3),\n            result_count INTEGER CHECK (result_count IS NULL OR result_count >= 0),\n            fetch_count INTEGER NOT NULL CHECK (fetch_count BETWEEN 0 AND 5),\n            usage_json TEXT NOT NULL CHECK (length(usage_json) <= 4096),\n            failure_code TEXT CHECK (failure_code IS NULL OR failure_code IN ('adapter_unavailable', 'extract_failed', 'unsupported_content')),\n            started_at TEXT,\n            finished_at TEXT,\n            created_at TEXT NOT NULL,\n            CHECK ((status = 'failed' AND failure_code IS NOT NULL) OR (status <> 'failed' AND failure_code IS NULL)),\n            CHECK ((status = 'succeeded' AND result_count IS NOT NULL) OR status <> 'succeeded')\n        )",
+      "table": "security_lifecycle_investigation_runs",
+      "type": "table"
+    },
+    {
+      "name": "security_lifecycle_migration_receipts",
+      "sql": "CREATE TABLE security_lifecycle_migration_receipts (\n            migration_key TEXT PRIMARY KEY,\n            market_snapshot_sha256 TEXT NOT NULL CHECK (length(market_snapshot_sha256) = 64),\n            legacy_mapping_sha256 TEXT NOT NULL CHECK (length(legacy_mapping_sha256) = 64),\n            phase TEXT NOT NULL CHECK (phase IN ('complete', 'market_written', 'profile_written')),\n            expected_legacy_rows INTEGER NOT NULL,\n            expected_observations INTEGER NOT NULL,\n            expected_kinds INTEGER NOT NULL,\n            expected_legacy_assessments INTEGER NOT NULL,\n            started_at TEXT NOT NULL,\n            updated_at TEXT NOT NULL,\n            completed_at TEXT\n        )",
+      "table": "security_lifecycle_migration_receipts",
+      "type": "table"
+    },
+    {
+      "name": "ticker_identity_links",
+      "sql": "CREATE TABLE ticker_identity_links (\n            link_id TEXT PRIMARY KEY CHECK (length(link_id) BETWEEN 1 AND 120),\n            transition_id TEXT NOT NULL UNIQUE REFERENCES ticker_identity_transitions(transition_id) ON DELETE CASCADE,\n            source_ticker TEXT NOT NULL CHECK (length(source_ticker) BETWEEN 1 AND 20 AND instr(source_ticker, char(0)) = 0),\n            successor_ticker TEXT NOT NULL CHECK (length(successor_ticker) BETWEEN 1 AND 20 AND instr(successor_ticker, char(0)) = 0),\n            relationship TEXT NOT NULL CHECK (relationship = 'symbol_continuation'),\n            effective_date TEXT NOT NULL CHECK (length(effective_date) = 10),\n            created_at TEXT NOT NULL,\n            reversed_at TEXT,\n            CHECK (successor_ticker <> source_ticker)\n        )",
+      "table": "ticker_identity_links",
+      "type": "table"
+    },
+    {
+      "name": "ticker_identity_transition_activity",
+      "sql": "CREATE TABLE ticker_identity_transition_activity (\n            activity_id TEXT PRIMARY KEY CHECK (length(activity_id) BETWEEN 1 AND 120),\n            transition_id TEXT NOT NULL REFERENCES ticker_identity_transitions(transition_id) ON DELETE CASCADE,\n            activity_type TEXT NOT NULL CHECK (activity_type IN ('applied', 'reversed')),\n            source_ticker TEXT NOT NULL CHECK (length(source_ticker) BETWEEN 1 AND 20 AND instr(source_ticker, char(0)) = 0),\n            successor_ticker TEXT CHECK (successor_ticker IS NULL OR (length(successor_ticker) BETWEEN 1 AND 20 AND instr(successor_ticker, char(0)) = 0)),\n            effective_date TEXT NOT NULL CHECK (length(effective_date) = 10),\n            user_owned_changes_json TEXT NOT NULL CHECK (length(user_owned_changes_json) BETWEEN 2 AND 32768),\n            provider_owned_retained_json TEXT NOT NULL CHECK (length(provider_owned_retained_json) BETWEEN 2 AND 32768),\n            state_sha256 TEXT NOT NULL CHECK (length(state_sha256) = 64 AND state_sha256 NOT GLOB '*[^0-9a-f]*'),\n            rule_id TEXT CHECK (rule_id IS NULL OR (length(rule_id) BETWEEN 1 AND 160 AND instr(rule_id, char(0)) = 0)),\n            rule_version TEXT CHECK (rule_version IS NULL OR (length(rule_version) BETWEEN 1 AND 120 AND instr(rule_version, char(0)) = 0)),\n            decision_provenance_sha256 TEXT NOT NULL CHECK (length(decision_provenance_sha256) = 64 AND decision_provenance_sha256 NOT GLOB '*[^0-9a-f]*'),\n            occurred_at TEXT NOT NULL,\n            acknowledged_at TEXT,\n            created_at TEXT NOT NULL,\n            CHECK ((rule_id IS NULL AND rule_version IS NULL) OR (rule_id IS NOT NULL AND rule_version IS NOT NULL))\n        )",
+      "table": "ticker_identity_transition_activity",
+      "type": "table"
+    },
+    {
+      "name": "ticker_identity_transition_attempts",
+      "sql": "CREATE TABLE ticker_identity_transition_attempts (\n            attempt_id TEXT PRIMARY KEY CHECK (length(attempt_id) BETWEEN 1 AND 120),\n            transition_id TEXT NOT NULL REFERENCES ticker_identity_transitions(transition_id) ON DELETE CASCADE,\n            trigger TEXT NOT NULL CHECK (trigger IN ('attended_user', 'scheduler')),\n            status TEXT NOT NULL CHECK (status IN ('already_applied', 'applied', 'blocked', 'reversed')),\n            block_reasons_json TEXT NOT NULL CHECK (length(block_reasons_json) BETWEEN 2 AND 8192),\n            observed_preview_sha256 TEXT CHECK (observed_preview_sha256 IS NULL OR length(observed_preview_sha256) = 64),\n            attempted_at TEXT NOT NULL\n        )",
+      "table": "ticker_identity_transition_attempts",
+      "type": "table"
+    },
+    {
+      "name": "ticker_identity_transitions",
+      "sql": "CREATE TABLE ticker_identity_transitions (\n            transition_id TEXT PRIMARY KEY CHECK (length(transition_id) BETWEEN 1 AND 120),\n            case_id TEXT NOT NULL REFERENCES security_lifecycle_cases(case_id) ON DELETE CASCADE,\n            assessment_id TEXT NOT NULL REFERENCES security_lifecycle_assessments(assessment_id) ON DELETE RESTRICT,\n            proposal_ids_json TEXT NOT NULL CHECK (length(proposal_ids_json) BETWEEN 2 AND 8192),\n            transition_dedupe_key TEXT NOT NULL UNIQUE CHECK (length(transition_dedupe_key) BETWEEN 1 AND 500 AND instr(transition_dedupe_key, char(0)) = 0),\n            kind TEXT NOT NULL CHECK (kind IN ('symbol_continuation', 'terminal_delisting')),\n            status TEXT NOT NULL CHECK (status IN ('applied', 'approved', 'cancelled', 'needs_review', 'reversed')),\n            source_ticker TEXT NOT NULL CHECK (length(source_ticker) BETWEEN 1 AND 20 AND instr(source_ticker, char(0)) = 0),\n            successor_ticker TEXT CHECK (successor_ticker IS NULL OR (length(successor_ticker) BETWEEN 1 AND 20 AND instr(successor_ticker, char(0)) = 0)),\n            execute_on TEXT NOT NULL CHECK (length(execute_on) = 10),\n            priority_resolution TEXT CHECK (priority_resolution IS NULL OR priority_resolution IN ('source', 'successor')),\n            unhide_successor INTEGER NOT NULL CHECK (unhide_successor IN (0, 1)),\n            approved_observation_fingerprint_sha256 TEXT NOT NULL CHECK (length(approved_observation_fingerprint_sha256) = 64 AND approved_observation_fingerprint_sha256 NOT GLOB '*[^0-9a-f]*'),\n            approved_assessment_fingerprint_sha256 TEXT NOT NULL CHECK (length(approved_assessment_fingerprint_sha256) = 64 AND approved_assessment_fingerprint_sha256 NOT GLOB '*[^0-9a-f]*'),\n            approved_preview_sha256 TEXT NOT NULL CHECK (length(approved_preview_sha256) = 64 AND approved_preview_sha256 NOT GLOB '*[^0-9a-f]*'),\n            approved_preview_json TEXT NOT NULL CHECK (length(approved_preview_json) BETWEEN 2 AND 65536),\n            before_snapshot_json TEXT CHECK (before_snapshot_json IS NULL OR length(before_snapshot_json) BETWEEN 2 AND 65536),\n            after_snapshot_sha256 TEXT CHECK (after_snapshot_sha256 IS NULL OR (length(after_snapshot_sha256) = 64 AND after_snapshot_sha256 NOT GLOB '*[^0-9a-f]*')),\n            approved_at TEXT NOT NULL,\n            updated_at TEXT NOT NULL,\n            applied_at TEXT,\n            cancelled_at TEXT,\n            reversed_at TEXT,\n            approval_authority TEXT NOT NULL CHECK (approval_authority IN ('attended_user', 'automation_policy')),\n            automation_policy_version TEXT CHECK (automation_policy_version IS NULL OR (length(automation_policy_version) BETWEEN 1 AND 120 AND instr(automation_policy_version, char(0)) = 0)),\n            rule_id TEXT CHECK (rule_id IS NULL OR (length(rule_id) BETWEEN 1 AND 160 AND instr(rule_id, char(0)) = 0)),\n            rule_version TEXT CHECK (rule_version IS NULL OR (length(rule_version) BETWEEN 1 AND 120 AND instr(rule_version, char(0)) = 0)),\n            decision_provenance_sha256 TEXT NOT NULL CHECK (length(decision_provenance_sha256) = 64 AND decision_provenance_sha256 NOT GLOB '*[^0-9a-f]*'),\n            CHECK (\n                (kind = 'symbol_continuation' AND successor_ticker IS NOT NULL AND successor_ticker <> source_ticker)\n                OR (kind = 'terminal_delisting' AND successor_ticker IS NULL)\n            ),\n            CHECK (\n                kind = 'symbol_continuation'\n                OR (priority_resolution IS NULL AND unhide_successor = 0)\n            ),\n            CHECK (\n                (status IN ('approved', 'needs_review')\n                    AND before_snapshot_json IS NULL\n                    AND after_snapshot_sha256 IS NULL\n                    AND applied_at IS NULL\n                    AND cancelled_at IS NULL\n                    AND reversed_at IS NULL)\n                OR (status = 'applied'\n                    AND before_snapshot_json IS NOT NULL\n                    AND after_snapshot_sha256 IS NOT NULL\n                    AND applied_at IS NOT NULL\n                    AND cancelled_at IS NULL\n                    AND reversed_at IS NULL)\n                OR (status = 'cancelled'\n                    AND before_snapshot_json IS NULL\n                    AND after_snapshot_sha256 IS NULL\n                    AND applied_at IS NULL\n                    AND cancelled_at IS NOT NULL\n                    AND reversed_at IS NULL)\n                OR (status = 'reversed'\n                    AND before_snapshot_json IS NOT NULL\n                    AND after_snapshot_sha256 IS NOT NULL\n                    AND applied_at IS NOT NULL\n                    AND cancelled_at IS NULL\n                    AND reversed_at IS NOT NULL)\n            ),\n            CHECK (\n                (approval_authority = 'attended_user' AND automation_policy_version IS NULL AND rule_id IS NULL AND rule_version IS NULL)\n                OR (approval_authority = 'automation_policy' AND automation_policy_version IS NOT NULL AND rule_id IS NOT NULL AND rule_version IS NOT NULL)\n            )\n        )",
+      "table": "ticker_identity_transitions",
+      "type": "table"
+    }
+  ],
+  "ticker_identity_transition_execution_revision_references": 0
+}

@@ -1,0 +1,830 @@
+{
+  "all_mutations_killed": true,
+  "all_product_files_restored_byte_identically": true,
+  "final_product_file_restore": [
+    {
+      "byte_identical": true,
+      "path": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx",
+      "sha256": "489f612ff8ca339a1b0b9dac0503b09b69c7ce2707fdf070ea5b9ee2f6a62389"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/security_lifecycle_disposition.py",
+      "sha256": "b8af6f05eed394b6bb6f381f0907460970497289a9e0f3ec1fb8c935899db279"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/security_lifecycle_fact_kernel.py",
+      "sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/security_lifecycle_sec_evidence.py",
+      "sha256": "4b3dcac3fa2c5373a297fd667542d9b11323f62d6c9cf41209028581f2a30446"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/service/security_lifecycle_automation_scheduler.py",
+      "sha256": "34cacf6be2a743088267eb51245230cc7fbc83d021ae16f54ff2abedda08f216"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/tools/security_lifecycle_tools.py",
+      "sha256": "cba0c0279d5779d47e24aa6baeb4c5089cab3db1a785ba1753c2247207ac0b99"
+    }
+  ],
+  "killed_count": 16,
+  "mutation_count": 16,
+  "mutations": [
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_mutations_fail_atomically[forged_hash]"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_mutations_fail_atomically[forged_hash]"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_mutations_fail_atomically[forged_hash]"
+      ],
+      "id": "M1",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "remove deadline citation hash comparison",
+      "output_tail": [
+        "                \"security_lifecycle_evidence\",",
+        "                \"security_lifecycle_automation_facts\",",
+        "                \"security_lifecycle_automation_run_blockers\",",
+        "            )",
+        "        }",
+        ">       with pytest.raises(ValueError) as exc_info:",
+        "E       Failed: DID NOT RAISE <class 'ValueError'>",
+        "",
+        "tests/test_security_lifecycle_fact_kernel.py:254: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_mutations_fail_atomically[forged_hash]",
+        "1 failed in 0.32s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_fact_kernel.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "before_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_fact_kernel.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_any_deadline_field_triggers_complete_set_before_deadline"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_any_deadline_field_triggers_complete_set_before_deadline"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_any_deadline_field_triggers_complete_set_before_deadline"
+      ],
+      "id": "M2",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "validate deadline citations only for not_confirmed_as_of",
+      "output_tail": [
+        "        from src.security_lifecycle_fact_kernel import AutomationBlocker",
+        "    ",
+        "        _conn, store, kernel, case_id = _context()",
+        "        claim = _reserve(kernel, case_id, at=\"2026-05-01T00:00:00Z\")",
+        "    ",
+        ">       with pytest.raises(ValueError) as exc_info:",
+        "E       Failed: DID NOT RAISE <class 'ValueError'>",
+        "",
+        "tests/test_security_lifecycle_fact_kernel.py:469: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_any_deadline_field_triggers_complete_set_before_deadline",
+        "1 failed in 0.08s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_fact_kernel.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "before_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_fact_kernel.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_mutations_fail_atomically[partial_set]"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_mutations_fail_atomically[partial_set]"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_mutations_fail_atomically[partial_set]"
+      ],
+      "id": "M3",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "accept a partial deadline provenance set",
+      "output_tail": [
+        "                \"security_lifecycle_evidence\",",
+        "                \"security_lifecycle_automation_facts\",",
+        "                \"security_lifecycle_automation_run_blockers\",",
+        "            )",
+        "        }",
+        ">       with pytest.raises(ValueError) as exc_info:",
+        "E       Failed: DID NOT RAISE <class 'ValueError'>",
+        "",
+        "tests/test_security_lifecycle_fact_kernel.py:254: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_mutations_fail_atomically[partial_set]",
+        "1 failed in 0.33s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_fact_kernel.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "before_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_fact_kernel.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_sec_evidence.py::test_explicit_outside_date_is_hash_cited_and_conflicts_fail_closed"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_sec_evidence.py::test_explicit_outside_date_is_hash_cited_and_conflicts_fail_closed"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_sec_evidence.py::test_explicit_outside_date_is_hash_cited_and_conflicts_fail_closed"
+      ],
+      "id": "M4",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "bump shared SEC _RULE_VERSION from 3 to 4",
+      "output_tail": [
+        "E       AssertionError: assert {'4'} == {'3'}",
+        "E         ",
+        "E         Extra items in the left set:",
+        "E         '4'",
+        "E         Extra items in the right set:",
+        "E         '3'",
+        "E         Use -v to get more diff",
+        "",
+        "tests/test_security_lifecycle_sec_evidence.py:793: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_sec_evidence.py::test_explicit_outside_date_is_hash_cited_and_conflicts_fail_closed",
+        "1 failed in 0.26s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_sec_evidence.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "4b3dcac3fa2c5373a297fd667542d9b11323f62d6c9cf41209028581f2a30446",
+          "before_sha256": "4b3dcac3fa2c5373a297fd667542d9b11323f62d6c9cf41209028581f2a30446",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_sec_evidence.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation"
+      ],
+      "id": "M5",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "select the from date in a directional extension",
+      "output_tail": [
+        "        for sentence, expected_dates in cases.items():",
+        "            result = _collect_deadline_sentence(sentence)",
+        ">           assert tuple(row.date for row in result.source_deadlines) == expected_dates",
+        "E           AssertionError: assert ('2026-03-01',) == ('2026-06-01',)",
+        "E             ",
+        "E             At index 0 diff: '2026-03-01' != '2026-06-01'",
+        "E             Use -v to get more diff",
+        "",
+        "tests/test_security_lifecycle_sec_evidence.py:752: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation",
+        "1 failed in 0.26s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_sec_evidence.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "4b3dcac3fa2c5373a297fd667542d9b11323f62d6c9cf41209028581f2a30446",
+          "before_sha256": "4b3dcac3fa2c5373a297fd667542d9b11323f62d6c9cf41209028581f2a30446",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_sec_evidence.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation"
+      ],
+      "id": "M6",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "accept a negated or historical date sentence",
+      "output_tail": [
+        "        for sentence, expected_dates in cases.items():",
+        "            result = _collect_deadline_sentence(sentence)",
+        ">           assert tuple(row.date for row in result.source_deadlines) == expected_dates",
+        "E           AssertionError: assert ('2025-03-15',) == ()",
+        "E             ",
+        "E             Left contains one more item: '2025-03-15'",
+        "E             Use -v to get more diff",
+        "",
+        "tests/test_security_lifecycle_sec_evidence.py:752: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation",
+        "1 failed in 0.25s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_sec_evidence.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "4b3dcac3fa2c5373a297fd667542d9b11323f62d6c9cf41209028581f2a30446",
+          "before_sha256": "4b3dcac3fa2c5373a297fd667542d9b11323f62d6c9cf41209028581f2a30446",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_sec_evidence.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check"
+      ],
+      "id": "M7",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "backdate final as_of to source_deadline",
+      "output_tail": [
+        "        assert final.context[\"monitoring_reason\"] == \"not_confirmed_as_of\"",
+        "        assert final.context[\"source_deadline\"] == \"2026-04-01\"",
+        ">       assert final.context[\"as_of\"] == \"2026-08-27\"",
+        "E       AssertionError: assert '2026-04-01' == '2026-08-27'",
+        "E         ",
+        "E         - 2026-08-27",
+        "E         + 2026-04-01",
+        "",
+        "tests/test_security_lifecycle_automation_scheduler.py:499: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check",
+        "1 failed in 0.32s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/service/security_lifecycle_automation_scheduler.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "34cacf6be2a743088267eb51245230cc7fbc83d021ae16f54ff2abedda08f216",
+          "before_sha256": "34cacf6be2a743088267eb51245230cc7fbc83d021ae16f54ff2abedda08f216",
+          "byte_identical": true,
+          "path": "src/service/security_lifecycle_automation_scheduler.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_disposition.py::test_not_confirmed_as_of_projects_the_actual_completed_check_date"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_disposition.py::test_not_confirmed_as_of_projects_the_actual_completed_check_date"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_disposition.py::test_not_confirmed_as_of_projects_the_actual_completed_check_date"
+      ],
+      "id": "M8",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "map not_confirmed_as_of back to confirmed_effective",
+      "output_tail": [
+        "            \"not_confirmed_as_of\",",
+        "            \"2026-08-27\",",
+        "        )",
+        "E       AssertionError: assert ('confirmed_e... '2026-08-27') == ('not_confirm... '2026-08-27')",
+        "E         ",
+        "E         At index 0 diff: 'confirmed_effective' != 'not_confirmed_yet'",
+        "E         Use -v to get more diff",
+        "",
+        "tests/test_security_lifecycle_disposition.py:275: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_disposition.py::test_not_confirmed_as_of_projects_the_actual_completed_check_date",
+        "1 failed in 0.07s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_disposition.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "b8af6f05eed394b6bb6f381f0907460970497289a9e0f3ec1fb8c935899db279",
+          "before_sha256": "b8af6f05eed394b6bb6f381f0907460970497289a9e0f3ec1fb8c935899db279",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_disposition.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_tools.py::test_read_service_exposes_derived_final_check_date_in_list_and_detail"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_tools.py::test_read_service_exposes_derived_final_check_date_in_list_and_detail"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_tools.py::test_read_service_exposes_derived_final_check_date_in_list_and_detail"
+      ],
+      "id": "M9",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "omit disposition_as_of from the read summary",
+      "output_tail": [
+        "        )",
+        "    ",
+        "        listed = service.list_cases()",
+        "        detailed = service.get_case(\"case-final-check\")",
+        "    ",
+        ">       assert listed[\"cases\"][0][\"disposition_as_of\"] == \"2026-08-27\"",
+        "E       KeyError: 'disposition_as_of'",
+        "",
+        "tests/test_security_lifecycle_tools.py:291: KeyError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_tools.py::test_read_service_exposes_derived_final_check_date_in_list_and_detail",
+        "1 failed in 0.14s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/tools/security_lifecycle_tools.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "cba0c0279d5779d47e24aa6baeb4c5089cab3db1a785ba1753c2247207ac0b99",
+          "before_sha256": "cba0c0279d5779d47e24aa6baeb4c5089cab3db1a785ba1753c2247207ac0b99",
+          "byte_identical": true,
+          "path": "src/tools/security_lifecycle_tools.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::Lifecycle workflow::renders truthful dated final-History reasons in both locales without acknowledgement"
+      ],
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "src/lifecycle/LifecycleView.test.tsx",
+        "-t",
+        "renders truthful dated final-History reasons in both locales without acknowledgement",
+        "--reporter=json"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::Lifecycle workflow::renders truthful dated final-History reasons in both locales without acknowledgement"
+      ],
+      "id": "M10",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "render generic confirmed-complete copy for final unconfirmed History",
+      "output_tail": [
+        "",
+        "> arkscope-web@0.0.1 test",
+        "> vitest run src/lifecycle/LifecycleView.test.tsx -t renders truthful dated final-History reasons in both locales without acknowledgement --reporter=json --outputFile=/tmp/arkscope-m10-svhsvy2a/vitest.json",
+        "",
+        "JSON report written to /tmp/arkscope-m10-svhsvy2a/vitest.json",
+        "npm error Lifecycle script `test` failed with error:",
+        "npm error code 1",
+        "npm error path /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
+        "npm error workspace arkscope-web@0.0.1",
+        "npm error location /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
+        "npm error command failed",
+        "npm error command sh -c vitest run src/lifecycle/LifecycleView.test.tsx -t 'renders truthful dated final-History reasons in both locales without acknowledgement' --reporter=json --outputFile=/tmp/arkscope-m10-svhsvy2a/vitest.json"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "apps/arkscope-web/src/lifecycle/LifecycleView.tsx"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "489f612ff8ca339a1b0b9dac0503b09b69c7ce2707fdf070ea5b9ee2f6a62389",
+          "before_sha256": "489f612ff8ca339a1b0b9dac0503b09b69c7ce2707fdf070ea5b9ee2f6a62389",
+          "byte_identical": true,
+          "path": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx"
+        }
+      ],
+      "skipped_test_count": 37,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_automation_worker.py::test_execution_revision_does_not_change_decision_or_transition_authority"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_automation_worker.py::test_execution_revision_does_not_change_decision_or_transition_authority"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_automation_worker.py::test_execution_revision_does_not_change_decision_or_transition_authority"
+      ],
+      "id": "M11",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "include execution revision in decision provenance",
+      "output_tail": [
+        ">           assert assessment_r0[\"decision_provenance_sha256\"] == assessment_r1[",
+        "                \"decision_provenance_sha256\"",
+        "            ]",
+        "E           AssertionError: assert '5c1f9fff97f3...c8f424fffa320' == 'a57b218f36dc...f3c4f078b8850'",
+        "E             ",
+        "E             - a57b218f36dc7651b67dd3f4a2d191ea16cf5c4cb3a4d70d9bdf3c4f078b8850",
+        "E             + 5c1f9fff97f3dfddfd4661eb003eab1fcf3a87b9a6e94525e26c8f424fffa320",
+        "",
+        "tests/test_security_lifecycle_automation_worker.py:941: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_automation_worker.py::test_execution_revision_does_not_change_decision_or_transition_authority",
+        "1 failed in 0.24s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_fact_kernel.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "before_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_fact_kernel.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_current_execution_revision_does_not_replay_failed_semantic_run_later"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_fact_kernel.py::test_current_execution_revision_does_not_replay_failed_semantic_run_later"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_current_execution_revision_does_not_replay_failed_semantic_run_later"
+      ],
+      "id": "M12",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "replay a failed row at the same execution revision",
+      "output_tail": [
+        "                policy_version=\"trusted-lifecycle-automation-v3\",",
+        "                execution_revision=\"trusted-lifecycle-execution-r1\",",
+        "                at=at,",
+        "            )",
+        ">           assert claim.should_execute is False",
+        "E           AssertionError: assert True is False",
+        "E            +  where True = AutomationRunClaim(run_id='slar_74bf9fdf04191cfd71970e6f3c5038ab', run_key='lifecycle-automation-execution-v1:74bf9fdf04191cfd71970e6f3c5038abb376072a638b13473f028d8023849fda', status='running', should_execute=True).should_execute",
+        "",
+        "tests/test_security_lifecycle_fact_kernel.py:803: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_current_execution_revision_does_not_replay_failed_semantic_run_later",
+        "1 failed in 0.08s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_fact_kernel.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "before_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_fact_kernel.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_successful_replay_prevents_later_revision_fanout"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_fact_kernel.py::test_successful_replay_prevents_later_revision_fanout"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_successful_replay_prevents_later_revision_fanout"
+      ],
+      "id": "M13",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "replay a succeeded semantic run after only execution revision changes",
+      "output_tail": [
+        "            policy_version=\"trusted-lifecycle-automation-v3\",",
+        "            execution_revision=\"trusted-lifecycle-execution-r2\",",
+        "            at=\"2026-08-27T00:00:00Z\",",
+        "        )",
+        ">       assert later.should_execute is False",
+        "E       AssertionError: assert True is False",
+        "E        +  where True = AutomationRunClaim(run_id='slar_138a773423a5ca09e5a0b006800d52b9', run_key='lifecycle-automation-execution-v1:138a773423a5ca09e5a0b006800d52b97d27a8900c929001dd0407bfc448be45', status='running', should_execute=True).should_execute",
+        "",
+        "tests/test_security_lifecycle_fact_kernel.py:733: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_successful_replay_prevents_later_revision_fanout",
+        "1 failed in 0.08s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_fact_kernel.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "before_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_fact_kernel.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_conflicting_current_facts_are_typed_and_never_majority_resolved"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_fact_kernel.py::test_conflicting_current_facts_are_typed_and_never_majority_resolved"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_conflicting_current_facts_are_typed_and_never_majority_resolved"
+      ],
+      "id": "M14",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "add deadline fields to source_conflict outside the shared validator",
+      "output_tail": [
+        "        }",
+        "E       AssertionError: assert {'fact_types'... '2026-04-01'} == {'fact_types'...ssor_ticker']}",
+        "E         ",
+        "E         Omitting 1 identical items, use -vv to show",
+        "E         Left contains 1 more item:",
+        "E         {'source_deadline': '2026-04-01'}",
+        "E         Use -v to get more diff",
+        "",
+        "tests/test_security_lifecycle_fact_kernel.py:1065: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_conflicting_current_facts_are_typed_and_never_majority_resolved",
+        "1 failed in 0.09s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_fact_kernel.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "before_sha256": "214f2747fdd8709778a5043eea8c75dea749a547e3b363d6a5b89405d9f3a4b5",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_fact_kernel.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_evidence_admission_identity_is_unchanged_for_rejected_and_oversized_sentences"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_evidence_admission_identity_is_unchanged_for_rejected_and_oversized_sentences"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_evidence_admission_identity_is_unchanged_for_rejected_and_oversized_sentences"
+      ],
+      "id": "M15",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "narrow candidate admission to the new deadline grammar",
+      "output_tail": [
+        "E       AssertionError: assert {('sle_b05bdb...2c240f76e03')} == {('sle_97ce81...d79dfa72edb')}",
+        "E         ",
+        "E         Extra items in the left set:",
+        "E         ('sle_b05bdbaa6d7f353260ef47a910121c75', '99ba816a7645523149f63ebc7f5fed02bc4673bce5fa1ab7357b22c240f76e03')",
+        "E         Extra items in the right set:",
+        "E         ('sle_97ce816fee19d813378cd33f91045f49', '2ca802c92f60f87bb0bc388b4ed8d1f773ba234124cc29bc01971d79dfa72edb')",
+        "E         Use -v to get more diff",
+        "",
+        "tests/test_security_lifecycle_sec_evidence.py:715: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_sec_evidence.py::test_deadline_evidence_admission_identity_is_unchanged_for_rejected_and_oversized_sentences",
+        "1 failed in 0.27s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_sec_evidence.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "4b3dcac3fa2c5373a297fd667542d9b11323f62d6c9cf41209028581f2a30446",
+          "before_sha256": "4b3dcac3fa2c5373a297fd667542d9b11323f62d6c9cf41209028581f2a30446",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_sec_evidence.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation"
+      ],
+      "id": "M16",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "reject any and/or after a target date",
+      "output_tail": [
+        "        for sentence, expected_dates in cases.items():",
+        "            result = _collect_deadline_sentence(sentence)",
+        ">           assert tuple(row.date for row in result.source_deadlines) == expected_dates",
+        "E           AssertionError: assert () == ('2026-06-01',)",
+        "E             ",
+        "E             Right contains one more item: '2026-06-01'",
+        "E             Use -v to get more diff",
+        "",
+        "tests/test_security_lifecycle_sec_evidence.py:752: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation",
+        "1 failed in 0.25s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_sec_evidence.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "4b3dcac3fa2c5373a297fd667542d9b11323f62d6c9cf41209028581f2a30446",
+          "before_sha256": "4b3dcac3fa2c5373a297fd667542d9b11323f62d6c9cf41209028581f2a30446",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_sec_evidence.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    }
+  ],
+  "schema_version": 1,
+  "unexpected_owner_drift": []
+}

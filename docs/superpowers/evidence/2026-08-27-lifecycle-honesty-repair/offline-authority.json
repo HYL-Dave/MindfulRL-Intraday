@@ -1,0 +1,105 @@
+{
+  "authority": {
+    "app_restarts": 0,
+    "merges": 0,
+    "production_database_backups": 0,
+    "production_database_migrations": 0,
+    "production_database_preflights": 0,
+    "production_database_reads": 0,
+    "production_database_restores": 0,
+    "production_database_writes": 0,
+    "provider_calls": 0,
+    "pushes": 0,
+    "scope": "offline_fixture_and_scratch_only"
+  },
+  "decision_provenance": {
+    "equal": true,
+    "r0": {
+      "decision_provenance_sha256": "939d6dbc266a71fad7ca7acb0fe7f6a0a1997dc7d19527aeca9e4ec6fbacca70",
+      "execution_revision": "trusted-lifecycle-execution-r0",
+      "run_id": "slar_708e9f1c404bec90bbfb1ac15cb01249",
+      "status": "succeeded"
+    },
+    "r1": {
+      "decision_provenance_sha256": "939d6dbc266a71fad7ca7acb0fe7f6a0a1997dc7d19527aeca9e4ec6fbacca70",
+      "execution_revision": "trusted-lifecycle-execution-r1",
+      "run_id": "slar_45c20574d3a7eb01bb757c424e8b57f2",
+      "status": "succeeded"
+    }
+  },
+  "final_unconfirmed_projection": {
+    "disposition": "not_confirmed_yet",
+    "disposition_as_of": "2026-08-27",
+    "next_check_at": null,
+    "queue_bucket": "history",
+    "reason_code": "not_confirmed_as_of"
+  },
+  "forged_citation_rollback": {
+    "blocker_rows": 0,
+    "error": "blocker_citation",
+    "evidence_rows": 0,
+    "fact_rows": 0,
+    "run_status_after_rejection": "running"
+  },
+  "legacy_failed_replay": {
+    "immutable_predecessor": {
+      "after_sha256": "36b449162612e541321897f63f3407f0b17bd8ff632ca94e094990e09104ed05",
+      "before_sha256": "36b449162612e541321897f63f3407f0b17bd8ff632ca94e094990e09104ed05",
+      "byte_identical": true,
+      "canonical_bytes_after_utf8": "{\"action_readiness\":null,\"blockers\":[],\"case_id\":\"slc_4f15b3af9d665c8b36566e665fbc221777d74d3133ae2f26255f9a2aa0837ec6\",\"created_at\":\"2026-08-25T01:00:00Z\",\"decision_tier\":null,\"diagnostics_json\":\"{\\\"persist_failures\\\":1}\",\"failure_code\":\"persistence_failed\",\"finished_at\":\"2026-08-25T02:00:00Z\",\"mode\":\"historical\",\"observation_fingerprint_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"policy_version\":\"trusted-lifecycle-automation-v3\",\"query_context_json\":\"{\\\"aliases\\\":[\\\"HAPN\\\",\\\"LC\\\"],\\\"case_id\\\":\\\"slc_4f15b3af9d665c8b36566e665fbc221777d74d3133ae2f26255f9a2aa0837ec6\\\",\\\"cik\\\":\\\"0001409970\\\",\\\"input_evidence_set_sha256\\\":\\\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\\\",\\\"semantic_run_key\\\":\\\"lifecycle-automation-v1:0d3d8b1e6a9c36276247fcabee378e1f7196eb3b9abc4f457bd3c6979202728d\\\"}\",\"retry_at\":null,\"run_id\":\"slar_708e9f1c404bec90bbfb1ac15cb01249\",\"run_key\":\"lifecycle-automation-execution-v1:708e9f1c404bec90bbfb1ac15cb012493a898d5e3fc0c4472cc9c0ed37b1a95e\",\"started_at\":\"2026-08-25T01:00:00Z\",\"status\":\"failed\",\"updated_at\":\"2026-08-25T02:00:00Z\"}",
+      "canonical_bytes_before_utf8": "{\"action_readiness\":null,\"blockers\":[],\"case_id\":\"slc_4f15b3af9d665c8b36566e665fbc221777d74d3133ae2f26255f9a2aa0837ec6\",\"created_at\":\"2026-08-25T01:00:00Z\",\"decision_tier\":null,\"diagnostics_json\":\"{\\\"persist_failures\\\":1}\",\"failure_code\":\"persistence_failed\",\"finished_at\":\"2026-08-25T02:00:00Z\",\"mode\":\"historical\",\"observation_fingerprint_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"policy_version\":\"trusted-lifecycle-automation-v3\",\"query_context_json\":\"{\\\"aliases\\\":[\\\"HAPN\\\",\\\"LC\\\"],\\\"case_id\\\":\\\"slc_4f15b3af9d665c8b36566e665fbc221777d74d3133ae2f26255f9a2aa0837ec6\\\",\\\"cik\\\":\\\"0001409970\\\",\\\"input_evidence_set_sha256\\\":\\\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\\\",\\\"semantic_run_key\\\":\\\"lifecycle-automation-v1:0d3d8b1e6a9c36276247fcabee378e1f7196eb3b9abc4f457bd3c6979202728d\\\"}\",\"retry_at\":null,\"run_id\":\"slar_708e9f1c404bec90bbfb1ac15cb01249\",\"run_key\":\"lifecycle-automation-execution-v1:708e9f1c404bec90bbfb1ac15cb012493a898d5e3fc0c4472cc9c0ed37b1a95e\",\"started_at\":\"2026-08-25T01:00:00Z\",\"status\":\"failed\",\"updated_at\":\"2026-08-25T02:00:00Z\"}"
+    },
+    "legacy_failed": {
+      "execution_revision_present": false,
+      "run_id": "slar_708e9f1c404bec90bbfb1ac15cb01249",
+      "status": "failed"
+    },
+    "r1_replay": {
+      "execution_revision": "trusted-lifecycle-execution-r1",
+      "predecessor_failed_run_id": "slar_708e9f1c404bec90bbfb1ac15cb01249",
+      "run_id": "slar_024e95d2ff361cf86e89dfbdf31ae374",
+      "should_execute": true,
+      "status": "succeeded"
+    },
+    "r2_after_success": {
+      "selected_run_id": "slar_024e95d2ff361cf86e89dfbdf31ae374",
+      "selected_successful_replay": true,
+      "semantic_run_count": 2,
+      "should_execute": false
+    },
+    "semantic_policy_version": "trusted-lifecycle-automation-v3"
+  },
+  "producer_to_kernel_citations": {
+    "final": {
+      "citation_sha256": "9e0814616564cdada3234321c11301a21b915d6e91269d32095d6c4e03d7bb41",
+      "completed_check_as_of": "2026-08-27",
+      "monitoring_reason": "not_confirmed_as_of",
+      "persisted_evidence_id": "sle_de5ad7b05d01e15bdf0f1d8a344368db",
+      "producer_evidence_id": "source-deadline-2026-04-01",
+      "rule_id": "sec.explicit_transaction_termination_date",
+      "rule_version": "4",
+      "source_deadline": "2026-04-01",
+      "status": "blocked"
+    },
+    "pre_deadline": {
+      "citation_sha256": "e5d3c4236e414a64e7c8880feb894588f5eaefc3aa77b6927283dfd022040037",
+      "completed_check_as_of": null,
+      "monitoring_reason": "event_completion_not_confirmed",
+      "persisted_evidence_id": "sle_aca0add470b3877fe27581ff3785c73b",
+      "producer_evidence_id": "source-deadline-2026-09-01",
+      "rule_id": "sec.explicit_transaction_termination_date",
+      "rule_version": "4",
+      "source_deadline": "2026-09-01",
+      "status": "blocked"
+    }
+  },
+  "schema_version": 1,
+  "scratch_database_kind": "temporary_sqlite_only",
+  "transition_and_acknowledgement_calls": {
+    "acknowledgement": 0,
+    "transition_apply": 0,
+    "transition_approval": 0,
+    "transition_preview": 0,
+    "transition_reverse": 0
+  }
+}

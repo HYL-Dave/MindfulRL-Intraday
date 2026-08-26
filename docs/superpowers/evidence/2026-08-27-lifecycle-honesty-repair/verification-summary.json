@@ -1,0 +1,90 @@
+{
+  "authority": {
+    "app_restarts": 0,
+    "merges": 0,
+    "production_database_backups": 0,
+    "production_database_migrations": 0,
+    "production_database_preflights": 0,
+    "production_database_reads": 0,
+    "production_database_restores": 0,
+    "production_database_writes": 0,
+    "provider_calls": 0,
+    "pushes": 0,
+    "scope": "offline_fixture_and_scratch_only"
+  },
+  "backend": {
+    "focused_collection_byte_identical": true,
+    "focused_collection_node_count": 192,
+    "focused_pass_a": "192 passed in 11.32s",
+    "focused_pass_b": "192 passed in 11.48s",
+    "full_pass_a": "4510 passed, 12 skipped, 3 warnings in 242.55s",
+    "full_pass_b": "4510 passed, 12 skipped, 3 warnings in 242.93s"
+  },
+  "browser_matrix": {
+    "clipped_text_count": 0,
+    "console_errors": 0,
+    "entry_count": 24,
+    "external_requests": 0,
+    "overlap_count": 0,
+    "page_errors": 0,
+    "render_acknowledgements": 0,
+    "screenshot_count": 24,
+    "write_requests": 0
+  },
+  "frontend": {
+    "build": "passed; 2193 modules",
+    "i18n_literal_gate": "passed; debtSignatureCount=0",
+    "test_files": 106,
+    "tests_passed": 1241,
+    "typecheck": "passed"
+  },
+  "limitations": [
+    "no provider call or production scheduler replay was performed",
+    "operator-triggered replay remains unimplemented",
+    "broader legal-language extraction remains precision-first and intentionally incomplete",
+    "no production migration is needed because schema authority is unchanged",
+    "App restart, merge, push, and the Priority Map GREEN entry remain separate authorization events",
+    "the untyped legacy CASES fixture omitting disposition_as_of remains deferred"
+  ],
+  "mutation_ledger": {
+    "all_mutations_killed": true,
+    "all_product_files_restored_byte_identically": true,
+    "killed_count": 16,
+    "mutation_count": 16,
+    "unexpected_owner_drift": []
+  },
+  "offline_authority": {
+    "byte_identical_across_two_captures": true,
+    "decision_provenance_equal_across_r0_r1": true,
+    "forged_citation_rollback_rows": {
+      "blockers": 0,
+      "evidence": 0,
+      "facts": 0
+    },
+    "legacy_execution_revision_present": false,
+    "r2_fanout_after_success": false,
+    "transition_and_acknowledgement_calls": 0
+  },
+  "packet": {
+    "manifest_excludes_itself": true,
+    "manifest_file_set_equals_payload_file_set": true,
+    "sha256sum_check": "passed"
+  },
+  "product_base": "11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb",
+  "product_test_authority": "b05ea4a2abe2fc2e1fbebd845de624804f46f3d1",
+  "schema_and_protected_authority": {
+    "all_checks_passed": true,
+    "automation_policy_version": "trusted-lifecycle-automation-v3",
+    "deadline_only_rule_version": "4",
+    "index_sql_diff": "empty",
+    "new_mutable_disposition_column_count": 0,
+    "owned_sqlite_master_diff": "empty",
+    "pragma_table_info_diff": "empty",
+    "security_lifecycle_schema_byte_diff": "empty",
+    "shared_sec_rule_version": "3",
+    "startup_ddl_changes": 0,
+    "ticker_identity_transition_byte_diff": "empty",
+    "ticker_identity_transition_execution_revision_references": 0
+  },
+  "schema_version": 1
+}

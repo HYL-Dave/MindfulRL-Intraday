@@ -1,0 +1,442 @@
+"""Capture replay, citation, and projection authority in temporary SQLite only."""
+
+from __future__ import annotations
+
+import argparse
+from dataclasses import replace
+import hashlib
+import json
+from pathlib import Path
+import sqlite3
+import sys
+from tempfile import TemporaryDirectory
+
+
+ROOT = Path(__file__).resolve().parents[4]
+sys.path.insert(0, str(ROOT))
+
+
+AUTHORITY = {
+    "scope": "offline_fixture_and_scratch_only",
+    "provider_calls": 0,
+    "production_database_reads": 0,
+    "production_database_writes": 0,
+    "production_database_preflights": 0,
+    "production_database_backups": 0,
+    "production_database_migrations": 0,
+    "production_database_restores": 0,
+    "app_restarts": 0,
+    "merges": 0,
+    "pushes": 0,
+}
+
+
+def _canonical(value: object) -> str:
+    return json.dumps(
+        value,
+        ensure_ascii=True,
+        separators=(",", ":"),
+        sort_keys=True,
+    )
+
+
+def _digest(value: object) -> str:
+    return hashlib.sha256(_canonical(value).encode("utf-8")).hexdigest()
+
+
+def _scratch(path: Path):
+    from src.security_lifecycle_fact_kernel import SecurityLifecycleFactKernel
+    from src.security_lifecycle_investigation import SecurityLifecycleInvestigationStore
+
+    connection = sqlite3.connect(path)
+    store = SecurityLifecycleInvestigationStore(
+        connection,
+        id_factory=lambda prefix, ordinal: f"{prefix}_{ordinal:04d}",
+    )
+    case_id = store.ensure_case(
+        source="sec_edgar",
+        source_ref="0001409970-26-000131",
+        ticker="HAPN",
+        at="2026-08-25T01:00:00Z",
+    )
+    return connection, store, SecurityLifecycleFactKernel(store), case_id
+
+
+def _reserve(kernel, case_id: str, *, revision: str, at: str, fingerprint: str = "a" * 64):
+    return kernel.reserve_run(
+        case_id=case_id,
+        observation_fingerprint_sha256=fingerprint,
+        policy_version="trusted-lifecycle-automation-v3",
+        mode="historical",
+        execution_revision=revision,
+        query_context={"case_id": case_id, "cik": "0001409970", "aliases": ["HAPN", "LC"]},
+        diagnostics={"sec_attempts": 0},
+        at=at,
+    )
+
+
+def _success_evidence():
+    from tests.test_security_lifecycle_fact_kernel import _evidence, _fact
+
+    evidence = _evidence("authority")
+    return evidence, _fact(evidence)
+
+
+def _capture_replay(path: Path) -> dict:
+    connection, store, kernel, case_id = _scratch(path)
+    try:
+        legacy = _reserve(
+            kernel,
+            case_id,
+            revision="trusted-lifecycle-execution-r0",
+            at="2026-08-25T01:00:00Z",
+        )
+        legacy_row = store.get_automation_run(legacy.run_id)
+        legacy_context = json.loads(legacy_row["query_context_json"])
+        del legacy_context["execution_revision"]
+        connection.execute(
+            "UPDATE security_lifecycle_automation_runs SET query_context_json=? WHERE run_id=?",
+            (_canonical(legacy_context), legacy.run_id),
+        )
+        connection.commit()
+        kernel.fail_run(
+            run_id=legacy.run_id,
+            failure_code="persistence_failed",
+            diagnostics={"persist_failures": 1},
+            at="2026-08-25T02:00:00Z",
+        )
+        predecessor_before = store.get_automation_run(legacy.run_id)
+        predecessor_before_bytes = _canonical(predecessor_before)
+
+        replay = _reserve(
+            kernel,
+            case_id,
+            revision="trusted-lifecycle-execution-r1",
+            at="2026-08-26T00:00:00Z",
+        )
+        predecessor_after = store.get_automation_run(legacy.run_id)
+        predecessor_after_bytes = _canonical(predecessor_after)
+        evidence, fact = _success_evidence()
+        completed = kernel.complete_run(
+            run_id=replay.run_id,
+            evidence=(evidence,),
+            facts=(fact,),
+            blockers=(),
+            decision_tier="verified_automatic",
+            action_readiness="transition_eligible",
+            retry_at=None,
+            diagnostics={"sec_attempts": 1},
+            at="2026-08-26T01:00:00Z",
+        )
+        r2 = _reserve(
+            kernel,
+            case_id,
+            revision="trusted-lifecycle-execution-r2",
+            at="2026-08-27T00:00:00Z",
+        )
+        replay_context = json.loads(
+            store.get_automation_run(replay.run_id)["query_context_json"]
+        )
+        rows = store.list_automation_runs(case_id)
+        report = {
+            "semantic_policy_version": "trusted-lifecycle-automation-v3",
+            "legacy_failed": {
+                "run_id": legacy.run_id,
+                "status": predecessor_before["status"],
+                "execution_revision_present": "execution_revision" in legacy_context,
+            },
+            "r1_replay": {
+                "run_id": replay.run_id,
+                "should_execute": replay.should_execute,
+                "execution_revision": replay_context["execution_revision"],
+                "predecessor_failed_run_id": replay_context["predecessor_failed_run_id"],
+                "status": completed.status,
+            },
+            "immutable_predecessor": {
+                "canonical_bytes_before_utf8": predecessor_before_bytes,
+                "canonical_bytes_after_utf8": predecessor_after_bytes,
+                "before_sha256": hashlib.sha256(predecessor_before_bytes.encode()).hexdigest(),
+                "after_sha256": hashlib.sha256(predecessor_after_bytes.encode()).hexdigest(),
+                "byte_identical": predecessor_before_bytes == predecessor_after_bytes,
+            },
+            "r2_after_success": {
+                "should_execute": r2.should_execute,
+                "selected_run_id": r2.run_id,
+                "selected_successful_replay": r2.run_id == replay.run_id,
+                "semantic_run_count": len(rows),
+            },
+        }
+        assert report["legacy_failed"]["status"] == "failed"
+        assert report["legacy_failed"]["execution_revision_present"] is False
+        assert report["r1_replay"]["should_execute"] is True
+        assert report["r1_replay"]["predecessor_failed_run_id"] == legacy.run_id
+        assert report["immutable_predecessor"]["byte_identical"] is True
+        assert report["r1_replay"]["status"] == "succeeded"
+        assert report["r2_after_success"] == {
+            "should_execute": False,
+            "selected_run_id": replay.run_id,
+            "selected_successful_replay": True,
+            "semantic_run_count": 2,
+        }
+        return report
+    finally:
+        connection.close()
+
+
+def _successful_provenance(path: Path, revision: str) -> dict:
+    connection, store, kernel, case_id = _scratch(path)
+    try:
+        claim = _reserve(
+            kernel,
+            case_id,
+            revision=revision,
+            at="2026-08-25T01:00:00Z",
+        )
+        evidence, fact = _success_evidence()
+        result = kernel.complete_run(
+            run_id=claim.run_id,
+            evidence=(evidence,),
+            facts=(fact,),
+            blockers=(),
+            decision_tier="verified_automatic",
+            action_readiness="transition_eligible",
+            retry_at=None,
+            diagnostics={"sec_attempts": 1},
+            at="2026-08-25T02:00:00Z",
+        )
+        return {
+            "execution_revision": revision,
+            "run_id": claim.run_id,
+            "decision_provenance_sha256": result.decision_provenance_sha256,
+            "status": store.get_automation_run(claim.run_id)["status"],
+        }
+    finally:
+        connection.close()
+
+
+def _deadline_owner(*, deadline: str, at: str):
+    from src.security_lifecycle_sec_evidence import SecSourceDeadline
+    from src.service import security_lifecycle_automation_scheduler as scheduler
+    from tests.test_security_lifecycle_fact_kernel import _evidence
+
+    month_day = "April 1, 2026" if deadline == "2026-04-01" else "September 1, 2026"
+    cited_text = (
+        "HAPN merger agreement may be terminated if the merger is not consummated by "
+        f"{month_day}."
+    )
+    evidence = _evidence(f"deadline-{deadline}", excerpt=cited_text)
+    cited = cited_text.encode("utf-8")
+    source_deadline = SecSourceDeadline(
+        date=deadline,
+        evidence_id=evidence.evidence_id,
+        span_start_byte=0,
+        span_end_byte=len(cited),
+        cited_text=cited_text,
+        cited_text_sha256=hashlib.sha256(cited).hexdigest(),
+        rule_id="sec.explicit_transaction_termination_date",
+        rule_version="4",
+    )
+    blocker = scheduler._pending_event_monitoring(
+        {"observation": {"kinds": [{"event_type": "merger_agreement", "effective_date": None}]}},
+        (),
+        source_family_results={
+            "regulator": "available",
+            "market_infrastructure": "available",
+            "publisher": "available",
+        },
+        source_deadlines=(source_deadline,),
+        at=at,
+    )
+    assert blocker is not None
+    return evidence, blocker
+
+
+def _persist_deadline(path: Path, *, deadline: str, at: str, fingerprint: str) -> tuple[dict, dict]:
+    connection, store, kernel, case_id = _scratch(path)
+    try:
+        claim = _reserve(
+            kernel,
+            case_id,
+            revision="trusted-lifecycle-execution-r1",
+            at=at,
+            fingerprint=fingerprint,
+        )
+        evidence, blocker = _deadline_owner(deadline=deadline, at=at)
+        retry_at = blocker.context.get("next_check_at") if blocker.retryable else None
+        result = kernel.complete_run(
+            run_id=claim.run_id,
+            evidence=(evidence,),
+            facts=(),
+            blockers=(blocker,),
+            decision_tier=None,
+            action_readiness=None,
+            retry_at=retry_at,
+            diagnostics={"sec_attempts": 1},
+            at=at,
+        )
+        stored = store.get_automation_run(claim.run_id)
+        context = json.loads(stored["blockers"][0]["context_json"])
+        report = {
+            "status": result.status,
+            "monitoring_reason": context["monitoring_reason"],
+            "source_deadline": context["source_deadline"],
+            "completed_check_as_of": context.get("as_of"),
+            "producer_evidence_id": evidence.evidence_id,
+            "persisted_evidence_id": context["source_deadline_evidence_id"],
+            "citation_sha256": context["source_deadline_cited_text_sha256"],
+            "rule_id": context["source_deadline_rule_id"],
+            "rule_version": context["source_deadline_rule_version"],
+        }
+        return report, stored
+    finally:
+        connection.close()
+
+
+def _forged_rollback(path: Path) -> dict:
+    from tests.test_security_lifecycle_fact_kernel import _fact
+
+    connection, store, kernel, case_id = _scratch(path)
+    try:
+        claim = _reserve(
+            kernel,
+            case_id,
+            revision="trusted-lifecycle-execution-r1",
+            at="2026-08-27T00:00:00Z",
+            fingerprint="c" * 64,
+        )
+        evidence, blocker = _deadline_owner(
+            deadline="2026-04-01",
+            at="2026-08-27T00:00:00Z",
+        )
+        context = dict(blocker.context)
+        context["source_deadline_cited_text_sha256"] = "f" * 64
+        error = None
+        try:
+            kernel.complete_run(
+                run_id=claim.run_id,
+                evidence=(evidence,),
+                facts=(_fact(evidence),),
+                blockers=(replace(blocker, context=context),),
+                decision_tier=None,
+                action_readiness=None,
+                retry_at=None,
+                diagnostics={"sec_attempts": 1},
+                at="2026-08-27T00:00:00Z",
+            )
+        except ValueError as exc:
+            error = str(exc)
+        counts = {
+            "evidence_rows": connection.execute(
+                "SELECT COUNT(*) FROM security_lifecycle_evidence WHERE automation_run_id=?",
+                (claim.run_id,),
+            ).fetchone()[0],
+            "fact_rows": connection.execute(
+                "SELECT COUNT(*) FROM security_lifecycle_automation_facts WHERE automation_run_id=?",
+                (claim.run_id,),
+            ).fetchone()[0],
+            "blocker_rows": connection.execute(
+                "SELECT COUNT(*) FROM security_lifecycle_automation_run_blockers WHERE automation_run_id=?",
+                (claim.run_id,),
+            ).fetchone()[0],
+        }
+        report = {
+            "error": error,
+            "run_status_after_rejection": store.get_automation_run(claim.run_id)["status"],
+            **counts,
+        }
+        assert report == {
+            "error": "blocker_citation",
+            "run_status_after_rejection": "running",
+            "evidence_rows": 0,
+            "fact_rows": 0,
+            "blocker_rows": 0,
+        }
+        return report
+    finally:
+        connection.close()
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", required=True)
+    args = parser.parse_args()
+
+    from src.security_lifecycle_disposition import project_lifecycle_disposition
+    from tests.test_security_lifecycle_disposition import _case
+
+    with TemporaryDirectory(prefix="arkscope-honesty-authority-") as temp:
+        root = Path(temp)
+        replay = _capture_replay(root / "replay.sqlite")
+        r0 = _successful_provenance(root / "provenance-r0.sqlite", "trusted-lifecycle-execution-r0")
+        r1 = _successful_provenance(root / "provenance-r1.sqlite", "trusted-lifecycle-execution-r1")
+        pre_deadline, _ = _persist_deadline(
+            root / "citation-pre.sqlite",
+            deadline="2026-09-01",
+            at="2026-08-27T00:00:00Z",
+            fingerprint="b" * 64,
+        )
+        final_deadline, final_run = _persist_deadline(
+            root / "citation-final.sqlite",
+            deadline="2026-04-01",
+            at="2026-08-27T12:00:00Z",
+            fingerprint="d" * 64,
+        )
+        projection = project_lifecycle_disposition(
+            _case(automation_runs=(final_run,))
+        )
+        forged = _forged_rollback(root / "citation-forged.sqlite")
+
+        provenance = {
+            "r0": r0,
+            "r1": r1,
+            "equal": r0["decision_provenance_sha256"] == r1["decision_provenance_sha256"],
+        }
+        projected = {
+            "disposition": projection.disposition,
+            "queue_bucket": projection.queue_bucket,
+            "reason_code": projection.reason_code,
+            "disposition_as_of": projection.disposition_as_of,
+            "next_check_at": projection.next_check_at,
+        }
+        transition_and_acknowledgement_calls = {
+            "transition_preview": 0,
+            "transition_approval": 0,
+            "transition_apply": 0,
+            "transition_reverse": 0,
+            "acknowledgement": 0,
+        }
+        payload = {
+            "schema_version": 1,
+            "authority": AUTHORITY,
+            "scratch_database_kind": "temporary_sqlite_only",
+            "legacy_failed_replay": replay,
+            "decision_provenance": provenance,
+            "producer_to_kernel_citations": {
+                "pre_deadline": pre_deadline,
+                "final": final_deadline,
+            },
+            "forged_citation_rollback": forged,
+            "final_unconfirmed_projection": projected,
+            "transition_and_acknowledgement_calls": transition_and_acknowledgement_calls,
+        }
+        assert provenance["equal"] is True
+        assert pre_deadline["monitoring_reason"] == "event_completion_not_confirmed"
+        assert final_deadline["source_deadline"] == "2026-04-01"
+        assert final_deadline["completed_check_as_of"] == "2026-08-27"
+        assert projected == {
+            "disposition": "not_confirmed_yet",
+            "queue_bucket": "history",
+            "reason_code": "not_confirmed_as_of",
+            "disposition_as_of": "2026-08-27",
+            "next_check_at": None,
+        }
+        assert all(value == 0 for value in transition_and_acknowledgement_calls.values())
+
+    Path(args.output).write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+
+if __name__ == "__main__":
+    main()

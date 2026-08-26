@@ -1,0 +1,38 @@
+{
+  "all_checks_passed": true,
+  "authority_constants": {
+    "AUTOMATION_POLICY_VERSION": "trusted-lifecycle-automation-v3",
+    "SEC_shared_RULE_VERSION": "3",
+    "SEC_source_deadline_RULE_VERSION": "4"
+  },
+  "base_owned_object_count": 33,
+  "base_revision": "11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb",
+  "checks": {
+    "automation_policy_version_v3": true,
+    "index_sql_exact": true,
+    "new_mutable_disposition_column_count_zero": true,
+    "owned_sqlite_master_exact": true,
+    "pragma_table_info_exact": true,
+    "sec_deadline_only_rule_version_4": true,
+    "sec_shared_rule_version_3": true,
+    "security_lifecycle_decision_policy_bytes_exact": true,
+    "security_lifecycle_schema_bytes_exact": true,
+    "startup_ddl_changes_zero": true,
+    "ticker_identity_transition_bytes_exact": true,
+    "ticker_identity_transition_execution_revision_references_zero": true
+  },
+  "head_owned_object_count": 33,
+  "head_revision": "b05ea4a2abe2fc2e1fbebd845de624804f46f3d1",
+  "index_sql_diff": "empty",
+  "new_mutable_disposition_column_count": 0,
+  "new_mutable_disposition_columns": [],
+  "owned_sqlite_master_diff": "empty",
+  "pragma_table_info_diff": "empty",
+  "schema_version": 1,
+  "security_lifecycle_decision_policy_byte_diff": "empty",
+  "security_lifecycle_schema_byte_diff": "empty",
+  "startup_ddl_changed_files": [],
+  "startup_ddl_changes": 0,
+  "ticker_identity_transition_byte_diff": "empty",
+  "ticker_identity_transition_execution_revision_references": 0
+}

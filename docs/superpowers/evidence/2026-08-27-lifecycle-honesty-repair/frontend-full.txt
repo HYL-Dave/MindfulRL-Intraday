@@ -1,0 +1,12 @@
+
+> arkscope-web@0.0.1 test
+> vitest run
+
+
+ RUN  v4.1.8 /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web
+
+
+ Test Files  106 passed (106)
+      Tests  1241 passed (1241)
+   Start at  05:55:28
+   Duration  11.05s (transform 59.22s, setup 24.25s, import 71.80s, tests 58.50s, environment 58.76s)
