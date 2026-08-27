@@ -21,7 +21,7 @@
     "ticker_identity_transition_execution_revision_references_zero": true
   },
   "head_owned_object_count": 33,
-  "head_revision": "23fe53b72be6b0b0629b596100b41f5ec6a0dcf9",
+  "head_revision": "c043bc0e7ca0642e383841dfcc537c5bdb4242e2",
   "index_sql_diff": "empty",
   "new_mutable_disposition_column_count": 0,
   "new_mutable_disposition_columns": [],

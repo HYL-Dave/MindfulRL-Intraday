@@ -10,24 +10,52 @@
     "production_database_writes": 0,
     "provider_calls": 0,
     "pushes": 0,
-    "scope": "offline_fixture_and_scratch_only"
+    "scope": "offline_fixture_and_scratch_only",
+    "semantics": "declared_execution_boundary_not_instrumented_measurement"
   },
   "authority_call_observer_calibration": {
     "expected": {
-      "acknowledgement": 1,
-      "transition_apply": 1,
-      "transition_approval": 1,
-      "transition_preview": 1,
-      "transition_reverse": 1
+      "boundaries": {
+        "acknowledgement.activity": 1,
+        "acknowledgement.case": 1,
+        "transition_apply.store": 1,
+        "transition_approval.attended": 1,
+        "transition_approval.automation": 1,
+        "transition_preview.automation_preflight": 1,
+        "transition_preview.module_preview": 1,
+        "transition_preview.service_alias": 1,
+        "transition_reverse.store": 1
+      },
+      "categories": {
+        "acknowledgement": 2,
+        "transition_apply": 1,
+        "transition_approval": 2,
+        "transition_preview": 3,
+        "transition_reverse": 1
+      }
     },
-    "method": "fail_closed_boundary_wrappers",
+    "method": "fail_closed_exact_boundary_wrappers",
     "observed": {
-      "acknowledgement": 1,
-      "transition_apply": 1,
-      "transition_approval": 1,
-      "transition_preview": 1,
-      "transition_reverse": 1
-    }
+      "boundaries": {
+        "acknowledgement.activity": 1,
+        "acknowledgement.case": 1,
+        "transition_apply.store": 1,
+        "transition_approval.attended": 1,
+        "transition_approval.automation": 1,
+        "transition_preview.automation_preflight": 1,
+        "transition_preview.module_preview": 1,
+        "transition_preview.service_alias": 1,
+        "transition_reverse.store": 1
+      },
+      "categories": {
+        "acknowledgement": 2,
+        "transition_apply": 1,
+        "transition_approval": 2,
+        "transition_preview": 3,
+        "transition_reverse": 1
+      }
+    },
+    "target_count": 9
   },
   "cross_revision_due_blocked_retry": {
     "initial_execution_revision": "trusted-lifecycle-execution-r0",
@@ -117,9 +145,20 @@
       "status": "blocked"
     }
   },
-  "product_test_authority": "23fe53b72be6b0b0629b596100b41f5ec6a0dcf9",
+  "product_test_authority": "c043bc0e7ca0642e383841dfcc537c5bdb4242e2",
   "schema_version": 1,
   "scratch_database_kind": "temporary_sqlite_only",
+  "transition_and_acknowledgement_boundary_calls": {
+    "acknowledgement.activity": 0,
+    "acknowledgement.case": 0,
+    "transition_apply.store": 0,
+    "transition_approval.attended": 0,
+    "transition_approval.automation": 0,
+    "transition_preview.automation_preflight": 0,
+    "transition_preview.module_preview": 0,
+    "transition_preview.service_alias": 0,
+    "transition_reverse.store": 0
+  },
   "transition_and_acknowledgement_calls": {
     "acknowledgement": 0,
     "transition_apply": 0,

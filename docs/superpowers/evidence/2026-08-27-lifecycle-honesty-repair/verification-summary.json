@@ -10,17 +10,19 @@
     "production_database_writes": 0,
     "provider_calls": 0,
     "pushes": 0,
-    "scope": "offline_fixture_and_scratch_only"
+    "scope": "offline_fixture_and_scratch_only",
+    "semantics": "declared_execution_boundary_not_instrumented_measurement"
   },
   "backend": {
     "focused_collection_byte_identical": true,
-    "focused_collection_node_count": 213,
-    "focused_pass_a": "213 passed in 12.20s",
-    "focused_pass_b": "213 passed in 13.73s",
-    "full_pass_a": "4534 passed, 12 skipped, 3 warnings in 254.95s (0:04:14)",
-    "full_pass_b": "4534 passed, 12 skipped, 3 warnings in 249.83s (0:04:09)"
+    "focused_collection_node_count": 229,
+    "focused_pass_a": "229 passed in 12.49s",
+    "focused_pass_b": "229 passed in 14.53s",
+    "full_pass_a": "4539 passed, 12 skipped, 3 warnings in 248.06s (0:04:08)",
+    "full_pass_b": "4539 passed, 12 skipped, 3 warnings in 252.03s (0:04:12)"
   },
   "browser_matrix": {
+    "authority_semantics": "declared_fixture_execution_boundary_not_instrumented_measurement",
     "clipped_text_count": 0,
     "console_errors": 0,
     "entry_count": 24,
@@ -35,7 +37,7 @@
     "build": "passed; 2193 modules",
     "i18n_literal_gate": "passed; debtSignatureCount=0",
     "test_files": 106,
-    "tests_passed": 1244,
+    "tests_passed": 1246,
     "typecheck": "passed"
   },
   "limitations": [
@@ -43,33 +45,64 @@
     "all persistence recovery tests use local temporary SQLite and later sequential worker ticks",
     "the browser matrix uses fixture interception; out-of-order queue and detail sequencing are owned by Vitest",
     "broader legal-language extraction remains precision-first and intentionally incomplete",
-    "no production migration is needed because schema authority is unchanged",
+    "no production schema migration or row backfill is needed because schema authority is unchanged and M37 proves pre-execution-key succeeded rows remain query-compatible",
+    "unexpected_owner_drift is limited to missing or additional failures inside each explicitly executed owner-only mutation command; it is not a broad suite-drift scan",
+    "five independently removable backend fail-closed conditions and two load-bearing frontend race guards were previously unowned; the seven named closeout mutations now own them",
+    "other incidental frontend guards are accepted coverage debt and are not claimed as mutation-owned",
+    "provider, production-database, App-restart, merge, and push zeros are declared hard-stop compliance rather than runtime-instrumented measurements",
     "App restart, merge, push, and production database operations remain prohibited"
   ],
   "mutation_ledger": {
     "all_mutations_killed": true,
     "all_product_files_restored_byte_identically": true,
-    "killed_count": 40,
-    "mutation_count": 40,
+    "killed_count": 47,
+    "mutation_count": 47,
     "unexpected_owner_drift": []
   },
   "offline_authority": {
     "authority_call_observer_calibration": {
       "expected": {
-        "acknowledgement": 1,
-        "transition_apply": 1,
-        "transition_approval": 1,
-        "transition_preview": 1,
-        "transition_reverse": 1
+        "boundaries": {
+          "acknowledgement.activity": 1,
+          "acknowledgement.case": 1,
+          "transition_apply.store": 1,
+          "transition_approval.attended": 1,
+          "transition_approval.automation": 1,
+          "transition_preview.automation_preflight": 1,
+          "transition_preview.module_preview": 1,
+          "transition_preview.service_alias": 1,
+          "transition_reverse.store": 1
+        },
+        "categories": {
+          "acknowledgement": 2,
+          "transition_apply": 1,
+          "transition_approval": 2,
+          "transition_preview": 3,
+          "transition_reverse": 1
+        }
       },
-      "method": "fail_closed_boundary_wrappers",
+      "method": "fail_closed_exact_boundary_wrappers",
       "observed": {
-        "acknowledgement": 1,
-        "transition_apply": 1,
-        "transition_approval": 1,
-        "transition_preview": 1,
-        "transition_reverse": 1
-      }
+        "boundaries": {
+          "acknowledgement.activity": 1,
+          "acknowledgement.case": 1,
+          "transition_apply.store": 1,
+          "transition_approval.attended": 1,
+          "transition_approval.automation": 1,
+          "transition_preview.automation_preflight": 1,
+          "transition_preview.module_preview": 1,
+          "transition_preview.service_alias": 1,
+          "transition_reverse.store": 1
+        },
+        "categories": {
+          "acknowledgement": 2,
+          "transition_apply": 1,
+          "transition_approval": 2,
+          "transition_preview": 3,
+          "transition_reverse": 1
+        }
+      },
+      "target_count": 9
     },
     "byte_identical_across_two_captures": true,
     "cross_revision_due_blocked_retry": {
@@ -80,6 +113,7 @@
       "same_revision_replay": false
     },
     "decision_provenance_equal_across_r0_r1": true,
+    "declared_authority_semantics": "declared_execution_boundary_not_instrumented_measurement",
     "forged_citation_rollback_rows": {
       "blockers": 0,
       "evidence": 0,
@@ -93,7 +127,7 @@
     "sha256sum_check": "passed"
   },
   "product_base": "11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb",
-  "product_test_authority": "23fe53b72be6b0b0629b596100b41f5ec6a0dcf9",
+  "product_test_authority": "c043bc0e7ca0642e383841dfcc537c5bdb4242e2",
   "schema_and_protected_authority": {
     "all_checks_passed": true,
     "automation_policy_version": "trusted-lifecycle-automation-v3",

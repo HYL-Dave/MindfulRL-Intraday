@@ -48,8 +48,8 @@
       "sha256": "cba0c0279d5779d47e24aa6baeb4c5089cab3db1a785ba1753c2247207ac0b99"
     }
   ],
-  "killed_count": 40,
-  "mutation_count": 40,
+  "killed_count": 47,
+  "mutation_count": 47,
   "mutations": [
     {
       "actual_failure_count": 1,
@@ -82,7 +82,7 @@
         "tests/test_security_lifecycle_fact_kernel.py:254: Failed",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_mutations_fail_atomically[forged_hash]",
-        "1 failed in 0.33s"
+        "1 failed in 0.35s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -131,7 +131,7 @@
         "tests/test_security_lifecycle_fact_kernel.py:469: Failed",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_any_deadline_field_triggers_complete_set_before_deadline",
-        "1 failed in 0.08s"
+        "1 failed in 0.09s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -180,7 +180,7 @@
         "tests/test_security_lifecycle_fact_kernel.py:254: Failed",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_fact_kernel.py::test_blocker_citation_mutations_fail_atomically[partial_set]",
-        "1 failed in 0.34s"
+        "1 failed in 0.35s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -229,7 +229,7 @@
         "tests/test_security_lifecycle_sec_evidence.py:793: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_sec_evidence.py::test_explicit_outside_date_is_hash_cited_and_conflicts_fail_closed",
-        "1 failed in 0.26s"
+        "1 failed in 0.27s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -278,7 +278,7 @@
         "tests/test_security_lifecycle_sec_evidence.py:752: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation",
-        "1 failed in 0.26s"
+        "1 failed in 0.27s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -327,7 +327,7 @@
         "tests/test_security_lifecycle_sec_evidence.py:752: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation",
-        "1 failed in 0.26s"
+        "1 failed in 0.27s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -376,7 +376,7 @@
         "tests/test_security_lifecycle_automation_scheduler.py:499: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check",
-        "1 failed in 0.33s"
+        "1 failed in 0.35s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -425,7 +425,7 @@
         "tests/test_security_lifecycle_disposition.py:288: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_disposition.py::test_not_confirmed_as_of_projects_the_actual_completed_check_date",
-        "1 failed in 0.08s"
+        "1 failed in 0.09s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -474,7 +474,7 @@
         "tests/test_security_lifecycle_tools.py:298: KeyError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_tools.py::test_read_service_exposes_derived_final_check_date_in_list_and_detail",
-        "1 failed in 0.15s"
+        "1 failed in 0.16s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -518,16 +518,16 @@
       "output_tail": [
         "",
         "> arkscope-web@0.0.1 test",
-        "> vitest run src/lifecycle/LifecycleView.test.tsx -t renders truthful dated final-History reasons in both locales without acknowledgement --reporter=json --outputFile=/tmp/arkscope-m10-acax5lpx/vitest.json",
+        "> vitest run src/lifecycle/LifecycleView.test.tsx -t renders truthful dated final-History reasons in both locales without acknowledgement --reporter=json --outputFile=/tmp/arkscope-m10-joeaq0a6/vitest.json",
         "",
-        "JSON report written to /tmp/arkscope-m10-acax5lpx/vitest.json",
+        "JSON report written to /tmp/arkscope-m10-joeaq0a6/vitest.json",
         "npm error Lifecycle script `test` failed with error:",
         "npm error code 1",
         "npm error path /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
         "npm error workspace arkscope-web@0.0.1",
         "npm error location /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
         "npm error command failed",
-        "npm error command sh -c vitest run src/lifecycle/LifecycleView.test.tsx -t 'renders truthful dated final-History reasons in both locales without acknowledgement' --reporter=json --outputFile=/tmp/arkscope-m10-acax5lpx/vitest.json"
+        "npm error command sh -c vitest run src/lifecycle/LifecycleView.test.tsx -t 'renders truthful dated final-History reasons in both locales without acknowledgement' --reporter=json --outputFile=/tmp/arkscope-m10-joeaq0a6/vitest.json"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -542,7 +542,7 @@
           "path": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx"
         }
       ],
-      "skipped_test_count": 40,
+      "skipped_test_count": 42,
       "unexpected_owner_node_ids": []
     },
     {
@@ -576,7 +576,7 @@
         "tests/test_security_lifecycle_automation_worker.py:1359: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_automation_worker.py::test_execution_revision_does_not_change_decision_or_transition_authority",
-        "1 failed in 0.27s"
+        "1 failed in 0.28s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -821,7 +821,7 @@
         "tests/test_security_lifecycle_sec_evidence.py:752: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation",
-        "1 failed in 0.26s"
+        "1 failed in 0.27s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -870,7 +870,7 @@
         "tests/test_security_lifecycle_automation_worker.py:715: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_automation_worker.py::test_market_recheck_uses_latest_snapshot_and_converges_from_frozen_to_fresh",
-        "1 failed in 0.22s"
+        "1 failed in 0.23s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -980,7 +980,7 @@
         "FAILED tests/test_security_lifecycle_automation_worker.py::test_terminal_finalization_recovers_idempotently_after_each_boundary[proposal]",
         "FAILED tests/test_security_lifecycle_automation_worker.py::test_terminal_finalization_recovers_idempotently_after_each_boundary[approval]",
         "FAILED tests/test_security_lifecycle_automation_worker.py::test_approval_boundary_recovery_deduplicates_real_transition_and_mutates_no_profile",
-        "5 failed, 25 deselected in 0.50s"
+        "5 failed, 25 deselected in 0.53s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1022,14 +1022,14 @@
         "E         ",
         "E         Omitting 1 identical items, use -vv to show",
         "E         Differing items:",
-        "E         {'history': 2} != {'history': 0}",
         "E         {'monitoring': 0} != {'monitoring': 2}",
+        "E         {'history': 2} != {'history': 0}",
         "E         Use -v to get more diff",
         "",
         "tests/test_security_lifecycle_tools.py:394: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_tools.py::test_new_observation_keeps_old_terminal_run_and_transition_as_activity_only",
-        "1 failed in 0.15s"
+        "1 failed in 0.16s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1173,10 +1173,10 @@
         "E         Right contains one more item: ('slc_deadline_only', '2026-08-30T12:00:00Z', ())",
         "E         Use -v to get more diff",
         "",
-        "tests/test_security_lifecycle_automation_scheduler.py:610: AssertionError",
+        "tests/test_security_lifecycle_automation_scheduler.py:720: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_deadline_without_effective_date_caps_schedule_and_triggers_final_market_check",
-        "1 failed in 0.33s"
+        "1 failed in 0.34s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1222,10 +1222,10 @@
         "E         + 2026-09-03T12:00:00Z",
         "E         ?       ^ +  ^^",
         "",
-        "tests/test_security_lifecycle_automation_scheduler.py:572: AssertionError",
+        "tests/test_security_lifecycle_automation_scheduler.py:682: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_deadline_without_effective_date_caps_schedule_and_triggers_final_market_check",
-        "1 failed in 0.33s"
+        "1 failed in 0.34s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1269,16 +1269,16 @@
       "output_tail": [
         "",
         "> arkscope-web@0.0.1 test",
-        "> vitest run src/lifecycle/LifecycleView.test.tsx -t commits only the newest queue response when requests resolve out of order --reporter=json --outputFile=/tmp/arkscope-m25-peu187ck/vitest.json",
+        "> vitest run src/lifecycle/LifecycleView.test.tsx -t commits only the newest queue response when requests resolve out of order --reporter=json --outputFile=/tmp/arkscope-m25-xmsqo1dq/vitest.json",
         "",
-        "JSON report written to /tmp/arkscope-m25-peu187ck/vitest.json",
+        "JSON report written to /tmp/arkscope-m25-xmsqo1dq/vitest.json",
         "npm error Lifecycle script `test` failed with error:",
         "npm error code 1",
         "npm error path /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
         "npm error workspace arkscope-web@0.0.1",
         "npm error location /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
         "npm error command failed",
-        "npm error command sh -c vitest run src/lifecycle/LifecycleView.test.tsx -t 'commits only the newest queue response when requests resolve out of order' --reporter=json --outputFile=/tmp/arkscope-m25-peu187ck/vitest.json"
+        "npm error command sh -c vitest run src/lifecycle/LifecycleView.test.tsx -t 'commits only the newest queue response when requests resolve out of order' --reporter=json --outputFile=/tmp/arkscope-m25-xmsqo1dq/vitest.json"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1293,7 +1293,7 @@
           "path": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx"
         }
       ],
-      "skipped_test_count": 40,
+      "skipped_test_count": 42,
       "unexpected_owner_node_ids": []
     },
     {
@@ -1376,7 +1376,7 @@
         "tests/test_security_lifecycle_disposition.py:649: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_disposition.py::test_ibkr_missing_is_present_evidence_while_ambiguity_is_conflict",
-        "1 failed in 0.08s"
+        "1 failed in 0.09s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1427,7 +1427,7 @@
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_automation_worker.py::test_source_conflict_crosses_worker_kernel_and_attention_projection[conflict_only]",
         "FAILED tests/test_security_lifecycle_automation_worker.py::test_source_conflict_crosses_worker_kernel_and_attention_projection[conflict_plus_pending]",
-        "2 failed in 0.26s"
+        "2 failed in 0.28s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1476,7 +1476,7 @@
         "tests/test_security_lifecycle_disposition.py:432: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_disposition.py::test_latest_run_uses_the_current_manual_evidence_digest",
-        "1 failed in 0.08s"
+        "1 failed in 0.09s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1563,7 +1563,7 @@
       "missing_owner_node_ids": [],
       "mutation": "select a market snapshot when another candidate lacks retrieval time",
       "output_tail": [
-        ".0 = <tuple_iterator object at 0x74e18abac100>",
+        ".0 = <tuple_iterator object at 0x7c09b96c42b0>",
         "",
         ">       transition_preview=lambda _request: (_ for _ in ()).throw(",
         "            AssertionError(\"ambiguous market recency must not preview a mutation\")",
@@ -1574,7 +1574,7 @@
         "tests/test_security_lifecycle_decision_policy.py:196: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_decision_policy.py::test_multiple_market_snapshots_fail_closed_when_any_retrieval_time_is_missing",
-        "1 failed in 0.09s"
+        "1 failed in 0.10s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1623,7 +1623,7 @@
         "tests/test_security_lifecycle_fact_kernel.py:1220: AssertionError",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_fact_kernel.py::test_explicit_source_conflict_survives_persistence_without_derived_fact_conflict",
-        "1 failed in 0.09s"
+        "1 failed in 0.10s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1672,7 +1672,7 @@
         "tests/test_security_lifecycle_investigation.py:630: Failed",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_investigation.py::test_automation_assessment_reuse_rejects_changed_persisted_material[assessment-field]",
-        "1 failed in 0.18s"
+        "1 failed in 0.19s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1721,7 +1721,7 @@
         "tests/test_security_lifecycle_investigation.py:630: Failed",
         "=========================== short test summary info ============================",
         "FAILED tests/test_security_lifecycle_investigation.py::test_automation_assessment_reuse_rejects_changed_persisted_material[citation]",
-        "1 failed in 0.17s"
+        "1 failed in 0.15s"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1765,16 +1765,16 @@
       "output_tail": [
         "",
         "> arkscope-web@0.0.1 test",
-        "> vitest run src/lifecycle/LifecycleView.test.tsx -t refreshes a completed command against the currently selected queue --reporter=json --outputFile=/tmp/arkscope-m35-f6eik2yy/vitest.json",
+        "> vitest run src/lifecycle/LifecycleView.test.tsx -t refreshes a completed command against the currently selected queue --reporter=json --outputFile=/tmp/arkscope-m35-rb9kc0ma/vitest.json",
         "",
-        "JSON report written to /tmp/arkscope-m35-f6eik2yy/vitest.json",
+        "JSON report written to /tmp/arkscope-m35-rb9kc0ma/vitest.json",
         "npm error Lifecycle script `test` failed with error:",
         "npm error code 1",
         "npm error path /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
         "npm error workspace arkscope-web@0.0.1",
         "npm error location /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
         "npm error command failed",
-        "npm error command sh -c vitest run src/lifecycle/LifecycleView.test.tsx -t 'refreshes a completed command against the currently selected queue' --reporter=json --outputFile=/tmp/arkscope-m35-f6eik2yy/vitest.json"
+        "npm error command sh -c vitest run src/lifecycle/LifecycleView.test.tsx -t 'refreshes a completed command against the currently selected queue' --reporter=json --outputFile=/tmp/arkscope-m35-rb9kc0ma/vitest.json"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1789,7 +1789,7 @@
           "path": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx"
         }
       ],
-      "skipped_test_count": 40,
+      "skipped_test_count": 42,
       "unexpected_owner_node_ids": []
     },
     {
@@ -1818,16 +1818,16 @@
       "output_tail": [
         "",
         "> arkscope-web@0.0.1 test",
-        "> vitest run src/lifecycle/LifecycleView.test.tsx -t keeps detail bound to the currently selected case when responses resolve out of order --reporter=json --outputFile=/tmp/arkscope-m36-xxi_ue1b/vitest.json",
+        "> vitest run src/lifecycle/LifecycleView.test.tsx -t keeps detail bound to the currently selected case when responses resolve out of order --reporter=json --outputFile=/tmp/arkscope-m36-nrttp6vg/vitest.json",
         "",
-        "JSON report written to /tmp/arkscope-m36-xxi_ue1b/vitest.json",
+        "JSON report written to /tmp/arkscope-m36-nrttp6vg/vitest.json",
         "npm error Lifecycle script `test` failed with error:",
         "npm error code 1",
         "npm error path /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
         "npm error workspace arkscope-web@0.0.1",
         "npm error location /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
         "npm error command failed",
-        "npm error command sh -c vitest run src/lifecycle/LifecycleView.test.tsx -t 'keeps detail bound to the currently selected case when responses resolve out of order' --reporter=json --outputFile=/tmp/arkscope-m36-xxi_ue1b/vitest.json"
+        "npm error command sh -c vitest run src/lifecycle/LifecycleView.test.tsx -t 'keeps detail bound to the currently selected case when responses resolve out of order' --reporter=json --outputFile=/tmp/arkscope-m36-nrttp6vg/vitest.json"
       ],
       "parse_error": null,
       "passing_test_count": 0,
@@ -1842,7 +1842,7 @@
           "path": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx"
         }
       ],
-      "skipped_test_count": 40,
+      "skipped_test_count": 42,
       "unexpected_owner_node_ids": []
     },
     {
@@ -2036,6 +2036,357 @@
           "before_sha256": "ab3ac80854f59575cc1fe37f3e039863ede195a02f2572cf86427378da2c6caf",
           "byte_identical": true,
           "path": "src/security_lifecycle_disposition.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::Lifecycle workflow::keeps the newly selected case detail after a pending case command completes"
+      ],
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "src/lifecycle/LifecycleView.test.tsx",
+        "-t",
+        "keeps the newly selected case detail after a pending case command completes",
+        "--reporter=json"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::Lifecycle workflow::keeps the newly selected case detail after a pending case command completes"
+      ],
+      "id": "M41",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "refresh a completed case command against the stale selected case",
+      "output_tail": [
+        "",
+        "> arkscope-web@0.0.1 test",
+        "> vitest run src/lifecycle/LifecycleView.test.tsx -t keeps the newly selected case detail after a pending case command completes --reporter=json --outputFile=/tmp/arkscope-m41-ro3awvgl/vitest.json",
+        "",
+        "JSON report written to /tmp/arkscope-m41-ro3awvgl/vitest.json",
+        "npm error Lifecycle script `test` failed with error:",
+        "npm error code 1",
+        "npm error path /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
+        "npm error workspace arkscope-web@0.0.1",
+        "npm error location /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
+        "npm error command failed",
+        "npm error command sh -c vitest run src/lifecycle/LifecycleView.test.tsx -t 'keeps the newly selected case detail after a pending case command completes' --reporter=json --outputFile=/tmp/arkscope-m41-ro3awvgl/vitest.json"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "apps/arkscope-web/src/lifecycle/LifecycleView.tsx"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "8956886485ece5c34c0315de293897bed5e50f0c71a42d4c1e7d55fd9dab794f",
+          "before_sha256": "8956886485ece5c34c0315de293897bed5e50f0c71a42d4c1e7d55fd9dab794f",
+          "byte_identical": true,
+          "path": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx"
+        }
+      ],
+      "skipped_test_count": 42,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::Lifecycle workflow::keeps the newly selected case detail after a pending activity command completes"
+      ],
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "src/lifecycle/LifecycleView.test.tsx",
+        "-t",
+        "keeps the newly selected case detail after a pending activity command completes",
+        "--reporter=json"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::Lifecycle workflow::keeps the newly selected case detail after a pending activity command completes"
+      ],
+      "id": "M42",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "refresh a completed activity command against the stale selected case",
+      "output_tail": [
+        "",
+        "> arkscope-web@0.0.1 test",
+        "> vitest run src/lifecycle/LifecycleView.test.tsx -t keeps the newly selected case detail after a pending activity command completes --reporter=json --outputFile=/tmp/arkscope-m42-m459jr8l/vitest.json",
+        "",
+        "JSON report written to /tmp/arkscope-m42-m459jr8l/vitest.json",
+        "npm error Lifecycle script `test` failed with error:",
+        "npm error code 1",
+        "npm error path /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
+        "npm error workspace arkscope-web@0.0.1",
+        "npm error location /tmp/arkscope-lifecycle-resolution-continuation/apps/arkscope-web",
+        "npm error command failed",
+        "npm error command sh -c vitest run src/lifecycle/LifecycleView.test.tsx -t 'keeps the newly selected case detail after a pending activity command completes' --reporter=json --outputFile=/tmp/arkscope-m42-m459jr8l/vitest.json"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "apps/arkscope-web/src/lifecycle/LifecycleView.tsx"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "8956886485ece5c34c0315de293897bed5e50f0c71a42d4c1e7d55fd9dab794f",
+          "before_sha256": "8956886485ece5c34c0315de293897bed5e50f0c71a42d4c1e7d55fd9dab794f",
+          "byte_identical": true,
+          "path": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx"
+        }
+      ],
+      "skipped_test_count": 42,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_latest_market_timestamp_tie_contributes_no_decision_material"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_decision_policy.py::test_latest_market_timestamp_tie_contributes_no_decision_material"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_latest_market_timestamp_tie_contributes_no_decision_material"
+      ],
+      "id": "M43",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "accept tied latest market evidence as current decision material",
+      "output_tail": [
+        "    ",
+        ">       assert [row.evidence_id for row in current_evidence] == [\"sec\"]",
+        "E       AssertionError: assert ['ibkr-a', 'ibkr-b', 'sec'] == ['sec']",
+        "E         ",
+        "E         At index 0 diff: 'ibkr-a' != 'sec'",
+        "E         Left contains 2 more items, first extra item: 'ibkr-b'",
+        "E         Use -v to get more diff",
+        "",
+        "tests/test_security_lifecycle_decision_policy.py:238: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_decision_policy.py::test_latest_market_timestamp_tie_contributes_no_decision_material",
+        "1 failed in 0.09s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_decision_policy.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "4ad8c704ea0a2b067c2d578bfd1e271a96371ef9bf8ec6913f1e67af4fced354",
+          "before_sha256": "4ad8c704ea0a2b067c2d578bfd1e271a96371ef9bf8ec6913f1e67af4fced354",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_decision_policy.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_terminal_finalization_rejects_changed_query_context_provenance"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_fact_kernel.py::test_terminal_finalization_rejects_changed_query_context_provenance"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_terminal_finalization_rejects_changed_query_context_provenance"
+      ],
+      "id": "M44",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "finalize a terminal decision after query-context provenance changes",
+      "output_tail": [
+        "            \"WHERE run_id=?\",",
+        "            (json.dumps(context, separators=(\",\", \":\"), sort_keys=True), claim.run_id),",
+        "        )",
+        "        conn.commit()",
+        "    ",
+        ">       with pytest.raises(ValueError, match=\"terminal_decision_provenance_changed\"):",
+        "E       Failed: DID NOT RAISE <class 'ValueError'>",
+        "",
+        "tests/test_security_lifecycle_fact_kernel.py:1303: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_terminal_finalization_rejects_changed_query_context_provenance",
+        "1 failed in 0.09s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_fact_kernel.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "5adbdb5e4db8865cffacac181841a6859410ea178ae12eb635559c5056d3e407",
+          "before_sha256": "5adbdb5e4db8865cffacac181841a6859410ea178ae12eb635559c5056d3e407",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_fact_kernel.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_terminal_finalization_rejects_changed_persisted_provenance"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_fact_kernel.py::test_terminal_finalization_rejects_changed_persisted_provenance"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_terminal_finalization_rejects_changed_persisted_provenance"
+      ],
+      "id": "M45",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "finalize a terminal decision after persisted provenance changes",
+      "output_tail": [
+        "            \"SET extractor_rule_version='2' WHERE automation_run_id=?\",",
+        "            (claim.run_id,),",
+        "        )",
+        "        conn.commit()",
+        "    ",
+        ">       with pytest.raises(ValueError, match=\"terminal_decision_provenance_changed\"):",
+        "E       Failed: DID NOT RAISE <class 'ValueError'>",
+        "",
+        "tests/test_security_lifecycle_fact_kernel.py:1341: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_terminal_finalization_rejects_changed_persisted_provenance",
+        "1 failed in 0.09s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_fact_kernel.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "5adbdb5e4db8865cffacac181841a6859410ea178ae12eb635559c5056d3e407",
+          "before_sha256": "5adbdb5e4db8865cffacac181841a6859410ea178ae12eb635559c5056d3e407",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_fact_kernel.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_rejects_multiple_deadline_dates"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_rejects_multiple_deadline_dates"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_rejects_multiple_deadline_dates"
+      ],
+      "id": "M46",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "monitor an event with multiple source deadline dates",
+      "output_tail": [
+        "                at=\"2026-08-26T00:00:00Z\",",
+        "            )",
+        "        except ValueError as exc:",
+        "            assert str(exc) == \"source_deadlines\"",
+        "        else:",
+        ">           raise AssertionError(\"multiple deadline dates must fail closed\")",
+        "E           AssertionError: multiple deadline dates must fail closed",
+        "",
+        "tests/test_security_lifecycle_automation_scheduler.py:563: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_rejects_multiple_deadline_dates",
+        "1 failed in 0.16s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/service/security_lifecycle_automation_scheduler.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "6f78d659c99be07c307c8e97864fb810f11d9100b242840395231e10ef6b47fa",
+          "before_sha256": "6f78d659c99be07c307c8e97864fb810f11d9100b242840395231e10ef6b47fa",
+          "byte_identical": true,
+          "path": "src/service/security_lifecycle_automation_scheduler.py"
+        }
+      ],
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_acquisition_scheduling_rejects_multiple_deadline_dates_before_market_work"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_automation_scheduler.py::test_acquisition_scheduling_rejects_multiple_deadline_dates_before_market_work"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_acquisition_scheduling_rejects_multiple_deadline_dates_before_market_work"
+      ],
+      "id": "M47",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "start market work despite multiple source deadline dates",
+      "output_tail": [
+        ".0 = <tuple_iterator object at 0x70d5a73fa560>",
+        "",
+        ">       lambda *_args, **_kwargs: (_ for _ in ()).throw(",
+        "            AssertionError(\"market work must not start\")",
+        "        ),",
+        "    )",
+        "E   AssertionError: market work must not start",
+        "",
+        "tests/test_security_lifecycle_automation_scheduler.py:621: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_acquisition_scheduling_rejects_multiple_deadline_dates_before_market_work",
+        "1 failed in 0.36s"
+      ],
+      "parse_error": null,
+      "passing_test_count": 0,
+      "product_files": [
+        "src/service/security_lifecycle_automation_scheduler.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "6f78d659c99be07c307c8e97864fb810f11d9100b242840395231e10ef6b47fa",
+          "before_sha256": "6f78d659c99be07c307c8e97864fb810f11d9100b242840395231e10ef6b47fa",
+          "byte_identical": true,
+          "path": "src/service/security_lifecycle_automation_scheduler.py"
         }
       ],
       "skipped_test_count": 0,

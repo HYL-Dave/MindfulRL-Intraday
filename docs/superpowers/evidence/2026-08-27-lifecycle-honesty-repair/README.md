@@ -1,14 +1,14 @@
 # Lifecycle Honesty Repair Final Fix Admission
 
 This self-hashed packet admits product/test authority
-`23fe53b72be6b0b0629b596100b41f5ec6a0dcf9` entirely offline. It replaces,
+`c043bc0e7ca0642e383841dfcc537c5bdb4242e2` entirely offline. It replaces,
 and does not extend, the packet previously sealed at `fbfd6738`.
 
 ## Authority
 
 - Product base: `11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb`
-- Product/test authority: `23fe53b72be6b0b0629b596100b41f5ec6a0dcf9`
-- Topology: 17 linear commits and zero merge commits from product base to
+- Product/test authority: `c043bc0e7ca0642e383841dfcc537c5bdb4242e2`
+- Topology: 20 linear commits and zero merge commits from product base to
   product/test authority
 - Policy: `trusted-lifecycle-automation-v3`
 - Shared SEC rule version: `3`
@@ -48,9 +48,11 @@ idempotently; profile mutation remains zero before transition application.
 
 ## Mutation Admission
 
-All 40 mutations were applied and restored independently. Every mutation was
-killed by its exact expected owner node, unexpected owner drift is empty, and
-every touched product file was restored byte-identically. The added mutations
+All 47 mutations were applied and restored independently. Every mutation was
+killed by its exact expected owner node, and every touched product file was
+restored byte-identically. Within each explicitly executed owner-only mutation
+command, no expected owner was missing and no additional test failed; the
+`unexpected_owner_drift` field is not a broad suite-drift scan. The added mutations
 cover latest-market selection, conflict routing and projection, terminal
 recovery reservation, run and transition current-artifact binding,
 latest-attempt replay eligibility, both deadline-only seams, newest-response
@@ -73,9 +75,15 @@ Two temporary-SQLite captures were byte-identical. They prove:
 - source deadline `2026-04-01` remains distinct from completed check
   `2026-08-27`;
 - final projection remains truthful dated History; and
-- calibrated fail-closed wrappers observe transition preview, approval, apply,
-  reverse, and acknowledgement boundaries; all observed counts are zero during
-  the scratch authority capture.
+- calibrated fail-closed wrappers exercise all nine exact transition preview,
+  approval, apply, reverse, and acknowledgement targets, including the
+  import-time `ticker_identity_service` preview alias; all instrumented target
+  counts are zero during the scratch authority capture.
+
+The packet's provider, production-database, App-restart, merge, and push zeros
+are declared execution boundaries, not runtime-instrumented measurements. The
+transition and acknowledgement counts above are separately instrumented and
+calibrated.
 
 ## Fresh Gates
 
@@ -83,11 +91,11 @@ Focused node collection was performed twice and produced 213 byte-identical
 node IDs.
 
 ```text
-focused A: 213 passed in 12.20s
-focused B: 213 passed in 13.73s
-full backend A: 4534 passed, 12 skipped, 3 warnings in 254.95s
-full backend B: 4534 passed, 12 skipped, 3 warnings in 249.83s
-frontend: 106 files / 1244 passed
+focused A: 229 passed in 12.49s
+focused B: 229 passed in 14.53s
+full backend A: 4539 passed, 12 skipped, 3 warnings in 248.06s
+full backend B: 4539 passed, 12 skipped, 3 warnings in 252.03s
+frontend: 106 files / 1246 passed
 typecheck: passed
 visible i18n literal scanner: passed; debtSignatureCount=0
 production build: passed; 2193 modules
@@ -148,7 +156,16 @@ exact bilingual dated copy and exclude confirmed-complete language.
 - The browser matrix uses fixture interception; out-of-order queue and detail
   sequencing are owned by focused Vitest interface tests.
 - Broader legal-language extraction remains intentionally precision-first.
-- No production migration is needed because schema authority is unchanged.
+- No production schema migration or row backfill is needed: schema authority is
+  unchanged, and mutation M37 / `test_pre_execution_key_succeeded_row_remains_idempotent`
+  proves that a pre-execution-key succeeded row remains query-compatible and is
+  reused idempotently.
+- Five independently removable backend fail-closed conditions and two
+  load-bearing frontend race guards were unowned before this closeout; the seven
+  named closeout mutations now own them. Other incidental frontend guards are
+  not claimed as mutation-owned and remain accepted coverage debt.
+- The provider, production-database, App-restart, merge, and push fields are
+  declared hard-stop compliance, not general process instrumentation.
 - No production database operation, production App restart, merge, or push was
   performed.
 

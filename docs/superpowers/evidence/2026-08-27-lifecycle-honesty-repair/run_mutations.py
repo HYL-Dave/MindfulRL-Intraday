@@ -886,6 +886,151 @@ MUTATIONS = (
             "test_stale_automation_transition_artifact_does_not_mask_current_run[decision-provenance]",
         ),
     ),
+    Mutation(
+        "M41",
+        "refresh a completed case command against the stale selected case",
+        VIEW,
+        "      const currentCaseId = selectedCaseIdRef.current;\n"
+        "      await Promise.all([\n",
+        "      const currentCaseId = selectedCaseId;\n"
+        "      await Promise.all([\n",
+        (
+            "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::"
+            "Lifecycle workflow::keeps the newly selected case detail after a pending case command completes",
+        ),
+        (
+            "npm",
+            "test",
+            "--",
+            "src/lifecycle/LifecycleView.test.tsx",
+            "-t",
+            "keeps the newly selected case detail after a pending case command completes",
+            "--reporter=json",
+        ),
+        cwd="apps/arkscope-web",
+        runner="vitest",
+    ),
+    Mutation(
+        "M42",
+        "refresh a completed activity command against the stale selected case",
+        VIEW,
+        "        selectedCaseIdRef.current\n"
+        "          ? loadDetail(selectedCaseIdRef.current)\n"
+        "          : Promise.resolve(),\n",
+        "        selectedCaseId\n"
+        "          ? loadDetail(selectedCaseId)\n"
+        "          : Promise.resolve(),\n",
+        (
+            "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::"
+            "Lifecycle workflow::keeps the newly selected case detail after a pending activity command completes",
+        ),
+        (
+            "npm",
+            "test",
+            "--",
+            "src/lifecycle/LifecycleView.test.tsx",
+            "-t",
+            "keeps the newly selected case detail after a pending activity command completes",
+            "--reporter=json",
+        ),
+        cwd="apps/arkscope-web",
+        runner="vitest",
+    ),
+    Mutation(
+        "M43",
+        "accept tied latest market evidence as current decision material",
+        DECISION,
+        "        if len(selected) != 1:\n"
+        "            selected = ()\n",
+        "        if False:\n"
+        "            selected = ()\n",
+        (
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_latest_market_timestamp_tie_contributes_no_decision_material",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_latest_market_timestamp_tie_contributes_no_decision_material",
+        ),
+    ),
+    Mutation(
+        "M44",
+        "finalize a terminal decision after query-context provenance changes",
+        KERNEL,
+        "            if context.get(_TERMINAL_PROVENANCE_KEY) != provenance:\n"
+        "                raise ValueError(\"terminal_decision_provenance_changed\")\n",
+        "            if False:\n"
+        "                raise ValueError(\"terminal_decision_provenance_changed\")\n",
+        (
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_terminal_finalization_rejects_changed_query_context_provenance",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_terminal_finalization_rejects_changed_query_context_provenance",
+        ),
+    ),
+    Mutation(
+        "M45",
+        "finalize a terminal decision after persisted provenance changes",
+        KERNEL,
+        "            if persisted_decision_provenance_sha256(self.conn, run_id) != provenance:\n"
+        "                raise ValueError(\"terminal_decision_provenance_changed\")\n",
+        "            if False:\n"
+        "                raise ValueError(\"terminal_decision_provenance_changed\")\n",
+        (
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_terminal_finalization_rejects_changed_persisted_provenance",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_terminal_finalization_rejects_changed_persisted_provenance",
+        ),
+    ),
+    Mutation(
+        "M46",
+        "monitor an event with multiple source deadline dates",
+        SCHEDULER,
+        "    if len({str(getattr(row, \"date\", \"\")) for row in deadlines}) > 1:\n"
+        "        raise ValueError(\"source_deadlines\")\n",
+        "    if False:\n"
+        "        raise ValueError(\"source_deadlines\")\n",
+        (
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_pending_event_monitoring_rejects_multiple_deadline_dates",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_pending_event_monitoring_rejects_multiple_deadline_dates",
+        ),
+    ),
+    Mutation(
+        "M47",
+        "start market work despite multiple source deadline dates",
+        SCHEDULER,
+        "    if len(deadline_dates) > 1:\n"
+        "        raise ValueError(\"source_deadlines\")\n",
+        "    if False:\n"
+        "        raise ValueError(\"source_deadlines\")\n",
+        (
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_acquisition_scheduling_rejects_multiple_deadline_dates_before_market_work",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_acquisition_scheduling_rejects_multiple_deadline_dates_before_market_work",
+        ),
+    ),
 )
 
 

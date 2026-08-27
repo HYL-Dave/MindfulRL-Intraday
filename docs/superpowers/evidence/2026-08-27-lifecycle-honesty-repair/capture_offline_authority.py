@@ -20,6 +20,7 @@ sys.path.insert(0, str(ROOT))
 
 AUTHORITY = {
     "scope": "offline_fixture_and_scratch_only",
+    "semantics": "declared_execution_boundary_not_instrumented_measurement",
     "provider_calls": 0,
     "production_database_reads": 0,
     "production_database_writes": 0,
@@ -31,99 +32,137 @@ AUTHORITY = {
     "merges": 0,
     "pushes": 0,
 }
-PRODUCT_TEST_AUTHORITY = "23fe53b72be6b0b0629b596100b41f5ec6a0dcf9"
+PRODUCT_TEST_AUTHORITY = "c043bc0e7ca0642e383841dfcc537c5bdb4242e2"
+
+
+def _authority_targets():
+    from src.security_lifecycle_investigation import (
+        SecurityLifecycleInvestigationStore,
+    )
+    from src import ticker_identity_service, ticker_identity_transition
+
+    return (
+        (
+            "transition_preview.module_preview",
+            "transition_preview",
+            ticker_identity_transition,
+            "build_transition_preview",
+        ),
+        (
+            "transition_preview.automation_preflight",
+            "transition_preview",
+            ticker_identity_transition,
+            "build_automation_transition_preflight",
+        ),
+        (
+            "transition_preview.service_alias",
+            "transition_preview",
+            ticker_identity_service,
+            "build_transition_preview",
+        ),
+        (
+            "transition_approval.attended",
+            "transition_approval",
+            ticker_identity_transition.TickerIdentityTransitionStore,
+            "approve",
+        ),
+        (
+            "transition_approval.automation",
+            "transition_approval",
+            ticker_identity_transition.TickerIdentityTransitionStore,
+            "approve_automation",
+        ),
+        (
+            "transition_apply.store",
+            "transition_apply",
+            ticker_identity_transition.TickerIdentityTransitionStore,
+            "apply",
+        ),
+        (
+            "transition_reverse.store",
+            "transition_reverse",
+            ticker_identity_transition.TickerIdentityTransitionStore,
+            "reverse",
+        ),
+        (
+            "acknowledgement.case",
+            "acknowledgement",
+            SecurityLifecycleInvestigationStore,
+            "acknowledge_case",
+        ),
+        (
+            "acknowledgement.activity",
+            "acknowledgement",
+            ticker_identity_transition.TickerIdentityTransitionStore,
+            "acknowledge_activity",
+        ),
+    )
 
 
 @contextmanager
 def _observe_forbidden_authority_calls():
-    from src.security_lifecycle_investigation import (
-        SecurityLifecycleInvestigationStore,
-    )
-    from src import ticker_identity_transition
-
-    counts = {
+    category_counts = {
         "transition_preview": 0,
         "transition_approval": 0,
         "transition_apply": 0,
         "transition_reverse": 0,
         "acknowledgement": 0,
     }
-    targets = {
-        "transition_preview": (
-            (ticker_identity_transition, "build_transition_preview"),
-            (ticker_identity_transition, "build_automation_transition_preflight"),
-        ),
-        "transition_approval": (
-            (ticker_identity_transition.TickerIdentityTransitionStore, "approve"),
-            (
-                ticker_identity_transition.TickerIdentityTransitionStore,
-                "approve_automation",
-            ),
-        ),
-        "transition_apply": (
-            (ticker_identity_transition.TickerIdentityTransitionStore, "apply"),
-        ),
-        "transition_reverse": (
-            (ticker_identity_transition.TickerIdentityTransitionStore, "reverse"),
-        ),
-        "acknowledgement": (
-            (SecurityLifecycleInvestigationStore, "acknowledge_case"),
-            (
-                ticker_identity_transition.TickerIdentityTransitionStore,
-                "acknowledge_activity",
-            ),
-        ),
+    boundary_counts = {
+        boundary_id: 0 for boundary_id, _category, _owner, _attribute in _authority_targets()
     }
 
     with ExitStack() as stack:
-        for name, boundaries in targets.items():
-            for owner, attribute in boundaries:
-                def reject(*_args, _name=name, **_kwargs):
-                    counts[_name] += 1
-                    raise AssertionError(f"forbidden_authority_call:{_name}")
+        for boundary_id, category, owner, attribute in _authority_targets():
+            def reject(
+                *_args,
+                _boundary_id=boundary_id,
+                _category=category,
+                **_kwargs,
+            ):
+                category_counts[_category] += 1
+                boundary_counts[_boundary_id] += 1
+                raise AssertionError(f"forbidden_authority_call:{_boundary_id}")
 
-                stack.enter_context(patch.object(owner, attribute, reject))
-        yield counts
+            stack.enter_context(patch.object(owner, attribute, reject))
+        yield {
+            "categories": category_counts,
+            "boundaries": boundary_counts,
+        }
 
 
 def _calibrate_authority_call_observer() -> dict:
-    from src.security_lifecycle_investigation import (
-        SecurityLifecycleInvestigationStore,
-    )
-    from src import ticker_identity_transition
-
-    probes = {
-        "transition_preview": (ticker_identity_transition, "build_transition_preview"),
-        "transition_approval": (
-            ticker_identity_transition.TickerIdentityTransitionStore,
-            "approve",
-        ),
-        "transition_apply": (
-            ticker_identity_transition.TickerIdentityTransitionStore,
-            "apply",
-        ),
-        "transition_reverse": (
-            ticker_identity_transition.TickerIdentityTransitionStore,
-            "reverse",
-        ),
-        "acknowledgement": (
-            SecurityLifecycleInvestigationStore,
-            "acknowledge_case",
-        ),
-    }
-    with _observe_forbidden_authority_calls() as counts:
-        for name, (owner, attribute) in probes.items():
+    targets = _authority_targets()
+    with _observe_forbidden_authority_calls() as observed:
+        for boundary_id, _category, owner, attribute in targets:
             try:
                 getattr(owner, attribute)()
             except AssertionError as exc:
-                assert str(exc) == f"forbidden_authority_call:{name}"
+                assert str(exc) == f"forbidden_authority_call:{boundary_id}"
             else:
-                raise AssertionError(f"authority_observer_inactive:{name}")
-        observed = dict(counts)
-    expected = {name: 1 for name in probes}
+                raise AssertionError(f"authority_observer_inactive:{boundary_id}")
+        observed = {
+            "categories": dict(observed["categories"]),
+            "boundaries": dict(observed["boundaries"]),
+        }
+    expected_categories = {
+        "transition_preview": 3,
+        "transition_approval": 2,
+        "transition_apply": 1,
+        "transition_reverse": 1,
+        "acknowledgement": 2,
+    }
+    expected = {
+        "categories": expected_categories,
+        "boundaries": {
+            boundary_id: 1
+            for boundary_id, _category, _owner, _attribute in targets
+        },
+    }
     assert observed == expected
     return {
-        "method": "fail_closed_boundary_wrappers",
+        "method": "fail_closed_exact_boundary_wrappers",
+        "target_count": len(targets),
         "expected": expected,
         "observed": observed,
     }
@@ -573,7 +612,10 @@ def main() -> None:
             "disposition_as_of": projection.disposition_as_of,
             "next_check_at": projection.next_check_at,
         }
-        transition_and_acknowledgement_calls = dict(authority_calls)
+        transition_and_acknowledgement_calls = dict(authority_calls["categories"])
+        transition_and_acknowledgement_boundary_calls = dict(
+            authority_calls["boundaries"]
+        )
         payload = {
             "schema_version": 1,
             "product_test_authority": PRODUCT_TEST_AUTHORITY,
@@ -590,6 +632,9 @@ def main() -> None:
             "final_unconfirmed_projection": projected,
             "authority_call_observer_calibration": observer_calibration,
             "transition_and_acknowledgement_calls": transition_and_acknowledgement_calls,
+            "transition_and_acknowledgement_boundary_calls": (
+                transition_and_acknowledgement_boundary_calls
+            ),
         }
         assert provenance["equal"] is True
         assert pre_deadline["monitoring_reason"] == "event_completion_not_confirmed"
@@ -603,6 +648,10 @@ def main() -> None:
             "next_check_at": None,
         }
         assert all(value == 0 for value in transition_and_acknowledgement_calls.values())
+        assert all(
+            value == 0
+            for value in transition_and_acknowledgement_boundary_calls.values()
+        )
 
     Path(args.output).write_text(
         json.dumps(payload, indent=2, sort_keys=True) + "\n",

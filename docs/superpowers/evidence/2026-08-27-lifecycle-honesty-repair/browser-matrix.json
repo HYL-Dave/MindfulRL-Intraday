@@ -1,5 +1,6 @@
 {
   "app_url": "http://127.0.0.1:4206/",
+  "authority_semantics": "declared_fixture_execution_boundary_not_instrumented_measurement",
   "entries": [
     {
       "clipped_text_count": 0,
@@ -82,7 +83,7 @@
       "request_count": 22,
       "scenario": "pending-frozen",
       "screenshot": "browser/1440x900-en-pending-frozen.png",
-      "screenshot_sha256": "5b3be4cdb7e2152864ac56472948d99991ac8f9663f2e0a660adc4c4c6819c6b",
+      "screenshot_sha256": "5a6326b55237e6a10e726bae5a3cc49c3b2b930b33107637a30e38fc274be445",
       "viewport": [
         1440,
         900
@@ -214,7 +215,7 @@
       "request_count": 22,
       "scenario": "source-missing",
       "screenshot": "browser/1440x900-en-source-missing.png",
-      "screenshot_sha256": "35b82e84be825262ab597fe35eef25cc531405abf7c21d28fe7e2c2b0464a678",
+      "screenshot_sha256": "ccc8c5c3ff936deab54b5ce880239a6f7855dbd7153925f1a309c9d244fd7e53",
       "viewport": [
         1440,
         900
@@ -258,7 +259,7 @@
       "request_count": 22,
       "scenario": "final-unconfirmed",
       "screenshot": "browser/1440x900-en-final-unconfirmed.png",
-      "screenshot_sha256": "da32c6668f56edd952c3d0aee573fa30d9d627ccfca22587ac433ae5f8a0a1e9",
+      "screenshot_sha256": "c380611738dcd70363e05ab59c2e3831cad3dcd316e3ad3f0d36f30e3b89b7e8",
       "viewport": [
         1440,
         900

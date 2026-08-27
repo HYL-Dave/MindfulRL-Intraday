@@ -363,6 +363,9 @@ def main() -> int:
         "fixture_only": True,
         "transient_frontend_fixture_server": True,
         "production_app_restart": False,
+        "authority_semantics": (
+            "declared_fixture_execution_boundary_not_instrumented_measurement"
+        ),
         "provider_calls": 0,
         "production_backend_started": False,
         "production_database_operations": 0,

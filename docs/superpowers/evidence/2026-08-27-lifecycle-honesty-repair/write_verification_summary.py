@@ -9,7 +9,7 @@ import re
 
 PACKET = Path(__file__).resolve().parent
 PRODUCT_BASE = "11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb"
-PRODUCT_TEST_AUTHORITY = "23fe53b72be6b0b0629b596100b41f5ec6a0dcf9"
+PRODUCT_TEST_AUTHORITY = "c043bc0e7ca0642e383841dfcc537c5bdb4242e2"
 
 
 def _text(name: str) -> str:
@@ -76,6 +76,7 @@ def main() -> None:
             ],
         },
         "offline_authority": {
+            "declared_authority_semantics": offline["authority"]["semantics"],
             "byte_identical_across_two_captures": True,
             "authority_call_observer_calibration": offline[
                 "authority_call_observer_calibration"
@@ -152,7 +153,10 @@ def main() -> None:
                 "SEC_source_deadline_RULE_VERSION"
             ],
         },
-        "browser_matrix": browser["summary"],
+        "browser_matrix": {
+            **browser["summary"],
+            "authority_semantics": browser["authority_semantics"],
+        },
         "packet": {
             "manifest_excludes_itself": True,
             "manifest_file_set_equals_payload_file_set": True,
@@ -163,7 +167,11 @@ def main() -> None:
             "all persistence recovery tests use local temporary SQLite and later sequential worker ticks",
             "the browser matrix uses fixture interception; out-of-order queue and detail sequencing are owned by Vitest",
             "broader legal-language extraction remains precision-first and intentionally incomplete",
-            "no production migration is needed because schema authority is unchanged",
+            "no production schema migration or row backfill is needed because schema authority is unchanged and M37 proves pre-execution-key succeeded rows remain query-compatible",
+            "unexpected_owner_drift is limited to missing or additional failures inside each explicitly executed owner-only mutation command; it is not a broad suite-drift scan",
+            "five independently removable backend fail-closed conditions and two load-bearing frontend race guards were previously unowned; the seven named closeout mutations now own them",
+            "other incidental frontend guards are accepted coverage debt and are not claimed as mutation-owned",
+            "provider, production-database, App-restart, merge, and push zeros are declared hard-stop compliance rather than runtime-instrumented measurements",
             "App restart, merge, push, and production database operations remain prohibited",
         ],
     }
