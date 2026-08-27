@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import ExitStack, contextmanager
 from dataclasses import replace
 import hashlib
 import json
@@ -10,6 +11,7 @@ from pathlib import Path
 import sqlite3
 import sys
 from tempfile import TemporaryDirectory
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -29,7 +31,102 @@ AUTHORITY = {
     "merges": 0,
     "pushes": 0,
 }
-PRODUCT_TEST_AUTHORITY = "51b97b8e4f8d6f33aff495adc3423529b210a9d3"
+PRODUCT_TEST_AUTHORITY = "23fe53b72be6b0b0629b596100b41f5ec6a0dcf9"
+
+
+@contextmanager
+def _observe_forbidden_authority_calls():
+    from src.security_lifecycle_investigation import (
+        SecurityLifecycleInvestigationStore,
+    )
+    from src import ticker_identity_transition
+
+    counts = {
+        "transition_preview": 0,
+        "transition_approval": 0,
+        "transition_apply": 0,
+        "transition_reverse": 0,
+        "acknowledgement": 0,
+    }
+    targets = {
+        "transition_preview": (
+            (ticker_identity_transition, "build_transition_preview"),
+            (ticker_identity_transition, "build_automation_transition_preflight"),
+        ),
+        "transition_approval": (
+            (ticker_identity_transition.TickerIdentityTransitionStore, "approve"),
+            (
+                ticker_identity_transition.TickerIdentityTransitionStore,
+                "approve_automation",
+            ),
+        ),
+        "transition_apply": (
+            (ticker_identity_transition.TickerIdentityTransitionStore, "apply"),
+        ),
+        "transition_reverse": (
+            (ticker_identity_transition.TickerIdentityTransitionStore, "reverse"),
+        ),
+        "acknowledgement": (
+            (SecurityLifecycleInvestigationStore, "acknowledge_case"),
+            (
+                ticker_identity_transition.TickerIdentityTransitionStore,
+                "acknowledge_activity",
+            ),
+        ),
+    }
+
+    with ExitStack() as stack:
+        for name, boundaries in targets.items():
+            for owner, attribute in boundaries:
+                def reject(*_args, _name=name, **_kwargs):
+                    counts[_name] += 1
+                    raise AssertionError(f"forbidden_authority_call:{_name}")
+
+                stack.enter_context(patch.object(owner, attribute, reject))
+        yield counts
+
+
+def _calibrate_authority_call_observer() -> dict:
+    from src.security_lifecycle_investigation import (
+        SecurityLifecycleInvestigationStore,
+    )
+    from src import ticker_identity_transition
+
+    probes = {
+        "transition_preview": (ticker_identity_transition, "build_transition_preview"),
+        "transition_approval": (
+            ticker_identity_transition.TickerIdentityTransitionStore,
+            "approve",
+        ),
+        "transition_apply": (
+            ticker_identity_transition.TickerIdentityTransitionStore,
+            "apply",
+        ),
+        "transition_reverse": (
+            ticker_identity_transition.TickerIdentityTransitionStore,
+            "reverse",
+        ),
+        "acknowledgement": (
+            SecurityLifecycleInvestigationStore,
+            "acknowledge_case",
+        ),
+    }
+    with _observe_forbidden_authority_calls() as counts:
+        for name, (owner, attribute) in probes.items():
+            try:
+                getattr(owner, attribute)()
+            except AssertionError as exc:
+                assert str(exc) == f"forbidden_authority_call:{name}"
+            else:
+                raise AssertionError(f"authority_observer_inactive:{name}")
+        observed = dict(counts)
+    expected = {name: 1 for name in probes}
+    assert observed == expected
+    return {
+        "method": "fail_closed_boundary_wrappers",
+        "expected": expected,
+        "observed": observed,
+    }
 
 
 def _canonical(value: object) -> str:
@@ -435,7 +532,11 @@ def main() -> None:
     from src.security_lifecycle_disposition import project_lifecycle_disposition
     from tests.test_security_lifecycle_disposition import _case
 
-    with TemporaryDirectory(prefix="arkscope-honesty-authority-") as temp:
+    observer_calibration = _calibrate_authority_call_observer()
+    with (
+        TemporaryDirectory(prefix="arkscope-honesty-authority-") as temp,
+        _observe_forbidden_authority_calls() as authority_calls,
+    ):
         root = Path(temp)
         replay = _capture_replay(root / "replay.sqlite")
         due_retry = _cross_revision_due_blocked_retry(
@@ -472,13 +573,7 @@ def main() -> None:
             "disposition_as_of": projection.disposition_as_of,
             "next_check_at": projection.next_check_at,
         }
-        transition_and_acknowledgement_calls = {
-            "transition_preview": 0,
-            "transition_approval": 0,
-            "transition_apply": 0,
-            "transition_reverse": 0,
-            "acknowledgement": 0,
-        }
+        transition_and_acknowledgement_calls = dict(authority_calls)
         payload = {
             "schema_version": 1,
             "product_test_authority": PRODUCT_TEST_AUTHORITY,
@@ -493,6 +588,7 @@ def main() -> None:
             },
             "forged_citation_rollback": forged,
             "final_unconfirmed_projection": projected,
+            "authority_call_observer_calibration": observer_calibration,
             "transition_and_acknowledgement_calls": transition_and_acknowledgement_calls,
         }
         assert provenance["equal"] is True

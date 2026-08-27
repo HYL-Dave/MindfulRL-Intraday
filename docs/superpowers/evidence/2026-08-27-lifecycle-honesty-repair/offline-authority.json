@@ -12,6 +12,23 @@
     "pushes": 0,
     "scope": "offline_fixture_and_scratch_only"
   },
+  "authority_call_observer_calibration": {
+    "expected": {
+      "acknowledgement": 1,
+      "transition_apply": 1,
+      "transition_approval": 1,
+      "transition_preview": 1,
+      "transition_reverse": 1
+    },
+    "method": "fail_closed_boundary_wrappers",
+    "observed": {
+      "acknowledgement": 1,
+      "transition_apply": 1,
+      "transition_approval": 1,
+      "transition_preview": 1,
+      "transition_reverse": 1
+    }
+  },
   "cross_revision_due_blocked_retry": {
     "initial_execution_revision": "trusted-lifecycle-execution-r0",
     "latest_attempt_execution_revision": "trusted-lifecycle-execution-r1",
@@ -100,7 +117,7 @@
       "status": "blocked"
     }
   },
-  "product_test_authority": "51b97b8e4f8d6f33aff495adc3423529b210a9d3",
+  "product_test_authority": "23fe53b72be6b0b0629b596100b41f5ec6a0dcf9",
   "schema_version": 1,
   "scratch_database_kind": "temporary_sqlite_only",
   "transition_and_acknowledgement_calls": {

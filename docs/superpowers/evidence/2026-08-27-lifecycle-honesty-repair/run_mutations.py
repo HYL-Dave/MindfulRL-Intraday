@@ -6,6 +6,7 @@ import argparse
 from dataclasses import dataclass
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -449,7 +450,7 @@ MUTATIONS = (
         "M20",
         "project the newest historical run without current observation binding",
         DISPOSITION,
-        "    return next((run for run in runs if _artifact_is_current(case, run)), None)\n",
+        "    return next((run for run in runs if _run_is_current(case, run)), None)\n",
         "    return runs[0] if runs else None\n",
         (
             "tests/test_security_lifecycle_tools.py::"
@@ -550,9 +551,13 @@ MUTATIONS = (
         "allow an older queue success response to commit after a newer response",
         VIEW,
         "      const response = await listSecurityLifecycleCases(requestFilters);\n"
-        "      if (requestId !== caseRequestRef.current) return;\n"
+        "      if (\n"
+        "        requestId !== caseRequestRef.current\n"
+        "        || requestQuery !== caseQueryRef.current\n"
+        "      ) return;\n"
         "      setCases(response.cases);\n",
         "      const response = await listSecurityLifecycleCases(requestFilters);\n"
+        "      if (false) return;\n"
         "      setCases(response.cases);\n",
         (
             "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::"
@@ -639,6 +644,248 @@ MUTATIONS = (
             "test_source_conflict_crosses_worker_kernel_and_attention_projection",
         ),
     ),
+    Mutation(
+        "M29",
+        "accept a run whose manual-input evidence digest is stale",
+        DISPOSITION,
+        '    return query_value.get(\n'
+        '        "input_evidence_set_sha256"\n'
+        '    ) == _current_input_evidence_set_sha256(case)\n',
+        "    return True\n",
+        (
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_latest_run_uses_the_current_manual_evidence_digest",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_latest_run_uses_the_current_manual_evidence_digest",
+        ),
+    ),
+    Mutation(
+        "M30",
+        "let an applied automation transition survive without a current assessment",
+        DISPOSITION,
+        '        artifact.get("approval_authority") == "automation_policy"\n'
+        '        and artifact.get("status") in {"applied", "reversed", "cancelled"}\n'
+        "        and assessment is None\n",
+        '        artifact.get("approval_authority") == "automation_policy"\n'
+        '        and artifact.get("status") in {"applied", "reversed", "cancelled"}\n'
+        "        and False\n",
+        (
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_stale_automation_assessment_prevents_applied_transition_from_masking_fresh_run",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_stale_automation_assessment_prevents_applied_transition_from_masking_fresh_run",
+        ),
+    ),
+    Mutation(
+        "M31",
+        "select a market snapshot when another candidate lacks retrieval time",
+        DECISION,
+        "    if any(value is None for _row, value in timestamps):\n",
+        "    if all(value is None for _row, value in timestamps):\n",
+        (
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_multiple_market_snapshots_fail_closed_when_any_retrieval_time_is_missing",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_multiple_market_snapshots_fail_closed_when_any_retrieval_time_is_missing",
+        ),
+    ),
+    Mutation(
+        "M32",
+        "drop an explicit source-conflict blocker when facts do not derive one",
+        KERNEL,
+        "            elif explicit_conflicts:\n",
+        "            elif False and explicit_conflicts:\n",
+        (
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_explicit_source_conflict_survives_persistence_without_derived_fact_conflict",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_explicit_source_conflict_survives_persistence_without_derived_fact_conflict",
+        ),
+    ),
+    Mutation(
+        "M33",
+        "reuse an automation assessment after a persisted field changed",
+        "src/security_lifecycle_investigation.py",
+        "            if assessment.get(key) != value:\n"
+        '                raise ValueError("automation_assessment_changed")\n',
+        "            if False and assessment.get(key) != value:\n"
+        '                raise ValueError("automation_assessment_changed")\n',
+        (
+            "tests/test_security_lifecycle_investigation.py::"
+            "test_automation_assessment_reuse_rejects_changed_persisted_material[assessment-field]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_investigation.py::"
+            "test_automation_assessment_reuse_rejects_changed_persisted_material[assessment-field]",
+        ),
+    ),
+    Mutation(
+        "M34",
+        "reuse an automation assessment after a persisted citation changed",
+        "src/security_lifecycle_investigation.py",
+        "        if observed_citations != expected_citations:\n"
+        '            raise ValueError("automation_assessment_changed")\n',
+        "        if False and observed_citations != expected_citations:\n"
+        '            raise ValueError("automation_assessment_changed")\n',
+        (
+            "tests/test_security_lifecycle_investigation.py::"
+            "test_automation_assessment_reuse_rejects_changed_persisted_material[citation]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_investigation.py::"
+            "test_automation_assessment_reuse_rejects_changed_persisted_material[citation]",
+        ),
+    ),
+    Mutation(
+        "M35",
+        "leave command refreshes bound to the initial queue query",
+        VIEW,
+        "  caseQueryRef.current = caseQuery;\n",
+        "",
+        (
+            "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::"
+            "Lifecycle workflow::refreshes a completed command against the currently selected queue",
+        ),
+        (
+            "npm",
+            "test",
+            "--",
+            "src/lifecycle/LifecycleView.test.tsx",
+            "-t",
+            "refreshes a completed command against the currently selected queue",
+            "--reporter=json",
+        ),
+        cwd="apps/arkscope-web",
+        runner="vitest",
+    ),
+    Mutation(
+        "M36",
+        "commit a detail response for a no-longer-selected case",
+        VIEW,
+        "      if (\n"
+        "        requestId !== detailRequestRef.current\n"
+        "        || selectedCaseIdRef.current !== caseId\n"
+        "      ) return;\n"
+        "      setDetail(response);\n",
+        "      if (false) return;\n"
+        "      setDetail(response);\n",
+        (
+            "apps/arkscope-web/src/lifecycle/LifecycleView.test.tsx::"
+            "Lifecycle workflow::keeps detail bound to the currently selected case when responses resolve out of order",
+        ),
+        (
+            "npm",
+            "test",
+            "--",
+            "src/lifecycle/LifecycleView.test.tsx",
+            "-t",
+            "keeps detail bound to the currently selected case when responses resolve out of order",
+            "--reporter=json",
+        ),
+        cwd="apps/arkscope-web",
+        runner="vitest",
+    ),
+    Mutation(
+        "M37",
+        "require new semantic-run metadata when selecting a pre-change row",
+        KERNEL,
+        "                    candidate_context is not None\n"
+        "                    and candidate_context.get(\"input_evidence_set_sha256\")\n"
+        "                    == input_evidence_digest\n",
+        "                    candidate_context is not None\n"
+        "                    and candidate_context.get(\"semantic_run_key\") == semantic_run_key\n"
+        "                    and candidate_context.get(\"input_evidence_set_sha256\")\n"
+        "                    == input_evidence_digest\n",
+        (
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_pre_execution_key_succeeded_row_remains_idempotent",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_pre_execution_key_succeeded_row_remains_idempotent",
+        ),
+    ),
+    Mutation(
+        "M38",
+        "accept a transition bound to a different assessment id",
+        DISPOSITION,
+        "    if artifact_assessment_ids and artifact_assessment_ids != {assessment_id}:\n"
+        "        return False\n",
+        "    if False and artifact_assessment_ids != {assessment_id}:\n"
+        "        return False\n",
+        (
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_stale_automation_transition_artifact_does_not_mask_current_run[assessment-id]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_stale_automation_transition_artifact_does_not_mask_current_run[assessment-id]",
+        ),
+    ),
+    Mutation(
+        "M39",
+        "accept a transition bound to a different evidence set",
+        DISPOSITION,
+        "    if evidence_set and artifact_evidence_sets and artifact_evidence_sets != {\n"
+        "        evidence_set\n"
+        "    }:\n"
+        "        return False\n",
+        "    if False:\n"
+        "        return False\n",
+        (
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_stale_automation_transition_artifact_does_not_mask_current_run[evidence-set]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_stale_automation_transition_artifact_does_not_mask_current_run[evidence-set]",
+        ),
+    ),
+    Mutation(
+        "M40",
+        "accept a transition bound to different decision provenance",
+        DISPOSITION,
+        "        if provenance and artifact_provenance and provenance != artifact_provenance:\n"
+        "            return False\n",
+        "        if False:\n"
+        "            return False\n",
+        (
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_stale_automation_transition_artifact_does_not_mask_current_run[decision-provenance]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_disposition.py::"
+            "test_stale_automation_transition_artifact_does_not_mask_current_run[decision-provenance]",
+        ),
+    ),
 )
 
 
@@ -652,6 +899,14 @@ def _replace_once(path: Path, old: str, new: str) -> None:
     if count != 1:
         raise RuntimeError(f"mutation_target_count:{path.relative_to(ROOT)}:{count}")
     path.write_text(source.replace(old, new, 1), encoding="utf-8")
+
+
+def _clear_python_bytecode(path: Path) -> None:
+    cache = path.parent / "__pycache__"
+    if not cache.is_dir():
+        return
+    for compiled in cache.glob(f"{path.stem}.*.pyc"):
+        compiled.unlink()
 
 
 def _pytest_failures(output: str) -> tuple[list[str], int, int]:
@@ -690,6 +945,7 @@ def _run(mutation: Mutation) -> dict:
     skipped = 0
     with tempfile.TemporaryDirectory(prefix=f"arkscope-{mutation.mutation_id.lower()}-") as temp:
         try:
+            _clear_python_bytecode(path)
             _replace_once(path, mutation.old, mutation.new)
             command = list(mutation.command)
             if mutation.runner == "vitest":
@@ -698,6 +954,7 @@ def _run(mutation: Mutation) -> dict:
             process = subprocess.run(
                 command,
                 cwd=ROOT / mutation.cwd,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
                 text=True,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
@@ -713,6 +970,7 @@ def _run(mutation: Mutation) -> dict:
                     parse_error = f"{type(exc).__name__}:{exc}"
         finally:
             path.write_bytes(original)
+            _clear_python_bytecode(path)
 
     after = path.read_bytes()
     restored = after == original

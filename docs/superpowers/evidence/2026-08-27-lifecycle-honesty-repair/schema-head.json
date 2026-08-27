@@ -1760,7 +1760,7 @@
     "src/ticker_identity_schema.py": "008f0f7d7043be3ed73f7c7a4ea60d93156e16e79f54a54e278da13211aed7b7",
     "src/ticker_identity_transition.py": "25da8a622ef66b6dd793bb88766417921bbe2205319ed3914b51e84e4df302e3"
   },
-  "revision": "51b97b8e4f8d6f33aff495adc3423529b210a9d3",
+  "revision": "23fe53b72be6b0b0629b596100b41f5ec6a0dcf9",
   "schema_version": 1,
   "sqlite_master_owned": [
     {

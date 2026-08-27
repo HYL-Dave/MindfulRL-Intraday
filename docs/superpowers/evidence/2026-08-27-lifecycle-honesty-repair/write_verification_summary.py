@@ -9,7 +9,7 @@ import re
 
 PACKET = Path(__file__).resolve().parent
 PRODUCT_BASE = "11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb"
-PRODUCT_TEST_AUTHORITY = "51b97b8e4f8d6f33aff495adc3423529b210a9d3"
+PRODUCT_TEST_AUTHORITY = "23fe53b72be6b0b0629b596100b41f5ec6a0dcf9"
 
 
 def _text(name: str) -> str:
@@ -77,6 +77,9 @@ def main() -> None:
         },
         "offline_authority": {
             "byte_identical_across_two_captures": True,
+            "authority_call_observer_calibration": offline[
+                "authority_call_observer_calibration"
+            ],
             "decision_provenance_equal_across_r0_r1": offline[
                 "decision_provenance"
             ]["equal"],
@@ -158,7 +161,7 @@ def main() -> None:
         "limitations": [
             "no provider call or production scheduler replay was performed",
             "all persistence recovery tests use local temporary SQLite and later sequential worker ticks",
-            "the browser matrix uses fixture interception; out-of-order queue sequencing is owned by Vitest",
+            "the browser matrix uses fixture interception; out-of-order queue and detail sequencing are owned by Vitest",
             "broader legal-language extraction remains precision-first and intentionally incomplete",
             "no production migration is needed because schema authority is unchanged",
             "App restart, merge, push, and production database operations remain prohibited",
@@ -170,6 +173,16 @@ def main() -> None:
             "all_product_files_restored_byte_identically"
         ]
         and payload["backend"]["focused_collection_byte_identical"]
+        and payload["offline_authority"][
+            "authority_call_observer_calibration"
+        ]["expected"]
+        == payload["offline_authority"][
+            "authority_call_observer_calibration"
+        ]["observed"]
+        and payload["offline_authority"][
+            "transition_and_acknowledgement_calls"
+        ]
+        == 0
         and payload["schema_and_protected_authority"]["all_checks_passed"]
         and payload["browser_matrix"]["entry_count"] == 24
     ):

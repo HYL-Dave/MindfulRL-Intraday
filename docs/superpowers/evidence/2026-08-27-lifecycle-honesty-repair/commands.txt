@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Replayable offline packet build for product/test authority 51b97b8e.
+# Replayable offline packet build for product/test authority 23fe53b7.
 # This script performs no provider call, production database operation,
 # production App restart, merge, or push.
 
 ROOT="$(git rev-parse --show-toplevel)"
 PACKET="$ROOT/docs/superpowers/evidence/2026-08-27-lifecycle-honesty-repair"
 PRODUCT_BASE="11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb"
-PRODUCT_AUTHORITY="51b97b8e4f8d6f33aff495adc3423529b210a9d3"
+PRODUCT_AUTHORITY="23fe53b72be6b0b0629b596100b41f5ec6a0dcf9"
 APP_URL="http://127.0.0.1:4206/"
 BASE_TREE="$(mktemp -d /tmp/arkscope-honesty-base.XXXXXX)"
 SERVER_LOG="$(mktemp /tmp/arkscope-honesty-vite.XXXXXX.log)"

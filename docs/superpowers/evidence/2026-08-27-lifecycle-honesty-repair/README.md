@@ -1,14 +1,14 @@
 # Lifecycle Honesty Repair Final Fix Admission
 
 This self-hashed packet admits product/test authority
-`51b97b8e4f8d6f33aff495adc3423529b210a9d3` entirely offline. It replaces,
-and does not extend, the packet previously sealed at `7e218783`.
+`23fe53b72be6b0b0629b596100b41f5ec6a0dcf9` entirely offline. It replaces,
+and does not extend, the packet previously sealed at `fbfd6738`.
 
 ## Authority
 
 - Product base: `11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb`
-- Product/test authority: `51b97b8e4f8d6f33aff495adc3423529b210a9d3`
-- Topology: 14 linear commits and zero merge commits from product base to
+- Product/test authority: `23fe53b72be6b0b0629b596100b41f5ec6a0dcf9`
+- Topology: 17 linear commits and zero merge commits from product base to
   product/test authority
 - Policy: `trusted-lifecycle-automation-v3`
 - Shared SEC rule version: `3`
@@ -31,9 +31,11 @@ The admitted product and test range owns all final-review findings:
 - durable terminal decision recovery across assessment, acceptance, proposal,
   and approval boundaries;
 - current observation/evidence/provenance projection for terminal artifacts;
+- current manual-input evidence binding for automation runs, using the same
+  digest producer at write and read boundaries;
 - immutable initial and bounded latest-attempt execution revision identity;
 - deadline-only final market acquisition and schedule capping;
-- newest-only frontend queue response commits;
+- newest-only frontend queue and selected-case detail response commits;
 - stale-policy daily transition revalidation;
 - distinct IBKR missing-receipt and ambiguity source states; and
 - typed frontend fixtures plus replayable packet commands.
@@ -46,13 +48,16 @@ idempotently; profile mutation remains zero before transition application.
 
 ## Mutation Admission
 
-All 28 mutations were applied and restored independently. Every mutation was
+All 40 mutations were applied and restored independently. Every mutation was
 killed by its exact expected owner node, unexpected owner drift is empty, and
 every touched product file was restored byte-identically. The added mutations
 cover latest-market selection, conflict routing and projection, terminal
 recovery reservation, run and transition current-artifact binding,
 latest-attempt replay eligibility, both deadline-only seams, newest-response
-frontend commits, stale approval timing, and IBKR source-state semantics.
+frontend commits, stale approval timing, IBKR source-state semantics,
+manual-input digest currentness, terminal-transition binding, fail-closed
+market timestamps, explicit-conflict persistence, assessment reuse, and
+pre-execution-key row compatibility.
 
 ## Scratch Authority
 
@@ -68,20 +73,21 @@ Two temporary-SQLite captures were byte-identical. They prove:
 - source deadline `2026-04-01` remains distinct from completed check
   `2026-08-27`;
 - final projection remains truthful dated History; and
-- transition preview, approval, apply, reverse, and acknowledgement calls are
-  all zero in the scratch authority capture.
+- calibrated fail-closed wrappers observe transition preview, approval, apply,
+  reverse, and acknowledgement boundaries; all observed counts are zero during
+  the scratch authority capture.
 
 ## Fresh Gates
 
-Focused node collection was performed twice and produced 205 byte-identical
+Focused node collection was performed twice and produced 213 byte-identical
 node IDs.
 
 ```text
-focused A: 205 passed in 12.15s
-focused B: 205 passed in 12.20s
-full backend A: 4523 passed, 12 skipped, 3 warnings in 244.61s
-full backend B: 4523 passed, 12 skipped, 3 warnings in 244.22s
-frontend: 106 files / 1242 passed
+focused A: 213 passed in 12.20s
+focused B: 213 passed in 13.73s
+full backend A: 4534 passed, 12 skipped, 3 warnings in 254.95s
+full backend B: 4534 passed, 12 skipped, 3 warnings in 249.83s
+frontend: 106 files / 1244 passed
 typecheck: passed
 visible i18n literal scanner: passed; debtSignatureCount=0
 production build: passed; 2193 modules
@@ -139,8 +145,8 @@ exact bilingual dated copy and exclude confirmed-complete language.
 - Persistence recovery was exercised with local temporary SQLite and later
   sequential worker ticks; concurrent multi-worker fault injection is outside
   this packet.
-- The browser matrix uses fixture interception; out-of-order queue sequencing
-  is owned by the focused Vitest interface test.
+- The browser matrix uses fixture interception; out-of-order queue and detail
+  sequencing are owned by focused Vitest interface tests.
 - Broader legal-language extraction remains intentionally precision-first.
 - No production migration is needed because schema authority is unchanged.
 - No production database operation, production App restart, merge, or push was

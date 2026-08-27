@@ -14,11 +14,11 @@
   },
   "backend": {
     "focused_collection_byte_identical": true,
-    "focused_collection_node_count": 205,
-    "focused_pass_a": "205 passed in 12.15s",
-    "focused_pass_b": "205 passed in 12.20s",
-    "full_pass_a": "4523 passed, 12 skipped, 3 warnings in 244.61s (0:04:04)",
-    "full_pass_b": "4523 passed, 12 skipped, 3 warnings in 244.22s (0:04:04)"
+    "focused_collection_node_count": 213,
+    "focused_pass_a": "213 passed in 12.20s",
+    "focused_pass_b": "213 passed in 13.73s",
+    "full_pass_a": "4534 passed, 12 skipped, 3 warnings in 254.95s (0:04:14)",
+    "full_pass_b": "4534 passed, 12 skipped, 3 warnings in 249.83s (0:04:09)"
   },
   "browser_matrix": {
     "clipped_text_count": 0,
@@ -35,13 +35,13 @@
     "build": "passed; 2193 modules",
     "i18n_literal_gate": "passed; debtSignatureCount=0",
     "test_files": 106,
-    "tests_passed": 1242,
+    "tests_passed": 1244,
     "typecheck": "passed"
   },
   "limitations": [
     "no provider call or production scheduler replay was performed",
     "all persistence recovery tests use local temporary SQLite and later sequential worker ticks",
-    "the browser matrix uses fixture interception; out-of-order queue sequencing is owned by Vitest",
+    "the browser matrix uses fixture interception; out-of-order queue and detail sequencing are owned by Vitest",
     "broader legal-language extraction remains precision-first and intentionally incomplete",
     "no production migration is needed because schema authority is unchanged",
     "App restart, merge, push, and production database operations remain prohibited"
@@ -49,11 +49,28 @@
   "mutation_ledger": {
     "all_mutations_killed": true,
     "all_product_files_restored_byte_identically": true,
-    "killed_count": 28,
-    "mutation_count": 28,
+    "killed_count": 40,
+    "mutation_count": 40,
     "unexpected_owner_drift": []
   },
   "offline_authority": {
+    "authority_call_observer_calibration": {
+      "expected": {
+        "acknowledgement": 1,
+        "transition_apply": 1,
+        "transition_approval": 1,
+        "transition_preview": 1,
+        "transition_reverse": 1
+      },
+      "method": "fail_closed_boundary_wrappers",
+      "observed": {
+        "acknowledgement": 1,
+        "transition_apply": 1,
+        "transition_approval": 1,
+        "transition_preview": 1,
+        "transition_reverse": 1
+      }
+    },
     "byte_identical_across_two_captures": true,
     "cross_revision_due_blocked_retry": {
       "initial_execution_revision": "trusted-lifecycle-execution-r0",
@@ -76,7 +93,7 @@
     "sha256sum_check": "passed"
   },
   "product_base": "11e7a5d4f6856062a5ac00a8d90ed97b5c2e56cb",
-  "product_test_authority": "51b97b8e4f8d6f33aff495adc3423529b210a9d3",
+  "product_test_authority": "23fe53b72be6b0b0629b596100b41f5ec6a0dcf9",
   "schema_and_protected_authority": {
     "all_checks_passed": true,
     "automation_policy_version": "trusted-lifecycle-automation-v3",
