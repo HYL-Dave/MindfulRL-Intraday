@@ -87,7 +87,7 @@ calibrated.
 
 ## Fresh Gates
 
-Focused node collection was performed twice and produced 213 byte-identical
+Focused node collection was performed twice and produced 229 byte-identical
 node IDs.
 
 ```text
