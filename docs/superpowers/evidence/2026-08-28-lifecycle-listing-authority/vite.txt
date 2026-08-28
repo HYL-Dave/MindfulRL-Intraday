@@ -1,4 +1,4 @@
 
-  VITE v5.4.21  ready in 124 ms
+  VITE v5.4.21  ready in 125 ms
 
   ➜  Local:   http://127.0.0.1:4208/

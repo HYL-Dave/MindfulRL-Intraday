@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import sys
 from typing import Iterable
 
 
@@ -27,6 +28,26 @@ class Mutation:
     owners: tuple[str, ...]
     command: tuple[str, ...]
     extra_replacements: tuple[tuple[str, str], ...] = ()
+
+    def __post_init__(self) -> None:
+        if self.command[:2] != ("pytest", "-q"):
+            raise ValueError(f"mutation_command_shape:{self.mutation_id}")
+        object.__setattr__(
+            self,
+            "command",
+            (
+                "pytest",
+                "-p",
+                "mutation_pytest_probe",
+                "-vv",
+                "--tb=short",
+                *self.command[2:],
+            ),
+        )
+
+    @property
+    def failure_signatures(self) -> tuple[str, ...]:
+        return FAILURE_SIGNATURES[self.mutation_id]
 
 
 TRANSPORT = "data_sources/listing_authority_transport.py"
@@ -498,6 +519,31 @@ MUTATIONS = (
 )
 
 
+FAILURE_SIGNATURES = {
+    "M01": ("IndexError: pop from empty list",),
+    "M02": ("('nasdaq_listed', 'inactive'",),
+    "M03": ("DID NOT RAISE", "listing_directory_schema_mismatch"),
+    "M04": ("DID NOT RAISE", "listing_directory_stale"),
+    "M05": ("DID NOT RAISE", "listing_status_unresolved3"),
+    "M06": ("&apiKey=secret-value",),
+    "M07": ("DID NOT RAISE", "listing_status_unresolved0"),
+    "M08": ("ValueError: fact_citation", "+ evidence_content_sha256"),
+    "M09": ("DID NOT RAISE", "fact_citation"),
+    "M10": ("listing_authority_conflict",),
+    "M11": ("IBKR missing must not preview terminal action",),
+    "M12": ("transition_eligible", "action_blocked"),
+    "M13": ("publisher", "Differing attributes"),
+    "M14": ("final.retryable", "assert True is False"),
+    "M15": ("Extra items in the left set", "'publisher'"),
+    "M16": ("listing translation reached cache lookup",),
+    "M17": ('assert "massive" not in dpc.PROVIDER_FIELDS',),
+    "M18": ("lifecycle foreign key mismatch",),
+    "M19": ("lifecycle_rows_changed",),
+    "M20": ("assert 'v3' == 'v2'",),
+}
+assert set(FAILURE_SIGNATURES) == {mutation.mutation_id for mutation in MUTATIONS}
+
+
 def _sha256(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
@@ -531,29 +577,97 @@ def _pytest_failures(output: str) -> tuple[list[str], int, int]:
     )
 
 
+def _normalize_output(output: str) -> str:
+    normalized = output.replace(str(ROOT), "<REPO_ROOT>")
+    if sys.prefix != sys.base_prefix:
+        normalized = normalized.replace(str(Path(sys.prefix).resolve()), "<PYTHON_ENV>")
+    return normalized
+
+
+def _probe_nodes(output: str, marker: str) -> tuple[list[str], bool]:
+    values = re.findall(rf"^{re.escape(marker)} (.+)$", output, flags=re.MULTILINE)
+    return sorted(set(values)), len(values) == len(set(values))
+
+
+def _run_declared_command(mutation: Mutation) -> dict:
+    pythonpath = os.environ.get("PYTHONPATH", "")
+    process = subprocess.run(
+        mutation.command,
+        cwd=ROOT,
+        env={
+            **os.environ,
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONPATH": (
+                str(PACKET) if not pythonpath else f"{PACKET}{os.pathsep}{pythonpath}"
+            ),
+        },
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=False,
+    )
+    output = _normalize_output(process.stdout)
+    failures, passed, skipped = _pytest_failures(output)
+    collected, collection_markers_unique = _probe_nodes(
+        output, "TASK8_COLLECTED_NODE"
+    )
+    executed, execution_markers_unique = _probe_nodes(
+        output, "TASK8_EXECUTED_NODE"
+    )
+    return {
+        "command": list(mutation.command),
+        "exit_code": process.returncode,
+        "collected_node_ids": collected,
+        "executed_node_ids": executed,
+        "failed_node_ids": failures,
+        "passed_node_count": passed,
+        "skipped_node_count": skipped,
+        "collection_markers_unique": collection_markers_unique,
+        "execution_markers_unique": execution_markers_unique,
+        "output_sha256": _sha256(output.encode("utf-8")),
+        "output_tail": output.splitlines()[-24:],
+        "_output": output,
+    }
+
+
+def _exact_scope(result: dict, expected: list[str]) -> bool:
+    return (
+        result["collection_markers_unique"]
+        and result["execution_markers_unique"]
+        and result["collected_node_ids"] == expected
+        and result["executed_node_ids"] == expected
+    )
+
+
+def _public_result(result: dict) -> dict:
+    return {key: value for key, value in result.items() if key != "_output"}
+
+
 def _run(mutation: Mutation) -> dict:
     path = ROOT / mutation.path
     original = path.read_bytes()
-    process: subprocess.CompletedProcess[str] | None = None
     error: str | None = None
-    failures: list[str] = []
-    passed = 0
-    skipped = 0
+    expected = sorted(mutation.owners)
+    baseline: dict | None = None
+    mutant: dict | None = None
+    baseline_admitted = False
+    mutation_applied = False
     try:
         _clear_python_bytecode(path)
+        baseline = _run_declared_command(mutation)
+        baseline_admitted = (
+            baseline["exit_code"] == 0
+            and baseline["failed_node_ids"] == []
+            and _exact_scope(baseline, expected)
+            and path.read_bytes() == original
+        )
+        if not baseline_admitted:
+            raise RuntimeError("baseline_admission_failed")
         _replace_once(path, mutation.old, mutation.new)
         for old, new in mutation.extra_replacements:
             _replace_once(path, old, new)
-        process = subprocess.run(
-            mutation.command,
-            cwd=ROOT,
-            env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            check=False,
-        )
-        failures, passed, skipped = _pytest_failures(process.stdout)
+        mutation_applied = True
+        mutant = _run_declared_command(mutation)
     except Exception as exc:
         error = f"{type(exc).__name__}:{exc}"
     finally:
@@ -561,31 +675,51 @@ def _run(mutation: Mutation) -> dict:
         _clear_python_bytecode(path)
 
     restored = path.read_bytes() == original
-    expected = sorted(mutation.owners)
+    failures = [] if mutant is None else mutant["failed_node_ids"]
     unexpected = sorted(set(failures) - set(expected))
     missing = sorted(set(expected) - set(failures))
+    signature_matches = {
+        signature: mutant is not None and signature in mutant["_output"]
+        for signature in mutation.failure_signatures
+    }
+    commands_identical = (
+        baseline is not None
+        and mutant is not None
+        and baseline["command"] == mutant["command"] == list(mutation.command)
+    )
     killed = (
-        process is not None
-        and process.returncode == 1
+        baseline_admitted
+        and mutation_applied
+        and mutant is not None
+        and mutant["exit_code"] == 1
+        and _exact_scope(mutant, expected)
         and error is None
         and not unexpected
         and not missing
+        and all(signature_matches.values())
+        and commands_identical
         and restored
     )
     return {
         "id": mutation.mutation_id,
         "mutation": mutation.description,
         "product_files": [mutation.path],
-        "command": list(mutation.command),
-        "expected_owner_node_ids": expected,
-        "actual_owner_node_ids": failures,
-        "unexpected_owner_node_ids": unexpected,
-        "missing_owner_node_ids": missing,
+        "declared_command": list(mutation.command),
+        "declared_scope_node_ids": expected,
+        "baseline": None if baseline is None else _public_result(baseline),
+        "baseline_admitted": baseline_admitted,
+        "mutation_applied": mutation_applied,
+        "mutant": None if mutant is None else _public_result(mutant),
+        "commands_identical": commands_identical,
+        "expected_failed_node_ids": expected,
+        "actual_failed_node_ids": failures,
+        "unexpected_failures_inside_declared_scope": unexpected,
+        "missing_expected_failures_inside_declared_scope": missing,
         "expected_failure_count": len(expected),
         "actual_failure_count": len(failures),
-        "passing_test_count": passed,
-        "skipped_test_count": skipped,
-        "exit_code": None if process is None else process.returncode,
+        "required_failure_signatures": list(mutation.failure_signatures),
+        "failure_signature_matches": signature_matches,
+        "all_required_failure_signatures_observed": all(signature_matches.values()),
         "runner_error": error,
         "killed": killed,
         "restored_files": [
@@ -596,7 +730,6 @@ def _run(mutation: Mutation) -> dict:
                 "byte_identical": restored,
             }
         ],
-        "output_tail": [] if process is None else process.stdout.splitlines()[-14:],
     }
 
 
@@ -619,27 +752,47 @@ def main() -> int:
         }
         for path in sorted(initial)
     ]
-    drift = [
+    scope_anomalies = [
         {
             "mutation_id": result["id"],
-            "unexpected_owner_node_ids": result["unexpected_owner_node_ids"],
-            "missing_owner_node_ids": result["missing_owner_node_ids"],
+            "baseline_admitted": result["baseline_admitted"],
+            "unexpected_failures_inside_declared_scope": result[
+                "unexpected_failures_inside_declared_scope"
+            ],
+            "missing_expected_failures_inside_declared_scope": result[
+                "missing_expected_failures_inside_declared_scope"
+            ],
+            "all_required_failure_signatures_observed": result[
+                "all_required_failure_signatures_observed"
+            ],
             "runner_error": result["runner_error"],
         }
         for result in results
-        if result["unexpected_owner_node_ids"]
-        or result["missing_owner_node_ids"]
+        if not result["baseline_admitted"]
+        or result["unexpected_failures_inside_declared_scope"]
+        or result["missing_expected_failures_inside_declared_scope"]
+        or not result["all_required_failure_signatures_observed"]
         or result["runner_error"]
     ]
     payload = {
-        "schema_version": 1,
+        "schema_version": 2,
         "mutation_count": len(results),
         "killed_count": sum(result["killed"] for result in results),
         "all_mutations_killed": all(result["killed"] for result in results),
+        "all_baselines_admitted": all(
+            result["baseline_admitted"] for result in results
+        ),
+        "all_declared_commands_identical_between_baseline_and_mutant": all(
+            result["commands_identical"] for result in results
+        ),
+        "unexpected_failures_inside_declared_mutation_scopes": sum(
+            len(result["unexpected_failures_inside_declared_scope"])
+            for result in results
+        ),
         "all_product_files_restored_byte_identically": all(
             row["byte_identical"] for row in final_restore
         ),
-        "unexpected_owner_drift": drift,
+        "mutation_scope_anomalies": scope_anomalies,
         "final_product_file_restore": final_restore,
         "mutations": results,
     }
@@ -653,7 +806,7 @@ def main() -> int:
                 "mutations": payload["mutation_count"],
                 "killed": payload["killed_count"],
                 "restored": payload["all_product_files_restored_byte_identically"],
-                "unexpected_owner_drift": len(drift),
+                "scope_anomalies": len(scope_anomalies),
             },
             sort_keys=True,
         )

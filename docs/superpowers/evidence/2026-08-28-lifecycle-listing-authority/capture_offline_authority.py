@@ -255,6 +255,36 @@ def _scratch_migration(root: Path, old_code_root: Path) -> dict:
         text=True,
     )
     old_result = json.loads(old.stdout)
+    assert old_result["old_code_started"] is True
+    assert old_result["integrity"] == "ok"
+    assert old_result["foreign_key_violations"] == 0
+    old_guard = old_result["sqlite_guard"]
+    assert old_guard["child_owned"] is True
+    assert old_guard["path_resolution"] == (
+        "file_uri_unquoted_and_symlinks_resolved_before_containment"
+    )
+    assert old_guard["outside_calibration"] == {
+        "attempts": 1,
+        "rejected_before_access": True,
+        "symlink_uri_resolved_before_containment": True,
+        "target_created": False,
+    }
+    assert old_guard["inside_calibration"] == {
+        "attempts": 1,
+        "delegated_connect_calls": 1,
+        "file_created": True,
+    }
+    assert old_guard["actual_restored_database"] == {
+        "contained_after_resolution": True,
+        "read_only_opens": 1,
+    }
+    assert old_guard["counts"] == {
+        "allowed_inside": 2,
+        "allowed_inside_read_only": 1,
+        "blocked_outside_before_access": 1,
+        "delegated_connect_calls": 2,
+        "file_backed_attempts": 3,
+    }
     assert before.owned_rows_sha256 == after.owned_rows_sha256
     assert before.owned_table_row_sha256 == after.owned_table_row_sha256
     assert before.owned_table_rowid_sha256 == after.owned_table_rowid_sha256
@@ -288,7 +318,7 @@ def capture(old_code_root: Path) -> dict:
             assert observed["migration"] == {"allowed_scratch": 1, "blocked_outside": 1}
             assert observed["sqlite"]["blocked_outside"] == 0
         return {
-            "schema_version": 1,
+            "schema_version": 2,
             "scope": "offline_fixture_and_scratch_only",
             "declared_authority": DECLARED,
             "observer": {

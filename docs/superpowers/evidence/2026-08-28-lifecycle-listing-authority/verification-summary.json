@@ -4,13 +4,20 @@
       "basis": "declared_not_authorized",
       "value": 0
     },
+    "merges": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
     "packet_and_fixture_only": true,
     "product_code_modified": false,
     "production_database_migrations": {
       "basis": "declared_not_authorized",
       "value": 0
     },
-    "remote_operations_authorized": false
+    "pushes": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    }
   },
   "browser": {
     "all_negative_counts": 0,
@@ -28,12 +35,22 @@
       "settings-massive-key"
     ],
     "screenshots": 24,
+    "synthetic_post_apply_produced_by_shadow": false,
+    "synthetic_post_apply_projection_entries": 8,
+    "transition_surface_witnesses": 16,
     "viewports": [
       "1440x900",
       "390x844"
     ]
   },
-  "fixture_sha256": "0527a363ffb4bb2976a68af56e5e508048933e2dfce00b61fb48cf0da3ced7ab",
+  "fixture_sha256": {
+    "shadow-cases.json": "f75c7113d7e1c6dee4ba696940afb7958752ee0ab7a12994e28070dae41e85b6",
+    "shadow-massive-conflict-active.json": "ceb87170a1cc7d61986d849b3cad950dd583a0451be370512497bf3297498523",
+    "shadow-massive-otc-active.json": "92eb7e26a79784dad80108253bebb86b6030b6566788a032f4349e68fa71a88d",
+    "shadow-massive-term-inactive.json": "9ee93b089344d955581c137d425ca0b23e844017d17e09bb6f6c85f94abede08",
+    "shadow-nasdaqlisted.txt": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+    "shadow-otherlisted.txt": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208"
+  },
   "gates": {
     "focused_a": {
       "failures": 0,
@@ -59,21 +76,128 @@
     },
     "full_a": {
       "failures": 0,
-      "passed": 4834,
+      "passed": 4840,
       "skipped": 12
     },
     "full_b": {
       "failures": 0,
-      "passed": 4834,
+      "passed": 4840,
       "skipped": 12
     },
-    "full_collection_counts_identical": true
+    "full_collection_counts_identical": true,
+    "packet_contracts": {
+      "failures": 0,
+      "passed": 6,
+      "skipped": 0
+    }
+  },
+  "log_normalization": {
+    "files": {
+      "backend-focused-a.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "backend-focused-b.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "backend-full-a.txt": {
+        "content_changed": true,
+        "python_env_replacements": 3,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "backend-full-b.txt": {
+        "content_changed": true,
+        "python_env_replacements": 3,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "browser-run.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "frontend-build.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "frontend-i18n-literals.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "frontend-test.txt": {
+        "content_changed": true,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 1,
+        "trailing_blank_lines_removed": 1
+      },
+      "frontend-typecheck.txt": {
+        "content_changed": true,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 1
+      },
+      "mutation-run.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "offline-authority-run-a.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "offline-authority-run-b.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "packet-contracts.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "vite.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      }
+    },
+    "method": "exact_path_placeholder_replacement_and_single_terminal_newline",
+    "placeholders": {
+      "checkout": "<REPO_ROOT>",
+      "python_environment": "<PYTHON_ENV>"
+    },
+    "schema_version": 1,
+    "semantic_counts_and_results_preserved": true,
+    "totals": {
+      "python_env_replacements": 6,
+      "repo_root_replacements": 1,
+      "trailing_blank_lines_removed": 2
+    }
   },
   "mutations": {
+    "baselines_admitted": 20,
     "defined": 20,
     "killed": 20,
     "restored": true,
-    "unexpected_owner_drift": 0
+    "scope_anomalies": 0,
+    "unexpected_failures_inside_declared_scopes": 0
   },
   "observer": {
     "calibrated_targets": 7,
@@ -95,13 +219,39 @@
       "blocked_outside": 1
     }
   },
-  "schema_version": 1,
+  "schema_version": 2,
   "scratch_migration": {
     "backup_restore_byte_identical": true,
     "old_code_startup": {
       "foreign_key_violations": 0,
       "integrity": "ok",
-      "old_code_started": true
+      "old_code_started": true,
+      "sqlite_guard": {
+        "actual_restored_database": {
+          "contained_after_resolution": true,
+          "read_only_opens": 1
+        },
+        "child_owned": true,
+        "counts": {
+          "allowed_inside": 2,
+          "allowed_inside_read_only": 1,
+          "blocked_outside_before_access": 1,
+          "delegated_connect_calls": 2,
+          "file_backed_attempts": 3
+        },
+        "inside_calibration": {
+          "attempts": 1,
+          "delegated_connect_calls": 1,
+          "file_created": true
+        },
+        "outside_calibration": {
+          "attempts": 1,
+          "rejected_before_access": true,
+          "symlink_uri_resolved_before_containment": true,
+          "target_created": false
+        },
+        "path_resolution": "file_uri_unquoted_and_symlinks_resolved_before_containment"
+      }
     },
     "restored_version": "v2",
     "row_and_sequence_identity": true,
@@ -114,6 +264,6 @@
     "preview_calls": 3,
     "publisher_injection_inert": 9,
     "sec_limitation": "Historical SEC facts use frozen repository helpers because this packet contains no provider bytes or calls.",
-    "strict_path": "strict_parser_to_builder_to_fact_kernel_to_policy"
+    "strict_path": "repository_fixture_bytes_to_parser_session_to_listing_evidence_builder_to_real_fact_kernel_temporary_sqlite_to_policy"
   }
 }

@@ -13,11 +13,11 @@
 ........................................................................ [ 19%]
 ........................................................................ [ 20%]
 ........................................................................ [ 22%]
-.........................................s.............................. [ 23%]
+...............................................s........................ [ 23%]
 ........................................................................ [ 25%]
 ........................................................................ [ 26%]
 ........................................................................ [ 28%]
-.......................sssssssss........................................ [ 29%]
+.............................sssssssss.................................. [ 29%]
 ........................................................................ [ 31%]
 ........................................................................ [ 32%]
 ........................................................................ [ 34%]
@@ -30,12 +30,12 @@
 ........................................................................ [ 44%]
 ........................................................................ [ 46%]
 ........................................................................ [ 47%]
-........................................................................ [ 49%]
+........................................................................ [ 48%]
 ........................................................................ [ 50%]
-........................................................................ [ 52%]
-............................................................s........... [ 53%]
-..................................................................s..... [ 54%]
-........................................................................ [ 56%]
+........................................................................ [ 51%]
+..................................................................s..... [ 53%]
+........................................................................ [ 54%]
+s....................................................................... [ 56%]
 ........................................................................ [ 57%]
 ........................................................................ [ 59%]
 ........................................................................ [ 60%]
@@ -61,23 +61,23 @@
 ........................................................................ [ 90%]
 ........................................................................ [ 92%]
 ........................................................................ [ 93%]
-........................................................................ [ 95%]
+........................................................................ [ 94%]
 ........................................................................ [ 96%]
-........................................................................ [ 98%]
+........................................................................ [ 97%]
 ........................................................................ [ 99%]
-......................                                                   [100%]
+............................                                             [100%]
 =============================== warnings summary ===============================
 tests/test_sec_user_agent.py::test_sec_clients_use_canonical_user_agent
-  /home/hyl/.virtualenvs/llm_app/lib/python3.10/site-packages/edgar/_markdown.py:9: DeprecationWarning: edgar.files.html_documents module (including HtmlDocument) is deprecated and will be removed in v6.0. Please use edgar.documents.HTMLParser instead. See migration guide: https://edgartools.readthedocs.io/en/latest/migration/
+  <PYTHON_ENV>/lib/python3.10/site-packages/edgar/_markdown.py:9: DeprecationWarning: edgar.files.html_documents module (including HtmlDocument) is deprecated and will be removed in v6.0. Please use edgar.documents.HTMLParser instead. See migration guide: https://edgartools.readthedocs.io/en/latest/migration/
     from edgar.files.html_documents import HtmlDocument
 
 tests/test_sec_user_agent.py::test_sec_clients_use_canonical_user_agent
-  /home/hyl/.virtualenvs/llm_app/lib/python3.10/site-packages/edgar/files/markdown.py:4: DeprecationWarning: edgar.files.html module is deprecated and will be removed in v6.0. Please use edgar.documents.HTMLParser instead. See migration guide: https://edgartools.readthedocs.io/en/latest/migration/
+  <PYTHON_ENV>/lib/python3.10/site-packages/edgar/files/markdown.py:4: DeprecationWarning: edgar.files.html module is deprecated and will be removed in v6.0. Please use edgar.documents.HTMLParser instead. See migration guide: https://edgartools.readthedocs.io/en/latest/migration/
     from edgar.files.html import BaseNode, Document
 
 tests/test_sec_user_agent.py::test_sec_clients_use_canonical_user_agent
-  /home/hyl/.virtualenvs/llm_app/lib/python3.10/site-packages/edgar/_filings.py:55: DeprecationWarning: edgar.files.htmltools module (including ChunkedDocument) is deprecated and will be removed in v6.0. Please use edgar.documents.HTMLParser instead. See migration guide: https://edgartools.readthedocs.io/en/latest/migration/
+  <PYTHON_ENV>/lib/python3.10/site-packages/edgar/_filings.py:55: DeprecationWarning: edgar.files.htmltools module (including ChunkedDocument) is deprecated and will be removed in v6.0. Please use edgar.documents.HTMLParser instead. See migration guide: https://edgartools.readthedocs.io/en/latest/migration/
     from edgar.files.htmltools import html_sections
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-4834 passed, 12 skipped, 3 warnings in 327.03s (0:05:27)
+4840 passed, 12 skipped, 3 warnings in 331.86s (0:05:31)

@@ -62,12 +62,13 @@ def _replace(value, old: str, new: str):
 
 def _fixture(name: str) -> dict:
     if name in {
-        "nms_symbol_continuation",
         "otc_symbol_continuation",
         "terminal_delisting",
         "nasdaq_absence_only",
     }:
         return H._listing_fixture(name)
+    if name == "nms_symbol_continuation":
+        return _replace(H._listing_fixture(name), "NASDAQ", "NYSE")
     if name == "same_symbol_venue_transfer":
         base = _replace(H._listing_fixture(name), "SAME", "QBTS")
         return _replace(base, "0001409970", "0001907982")
@@ -115,7 +116,7 @@ def _fixture(name: str) -> dict:
             ) + listing_facts,
         }
     if name == "listing_cik_conflict":
-        base = H._listing_fixture("nms_symbol_continuation")
+        base = _fixture("nms_symbol_continuation")
         massive, massive_facts = H._active_listing(
             "massive-conflict",
             "NEW",
@@ -132,86 +133,112 @@ def _fixture(name: str) -> dict:
     raise KeyError(name)
 
 
-def _nasdaq_records(ticker: str, *, present: bool = True):
+def _read_bound_payload(binding: dict) -> bytes:
+    filename = binding.get("filename")
+    expected = binding.get("sha256")
+    if not isinstance(filename, str) or Path(filename).name != filename:
+        raise AssertionError("shadow_payload_filename_invalid")
+    if not isinstance(expected, str) or len(expected) != 64:
+        raise AssertionError("shadow_payload_digest_invalid")
+    path = (LISTING_FIXTURES / filename).resolve()
+    if path.parent != LISTING_FIXTURES.resolve():
+        raise AssertionError("shadow_payload_outside_fixture_root")
+    body = path.read_bytes()
+    if hashlib.sha256(body).hexdigest() != expected:
+        raise AssertionError(f"shadow_payload_digest_mismatch:{filename}")
+    return body
+
+
+def _nasdaq_records(item: dict) -> tuple[tuple, list[dict]]:
     from src.security_lifecycle_listing_evidence import parse_nasdaq_directories
 
-    nasdaq = (LISTING_FIXTURES / "nasdaqlisted.txt").read_bytes()
-    if present:
-        nasdaq = nasdaq.replace(
-            b"AAPL|Apple Inc.", f"{ticker}|{ticker} Fixture Corp.".encode("ascii")
-        )
+    bindings = {
+        binding["component"]: binding
+        for binding in item["listing_payloads"]
+        if binding["adapter"] == "nasdaq_symbol_directory"
+    }
+    if set(bindings) != {"nasdaq_listed", "other_listed"}:
+        raise AssertionError(f"shadow_nasdaq_binding_set:{item['id']}")
+    nasdaq = _read_bound_payload(bindings["nasdaq_listed"])
+    other = _read_bound_payload(bindings["other_listed"])
     snapshot = parse_nasdaq_directories(
         nasdaq_bytes=nasdaq,
-        other_bytes=(LISTING_FIXTURES / "otherlisted.txt").read_bytes(),
+        other_bytes=other,
         retrieved_at=AT,
     )
-    return snapshot.lookup(ticker)
+    observed = [
+        {
+            "filename": binding["filename"],
+            "configured_sha256": binding["sha256"],
+            "parser_input_sha256": hashlib.sha256(body).hexdigest(),
+            "parser_received_exact_repository_bytes": True,
+        }
+        for binding, body in (
+            (bindings["nasdaq_listed"], nasdaq),
+            (bindings["other_listed"], other),
+        )
+    ]
+    return snapshot.lookup(item["listing_query"]["ticker"]), observed
 
 
-def _massive_record(name: str, ticker: str, *, expected_active: bool, market: str, cik: str):
+def _massive_record(item: dict, binding: dict) -> tuple[object, dict]:
     from src.security_lifecycle_listing_evidence import (
         _massive_source_url,
         parse_massive_ticker,
     )
 
-    payload = json.loads((LISTING_FIXTURES / name).read_text(encoding="utf-8"))
-    row = payload["results"][0]
-    row["ticker"] = ticker
-    row["cik"] = cik
-    body = json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
-    return parse_massive_ticker(
+    ticker = item["listing_query"]["ticker"]
+    body = _read_bound_payload(binding)
+    record = parse_massive_ticker(
         body,
         ticker,
-        expected_active=expected_active,
-        market=market,
+        expected_active=binding["expected_active"],
+        market=binding["market"],
         retrieved_at=AT,
-        source_url=_massive_source_url(ticker, expected_active, market),
+        source_url=_massive_source_url(
+            ticker,
+            binding["expected_active"],
+            binding["market"],
+        ),
     )
+    return record, {
+        "filename": binding["filename"],
+        "configured_sha256": binding["sha256"],
+        "parser_input_sha256": hashlib.sha256(body).hexdigest(),
+        "parser_received_exact_repository_bytes": True,
+    }
 
 
-def _listing_records(name: str):
-    if name == "historical_hapn":
-        return _nasdaq_records("HAPN"), "LC", "0001409970"
-    if name == "same_symbol_venue_transfer":
-        return _nasdaq_records("QBTS"), "QBTS", "0001907982"
-    if name == "historical_ccl":
-        return _nasdaq_records("CCL"), "CCL", "0000815097"
-    if name == "historical_blbd":
-        return _nasdaq_records("BLBD"), "BLBD", "0001589526"
-    if name == "nms_symbol_continuation":
-        return _nasdaq_records("NEW"), "OLD", "0001409970"
-    if name == "otc_symbol_continuation":
-        return (
-            (_massive_record("massive-otc.json", "NEW", expected_active=True, market="otc", cik="0001409970"),),
-            "OLD",
-            "0001409970",
-        )
-    if name == "terminal_delisting":
-        return (
-            _nasdaq_records("OLD", present=False)
-            + (_massive_record("massive-inactive.json", "OLD", expected_active=False, market="stocks", cik="0001409970"),),
-            "OLD",
-            "0001409970",
-        )
-    if name == "nasdaq_absence_only":
-        return _nasdaq_records("OLD", present=False), "OLD", "0001409970"
-    if name == "listing_cik_conflict":
-        return (
-            _nasdaq_records("NEW")
-            + (_massive_record("massive-active.json", "NEW", expected_active=True, market="stocks", cik="0000000001"),),
-            "OLD",
-            "0001409970",
-        )
-    raise KeyError(name)
+def _listing_records(item: dict) -> tuple[tuple, str, str, list[dict]]:
+    records: tuple = ()
+    observed: list[dict] = []
+    if any(
+        binding["adapter"] == "nasdaq_symbol_directory"
+        for binding in item["listing_payloads"]
+    ):
+        nasdaq_records, nasdaq_observed = _nasdaq_records(item)
+        records += tuple(nasdaq_records)
+        observed.extend(nasdaq_observed)
+    for binding in item["listing_payloads"]:
+        if binding["adapter"] != "massive_reference":
+            continue
+        record, payload_observed = _massive_record(item, binding)
+        records += (record,)
+        observed.append(payload_observed)
+    if not records:
+        raise AssertionError(f"shadow_listing_records_missing:{item['id']}")
+    query = item["listing_query"]
+    return records, query["source_ticker"], query["issuer_cik"], observed
 
 
-def _persist_listing(name: str, root: Path) -> tuple[tuple[dict, ...], tuple[dict, ...], dict]:
+def _persist_listing(item: dict, root: Path) -> tuple[tuple[dict, ...], tuple[dict, ...], dict]:
     from src.security_lifecycle_fact_kernel import SecurityLifecycleFactKernel
     from src.security_lifecycle_investigation import SecurityLifecycleInvestigationStore
     from src.security_lifecycle_listing_evidence import _result
     from src.security_lifecycle_sec_evidence import IdentityContext
 
-    records, source_ticker, cik = _listing_records(name)
+    name = item["fixture"]
+    records, source_ticker, cik, payloads = _listing_records(item)
     context = IdentityContext(
         case_id=f"offline-{name}",
         current_ticker=source_ticker,
@@ -301,6 +328,7 @@ def _persist_listing(name: str, root: Path) -> tuple[tuple[dict, ...], tuple[dic
             "kernel_non_listing_anchor_fact_count": len(anchor_facts),
             "adapters": sorted({record.adapter for record in records}),
             "document_sha256": sorted({record.source_document_sha256 for record in records}),
+            "payloads": payloads,
         }
     finally:
         connection.close()
@@ -333,9 +361,7 @@ def run() -> dict:
       root = Path(directory)
       for item in authority["cases"]:
         fixture = _fixture(item["fixture"])
-        listing_evidence, listing_facts, listing_authority = _persist_listing(
-            item["fixture"], root
-        )
+        listing_evidence, listing_facts, listing_authority = _persist_listing(item, root)
         base_evidence = tuple(
             row for row in fixture["evidence"] if row["source_family"] != "listing_authority"
         )
@@ -417,14 +443,15 @@ def run() -> dict:
         "listing_authority_conflict",
     )
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "fixture_authority": str(FIXTURE.relative_to(ROOT)),
         "policy_version": "trusted-lifecycle-automation-v4",
         "case_count": len(rows),
         "transition_preview_calls": total_preview_calls,
         "non_transition_preview_calls": 0,
         "publisher_injection_inert_count": len(rows),
-        "listing_material_path": "strict_parser_to_builder_to_fact_kernel_to_policy",
+        "listing_material_path": "repository_fixture_bytes_to_parser_session_to_listing_evidence_builder_to_real_fact_kernel_temporary_sqlite_to_policy",
+        "listing_payload_bytes": "exact_repository_bytes_no_substitution_mutation_or_reserialization_before_parser_input",
         "historical_sec_limitation": "Historical SEC facts use frozen repository helpers because this packet contains no provider bytes or calls.",
         "cases": rows,
     }

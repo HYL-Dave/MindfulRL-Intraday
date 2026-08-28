@@ -1,1 +1,1 @@
-{"killed": 20, "mutations": 20, "restored": true, "unexpected_owner_drift": 0}
+{"killed": 20, "mutations": 20, "restored": true, "scope_anomalies": 0}

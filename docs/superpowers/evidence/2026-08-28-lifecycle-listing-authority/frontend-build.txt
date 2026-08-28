@@ -15,4 +15,4 @@ dist/assets/index-s-uNpNIK.js   1,069.66 kB │ gzip: 316.97 kB
 - Using dynamic import() to code-split the application
 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
-✓ built in 2.70s
+✓ built in 2.69s

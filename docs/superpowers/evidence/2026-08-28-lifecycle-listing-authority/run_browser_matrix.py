@@ -39,6 +39,7 @@ BASE = _load_base()
 STAGE5 = BASE.STAGE5
 VIEWPORTS = ((1440, 900), (390, 844))
 LOCALES = ("en", "zh-Hant")
+DECLARED_ZERO = {"value": 0, "basis": "declared_not_authorized"}
 SCENARIOS = {
     "active": {
         "case_id": "case-active",
@@ -49,7 +50,17 @@ SCENARIOS = {
         "reason": "resolved_no_change",
         "tier": "verified_automatic",
         "readiness": "not_applicable",
-        "listings": [("nasdaq_trader", "active", "stocks", "XNAS")],
+        "regulator_issuer_cik": "0001409970",
+        "listings": [
+            {
+                "authority": "nasdaq_trader",
+                "listing_status": "active",
+                "market": "stocks",
+                "primary_exchange": "XNAS",
+                "candidate_ticker": "HAPN",
+                "issuer_cik": None,
+            }
+        ],
     },
     "not-found-monitoring": {
         "case_id": "case-not-found",
@@ -60,7 +71,17 @@ SCENARIOS = {
         "reason": "event_completion_not_confirmed",
         "tier": "verified_automatic",
         "readiness": "waiting_market_confirmation",
-        "listings": [("nasdaq_trader", "not_found", "stocks", None)],
+        "regulator_issuer_cik": "0001409970",
+        "listings": [
+            {
+                "authority": "nasdaq_trader",
+                "listing_status": "not_found",
+                "market": "stocks",
+                "primary_exchange": None,
+                "candidate_ticker": "OLD",
+                "issuer_cik": None,
+            }
+        ],
     },
     "inactive-history": {
         "case_id": "case-inactive",
@@ -71,7 +92,25 @@ SCENARIOS = {
         "reason": "transition_applied",
         "tier": "verified_automatic",
         "readiness": "transition_eligible",
-        "listings": [("massive", "inactive", "stocks", "XNYS")],
+        "regulator_issuer_cik": "0001409970",
+        "synthetic_post_apply_projection": True,
+        "transition": {
+            "kind": "terminal_delisting",
+            "source_ticker": "TERM",
+            "successor_ticker": None,
+            "rule_id": "lifecycle.terminal_delisting",
+            "outcomes": ["listing_ended"],
+        },
+        "listings": [
+            {
+                "authority": "massive",
+                "listing_status": "inactive",
+                "market": "stocks",
+                "primary_exchange": "XNAS",
+                "candidate_ticker": "OLD",
+                "issuer_cik": "0001409970",
+            }
+        ],
     },
     "conflict-attention": {
         "case_id": "case-conflict",
@@ -82,9 +121,24 @@ SCENARIOS = {
         "reason": "source_conflict",
         "tier": "review_suggested",
         "readiness": "action_blocked",
+        "regulator_issuer_cik": "0001409970",
         "listings": [
-            ("nasdaq_trader", "active", "stocks", "XNAS"),
-            ("massive", "inactive", "stocks", "XNAS"),
+            {
+                "authority": "nasdaq_trader",
+                "listing_status": "active",
+                "market": "stocks",
+                "primary_exchange": "XNYS",
+                "candidate_ticker": "NEW",
+                "issuer_cik": None,
+            },
+            {
+                "authority": "massive",
+                "listing_status": "active",
+                "market": "stocks",
+                "primary_exchange": "XNYS",
+                "candidate_ticker": "NEW",
+                "issuer_cik": "0000000001",
+            },
         ],
     },
     "otc-continuation": {
@@ -96,7 +150,25 @@ SCENARIOS = {
         "reason": "transition_applied",
         "tier": "verified_automatic",
         "readiness": "transition_eligible",
-        "listings": [("massive", "active", "otc", "OTC")],
+        "regulator_issuer_cik": "0001409970",
+        "synthetic_post_apply_projection": True,
+        "transition": {
+            "kind": "symbol_continuation",
+            "source_ticker": "OTC-A",
+            "successor_ticker": "NEW",
+            "rule_id": "lifecycle.simple_symbol_continuation",
+            "outcomes": ["symbol_changed", "venue_transfer"],
+        },
+        "listings": [
+            {
+                "authority": "massive",
+                "listing_status": "active",
+                "market": "otc",
+                "primary_exchange": "OTC",
+                "candidate_ticker": "NEW",
+                "issuer_cik": "0001409970",
+            }
+        ],
     },
     "settings-massive-key": {"settings": True},
 }
@@ -107,6 +179,8 @@ LABELS = {
         "open_nav": "Open navigation",
         "lifecycle": "Security event investigation",
         "listing_family": "Listing authority",
+        "reverse_transition": "Reverse transition",
+        "reverse_activity": "Reverse tracking change",
         "statuses": {
             "active": "Active",
             "inactive": "Inactive",
@@ -119,6 +193,8 @@ LABELS = {
         "open_nav": "開啟導覽",
         "lifecycle": "標的事件調查",
         "listing_family": "上市主管機關",
+        "reverse_transition": "反轉代號轉移",
+        "reverse_activity": "還原追蹤變更",
         "statuses": {
             "active": "有效",
             "inactive": "非有效",
@@ -172,7 +248,8 @@ def _summary(name: str) -> dict:
 def _listing_evidence(name: str) -> list[dict]:
     scenario = SCENARIOS[name]
     rows = []
-    for index, (authority, status, market, venue) in enumerate(scenario["listings"], 1):
+    for index, listing in enumerate(scenario["listings"], 1):
+        authority = listing["authority"]
         rows.append(
             {
                 "evidence_id": f"listing-{name}-{index}",
@@ -181,21 +258,95 @@ def _listing_evidence(name: str) -> list[dict]:
                 "source_url": (
                     "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt"
                     if authority == "nasdaq_trader"
-                    else f"https://api.massive.com/v3/reference/tickers/{scenario['ticker']}"
+                    else "https://api.massive.com/v3/reference/tickers"
                 ),
                 "created_at": "2026-08-28T08:00:00Z",
                 "listing": {
                     "authority": authority,
                     "directory": "nasdaq_listed" if authority == "nasdaq_trader" else None,
-                    "candidate_ticker": scenario["ticker"],
-                    "listing_status": status,
-                    "market": market,
-                    "primary_exchange": venue,
+                    "candidate_ticker": listing["candidate_ticker"],
+                    "listing_status": listing["listing_status"],
+                    "market": listing["market"],
+                    "primary_exchange": listing["primary_exchange"],
                     "source_as_of": "2026-08-28",
                 },
             }
         )
     return rows
+
+
+def _preview_digest(preview: dict) -> str:
+    payload = {key: value for key, value in preview.items() if key != "preview_sha256"}
+    canonical = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def _applied_transition(name: str) -> dict:
+    scenario = SCENARIOS[name]
+    projection = scenario["transition"]
+    transition = deepcopy(STAGE5._detail()["ticker_transition"])
+    transition_id = f"transition-{name}"
+    preview = deepcopy(transition["approved_preview"])
+    preview.update(
+        {
+            "case_id": scenario["case_id"],
+            "execute_on": "2026-08-28",
+            "outcomes": projection["outcomes"],
+            "source_ticker": projection["source_ticker"],
+            "successor_ticker": projection["successor_ticker"],
+            "transition_kind": projection["kind"],
+        }
+    )
+    preview["preview_sha256"] = _preview_digest(preview)
+    activity = deepcopy(transition["activity_history"][0])
+    activity.update(
+        {
+            "activity_id": f"activity-{name}",
+            "transition_id": transition_id,
+            "case_id": scenario["case_id"],
+            "activity_type": "applied",
+            "source_ticker": projection["source_ticker"],
+            "successor_ticker": projection["successor_ticker"],
+            "effective_date": "2026-08-28",
+            "rule_id": projection["rule_id"],
+            "occurred_at": "2026-08-28T08:00:00Z",
+            "created_at": "2026-08-28T08:00:00Z",
+            "acknowledged_at": None,
+            "reverse_readiness": {"reversible": True, "block_reasons": []},
+        }
+    )
+    transition.update(
+        {
+            "transition_id": transition_id,
+            "case_id": scenario["case_id"],
+            "kind": projection["kind"],
+            "status": "applied",
+            "source_ticker": projection["source_ticker"],
+            "successor_ticker": projection["successor_ticker"],
+            "execute_on": "2026-08-28",
+            "approved_preview_sha256": preview["preview_sha256"],
+            "approved_preview": preview,
+            "rule_id": projection["rule_id"],
+            "rule_version": "1",
+            "updated_at": "2026-08-28T08:00:00Z",
+            "latest_attempt": {
+                "status": "applied",
+                "block_reasons": [],
+                "attempted_at": "2026-08-28T08:00:00Z",
+            },
+            "reverse_readiness": {"reversible": True, "block_reasons": []},
+            "activity_history": [activity],
+            "activity_count": 1,
+            "unacknowledged_activity_count": 1,
+        }
+    )
+    return transition
 
 
 def _detail(name: str) -> dict:
@@ -205,6 +356,7 @@ def _detail(name: str) -> dict:
     detail["observation"].update(
         {
             "ticker": scenario["ticker"],
+            "cik": scenario["regulator_issuer_cik"],
             "issuer_name": scenario["issuer"],
             "filing_date": "2026-08-28",
             "source_ref": f"fixture-{name}",
@@ -230,10 +382,22 @@ def _detail(name: str) -> dict:
     detail["automation_runs"] = []
     detail["automation_facts"] = []
     detail["proposals"] = []
-    detail["ticker_transition"] = None
+    detail["ticker_transition"] = (
+        _applied_transition(name)
+        if scenario.get("synthetic_post_apply_projection") is True
+        else None
+    )
     detail["assessment_history"] = []
     detail["acknowledgement_history"] = []
     detail["current_assessment"] = None
+    if scenario.get("synthetic_post_apply_projection") is True:
+        transition = detail["ticker_transition"]
+        assert transition is not None and transition["status"] == "applied"
+        assert transition["activity_history"]
+        assert transition["reverse_readiness"] == {
+            "reversible": True,
+            "block_reasons": [],
+        }
     return detail
 
 
@@ -470,15 +634,28 @@ def _navigate(page, scenario_name: str, locale: str) -> tuple[str, str]:
     drawer.wait_for(state="visible")
     text = drawer.inner_text()
     assert labels["listing_family"] in text
-    for _, status, _, _ in scenario["listings"]:
-        assert labels["statuses"][status] in text
+    for listing in scenario["listings"]:
+        assert labels["statuses"][listing["listing_status"]] in text
     if scenario_name == "otc-continuation":
         assert "OTC" in text
+    if scenario.get("synthetic_post_apply_projection") is True:
+        assert labels["reverse_transition"] in text
+        assert labels["reverse_activity"] in text
+        reverse_transition = drawer.get_by_role(
+            "button", name=labels["reverse_transition"], exact=True
+        )
+        reverse_activity = drawer.get_by_role(
+            "button", name=labels["reverse_activity"], exact=True
+        )
+        assert reverse_transition.count() == 1 and reverse_transition.is_visible()
+        assert reverse_activity.count() == 1 and reverse_activity.is_visible()
+        reverse_activity.scroll_into_view_if_needed()
     return text, "lifecycle"
 
 
 def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int) -> dict:
     OUTPUT.mkdir(parents=True, exist_ok=True)
+    scenario = SCENARIOS[scenario_name]
     state = {"requests": [], "external": []}
     context = browser.new_context(viewport={"width": width, "height": height})
     context.add_init_script(
@@ -555,6 +732,21 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
     assert render_acknowledgements == [], render_acknowledgements
     assert console_errors == [], console_errors
     assert page_errors == [], page_errors
+    synthetic_projection = scenario.get("synthetic_post_apply_projection") is True
+    transition_surface_witnesses = (
+        [
+            label
+            for label in (
+                LABELS[locale]["reverse_transition"],
+                LABELS[locale]["reverse_activity"],
+            )
+            if label in visible_text
+        ]
+        if synthetic_projection
+        else []
+    )
+    if synthetic_projection:
+        assert len(transition_surface_witnesses) == 2
     result = {
         "scenario": scenario_name,
         "surface": surface,
@@ -574,6 +766,24 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
         "listing_translation_button_count": 0,
         "overlap_count": len(metrics["overlaps"]),
         "clipped_text_count": len(metrics["textOverflow"]),
+        "synthetic_post_apply_projection": synthetic_projection,
+        "produced_by_shadow_execution": False,
+        "fixture_provenance": (
+            "synthetic_post_apply_ui_projection_not_produced_by_shadow"
+            if synthetic_projection
+            else "local_browser_fixture"
+        ),
+        "transition_surface_witnesses": transition_surface_witnesses,
+        "fixture_cik_shape": (
+            None
+            if scenario.get("settings")
+            else {
+                "regulator_issuer_cik": scenario["regulator_issuer_cik"],
+                "listing_issuer_ciks": [
+                    listing["issuer_cik"] for listing in scenario["listings"]
+                ],
+            }
+        ),
     }
     context.close()
     return result
@@ -593,12 +803,20 @@ def main() -> int:
         ]
         browser.close()
     payload = {
-        "schema_version": 1,
+        "schema_version": 2,
         "app_url": APP_URL,
         "fixture_only": True,
-        "provider_calls": 0,
-        "production_backend_started": False,
-        "production_database_operations": 0,
+        "provider_calls": dict(DECLARED_ZERO),
+        "production_backend_starts": dict(DECLARED_ZERO),
+        "production_database_operations": dict(DECLARED_ZERO),
+        "merges": dict(DECLARED_ZERO),
+        "pushes": dict(DECLARED_ZERO),
+        "fixture_metadata": {
+            "post_apply_scenarios": ["inactive-history", "otc-continuation"],
+            "post_apply_basis": "synthetic_ui_projection",
+            "post_apply_produced_by_shadow_execution": False,
+            "conflict_basis": "active_nasdaq_and_active_massive_with_sec_listing_cik_disagreement",
+        },
         "entries": entries,
     }
     (OUTPUT / "matrix.json").write_text(
@@ -618,6 +836,12 @@ def main() -> int:
         "listing_translation_button_count": sum(item["listing_translation_button_count"] for item in entries),
         "overlap_count": sum(item["overlap_count"] for item in entries),
         "clipped_text_count": sum(item["clipped_text_count"] for item in entries),
+        "synthetic_post_apply_projection_entries": sum(
+            item["synthetic_post_apply_projection"] for item in entries
+        ),
+        "transition_surface_witnesses": sum(
+            len(item["transition_surface_witnesses"]) for item in entries
+        ),
     }
     print(json.dumps(totals, sort_keys=True))
     return 0

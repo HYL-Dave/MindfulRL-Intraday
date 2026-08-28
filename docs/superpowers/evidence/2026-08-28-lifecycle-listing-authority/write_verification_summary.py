@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sys
 
 
 PACKET = Path(__file__).resolve().parent
@@ -41,20 +42,50 @@ def main() -> int:
     authority = _json("offline-authority.json")
     mutations = _json("mutation-ledger.json")
     browser = _json("browser/matrix.json")
+    normalization = _json("log-normalization.json")
     entries = browser["entries"]
     focused_a = _pytest("backend-focused-a.txt")
     focused_b = _pytest("backend-focused-b.txt")
     full_a = _pytest("backend-full-a.txt")
     full_b = _pytest("backend-full-b.txt")
+    packet_contracts = _pytest("packet-contracts.txt")
     nodes_a = (PACKET / "focused-nodes-a.txt").read_text(encoding="utf-8").splitlines()
     nodes_b = (PACKET / "focused-nodes-b.txt").read_text(encoding="utf-8").splitlines()
     assert nodes_a == nodes_b and nodes_a
     assert focused_a == focused_b and focused_a["failures"] == 0
     assert full_a == full_b and full_a["failures"] == 0
     assert mutations["all_mutations_killed"] is True
+    assert mutations["all_baselines_admitted"] is True
+    assert mutations[
+        "all_declared_commands_identical_between_baseline_and_mutant"
+    ] is True
+    assert mutations["unexpected_failures_inside_declared_mutation_scopes"] == 0
+    assert mutations["mutation_scope_anomalies"] == []
     assert mutations["all_product_files_restored_byte_identically"] is True
     assert authority["shadow"]["case_count"] == 9
     assert len(entries) == 24
+    declared_zero = {"value": 0, "basis": "declared_not_authorized"}
+    for field in (
+        "provider_calls",
+        "production_backend_starts",
+        "production_database_operations",
+        "merges",
+        "pushes",
+    ):
+        assert browser[field] == declared_zero
+    synthetic = [item for item in entries if item["synthetic_post_apply_projection"]]
+    assert len(synthetic) == 8
+    assert all(item["produced_by_shadow_execution"] is False for item in synthetic)
+    assert all(len(item["transition_surface_witnesses"]) == 2 for item in synthetic)
+    conflict = [item for item in entries if item["scenario"] == "conflict-attention"]
+    assert len(conflict) == 4
+    assert all(
+        item["fixture_cik_shape"] == {
+            "regulator_issuer_cik": "0001409970",
+            "listing_issuer_ciks": [None, "0000000001"],
+        }
+        for item in conflict
+    )
     zero_fields = (
         "external_requests",
         "writes",
@@ -69,14 +100,25 @@ def main() -> int:
     assert all(entry["overlap_count"] == 0 for entry in entries)
     assert all(entry["clipped_text_count"] == 0 for entry in entries)
     scratch = authority["scratch_migration"]
+    old_guard = scratch["old_code_startup"]["sqlite_guard"]
+    assert old_guard["outside_calibration"]["rejected_before_access"] is True
+    assert old_guard["inside_calibration"]["delegated_connect_calls"] == 1
+    assert old_guard["actual_restored_database"]["read_only_opens"] == 1
+    assert normalization["semantic_counts_and_results_preserved"] is True
+    for name in normalization["files"]:
+        text = (PACKET / name).read_text(encoding="utf-8")
+        assert str(ROOT) not in text
+        assert str(Path(sys.prefix).resolve()) not in text
+        assert not text.endswith("\n\n")
     summary = {
-        "schema_version": 1,
+        "schema_version": 2,
         "boundary": {
             "packet_and_fixture_only": True,
             "product_code_modified": False,
             "live_provider_calls": authority["declared_authority"]["provider_calls"],
             "production_database_migrations": authority["declared_authority"]["production_database_migrations"],
-            "remote_operations_authorized": False,
+            "merges": authority["declared_authority"]["merges"],
+            "pushes": authority["declared_authority"]["pushes"],
         },
         "shadow": {
             "cases": authority["shadow"]["case_count"],
@@ -103,7 +145,13 @@ def main() -> int:
         "mutations": {
             "defined": mutations["mutation_count"],
             "killed": mutations["killed_count"],
-            "unexpected_owner_drift": len(mutations["unexpected_owner_drift"]),
+            "baselines_admitted": sum(
+                item["baseline_admitted"] for item in mutations["mutations"]
+            ),
+            "unexpected_failures_inside_declared_scopes": mutations[
+                "unexpected_failures_inside_declared_mutation_scopes"
+            ],
+            "scope_anomalies": len(mutations["mutation_scope_anomalies"]),
             "restored": mutations["all_product_files_restored_byte_identically"],
         },
         "browser": {
@@ -113,6 +161,11 @@ def main() -> int:
             "viewports": sorted({"x".join(map(str, entry["viewport"])) for entry in entries}),
             "scenarios": sorted({entry["scenario"] for entry in entries}),
             "all_negative_counts": 0,
+            "synthetic_post_apply_projection_entries": len(synthetic),
+            "synthetic_post_apply_produced_by_shadow": False,
+            "transition_surface_witnesses": sum(
+                len(item["transition_surface_witnesses"]) for item in entries
+            ),
         },
         "gates": {
             "focused_a": focused_a,
@@ -128,8 +181,20 @@ def main() -> int:
                 "check_i18n_literals": "passed",
                 "build": "passed",
             },
+            "packet_contracts": packet_contracts,
         },
-        "fixture_sha256": _sha(ROOT / "tests/fixtures/listing_authority/shadow-cases.json"),
+        "fixture_sha256": {
+            name: _sha(ROOT / "tests/fixtures/listing_authority" / name)
+            for name in (
+                "shadow-cases.json",
+                "shadow-massive-conflict-active.json",
+                "shadow-massive-otc-active.json",
+                "shadow-massive-term-inactive.json",
+                "shadow-nasdaqlisted.txt",
+                "shadow-otherlisted.txt",
+            )
+        },
+        "log_normalization": normalization,
     }
     (PACKET / "verification-summary.json").write_text(
         json.dumps(summary, ensure_ascii=True, indent=2, sort_keys=True) + "\n",

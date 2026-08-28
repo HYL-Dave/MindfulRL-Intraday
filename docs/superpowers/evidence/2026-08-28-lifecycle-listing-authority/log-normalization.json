@@ -1,0 +1,100 @@
+{
+  "files": {
+    "backend-focused-a.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "backend-focused-b.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "backend-full-a.txt": {
+      "content_changed": true,
+      "python_env_replacements": 3,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "backend-full-b.txt": {
+      "content_changed": true,
+      "python_env_replacements": 3,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "browser-run.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "frontend-build.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "frontend-i18n-literals.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "frontend-test.txt": {
+      "content_changed": true,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 1,
+      "trailing_blank_lines_removed": 1
+    },
+    "frontend-typecheck.txt": {
+      "content_changed": true,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 1
+    },
+    "mutation-run.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "offline-authority-run-a.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "offline-authority-run-b.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "packet-contracts.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "vite.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    }
+  },
+  "method": "exact_path_placeholder_replacement_and_single_terminal_newline",
+  "placeholders": {
+    "checkout": "<REPO_ROOT>",
+    "python_environment": "<PYTHON_ENV>"
+  },
+  "schema_version": 1,
+  "semantic_counts_and_results_preserved": true,
+  "totals": {
+    "python_env_replacements": 6,
+    "repo_root_replacements": 1,
+    "trailing_blank_lines_removed": 2
+  }
+}

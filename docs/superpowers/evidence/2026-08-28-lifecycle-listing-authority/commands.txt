@@ -28,10 +28,14 @@ rm -f \
   "$PACKET"/focused-nodes-{a,b}.txt \
   "$PACKET"/frontend-{build,i18n-literals,test,typecheck}.txt \
   "$PACKET"/mutation-ledger.json "$PACKET"/mutation-run.txt \
+  "$PACKET"/log-normalization.json "$PACKET"/packet-contracts.txt \
   "$PACKET"/offline-authority.json "$PACKET"/offline-authority-run-{a,b}.txt \
   "$PACKET"/verification-summary.json "$PACKET"/vite.txt "$PACKET"/SHA256SUMS
 
 git archive fe34ffe769ce747e3847bb429936540775815744 src | tar -x -C "$OLD_CODE"
+
+pytest -q "$PACKET/test_packet_contracts.py" \
+  2>&1 | tee "$PACKET/packet-contracts.txt"
 
 python "$PACKET/run_mutations.py" --output "$PACKET/mutation-ledger.json" \
   2>&1 | tee "$PACKET/mutation-run.txt"
@@ -116,5 +120,6 @@ VITE_PID=""
 
 find "$PACKET" -type d -name __pycache__ -prune -exec rm -rf {} +
 test -z "$(find "$PACKET" -type d -name __pycache__ -print -quit)"
+python "$PACKET/normalize_packet_logs.py" --output "$PACKET/log-normalization.json"
 python "$PACKET/write_verification_summary.py"
 python "$PACKET/seal_packet.py"

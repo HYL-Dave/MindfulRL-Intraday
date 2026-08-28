@@ -6,6 +6,13 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
@@ -35,12 +42,15 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "active",
       "screenshot": "1440x900-en-active.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         1440,
         900
@@ -53,15 +63,22 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          23.281,
-          25.132,
-          27.552
+          23.262,
+          25.114,
+          27.535
         ],
         "extrema": [
           [
@@ -82,17 +99,20 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "not-found-monitoring",
       "screenshot": "1440x900-en-not-found-monitoring.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         1440,
         900
       ],
-      "visible_text_sha256": "0669fcf6cb0f8ef93fdb5be9d34eecfd4d10bd744a06bcf21185145243e9a826",
+      "visible_text_sha256": "4b4507947a2277db7c80d66ac667791402b94ba6e4f751942c0f221f72febb99",
       "writes": []
     },
     {
@@ -100,15 +120,22 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          "0001409970"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          23.087,
-          24.826,
-          26.911
+          23.617,
+          25.645,
+          28.086
         ],
         "extrema": [
           [
@@ -121,7 +148,7 @@
           ],
           [
             7,
-            255
+            243
           ]
         ],
         "size": [
@@ -129,17 +156,23 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "inactive-history",
       "screenshot": "1440x900-en-inactive-history.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": true,
+      "transition_surface_witnesses": [
+        "Reverse transition",
+        "Reverse tracking change"
+      ],
       "viewport": [
         1440,
         900
       ],
-      "visible_text_sha256": "abd7fb7964dcce8ab671c17e629996b3407d3ffed7ef621f4eba8a8e909ce75e",
+      "visible_text_sha256": "ab662e1f2ab66c5a0d1bc0dfb3339892946533ebf5b85fb1062eac015d8f003e",
       "writes": []
     },
     {
@@ -147,15 +180,23 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null,
+          "0000000001"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          23.593,
-          25.457,
-          27.892
+          23.728,
+          25.571,
+          27.976
         ],
         "extrema": [
           [
@@ -176,17 +217,20 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 21,
       "scenario": "conflict-attention",
       "screenshot": "1440x900-en-conflict-attention.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         1440,
         900
       ],
-      "visible_text_sha256": "8b967680e5baea819c61814946f47d43d539868e8bd02585749ab607cc1c2f0c",
+      "visible_text_sha256": "75ed411a6b7726ac45386581012a75ca34c33951b46f092bca0a355d4cfd7668",
       "writes": []
     },
     {
@@ -194,15 +238,22 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          "0001409970"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          22.995,
-          24.728,
-          26.809
+          23.563,
+          25.577,
+          27.999
         ],
         "extrema": [
           [
@@ -215,7 +266,7 @@
           ],
           [
             7,
-            255
+            243
           ]
         ],
         "size": [
@@ -223,17 +274,23 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "otc-continuation",
       "screenshot": "1440x900-en-otc-continuation.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": true,
+      "transition_surface_witnesses": [
+        "Reverse transition",
+        "Reverse tracking change"
+      ],
       "viewport": [
         1440,
         900
       ],
-      "visible_text_sha256": "283aae3c34defbb63dd4d6990f54a3303842978e1ccbaff74dde1eb541bcca84",
+      "visible_text_sha256": "8847e9c8eb5f0576cf991461ff2b6616b4f674657e9f6ae1e48e905b0a8c6742",
       "writes": []
     },
     {
@@ -241,6 +298,8 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": null,
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
@@ -270,12 +329,15 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 23,
       "scenario": "settings-massive-key",
       "screenshot": "1440x900-en-settings-massive-key.png",
       "surface": "settings",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         1440,
         900
@@ -288,6 +350,13 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
@@ -317,12 +386,15 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "active",
       "screenshot": "1440x900-zh-Hant-active.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         1440,
         900
@@ -335,15 +407,22 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          22.466,
-          24.257,
-          26.588
+          22.446,
+          24.238,
+          26.571
         ],
         "extrema": [
           [
@@ -364,17 +443,20 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "not-found-monitoring",
       "screenshot": "1440x900-zh-Hant-not-found-monitoring.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         1440,
         900
       ],
-      "visible_text_sha256": "586829f4a08daae7c03f63e01b0c4414891d30c383b17b8e9a284b9001b05189",
+      "visible_text_sha256": "c8c1df5a00ec0606743e9a68a47780e47e0416003946a6d6c2b3888e10f57146",
       "writes": []
     },
     {
@@ -382,15 +464,22 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          "0001409970"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          21.91,
-          23.563,
-          25.574
+          23.778,
+          25.591,
+          27.754
         ],
         "extrema": [
           [
@@ -403,7 +492,7 @@
           ],
           [
             7,
-            255
+            243
           ]
         ],
         "size": [
@@ -411,17 +500,23 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "inactive-history",
       "screenshot": "1440x900-zh-Hant-inactive-history.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": true,
+      "transition_surface_witnesses": [
+        "反轉代號轉移",
+        "還原追蹤變更"
+      ],
       "viewport": [
         1440,
         900
       ],
-      "visible_text_sha256": "e1ef5c9abe6595c60e77f84ef82461ba665d6993a283283aa25dbd8528a8fed0",
+      "visible_text_sha256": "f9e716c8f08f41554fec790d23a5e359e01df7d16851192111a13545895d6007",
       "writes": []
     },
     {
@@ -429,15 +524,23 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null,
+          "0000000001"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          23.061,
-          24.844,
-          27.154
+          22.852,
+          24.642,
+          26.966
         ],
         "extrema": [
           [
@@ -458,17 +561,20 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 21,
       "scenario": "conflict-attention",
       "screenshot": "1440x900-zh-Hant-conflict-attention.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         1440,
         900
       ],
-      "visible_text_sha256": "fcd044a286eb462c97a67b400ba30ef44c4ba45b1fc1097746c9e335d4438d6a",
+      "visible_text_sha256": "d4360f4acfeb7c349b9e86763bbd5860406db540eb89e6006dd3cb3844c661b8",
       "writes": []
     },
     {
@@ -476,15 +582,22 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          "0001409970"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          21.81,
-          23.466,
-          25.484
+          23.714,
+          25.53,
+          27.698
         ],
         "extrema": [
           [
@@ -497,7 +610,7 @@
           ],
           [
             7,
-            255
+            243
           ]
         ],
         "size": [
@@ -505,17 +618,23 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "otc-continuation",
       "screenshot": "1440x900-zh-Hant-otc-continuation.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": true,
+      "transition_surface_witnesses": [
+        "反轉代號轉移",
+        "還原追蹤變更"
+      ],
       "viewport": [
         1440,
         900
       ],
-      "visible_text_sha256": "85e8886ef6fded9b0a602379db83a0fd74a8574fc3c4f1047b54a5ce0b5dc7f9",
+      "visible_text_sha256": "e337e6b0ea7099dd241a77b3b558ad177ef7fafdb232814983c17f342e09165c",
       "writes": []
     },
     {
@@ -523,6 +642,8 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": null,
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
@@ -552,12 +673,15 @@
           900
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 23,
       "scenario": "settings-massive-key",
       "screenshot": "1440x900-zh-Hant-settings-massive-key.png",
       "surface": "settings",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         1440,
         900
@@ -570,6 +694,13 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
@@ -599,12 +730,15 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "active",
       "screenshot": "390x844-en-active.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         390,
         844
@@ -617,15 +751,22 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          35.869,
-          36.442,
-          36.709
+          35.835,
+          36.407,
+          36.675
         ],
         "extrema": [
           [
@@ -646,17 +787,20 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "not-found-monitoring",
       "screenshot": "390x844-en-not-found-monitoring.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         390,
         844
       ],
-      "visible_text_sha256": "0669fcf6cb0f8ef93fdb5be9d34eecfd4d10bd744a06bcf21185145243e9a826",
+      "visible_text_sha256": "4b4507947a2277db7c80d66ac667791402b94ba6e4f751942c0f221f72febb99",
       "writes": []
     },
     {
@@ -664,28 +808,35 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          "0001409970"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          35.11,
-          35.678,
-          35.953
+          40.806,
+          41.308,
+          41.522
         ],
         "extrema": [
           [
-            21,
+            22,
             230
           ],
           [
-            26,
+            27,
             237
           ],
           [
-            33,
-            255
+            34,
+            243
           ]
         ],
         "size": [
@@ -693,17 +844,23 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "inactive-history",
       "screenshot": "390x844-en-inactive-history.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": true,
+      "transition_surface_witnesses": [
+        "Reverse transition",
+        "Reverse tracking change"
+      ],
       "viewport": [
         390,
         844
       ],
-      "visible_text_sha256": "abd7fb7964dcce8ab671c17e629996b3407d3ffed7ef621f4eba8a8e909ce75e",
+      "visible_text_sha256": "ab662e1f2ab66c5a0d1bc0dfb3339892946533ebf5b85fb1062eac015d8f003e",
       "writes": []
     },
     {
@@ -711,15 +868,23 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null,
+          "0000000001"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          35.63,
-          36.196,
-          36.462
+          35.473,
+          36.039,
+          36.308
         ],
         "extrema": [
           [
@@ -740,17 +905,20 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 21,
       "scenario": "conflict-attention",
       "screenshot": "390x844-en-conflict-attention.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         390,
         844
       ],
-      "visible_text_sha256": "8b967680e5baea819c61814946f47d43d539868e8bd02585749ab607cc1c2f0c",
+      "visible_text_sha256": "75ed411a6b7726ac45386581012a75ca34c33951b46f092bca0a355d4cfd7668",
       "writes": []
     },
     {
@@ -758,28 +926,35 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          "0001409970"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          34.924,
-          35.49,
-          35.769
+          40.477,
+          40.979,
+          41.203
         ],
         "extrema": [
           [
-            21,
+            22,
             230
           ],
           [
-            26,
+            27,
             237
           ],
           [
-            33,
-            255
+            34,
+            243
           ]
         ],
         "size": [
@@ -787,17 +962,23 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "otc-continuation",
       "screenshot": "390x844-en-otc-continuation.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": true,
+      "transition_surface_witnesses": [
+        "Reverse transition",
+        "Reverse tracking change"
+      ],
       "viewport": [
         390,
         844
       ],
-      "visible_text_sha256": "283aae3c34defbb63dd4d6990f54a3303842978e1ccbaff74dde1eb541bcca84",
+      "visible_text_sha256": "8847e9c8eb5f0576cf991461ff2b6616b4f674657e9f6ae1e48e905b0a8c6742",
       "writes": []
     },
     {
@@ -805,6 +986,8 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": null,
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
@@ -834,12 +1017,15 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 23,
       "scenario": "settings-massive-key",
       "screenshot": "390x844-en-settings-massive-key.png",
       "surface": "settings",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         390,
         844
@@ -852,6 +1038,13 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
@@ -881,12 +1074,15 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "active",
       "screenshot": "390x844-zh-Hant-active.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         390,
         844
@@ -899,15 +1095,22 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          34.982,
-          35.515,
-          35.727
+          34.944,
+          35.477,
+          35.69
         ],
         "extrema": [
           [
@@ -928,17 +1131,20 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "not-found-monitoring",
       "screenshot": "390x844-zh-Hant-not-found-monitoring.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         390,
         844
       ],
-      "visible_text_sha256": "586829f4a08daae7c03f63e01b0c4414891d30c383b17b8e9a284b9001b05189",
+      "visible_text_sha256": "c8c1df5a00ec0606743e9a68a47780e47e0416003946a6d6c2b3888e10f57146",
       "writes": []
     },
     {
@@ -946,28 +1152,35 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          "0001409970"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          33.777,
-          34.308,
-          34.537
+          38.658,
+          39.197,
+          39.473
         ],
         "extrema": [
           [
-            21,
+            22,
             230
           ],
           [
-            26,
+            27,
             237
           ],
           [
-            33,
-            255
+            34,
+            243
           ]
         ],
         "size": [
@@ -975,17 +1188,23 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "inactive-history",
       "screenshot": "390x844-zh-Hant-inactive-history.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": true,
+      "transition_surface_witnesses": [
+        "反轉代號轉移",
+        "還原追蹤變更"
+      ],
       "viewport": [
         390,
         844
       ],
-      "visible_text_sha256": "e1ef5c9abe6595c60e77f84ef82461ba665d6993a283283aa25dbd8528a8fed0",
+      "visible_text_sha256": "f9e716c8f08f41554fec790d23a5e359e01df7d16851192111a13545895d6007",
       "writes": []
     },
     {
@@ -993,15 +1212,23 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null,
+          "0000000001"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          34.846,
-          35.374,
-          35.582
+          34.761,
+          35.294,
+          35.511
         ],
         "extrema": [
           [
@@ -1022,17 +1249,20 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 21,
       "scenario": "conflict-attention",
       "screenshot": "390x844-zh-Hant-conflict-attention.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         390,
         844
       ],
-      "visible_text_sha256": "fcd044a286eb462c97a67b400ba30ef44c4ba45b1fc1097746c9e335d4438d6a",
+      "visible_text_sha256": "d4360f4acfeb7c349b9e86763bbd5860406db540eb89e6006dd3cb3844c661b8",
       "writes": []
     },
     {
@@ -1040,28 +1270,35 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          "0001409970"
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          33.559,
-          34.087,
-          34.321
+          38.519,
+          39.056,
+          39.333
         ],
         "extrema": [
           [
-            21,
+            22,
             230
           ],
           [
-            26,
+            27,
             237
           ],
           [
-            33,
-            255
+            34,
+            243
           ]
         ],
         "size": [
@@ -1069,17 +1306,23 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "otc-continuation",
       "screenshot": "390x844-zh-Hant-otc-continuation.png",
       "surface": "lifecycle",
+      "synthetic_post_apply_projection": true,
+      "transition_surface_witnesses": [
+        "反轉代號轉移",
+        "還原追蹤變更"
+      ],
       "viewport": [
         390,
         844
       ],
-      "visible_text_sha256": "85e8886ef6fded9b0a602379db83a0fd74a8574fc3c4f1047b54a5ce0b5dc7f9",
+      "visible_text_sha256": "e337e6b0ea7099dd241a77b3b558ad177ef7fafdb232814983c17f342e09165c",
       "writes": []
     },
     {
@@ -1087,6 +1330,8 @@
       "command_calls": [],
       "console_errors": [],
       "external_requests": [],
+      "fixture_cik_shape": null,
+      "fixture_provenance": "local_browser_fixture",
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
@@ -1116,12 +1361,15 @@
           844
         ]
       },
+      "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
       "render_acknowledgements": [],
       "request_count": 23,
       "scenario": "settings-massive-key",
       "screenshot": "390x844-zh-Hant-settings-massive-key.png",
       "surface": "settings",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
       "viewport": [
         390,
         844
@@ -1130,9 +1378,35 @@
       "writes": []
     }
   ],
+  "fixture_metadata": {
+    "conflict_basis": "active_nasdaq_and_active_massive_with_sec_listing_cik_disagreement",
+    "post_apply_basis": "synthetic_ui_projection",
+    "post_apply_produced_by_shadow_execution": false,
+    "post_apply_scenarios": [
+      "inactive-history",
+      "otc-continuation"
+    ]
+  },
   "fixture_only": true,
-  "production_backend_started": false,
-  "production_database_operations": 0,
-  "provider_calls": 0,
-  "schema_version": 1
+  "merges": {
+    "basis": "declared_not_authorized",
+    "value": 0
+  },
+  "production_backend_starts": {
+    "basis": "declared_not_authorized",
+    "value": 0
+  },
+  "production_database_operations": {
+    "basis": "declared_not_authorized",
+    "value": 0
+  },
+  "provider_calls": {
+    "basis": "declared_not_authorized",
+    "value": 0
+  },
+  "pushes": {
+    "basis": "declared_not_authorized",
+    "value": 0
+  },
+  "schema_version": 2
 }
