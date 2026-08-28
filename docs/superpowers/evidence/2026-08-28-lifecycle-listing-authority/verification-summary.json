@@ -1,0 +1,119 @@
+{
+  "boundary": {
+    "live_provider_calls": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
+    "packet_and_fixture_only": true,
+    "product_code_modified": false,
+    "production_database_migrations": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
+    "remote_operations_authorized": false
+  },
+  "browser": {
+    "all_negative_counts": 0,
+    "entries": 24,
+    "locales": [
+      "en",
+      "zh-Hant"
+    ],
+    "scenarios": [
+      "active",
+      "conflict-attention",
+      "inactive-history",
+      "not-found-monitoring",
+      "otc-continuation",
+      "settings-massive-key"
+    ],
+    "screenshots": 24,
+    "viewports": [
+      "1440x900",
+      "390x844"
+    ]
+  },
+  "fixture_sha256": "0527a363ffb4bb2976a68af56e5e508048933e2dfce00b61fb48cf0da3ced7ab",
+  "gates": {
+    "focused_a": {
+      "failures": 0,
+      "passed": 334,
+      "skipped": 0
+    },
+    "focused_b": {
+      "failures": 0,
+      "passed": 334,
+      "skipped": 0
+    },
+    "focused_collected_nodes": 334,
+    "focused_node_sets_identical": true,
+    "frontend": {
+      "build": "passed",
+      "check_i18n_literals": "passed",
+      "test": {
+        "files_passed": 106,
+        "status": "passed",
+        "tests_passed": 1305
+      },
+      "typecheck": "passed"
+    },
+    "full_a": {
+      "failures": 0,
+      "passed": 4834,
+      "skipped": 12
+    },
+    "full_b": {
+      "failures": 0,
+      "passed": 4834,
+      "skipped": 12
+    },
+    "full_collection_counts_identical": true
+  },
+  "mutations": {
+    "defined": 20,
+    "killed": 20,
+    "restored": true,
+    "unexpected_owner_drift": 0
+  },
+  "observer": {
+    "calibrated_targets": 7,
+    "forbidden_calls": {
+      "data_sources.listing_authority_transport.ListingAuthorityTransport.fetch_massive_ticker": 0,
+      "data_sources.listing_authority_transport.ListingAuthorityTransport.fetch_nasdaq": 0,
+      "data_sources.sec_transport.SecTransport.get": 0,
+      "requests.sessions.Session.request": 0,
+      "src.security_lifecycle_ibkr_evidence.read_ibkr_contract_evidence": 0
+    },
+    "sqlite": {
+      "allowed_memory": 0,
+      "allowed_scratch": 27,
+      "blocked_outside": 0
+    },
+    "sqlite_calibration": {
+      "allowed_memory": 0,
+      "allowed_scratch": 1,
+      "blocked_outside": 1
+    }
+  },
+  "schema_version": 1,
+  "scratch_migration": {
+    "backup_restore_byte_identical": true,
+    "old_code_startup": {
+      "foreign_key_violations": 0,
+      "integrity": "ok",
+      "old_code_started": true
+    },
+    "restored_version": "v2",
+    "row_and_sequence_identity": true,
+    "source_version": "v2",
+    "target_version": "v3"
+  },
+  "shadow": {
+    "cases": 9,
+    "non_transition_preview_calls": 0,
+    "preview_calls": 3,
+    "publisher_injection_inert": 9,
+    "sec_limitation": "Historical SEC facts use frozen repository helpers because this packet contains no provider bytes or calls.",
+    "strict_path": "strict_parser_to_builder_to_fact_kernel_to_policy"
+  }
+}

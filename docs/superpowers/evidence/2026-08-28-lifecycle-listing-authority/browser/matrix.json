@@ -1,0 +1,1138 @@
+{
+  "app_url": "http://127.0.0.1:4208/",
+  "entries": [
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.304,
+          25.036,
+          27.109
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "active",
+      "screenshot": "1440x900-en-active.png",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "dc58b815678101f3079b7af09502a232ef3366bec9d102d7e66e57eff41b86e9",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.281,
+          25.132,
+          27.552
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "not-found-monitoring",
+      "screenshot": "1440x900-en-not-found-monitoring.png",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "0669fcf6cb0f8ef93fdb5be9d34eecfd4d10bd744a06bcf21185145243e9a826",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.087,
+          24.826,
+          26.911
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "inactive-history",
+      "screenshot": "1440x900-en-inactive-history.png",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "abd7fb7964dcce8ab671c17e629996b3407d3ffed7ef621f4eba8a8e909ce75e",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.593,
+          25.457,
+          27.892
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 21,
+      "scenario": "conflict-attention",
+      "screenshot": "1440x900-en-conflict-attention.png",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "8b967680e5baea819c61814946f47d43d539868e8bd02585749ab607cc1c2f0c",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.995,
+          24.728,
+          26.809
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "otc-continuation",
+      "screenshot": "1440x900-en-otc-continuation.png",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "283aae3c34defbb63dd4d6990f54a3303842978e1ccbaff74dde1eb541bcca84",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          21.335,
+          22.243,
+          22.853
+        ],
+        "extrema": [
+          [
+            13,
+            230
+          ],
+          [
+            16,
+            237
+          ],
+          [
+            21,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 23,
+      "scenario": "settings-massive-key",
+      "screenshot": "1440x900-en-settings-massive-key.png",
+      "surface": "settings",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "93f4c63519aa732a14a1e2b5b3db5817fd88f2c5c1b1c86d47fa3af73df2a3b2",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.181,
+          23.826,
+          25.821
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "active",
+      "screenshot": "1440x900-zh-Hant-active.png",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "c07b11177bff25ea4079c1c7d2f8d7a5f3d0053081256db1c021e5c91d662b09",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          22.466,
+          24.257,
+          26.588
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "not-found-monitoring",
+      "screenshot": "1440x900-zh-Hant-not-found-monitoring.png",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "586829f4a08daae7c03f63e01b0c4414891d30c383b17b8e9a284b9001b05189",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          21.91,
+          23.563,
+          25.574
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "inactive-history",
+      "screenshot": "1440x900-zh-Hant-inactive-history.png",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "e1ef5c9abe6595c60e77f84ef82461ba665d6993a283283aa25dbd8528a8fed0",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          23.061,
+          24.844,
+          27.154
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 21,
+      "scenario": "conflict-attention",
+      "screenshot": "1440x900-zh-Hant-conflict-attention.png",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "fcd044a286eb462c97a67b400ba30ef44c4ba45b1fc1097746c9e335d4438d6a",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          21.81,
+          23.466,
+          25.484
+        ],
+        "extrema": [
+          [
+            4,
+            230
+          ],
+          [
+            6,
+            237
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "otc-continuation",
+      "screenshot": "1440x900-zh-Hant-otc-continuation.png",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "85e8886ef6fded9b0a602379db83a0fd74a8574fc3c4f1047b54a5ce0b5dc7f9",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          19.612,
+          20.488,
+          21.073
+        ],
+        "extrema": [
+          [
+            13,
+            230
+          ],
+          [
+            16,
+            237
+          ],
+          [
+            21,
+            255
+          ]
+        ],
+        "size": [
+          1440,
+          900
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 23,
+      "scenario": "settings-massive-key",
+      "screenshot": "1440x900-zh-Hant-settings-massive-key.png",
+      "surface": "settings",
+      "viewport": [
+        1440,
+        900
+      ],
+      "visible_text_sha256": "18720b9c2d2e048ea59846746e74a29bc698fce30f84c36df5b0995c0e188601",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          35.558,
+          36.125,
+          36.391
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            26,
+            237
+          ],
+          [
+            33,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "active",
+      "screenshot": "390x844-en-active.png",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "dc58b815678101f3079b7af09502a232ef3366bec9d102d7e66e57eff41b86e9",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          35.869,
+          36.442,
+          36.709
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "not-found-monitoring",
+      "screenshot": "390x844-en-not-found-monitoring.png",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "0669fcf6cb0f8ef93fdb5be9d34eecfd4d10bd744a06bcf21185145243e9a826",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          35.11,
+          35.678,
+          35.953
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            26,
+            237
+          ],
+          [
+            33,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "inactive-history",
+      "screenshot": "390x844-en-inactive-history.png",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "abd7fb7964dcce8ab671c17e629996b3407d3ffed7ef621f4eba8a8e909ce75e",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          35.63,
+          36.196,
+          36.462
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 21,
+      "scenario": "conflict-attention",
+      "screenshot": "390x844-en-conflict-attention.png",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "8b967680e5baea819c61814946f47d43d539868e8bd02585749ab607cc1c2f0c",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.924,
+          35.49,
+          35.769
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            26,
+            237
+          ],
+          [
+            33,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "otc-continuation",
+      "screenshot": "390x844-en-otc-continuation.png",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "283aae3c34defbb63dd4d6990f54a3303842978e1ccbaff74dde1eb541bcca84",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          26.492,
+          27.763,
+          28.354
+        ],
+        "extrema": [
+          [
+            14,
+            230
+          ],
+          [
+            17,
+            237
+          ],
+          [
+            22,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 23,
+      "scenario": "settings-massive-key",
+      "screenshot": "390x844-en-settings-massive-key.png",
+      "surface": "settings",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "60767bd600c027c048b89bebf9b51a44f01a810b9485df7bdd1540a4cfba8657",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.35,
+          34.88,
+          35.099
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            26,
+            237
+          ],
+          [
+            33,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "active",
+      "screenshot": "390x844-zh-Hant-active.png",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "c07b11177bff25ea4079c1c7d2f8d7a5f3d0053081256db1c021e5c91d662b09",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.982,
+          35.515,
+          35.727
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "not-found-monitoring",
+      "screenshot": "390x844-zh-Hant-not-found-monitoring.png",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "586829f4a08daae7c03f63e01b0c4414891d30c383b17b8e9a284b9001b05189",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          33.777,
+          34.308,
+          34.537
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            26,
+            237
+          ],
+          [
+            33,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "inactive-history",
+      "screenshot": "390x844-zh-Hant-inactive-history.png",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "e1ef5c9abe6595c60e77f84ef82461ba665d6993a283283aa25dbd8528a8fed0",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.846,
+          35.374,
+          35.582
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            27,
+            237
+          ],
+          [
+            34,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 21,
+      "scenario": "conflict-attention",
+      "screenshot": "390x844-zh-Hant-conflict-attention.png",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "fcd044a286eb462c97a67b400ba30ef44c4ba45b1fc1097746c9e335d4438d6a",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          33.559,
+          34.087,
+          34.321
+        ],
+        "extrema": [
+          [
+            21,
+            230
+          ],
+          [
+            26,
+            237
+          ],
+          [
+            33,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "otc-continuation",
+      "screenshot": "390x844-zh-Hant-otc-continuation.png",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "85e8886ef6fded9b0a602379db83a0fd74a8574fc3c4f1047b54a5ce0b5dc7f9",
+      "writes": []
+    },
+    {
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "external_requests": [],
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          24.925,
+          26.16,
+          26.721
+        ],
+        "extrema": [
+          [
+            14,
+            230
+          ],
+          [
+            17,
+            237
+          ],
+          [
+            22,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "publisher_family_text_count": 0,
+      "render_acknowledgements": [],
+      "request_count": 23,
+      "scenario": "settings-massive-key",
+      "screenshot": "390x844-zh-Hant-settings-massive-key.png",
+      "surface": "settings",
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "47e59a3406623928ad47854c299cacb6b72eb4e6e87b1e006c17a89b155656ef",
+      "writes": []
+    }
+  ],
+  "fixture_only": true,
+  "production_backend_started": false,
+  "production_database_operations": 0,
+  "provider_calls": 0,
+  "schema_version": 1
+}

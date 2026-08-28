@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export PYTHONDONTWRITEBYTECODE=1
+ROOT="$(git rev-parse --show-toplevel)"
+PACKET="$ROOT/docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority"
+OLD_CODE="$(mktemp -d /tmp/arkscope-listing-old-code.XXXXXX)"
+VITE_PID=""
+
+cleanup() {
+  if [[ -n "$VITE_PID" ]] && kill -0 "$VITE_PID" 2>/dev/null; then
+    kill "$VITE_PID"
+    wait "$VITE_PID" 2>/dev/null || true
+  fi
+  rm -rf "$OLD_CODE"
+}
+trap cleanup EXIT
+
+cd "$ROOT"
+test "$(git rev-parse --abbrev-ref HEAD)" = "lifecycle-listing-authority"
+git merge-base --is-ancestor dac3d5a6a3f26ae360a5452ecc573addeb894eed HEAD
+find "$PACKET" -type d -name __pycache__ -prune -exec rm -rf {} +
+rm -rf "$PACKET/browser"
+rm -f \
+  "$PACKET"/backend-focused-{a,b}.txt \
+  "$PACKET"/backend-full-{a,b}.txt \
+  "$PACKET"/browser-run.txt \
+  "$PACKET"/focused-nodes-{a,b}.txt \
+  "$PACKET"/frontend-{build,i18n-literals,test,typecheck}.txt \
+  "$PACKET"/mutation-ledger.json "$PACKET"/mutation-run.txt \
+  "$PACKET"/offline-authority.json "$PACKET"/offline-authority-run-{a,b}.txt \
+  "$PACKET"/verification-summary.json "$PACKET"/vite.txt "$PACKET"/SHA256SUMS
+
+git archive fe34ffe769ce747e3847bb429936540775815744 src | tar -x -C "$OLD_CODE"
+
+python "$PACKET/run_mutations.py" --output "$PACKET/mutation-ledger.json" \
+  2>&1 | tee "$PACKET/mutation-run.txt"
+
+python "$PACKET/capture_offline_authority.py" \
+  --old-code-root "$OLD_CODE" --output /tmp/arkscope-listing-authority-a.json \
+  2>&1 | tee "$PACKET/offline-authority-run-a.txt"
+python "$PACKET/capture_offline_authority.py" \
+  --old-code-root "$OLD_CODE" --output /tmp/arkscope-listing-authority-b.json \
+  2>&1 | tee "$PACKET/offline-authority-run-b.txt"
+cmp /tmp/arkscope-listing-authority-a.json /tmp/arkscope-listing-authority-b.json
+mv /tmp/arkscope-listing-authority-a.json "$PACKET/offline-authority.json"
+rm /tmp/arkscope-listing-authority-b.json
+
+FOCUSED=(
+  tests/test_listing_authority_transport.py
+  tests/test_security_lifecycle_listing_evidence.py
+  tests/test_security_lifecycle_listing_migration.py
+  tests/test_security_lifecycle_fact_kernel.py
+  tests/test_security_lifecycle_decision_policy.py
+  tests/test_security_lifecycle_automation_scheduler.py
+  tests/test_security_lifecycle_automation_worker.py
+  tests/test_security_lifecycle_disposition.py
+  tests/test_security_lifecycle_tools.py
+  tests/test_security_lifecycle_routes.py
+)
+pytest --collect-only -q "${FOCUSED[@]}" | sed -n '/::/p' > "$PACKET/focused-nodes-a.txt"
+pytest --collect-only -q "${FOCUSED[@]}" | sed -n '/::/p' > "$PACKET/focused-nodes-b.txt"
+cmp "$PACKET/focused-nodes-a.txt" "$PACKET/focused-nodes-b.txt"
+
+pytest --basetemp=/tmp/arkscope-listing-focused-a \
+  tests/test_listing_authority_transport.py \
+  tests/test_security_lifecycle_listing_evidence.py \
+  tests/test_security_lifecycle_listing_migration.py \
+  tests/test_security_lifecycle_fact_kernel.py \
+  tests/test_security_lifecycle_decision_policy.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_automation_worker.py \
+  tests/test_security_lifecycle_disposition.py \
+  tests/test_security_lifecycle_tools.py \
+  tests/test_security_lifecycle_routes.py -q 2>&1 | tee "$PACKET/backend-focused-a.txt"
+pytest --basetemp=/tmp/arkscope-listing-focused-b \
+  tests/test_listing_authority_transport.py \
+  tests/test_security_lifecycle_listing_evidence.py \
+  tests/test_security_lifecycle_listing_migration.py \
+  tests/test_security_lifecycle_fact_kernel.py \
+  tests/test_security_lifecycle_decision_policy.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_automation_worker.py \
+  tests/test_security_lifecycle_disposition.py \
+  tests/test_security_lifecycle_tools.py \
+  tests/test_security_lifecycle_routes.py -q 2>&1 | tee "$PACKET/backend-focused-b.txt"
+
+pytest --basetemp=/tmp/arkscope-listing-full-a -q 2>&1 | tee "$PACKET/backend-full-a.txt"
+pytest --basetemp=/tmp/arkscope-listing-full-b -q 2>&1 | tee "$PACKET/backend-full-b.txt"
+npm --prefix apps/arkscope-web test 2>&1 | tee "$PACKET/frontend-test.txt"
+npm --prefix apps/arkscope-web run typecheck 2>&1 | tee "$PACKET/frontend-typecheck.txt"
+npm --prefix apps/arkscope-web run check:i18n-literals 2>&1 | tee "$PACKET/frontend-i18n-literals.txt"
+npm --prefix apps/arkscope-web run build 2>&1 | tee "$PACKET/frontend-build.txt"
+
+node node_modules/vite/bin/vite.js apps/arkscope-web --host 127.0.0.1 --port 4208 --strictPort \
+  > "$PACKET/vite.txt" 2>&1 &
+VITE_PID=$!
+ready=0
+for _ in $(seq 1 100); do
+  if ! kill -0 "$VITE_PID" 2>/dev/null; then
+    break
+  fi
+  if python -c 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:4208/", timeout=.2).read(1)' 2>/dev/null; then
+    ready=1
+    break
+  fi
+  sleep .1
+done
+test "$ready" = 1
+ARKSCOPE_LISTING_APP_URL=http://127.0.0.1:4208/ \
+  python "$PACKET/run_browser_matrix.py" | tee "$PACKET/browser-run.txt"
+kill "$VITE_PID"
+wait "$VITE_PID" 2>/dev/null || true
+test ! -e "/proc/$VITE_PID"
+VITE_PID=""
+
+find "$PACKET" -type d -name __pycache__ -prune -exec rm -rf {} +
+test -z "$(find "$PACKET" -type d -name __pycache__ -print -quit)"
+python "$PACKET/write_verification_summary.py"
+python "$PACKET/seal_packet.py"

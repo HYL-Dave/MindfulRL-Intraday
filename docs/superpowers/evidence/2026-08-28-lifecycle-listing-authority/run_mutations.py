@@ -1,0 +1,667 @@
+"""Apply the twenty listing-authority admission mutations independently."""
+
+from __future__ import annotations
+
+import argparse
+from dataclasses import dataclass
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+from typing import Iterable
+
+
+PACKET = Path(__file__).resolve().parent
+ROOT = PACKET.parents[3]
+
+
+@dataclass(frozen=True)
+class Mutation:
+    mutation_id: str
+    description: str
+    path: str
+    old: str
+    new: str
+    owners: tuple[str, ...]
+    command: tuple[str, ...]
+    extra_replacements: tuple[tuple[str, str], ...] = ()
+
+
+TRANSPORT = "data_sources/listing_authority_transport.py"
+LISTING = "src/security_lifecycle_listing_evidence.py"
+KERNEL = "src/security_lifecycle_fact_kernel.py"
+POLICY = "src/security_lifecycle_decision_policy.py"
+SCHEDULER = "src/service/security_lifecycle_automation_scheduler.py"
+TOOLS = "src/tools/security_lifecycle_tools.py"
+TRANSLATION = "src/security_lifecycle_translation.py"
+PROVIDERS = "src/data_provider_config.py"
+MIGRATION = "src/security_lifecycle_listing_migration.py"
+SCHEMA = "src/security_lifecycle_schema.py"
+
+
+MUTATIONS = (
+    Mutation(
+        "M01",
+        "remove nasdaq host/path allowlist",
+        TRANSPORT,
+        "        if str(source_url) not in _NASDAQ_URLS:\n",
+        "        if False and str(source_url) not in _NASDAQ_URLS:\n",
+        tuple(
+            "tests/test_listing_authority_transport.py::"
+            "test_nasdaq_rejects_urls_outside_the_two_exact_files[" + value + "]"
+            for value in (
+                "http://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt",
+                "https://www.nasdaqtrader.com/dynamic/SymDir/unknown.txt",
+                "https://evil.example/dynamic/SymDir/nasdaqlisted.txt",
+                "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt?x=1",
+            )
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_listing_authority_transport.py::"
+            "test_nasdaq_rejects_urls_outside_the_two_exact_files",
+        ),
+    ),
+    Mutation(
+        "M02",
+        "turn Nasdaq not_found into inactive",
+        LISTING,
+        '        status = "active" if row is not None else "not_found"\n',
+        '        status = "active" if row is not None else "inactive"\n',
+        (
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_nasdaq_parser_preserves_matching_component_and_per_file_hashes",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_nasdaq_parser_preserves_matching_component_and_per_file_hashes",
+        ),
+    ),
+    Mutation(
+        "M03",
+        "accept a missing Nasdaq footer",
+        LISTING,
+        "    lines = _decode_nasdaq(body)\n"
+        "    expected_header = _NASDAQ_HEADER if directory == \"nasdaq_listed\" else _OTHER_HEADER\n",
+        "    lines = _decode_nasdaq(body)\n"
+        "    if _FOOTER.fullmatch(lines[-1]) is None:\n"
+        '        lines.append("File Creation Time: 08282026|120000")\n'
+        "    expected_header = _NASDAQ_HEADER if directory == \"nasdaq_listed\" else _OTHER_HEADER\n",
+        (
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files"
+            "[missing_footer-<lambda>-listing_directory_schema_mismatch]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files"
+            "[missing_footer-<lambda>-listing_directory_schema_mismatch]",
+        ),
+    ),
+    Mutation(
+        "M04",
+        "ignore Nasdaq file freshness",
+        LISTING,
+        "        or created.date() < latest\n",
+        "        or False\n",
+        (
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files"
+            "[stale_file-<lambda>-listing_directory_stale]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files"
+            "[stale_file-<lambda>-listing_directory_stale]",
+        ),
+    ),
+    Mutation(
+        "M05",
+        "follow Massive next_url",
+        LISTING,
+        '        or "next_url" in payload\n',
+        "        or False\n",
+        (
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows"
+            "[<lambda>-listing_status_unresolved3]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows"
+            "[<lambda>-listing_status_unresolved3]",
+        ),
+    ),
+    Mutation(
+        "M06",
+        "log Massive API key",
+        TRANSPORT,
+        '        source_url = f"{MASSIVE_TICKERS_URL}?{urlencode(canonical_params)}"\n',
+        '        source_url = f"{MASSIVE_TICKERS_URL}?{urlencode(canonical_params)}&apiKey={key}"\n',
+        (
+            "tests/test_listing_authority_transport.py::"
+            "test_massive_query_secret_never_leaves_the_request_boundary",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_listing_authority_transport.py::"
+            "test_massive_query_secret_never_leaves_the_request_boundary",
+        ),
+    ),
+    Mutation(
+        "M07",
+        "accept Massive inactive without delisted_utc",
+        LISTING,
+        "        if delisted_value is None:\n"
+        "            raise _massive_failure()\n"
+        '        status = "inactive"\n'
+        "        delisted_utc = _delisted_date(delisted_value, lookup_date=retrieved.date())\n",
+        '        status = "inactive"\n'
+        "        delisted_utc = (\n"
+        "            None if delisted_value is None\n"
+        "            else _delisted_date(delisted_value, lookup_date=retrieved.date())\n"
+        "        )\n",
+        (
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows"
+            "[<lambda>-listing_status_unresolved0]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows"
+            "[<lambda>-listing_status_unresolved0]",
+        ),
+    ),
+    Mutation(
+        "M08",
+        "remove producer-to-kernel hash validation",
+        KERNEL,
+        "        if hashlib.sha256(excerpt.encode()).hexdigest() != content_digest:\n",
+        "        if False and hashlib.sha256(excerpt.encode()).hexdigest() != content_digest:\n",
+        tuple(
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_listing_producer_mutations_fail_at_real_kernel_validator["
+            f"{adapter}-excerpt-evidence_content_sha256]"
+            for adapter in ("nasdaq_symbol_directory", "massive_reference")
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_listing_producer_mutations_fail_at_real_kernel_validator"
+            "[nasdaq_symbol_directory-excerpt-evidence_content_sha256]",
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_listing_producer_mutations_fail_at_real_kernel_validator"
+            "[massive_reference-excerpt-evidence_content_sha256]",
+        ),
+    ),
+    Mutation(
+        "M09",
+        "remove producer-to-kernel citation validation",
+        KERNEL,
+        "    if hashlib.sha256(cited).hexdigest() != digest:\n"
+        "        raise ValueError(error_name)\n",
+        "    if False and hashlib.sha256(cited).hexdigest() != digest:\n"
+        "        raise ValueError(error_name)\n",
+        tuple(
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_listing_producer_mutations_fail_at_real_kernel_validator["
+            f"{adapter}-span-fact_citation]"
+            for adapter in ("nasdaq_symbol_directory", "massive_reference")
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_listing_producer_mutations_fail_at_real_kernel_validator"
+            "[nasdaq_symbol_directory-span-fact_citation]",
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_listing_producer_mutations_fail_at_real_kernel_validator"
+            "[massive_reference-span-fact_citation]",
+        ),
+    ),
+    Mutation(
+        "M10",
+        "select one latest listing record and discard the rest",
+        POLICY,
+        "        if len(rows) == 1:\n"
+        "            return tuple(rows)\n",
+        "        if rows:\n"
+        "            return (sorted(rows, key=lambda row: row.evidence_id)[-1],)\n",
+        (
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_equal_time_disagreement_inside_one_listing_component_fails_closed",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_equal_time_disagreement_inside_one_listing_component_fails_closed",
+        ),
+    ),
+    Mutation(
+        "M11",
+        "allow IBKR missing to prove delisting",
+        POLICY,
+        "        elif not _listing_explicit_inactive(evidence_rows, regulator_source, today):\n",
+        "        elif not (\n"
+        "            _listing_explicit_inactive(evidence_rows, regulator_source, today)\n"
+        "            or any(\n"
+        '                row.source_family == "market_infrastructure"\n'
+        '                and row.source_locator.get("contract_status") == "missing"\n'
+        "                for row in evidence_rows\n"
+        "            )\n"
+        "        ):\n",
+        (
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_ibkr_missing_never_proves_terminal",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_ibkr_missing_never_proves_terminal",
+        ),
+        extra_replacements=(
+            (
+                '        and row.source_locator.get("contract_status") == "found"\n',
+                '        and row.source_locator.get("contract_status") in {"found", "missing"}\n',
+            ),
+        ),
+    ),
+    Mutation(
+        "M12",
+        "require a fresh quote for listing acceptance",
+        POLICY,
+        "    listing = _selected_listing_rows(evidence)\n"
+        "    market = tuple(\n",
+        "    listing = (\n"
+        "        _selected_listing_rows(evidence)\n"
+        "        if any(\n"
+        '            row.source_family == "market_infrastructure"\n'
+        '            and isinstance(row.source_locator.get("market_data"), Mapping)\n'
+        '            and row.source_locator["market_data"].get("fresh") is True\n'
+        "            for row in evidence\n"
+        "        )\n"
+        "        else ()\n"
+        "    )\n"
+        "    market = tuple(\n",
+        (
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_quote_freshness_is_inert_for_v4_acceptance",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_quote_freshness_is_inert_for_v4_acceptance",
+        ),
+    ),
+    Mutation(
+        "M13",
+        "allow publisher evidence into v4 material",
+        POLICY,
+        "    selected_ids = {\n"
+        '        row.evidence_id for row in evidence if row.source_family == "regulator"\n'
+        "    }\n",
+        "    selected_ids = {\n"
+        "        row.evidence_id\n"
+        "        for row in evidence\n"
+        '        if row.source_family in {"regulator", "publisher"}\n'
+        "    }\n",
+        (
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_publisher_evidence_cannot_change_v4_decision",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_publisher_evidence_cannot_change_v4_decision",
+        ),
+    ),
+    Mutation(
+        "M14",
+        "restore publisher as pending-monitoring required family",
+        SCHEDULER,
+        '        "regulator",\n'
+        '        "listing_authority",\n',
+        '        "regulator",\n'
+        '        "listing_authority",\n'
+        '        "publisher",\n',
+        (
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_pending_event_monitoring_uses_explicit_dates_and_final_source_check",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_pending_event_monitoring_uses_explicit_dates_and_final_source_check",
+        ),
+    ),
+    Mutation(
+        "M15",
+        "expose publisher evidence through active detail",
+        TOOLS,
+        '    "listing_authority",\n'
+        '    "market_infrastructure",\n',
+        '    "listing_authority",\n'
+        '    "market_infrastructure",\n'
+        '    "publisher",\n',
+        (
+            "tests/test_security_lifecycle_tools.py::"
+            "test_active_case_projection_uses_closed_families_but_preserves_storage",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_tools.py::"
+            "test_active_case_projection_uses_closed_families_but_preserves_storage",
+        ),
+    ),
+    Mutation(
+        "M16",
+        "translate a listing snapshot",
+        TRANSLATION,
+        '    if evidence.get("kind") == "listing_directory_snapshot":\n'
+        '        raise ValueError("unsupported_content")\n',
+        "",
+        (
+            "tests/test_security_lifecycle_translation.py::"
+            "test_listing_snapshot_translation_rejects_before_every_downstream_boundary",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_translation.py::"
+            "test_listing_snapshot_translation_rejects_before_every_downstream_boundary",
+        ),
+    ),
+    Mutation(
+        "M17",
+        "add a second Massive secret field",
+        PROVIDERS,
+        '    "polygon": [FieldDef("api_key", "POLYGON_API_KEY", True, "API key")],\n',
+        '    "polygon": [FieldDef("api_key", "POLYGON_API_KEY", True, "API key")],\n'
+        '    "massive": [FieldDef("api_key", "MASSIVE_API_KEY", True, "API key")],\n',
+        (
+            "tests/test_data_provider_config.py::"
+            "test_massive_reuses_the_polygon_credential_authority",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_data_provider_config.py::"
+            "test_massive_reuses_the_polygon_credential_authority",
+        ),
+    ),
+    Mutation(
+        "M18",
+        "fail to preserve one v2 publisher row during migration",
+        MIGRATION,
+        "    conn.executemany(\n"
+        "        f\"INSERT INTO {_quote_identifier(table)} ({projection}) \"\n"
+        "        f\"VALUES ({placeholders})\",\n"
+        "        snapshot.rows,\n"
+        "    )\n",
+        "    rows = snapshot.rows\n"
+        '    if table == "security_lifecycle_evidence":\n'
+        '        rows = tuple(row for row in rows if "sle_publisher" not in row)\n'
+        "    conn.executemany(\n"
+        "        f\"INSERT INTO {_quote_identifier(table)} ({projection}) \"\n"
+        "        f\"VALUES ({placeholders})\",\n"
+        "        rows,\n"
+        "    )\n",
+        (
+            "tests/test_security_lifecycle_listing_migration.py::"
+            "test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_migration.py::"
+            "test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+        ),
+    ),
+    Mutation(
+        "M19",
+        "change one v2 translated-text byte during migration",
+        MIGRATION,
+        "    conn.executemany(\n"
+        "        f\"INSERT INTO {_quote_identifier(table)} ({projection}) \"\n"
+        "        f\"VALUES ({placeholders})\",\n"
+        "        snapshot.rows,\n"
+        "    )\n",
+        "    rows = snapshot.rows\n"
+        '    if table == "security_lifecycle_evidence_translations":\n'
+        "        rows = tuple(\n"
+        "            tuple(\n"
+        '                "Translated publisher evidence!"\n'
+        '                if cell == "Translated publisher evidence." else cell\n'
+        "                for cell in row\n"
+        "            )\n"
+        "            for row in rows\n"
+        "        )\n"
+        "    conn.executemany(\n"
+        "        f\"INSERT INTO {_quote_identifier(table)} ({projection}) \"\n"
+        "        f\"VALUES ({placeholders})\",\n"
+        "        rows,\n"
+        "    )\n",
+        (
+            "tests/test_security_lifecycle_listing_migration.py::"
+            "test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_migration.py::"
+            "test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+        ),
+    ),
+    Mutation(
+        "M20",
+        "allow a v3 binary to verify a v2 database without migration",
+        SCHEMA,
+        "def verify_profile_connection(conn: sqlite3.Connection) -> None:\n"
+        "    _verify_connection(conn, PROFILE_TABLE_SQL, PROFILE_INDEX_SQL)\n",
+        "def verify_profile_connection(conn: sqlite3.Connection) -> None:\n"
+        "    try:\n"
+        "        _verify_connection(conn, PROFILE_TABLE_SQL, PROFILE_INDEX_SQL)\n"
+        "    except LifecycleSchemaMismatch:\n"
+        "        _verify_connection(conn, V2_PROFILE_TABLE_SQL, V2_PROFILE_INDEX_SQL)\n",
+        (
+            "tests/test_security_lifecycle_listing_migration.py::"
+            "test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_migration.py::"
+            "test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+        ),
+    ),
+)
+
+
+def _sha256(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def _replace_once(path: Path, old: str, new: str) -> None:
+    source = path.read_text(encoding="utf-8")
+    count = source.count(old)
+    if count != 1:
+        raise RuntimeError(f"mutation_target_count:{path.relative_to(ROOT)}:{count}")
+    path.write_text(source.replace(old, new, 1), encoding="utf-8")
+
+
+def _clear_python_bytecode(path: Path) -> None:
+    cache = path.parent / "__pycache__"
+    if not cache.is_dir():
+        return
+    for compiled in cache.glob(f"{path.stem}.*.pyc"):
+        compiled.unlink()
+
+
+def _pytest_failures(output: str) -> tuple[list[str], int, int]:
+    failures = sorted(
+        set(re.findall(r"^FAILED (\S+?)(?:\s+-|$)", output, flags=re.MULTILINE))
+    )
+    passed = re.search(r"(\d+) passed", output)
+    skipped = re.search(r"(\d+) skipped", output)
+    return (
+        failures,
+        int(passed.group(1)) if passed else 0,
+        int(skipped.group(1)) if skipped else 0,
+    )
+
+
+def _run(mutation: Mutation) -> dict:
+    path = ROOT / mutation.path
+    original = path.read_bytes()
+    process: subprocess.CompletedProcess[str] | None = None
+    error: str | None = None
+    failures: list[str] = []
+    passed = 0
+    skipped = 0
+    try:
+        _clear_python_bytecode(path)
+        _replace_once(path, mutation.old, mutation.new)
+        for old, new in mutation.extra_replacements:
+            _replace_once(path, old, new)
+        process = subprocess.run(
+            mutation.command,
+            cwd=ROOT,
+            env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+        failures, passed, skipped = _pytest_failures(process.stdout)
+    except Exception as exc:
+        error = f"{type(exc).__name__}:{exc}"
+    finally:
+        path.write_bytes(original)
+        _clear_python_bytecode(path)
+
+    restored = path.read_bytes() == original
+    expected = sorted(mutation.owners)
+    unexpected = sorted(set(failures) - set(expected))
+    missing = sorted(set(expected) - set(failures))
+    killed = (
+        process is not None
+        and process.returncode == 1
+        and error is None
+        and not unexpected
+        and not missing
+        and restored
+    )
+    return {
+        "id": mutation.mutation_id,
+        "mutation": mutation.description,
+        "product_files": [mutation.path],
+        "command": list(mutation.command),
+        "expected_owner_node_ids": expected,
+        "actual_owner_node_ids": failures,
+        "unexpected_owner_node_ids": unexpected,
+        "missing_owner_node_ids": missing,
+        "expected_failure_count": len(expected),
+        "actual_failure_count": len(failures),
+        "passing_test_count": passed,
+        "skipped_test_count": skipped,
+        "exit_code": None if process is None else process.returncode,
+        "runner_error": error,
+        "killed": killed,
+        "restored_files": [
+            {
+                "path": mutation.path,
+                "before_sha256": _sha256(original),
+                "after_sha256": _sha256(path.read_bytes()),
+                "byte_identical": restored,
+            }
+        ],
+        "output_tail": [] if process is None else process.stdout.splitlines()[-14:],
+    }
+
+
+def _product_paths(mutations: Iterable[Mutation]) -> list[str]:
+    return sorted({mutation.path for mutation in mutations})
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", required=True)
+    args = parser.parse_args()
+
+    initial = {path: (ROOT / path).read_bytes() for path in _product_paths(MUTATIONS)}
+    results = [_run(mutation) for mutation in MUTATIONS]
+    final_restore = [
+        {
+            "path": path,
+            "sha256": _sha256(initial[path]),
+            "byte_identical": (ROOT / path).read_bytes() == initial[path],
+        }
+        for path in sorted(initial)
+    ]
+    drift = [
+        {
+            "mutation_id": result["id"],
+            "unexpected_owner_node_ids": result["unexpected_owner_node_ids"],
+            "missing_owner_node_ids": result["missing_owner_node_ids"],
+            "runner_error": result["runner_error"],
+        }
+        for result in results
+        if result["unexpected_owner_node_ids"]
+        or result["missing_owner_node_ids"]
+        or result["runner_error"]
+    ]
+    payload = {
+        "schema_version": 1,
+        "mutation_count": len(results),
+        "killed_count": sum(result["killed"] for result in results),
+        "all_mutations_killed": all(result["killed"] for result in results),
+        "all_product_files_restored_byte_identically": all(
+            row["byte_identical"] for row in final_restore
+        ),
+        "unexpected_owner_drift": drift,
+        "final_product_file_restore": final_restore,
+        "mutations": results,
+    }
+    Path(args.output).write_text(
+        json.dumps(payload, ensure_ascii=True, indent=2, sort_keys=True) + "\n",
+        encoding="ascii",
+    )
+    print(
+        json.dumps(
+            {
+                "mutations": payload["mutation_count"],
+                "killed": payload["killed_count"],
+                "restored": payload["all_product_files_restored_byte_identically"],
+                "unexpected_owner_drift": len(drift),
+            },
+            sort_keys=True,
+        )
+    )
+    return 0 if payload["all_mutations_killed"] and payload[
+        "all_product_files_restored_byte_identically"
+    ] else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

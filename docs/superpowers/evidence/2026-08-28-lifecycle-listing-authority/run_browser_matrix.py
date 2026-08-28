@@ -1,0 +1,627 @@
+"""Capture the fixture-only listing-authority browser admission matrix."""
+
+from __future__ import annotations
+
+from copy import deepcopy
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import re
+from types import ModuleType
+from urllib.parse import parse_qs, urlparse
+
+from playwright.sync_api import sync_playwright
+
+
+APP_URL = os.environ.get("ARKSCOPE_LISTING_APP_URL", "http://127.0.0.1:4208/")
+PACKET = Path(__file__).resolve().parent
+OUTPUT = PACKET / "browser"
+ROOT = PACKET.parents[3]
+BASE_RUNNER = (
+    ROOT
+    / "docs/superpowers/evidence/2026-08-26-lifecycle-automated-disposition"
+    / "run_browser_matrix.py"
+)
+
+
+def _load_base() -> ModuleType:
+    spec = importlib.util.spec_from_file_location("disposition_browser_fixture", BASE_RUNNER)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("browser_fixture_loader_unavailable")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+BASE = _load_base()
+STAGE5 = BASE.STAGE5
+VIEWPORTS = ((1440, 900), (390, 844))
+LOCALES = ("en", "zh-Hant")
+SCENARIOS = {
+    "active": {
+        "case_id": "case-active",
+        "ticker": "HAPN",
+        "issuer": "Happify Network, Inc.",
+        "queue": "history",
+        "disposition": "confirmed_effective",
+        "reason": "resolved_no_change",
+        "tier": "verified_automatic",
+        "readiness": "not_applicable",
+        "listings": [("nasdaq_trader", "active", "stocks", "XNAS")],
+    },
+    "not-found-monitoring": {
+        "case_id": "case-not-found",
+        "ticker": "MISS",
+        "issuer": "Missing Confirmation Corp.",
+        "queue": "monitoring",
+        "disposition": "not_confirmed_yet",
+        "reason": "event_completion_not_confirmed",
+        "tier": "verified_automatic",
+        "readiness": "waiting_market_confirmation",
+        "listings": [("nasdaq_trader", "not_found", "stocks", None)],
+    },
+    "inactive-history": {
+        "case_id": "case-inactive",
+        "ticker": "TERM",
+        "issuer": "Terminal Listing Corp.",
+        "queue": "history",
+        "disposition": "confirmed_effective",
+        "reason": "transition_applied",
+        "tier": "verified_automatic",
+        "readiness": "transition_eligible",
+        "listings": [("massive", "inactive", "stocks", "XNYS")],
+    },
+    "conflict-attention": {
+        "case_id": "case-conflict",
+        "ticker": "CONFLICT",
+        "issuer": "Conflicting Listing Corp.",
+        "queue": "attention",
+        "disposition": "exception_required",
+        "reason": "source_conflict",
+        "tier": "review_suggested",
+        "readiness": "action_blocked",
+        "listings": [
+            ("nasdaq_trader", "active", "stocks", "XNAS"),
+            ("massive", "inactive", "stocks", "XNAS"),
+        ],
+    },
+    "otc-continuation": {
+        "case_id": "case-otc",
+        "ticker": "OTC-A",
+        "issuer": "OTC Continuation Corp.",
+        "queue": "history",
+        "disposition": "confirmed_effective",
+        "reason": "transition_applied",
+        "tier": "verified_automatic",
+        "readiness": "transition_eligible",
+        "listings": [("massive", "active", "otc", "OTC")],
+    },
+    "settings-massive-key": {"settings": True},
+}
+LABELS = {
+    "en": {
+        "universe": "Universe",
+        "settings": "Settings",
+        "open_nav": "Open navigation",
+        "lifecycle": "Security event investigation",
+        "listing_family": "Listing authority",
+        "statuses": {
+            "active": "Active",
+            "inactive": "Inactive",
+            "not_found": "Not found in this completed snapshot",
+        },
+    },
+    "zh-Hant": {
+        "universe": "全部標的",
+        "settings": "設定",
+        "open_nav": "開啟導覽",
+        "lifecycle": "標的事件調查",
+        "listing_family": "上市主管機關",
+        "statuses": {
+            "active": "有效",
+            "inactive": "非有效",
+            "not_found": "在這份完整快照中找不到",
+        },
+    },
+}
+
+
+def _summary(name: str) -> dict:
+    scenario = SCENARIOS[name]
+    summary = deepcopy(BASE._summary("settled-history"))
+    summary.update(
+        {
+            "case_id": scenario["case_id"],
+            "source_ref": f"fixture-{name}",
+            "ticker": scenario["ticker"],
+            "issuer_name": scenario["issuer"],
+            "workflow_state": "resolved" if scenario["queue"] == "history" else "unresolved",
+            "kinds": [{"event_type": "listing_status_review", "effective_date": "2026-08-28"}],
+            "current_assessment": None,
+            "current_acknowledgement": None,
+            "investigation_run_count": 0,
+            "automation_run_count": 1,
+            "automation_fact_count": len(scenario["listings"]),
+            "automation_tier": scenario["tier"],
+            "action_readiness": scenario["readiness"],
+            "disposition": scenario["disposition"],
+            "queue_bucket": scenario["queue"],
+            "disposition_reason": scenario["reason"],
+            "last_checked_at": "2026-08-28T08:00:00Z",
+            "next_check_at": (
+                "2026-09-04T08:00:00Z" if scenario["queue"] == "monitoring" else None
+            ),
+            "source_family_status": {
+                "regulator": "confirmed",
+                "listing_authority": (
+                    "conflict" if name == "conflict-attention" else "confirmed"
+                ),
+                "manual": "missing",
+            },
+            "evidence_count": len(scenario["listings"]) + 1,
+            "assessment_count": 0,
+            "acknowledgement_count": 0,
+            "proposal_count": 0,
+        }
+    )
+    return summary
+
+
+def _listing_evidence(name: str) -> list[dict]:
+    scenario = SCENARIOS[name]
+    rows = []
+    for index, (authority, status, market, venue) in enumerate(scenario["listings"], 1):
+        rows.append(
+            {
+                "evidence_id": f"listing-{name}-{index}",
+                "source_family": "listing_authority",
+                "kind": "listing_directory_snapshot",
+                "source_url": (
+                    "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt"
+                    if authority == "nasdaq_trader"
+                    else f"https://api.massive.com/v3/reference/tickers/{scenario['ticker']}"
+                ),
+                "created_at": "2026-08-28T08:00:00Z",
+                "listing": {
+                    "authority": authority,
+                    "directory": "nasdaq_listed" if authority == "nasdaq_trader" else None,
+                    "candidate_ticker": scenario["ticker"],
+                    "listing_status": status,
+                    "market": market,
+                    "primary_exchange": venue,
+                    "source_as_of": "2026-08-28",
+                },
+            }
+        )
+    return rows
+
+
+def _detail(name: str) -> dict:
+    scenario = SCENARIOS[name]
+    detail = deepcopy(BASE._detail("settled-history"))
+    detail.update(_summary(name))
+    detail["observation"].update(
+        {
+            "ticker": scenario["ticker"],
+            "issuer_name": scenario["issuer"],
+            "filing_date": "2026-08-28",
+            "source_ref": f"fixture-{name}",
+            "description": f"Offline listing-authority fixture for {scenario['ticker']}.",
+            "kinds": detail["kinds"],
+        }
+    )
+    regulator = next(
+        item for item in detail["evidence"] if item["source_family"] == "regulator"
+    )
+    regulator_excerpt = f"Offline SEC helper fixture for {scenario['ticker']}."
+    regulator.update(
+        {
+            "title": f"Regulatory fixture: {scenario['ticker']}",
+            "excerpt": regulator_excerpt,
+            "content_sha256": hashlib.sha256(regulator_excerpt.encode()).hexdigest(),
+            "source_published_at": "2026-08-28T08:00:00Z",
+        }
+    )
+    regulator["translations"] = []
+    detail["evidence"] = [regulator, *_listing_evidence(name)]
+    detail["investigation_runs"] = []
+    detail["automation_runs"] = []
+    detail["automation_facts"] = []
+    detail["proposals"] = []
+    detail["ticker_transition"] = None
+    detail["assessment_history"] = []
+    detail["acknowledgement_history"] = []
+    detail["current_assessment"] = None
+    return detail
+
+
+def _case_list(query: dict[str, list[str]]) -> list[dict]:
+    queue = query.get("queue_bucket", ["attention"])[0]
+    return [
+        _summary(name)
+        for name, scenario in SCENARIOS.items()
+        if not scenario.get("settings") and scenario["queue"] == queue
+    ]
+
+
+def _provider_config() -> dict:
+    return {
+        "providers": {
+            "polygon": {
+                "fields": [
+                    {
+                        "field": "api_key",
+                        "label": "API key",
+                        "secret": True,
+                        "env_var": "POLYGON_API_KEY",
+                        "app_value_set": True,
+                        "app_value_masked": "••••fixture",
+                        "effective_source": "app",
+                        "needs_import": False,
+                        "import_source": None,
+                        "importable_env_vars": ["POLYGON_API_KEY"],
+                        "defaulted": False,
+                        "guarded": False,
+                        "guard_reason": None,
+                    }
+                ],
+                "testable": True,
+                "default_available": False,
+            }
+        },
+        "setup": {"required": False, "code": None, "reason": None},
+        "env_fallback": {"enabled": False, "source": "default"},
+    }
+
+
+def _api_response(route, path: str, query: str, locale: str) -> None:
+    if path == "/status":
+        payload = {
+            "status": "ok",
+            "timestamp": "2026-08-28T08:00:00Z",
+            "tools_registered": 50,
+            "tool_categories": {},
+            "data_sources": {},
+        }
+    elif path == "/config/runtime":
+        payload = STAGE5._runtime_config()
+    elif path == "/profile/settings/ui-locale":
+        payload = {"locale": locale, "source": "stored"}
+    elif path == "/profile/universe":
+        payload = {
+            "as_of": "2026-08-28",
+            "generated_at": "2026-08-28T08:00:00Z",
+            "total": 0,
+            "shown": 0,
+            "archived_count": 0,
+            "summarized": 0,
+            "rows": [],
+        }
+    elif path == "/profile/lists":
+        payload = {"lists": []}
+    elif path == "/analysis/cards":
+        payload = {"cards": []}
+    elif path == "/research/threads":
+        payload = {"threads": []}
+    elif path == "/security-lifecycle/cases":
+        cases = _case_list(parse_qs(query))
+        payload = {
+            "cases": cases,
+            "count": len(cases),
+            "queue_counts": {"attention": 1, "monitoring": 1, "history": 3},
+            "data_integrity": {"source_missing_count": 0},
+        }
+    elif path.startswith("/security-lifecycle/cases/"):
+        case_id = path.rsplit("/", 1)[-1]
+        name = next(
+            key for key, value in SCENARIOS.items() if value.get("case_id") == case_id
+        )
+        payload = _detail(name)
+    elif path == "/security-lifecycle/transition-activity":
+        payload = {"items": [], "count": 0, "unacknowledged_count": 0}
+    elif path == "/providers/config":
+        payload = _provider_config()
+    elif path == "/providers/health":
+        payload = {
+            "generated_at": "2026-08-28T08:00:00Z",
+            "providers": [],
+            "jobs": {},
+            "local_market": {"db_exists": False, "sync": {}},
+            "notes": [],
+        }
+    elif path == "/schedule":
+        payload = {"sources": {}}
+    elif path == "/sa/extension-health":
+        payload = {
+            "chain_state": "interrupted",
+            "generated_at": "2026-08-28T08:00:00Z",
+            "segments": [],
+        }
+    elif path == "/config/model-catalog":
+        payload = {
+            "providers": ["anthropic", "openai"],
+            "tasks": [],
+            "models": [],
+            "effort_options": {"anthropic": [], "openai": []},
+            "routes": {},
+            "credentials": {"anthropic": [], "openai": []},
+            "custom_allowed": True,
+        }
+    elif path == "/market-data/status":
+        payload = {
+            "market_db": "fixture",
+            "exists": False,
+            "prices": {"row_count": 0, "ticker_count": 0, "latest_datetime": None},
+            "news": {"row_count": 0, "source_count": 0, "latest_published": None},
+            "fundamentals": {"row_count": 0, "ticker_count": 0, "latest_date": None},
+            "financial_cache": {
+                "row_count": 0,
+                "valid_count": 0,
+                "expired_count": 0,
+                "latest_fetched_at": None,
+            },
+            "sync": {"prices": None, "news": None, "fundamentals": None},
+            "prices_authority": "local",
+            "fundamentals_mode": "local_cache_refetch",
+            "use_local_market_setting": False,
+            "env_override": False,
+            "local_market_strict_setting": False,
+            "strict_env_override": False,
+            "strict_enabled": False,
+            "routing_enabled": False,
+        }
+    elif path == "/market-data/trading-days":
+        payload = {
+            "version": 2,
+            "market_scope": "us_listed_equity_proxy",
+            "coverage_session": "rth",
+            "interval": "15min",
+            "lookback_days": 10,
+            "universe_count": 0,
+            "generated_at_et": "2026-08-28T04:00:00-04:00",
+            "calendar_health": {
+                "status": "unavailable",
+                "reason_codes": [],
+                "reviewed_through": "2026-08-28",
+                "forward_horizon_months": 0,
+            },
+            "observation_health": {"status": "unavailable", "reason_code": None},
+            "days": [],
+            "provider_errors": [],
+        }
+    elif path == "/news/status":
+        payload = {
+            "market_db": "fixture",
+            "exists": False,
+            "news": {"row_count": 0, "source_count": 0, "latest_published": None},
+            "use_local_news_setting": False,
+            "setting_explicit": False,
+            "env_override": False,
+            "env_value": None,
+            "direct_active": False,
+            "normalized_writes_setting": False,
+            "normalized_writes_setting_explicit": False,
+            "normalized_writes_env_override": False,
+            "normalized_writes_env_value": None,
+            "write_route": "blocked",
+            "write_route_reason": "fixture_only",
+            "sync": None,
+        }
+    elif path == "/macro/status":
+        payload = {
+            "macro_db": "fixture",
+            "exists": False,
+            "tables": {},
+            "use_local_macro_setting": False,
+            "env_override": False,
+            "local_first_active": False,
+        }
+    elif path == "/macro/snapshot":
+        payload = {
+            "available": False,
+            "macro_db": "fixture",
+            "series_count": 0,
+            "observation_count": 0,
+            "release_dates_count": 0,
+            "latest_fetched_at": None,
+            "items": [],
+            "missing_series": [],
+        }
+    else:
+        STAGE5._response(route, {"detail": {"code": "fixture_unavailable"}}, 503)
+        return
+    STAGE5._response(route, payload)
+
+
+def _navigate(page, scenario_name: str, locale: str) -> tuple[str, str]:
+    scenario = SCENARIOS[scenario_name]
+    labels = LABELS[locale]
+    if scenario.get("settings"):
+        target = page.get_by_role("button", name=labels["settings"], exact=True)
+        if not target.is_visible():
+            page.get_by_role("button", name=labels["open_nav"], exact=True).click()
+        target.click()
+        massive = page.get_by_text("Massive (Polygon)", exact=True)
+        try:
+            massive.wait_for(state="visible")
+        except Exception:
+            print(page.locator("body").inner_text()[:6000])
+            raise
+        massive.scroll_into_view_if_needed()
+        row = massive.locator("xpath=ancestor::*[self::tr or @data-testid][1]")
+        if row.count() == 0:
+            row = massive.locator("xpath=ancestor::tr")
+        assert page.locator('input[type="password"]').count() == 1
+        return page.locator("body").inner_text(), "settings"
+
+    universe = page.get_by_role("button", name=labels["universe"], exact=True)
+    if not universe.is_visible():
+        page.get_by_role("button", name=labels["open_nav"], exact=True).click()
+    universe.click()
+    page.get_by_role("tab", name=labels["lifecycle"], exact=True).click()
+    if scenario["queue"] != "attention":
+        page.locator(f"[data-queue-view='{scenario['queue']}']").click()
+    trigger = page.get_by_role("button", name=re.compile(rf"^{re.escape(scenario['ticker'])}\b"))
+    trigger.wait_for(state="visible")
+    trigger.click()
+    drawer = page.locator(".ui-drawer")
+    drawer.wait_for(state="visible")
+    text = drawer.inner_text()
+    assert labels["listing_family"] in text
+    for _, status, _, _ in scenario["listings"]:
+        assert labels["statuses"][status] in text
+    if scenario_name == "otc-continuation":
+        assert "OTC" in text
+    return text, "lifecycle"
+
+
+def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int) -> dict:
+    OUTPUT.mkdir(parents=True, exist_ok=True)
+    state = {"requests": [], "external": []}
+    context = browser.new_context(viewport={"width": width, "height": height})
+    context.add_init_script(
+        "\n".join(
+            [
+                f"localStorage.setItem('arkscope.ui.locale.v1', {json.dumps(locale)});",
+                "localStorage.setItem('arkscope.settings.activeGroup.v1', 'data_sync');",
+            ]
+        )
+    )
+    page = context.new_page()
+    page.set_default_timeout(12_000)
+    console_errors: list[str] = []
+    page_errors: list[str] = []
+    page.on(
+        "console",
+        lambda message: console_errors.append(message.text)
+        if message.type == "error"
+        else None,
+    )
+    page.on("pageerror", lambda error: page_errors.append(str(error)))
+
+    def handler(route) -> None:
+        request = route.request
+        parsed = urlparse(request.url)
+        if parsed.hostname not in {"127.0.0.1", "localhost"}:
+            state["external"].append(request.url)
+            route.abort()
+            return
+        if parsed.port != 8420:
+            route.continue_()
+            return
+        state["requests"].append({"method": request.method, "path": parsed.path})
+        if request.method == "OPTIONS":
+            STAGE5._response(route, {}, 204)
+        elif request.method != "GET":
+            STAGE5._response(route, {"detail": {"code": "fixture_write_forbidden"}}, 405)
+        else:
+            _api_response(route, parsed.path, parsed.query, locale)
+
+    page.route("**/*", handler)
+    page.goto(APP_URL, wait_until="networkidle", timeout=20_000)
+    try:
+        visible_text, surface = _navigate(page, scenario_name, locale)
+    except Exception:
+        print(json.dumps({"console_errors": console_errors, "page_errors": page_errors}))
+        raise
+    page.wait_for_timeout(250)
+    body_text = page.locator("body").inner_text()
+    forbidden_publisher_labels = ("Publisher reporting", "新聞出版來源")
+    assert not any(label in body_text for label in forbidden_publisher_labels)
+    assert page.get_by_role("button", name=re.compile(r"Translate|翻譯")).count() == 0
+    assert page.locator("[data-action='open-content-translation-settings']").count() == 0
+
+    metrics = STAGE5._geometry(page)
+    STAGE5._assert_geometry(metrics)
+    screenshot = OUTPUT / f"{width}x{height}-{locale}-{scenario_name}.png"
+    page.screenshot(path=str(screenshot), full_page=False)
+    pixels = STAGE5._pixel_check(screenshot, width, height)
+    writes = [
+        item for item in state["requests"]
+        if item["method"] in {"POST", "PUT", "PATCH", "DELETE"}
+    ]
+    command_calls = [
+        item for item in state["requests"]
+        if item["path"].endswith(("/run", "/accept", "/execute", "/reverse", "/acknowledge"))
+    ]
+    render_acknowledgements = [
+        item for item in state["requests"] if item["path"].endswith("/acknowledge")
+    ]
+    assert state["external"] == [], state["external"]
+    assert writes == [], writes
+    assert command_calls == [], command_calls
+    assert render_acknowledgements == [], render_acknowledgements
+    assert console_errors == [], console_errors
+    assert page_errors == [], page_errors
+    result = {
+        "scenario": scenario_name,
+        "surface": surface,
+        "locale": locale,
+        "viewport": [width, height],
+        "screenshot": screenshot.name,
+        "pixels": pixels,
+        "visible_text_sha256": hashlib.sha256(visible_text.encode()).hexdigest(),
+        "request_count": len(state["requests"]),
+        "external_requests": state["external"],
+        "writes": writes,
+        "command_calls": command_calls,
+        "render_acknowledgements": render_acknowledgements,
+        "console_errors": console_errors,
+        "page_errors": page_errors,
+        "publisher_family_text_count": sum(body_text.count(label) for label in forbidden_publisher_labels),
+        "listing_translation_button_count": 0,
+        "overlap_count": len(metrics["overlaps"]),
+        "clipped_text_count": len(metrics["textOverflow"]),
+    }
+    context.close()
+    return result
+
+
+def main() -> int:
+    if OUTPUT.exists():
+        for path in OUTPUT.glob("*.png"):
+            path.unlink()
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        entries = [
+            _run_entry(browser, name, locale, width, height)
+            for width, height in VIEWPORTS
+            for locale in LOCALES
+            for name in SCENARIOS
+        ]
+        browser.close()
+    payload = {
+        "schema_version": 1,
+        "app_url": APP_URL,
+        "fixture_only": True,
+        "provider_calls": 0,
+        "production_backend_started": False,
+        "production_database_operations": 0,
+        "entries": entries,
+    }
+    (OUTPUT / "matrix.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    totals = {
+        "entries": len(entries),
+        "screenshots": len(entries),
+        "external_requests": sum(len(item["external_requests"]) for item in entries),
+        "writes": sum(len(item["writes"]) for item in entries),
+        "command_calls": sum(len(item["command_calls"]) for item in entries),
+        "render_acknowledgements": sum(len(item["render_acknowledgements"]) for item in entries),
+        "console_errors": sum(len(item["console_errors"]) for item in entries),
+        "page_errors": sum(len(item["page_errors"]) for item in entries),
+        "publisher_family_text_count": sum(item["publisher_family_text_count"] for item in entries),
+        "listing_translation_button_count": sum(item["listing_translation_button_count"] for item in entries),
+        "overlap_count": sum(item["overlap_count"] for item in entries),
+        "clipped_text_count": sum(item["clipped_text_count"] for item in entries),
+    }
+    print(json.dumps(totals, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

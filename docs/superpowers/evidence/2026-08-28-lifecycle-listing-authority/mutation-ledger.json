@@ -1,0 +1,1094 @@
+{
+  "all_mutations_killed": true,
+  "all_product_files_restored_byte_identically": true,
+  "final_product_file_restore": [
+    {
+      "byte_identical": true,
+      "path": "data_sources/listing_authority_transport.py",
+      "sha256": "e9a8c9e0f721d96cbbf653fc1586ba738042bb1b578344b337e5bc61fde9e2d9"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/data_provider_config.py",
+      "sha256": "3a5bf85f96651df9ed43e2bce29a0773eede17ef21719e99955fd1ac21d8f867"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/security_lifecycle_decision_policy.py",
+      "sha256": "045d456993f7738f0d6b4f7e4cea402c40dde45595a1440c87db619483a51ec7"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/security_lifecycle_fact_kernel.py",
+      "sha256": "3cb5c30767c706b15a625c88f2de446178f9e4e1351be9d82cc2ecae82622509"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/security_lifecycle_listing_evidence.py",
+      "sha256": "cd114e7777f2aa608f0aa40c02fa07fbc5ce0cc18d3f5afafde8f5a9010f35d4"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/security_lifecycle_listing_migration.py",
+      "sha256": "0e9b4b55b928237618aee434fe18c081ab5571bdb11c0a6b86df06753077e2ba"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/security_lifecycle_schema.py",
+      "sha256": "6c000445cd8de8298113c985e0ca8163e4a41ed759d29e0e0cfaef11b2a7bae8"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/security_lifecycle_translation.py",
+      "sha256": "ccf3335e7543e844167276e93a9270ca7bf1ec197bde6020b6a21be17b3ddbd7"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/service/security_lifecycle_automation_scheduler.py",
+      "sha256": "279b8c806015e446fa3fbac2ce31e8fd3bc47a8f959c02ac8e88ab520e8fa7ed"
+    },
+    {
+      "byte_identical": true,
+      "path": "src/tools/security_lifecycle_tools.py",
+      "sha256": "63a596c143a8931e26bcf343ade3392f00e353c1b5710670c826540bb4b9bef0"
+    }
+  ],
+  "killed_count": 20,
+  "mutation_count": 20,
+  "mutations": [
+    {
+      "actual_failure_count": 4,
+      "actual_owner_node_ids": [
+        "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[http://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt]",
+        "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://evil.example/dynamic/SymDir/nasdaqlisted.txt]",
+        "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt?x=1]",
+        "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/unknown.txt]"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 4,
+      "expected_owner_node_ids": [
+        "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[http://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt]",
+        "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://evil.example/dynamic/SymDir/nasdaqlisted.txt]",
+        "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt?x=1]",
+        "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/unknown.txt]"
+      ],
+      "id": "M01",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "remove nasdaq host/path allowlist",
+      "output_tail": [
+        "kwargs = {'allow_redirects': False, 'headers': {'Accept': 'text/plain'}, 'params': None, 'stream': True, ...}",
+        "",
+        "    def get(self, url: str, **kwargs: object) -> FakeResponse:",
+        "        self.calls.append({\"url\": url, **kwargs})",
+        ">       response = self.responses.pop(0)",
+        "E       IndexError: pop from empty list",
+        "",
+        "tests/test_listing_authority_transport.py:49: IndexError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[http://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt]",
+        "FAILED tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/unknown.txt]",
+        "FAILED tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://evil.example/dynamic/SymDir/nasdaqlisted.txt]",
+        "FAILED tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt?x=1]",
+        "4 failed in 0.35s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "data_sources/listing_authority_transport.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "e9a8c9e0f721d96cbbf653fc1586ba738042bb1b578344b337e5bc61fde9e2d9",
+          "before_sha256": "e9a8c9e0f721d96cbbf653fc1586ba738042bb1b578344b337e5bc61fde9e2d9",
+          "byte_identical": true,
+          "path": "data_sources/listing_authority_transport.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_preserves_matching_component_and_per_file_hashes"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_preserves_matching_component_and_per_file_hashes"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_preserves_matching_component_and_per_file_hashes"
+      ],
+      "id": "M02",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "turn Nasdaq not_found into inactive",
+      "output_tail": [
+        "            for row in snapshot.lookup(\"DOESNOTEXIST\")",
+        "        ] == [",
+        "            (\"nasdaq_listed\", \"not_found\", hashlib.sha256(nasdaq).hexdigest()),",
+        "            (\"other_listed\", \"not_found\", hashlib.sha256(other).hexdigest()),",
+        "        ]",
+        "E       AssertionError: assert [('nasdaq_lis...8326f67a8bd')] == [('nasdaq_lis...8326f67a8bd')]",
+        "E         ",
+        "E         At index 0 diff: ('nasdaq_listed', 'inactive', '09c5739cb35b5318d62cbb539acdd109bf07569bd0c9a1fa08cf335189a10b4a') != ('nasdaq_listed', 'not_found', '09c5739cb35b5318d62cbb539acdd109bf07569bd0c9a1fa08cf335189a10b4a')",
+        "E         Use -v to get more diff",
+        "",
+        "tests/test_security_lifecycle_listing_evidence.py:107: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_preserves_matching_component_and_per_file_hashes",
+        "1 failed in 0.35s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_listing_evidence.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "cd114e7777f2aa608f0aa40c02fa07fbc5ce0cc18d3f5afafde8f5a9010f35d4",
+          "before_sha256": "cd114e7777f2aa608f0aa40c02fa07fbc5ce0cc18d3f5afafde8f5a9010f35d4",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_listing_evidence.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[missing_footer-<lambda>-listing_directory_schema_mismatch]"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[missing_footer-<lambda>-listing_directory_schema_mismatch]"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[missing_footer-<lambda>-listing_directory_schema_mismatch]"
+      ],
+      "id": "M03",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "accept a missing Nasdaq footer",
+      "output_tail": [
+        "",
+        "code = 'listing_directory_schema_mismatch'",
+        "call = <function test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files.<locals>.<lambda> at 0x725815abcc10>",
+        "",
+        "    def _assert_failure(code: str, call) -> None:",
+        "        from src.security_lifecycle_listing_evidence import ListingEvidenceFailure",
+        "    ",
+        ">       with pytest.raises(ListingEvidenceFailure) as captured:",
+        "E       Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
+        "",
+        "tests/test_security_lifecycle_listing_evidence.py:80: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[missing_footer-<lambda>-listing_directory_schema_mismatch]",
+        "1 failed in 0.35s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_listing_evidence.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "cd114e7777f2aa608f0aa40c02fa07fbc5ce0cc18d3f5afafde8f5a9010f35d4",
+          "before_sha256": "cd114e7777f2aa608f0aa40c02fa07fbc5ce0cc18d3f5afafde8f5a9010f35d4",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_listing_evidence.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[stale_file-<lambda>-listing_directory_stale]"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[stale_file-<lambda>-listing_directory_stale]"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[stale_file-<lambda>-listing_directory_stale]"
+      ],
+      "id": "M04",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "ignore Nasdaq file freshness",
+      "output_tail": [
+        "",
+        "code = 'listing_directory_stale'",
+        "call = <function test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files.<locals>.<lambda> at 0x7e5433964c10>",
+        "",
+        "    def _assert_failure(code: str, call) -> None:",
+        "        from src.security_lifecycle_listing_evidence import ListingEvidenceFailure",
+        "    ",
+        ">       with pytest.raises(ListingEvidenceFailure) as captured:",
+        "E       Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
+        "",
+        "tests/test_security_lifecycle_listing_evidence.py:80: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[stale_file-<lambda>-listing_directory_stale]",
+        "1 failed in 0.35s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_listing_evidence.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "cd114e7777f2aa608f0aa40c02fa07fbc5ce0cc18d3f5afafde8f5a9010f35d4",
+          "before_sha256": "cd114e7777f2aa608f0aa40c02fa07fbc5ce0cc18d3f5afafde8f5a9010f35d4",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_listing_evidence.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved3]"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved3]"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved3]"
+      ],
+      "id": "M05",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "follow Massive next_url",
+      "output_tail": [
+        "",
+        "code = 'listing_status_unresolved'",
+        "call = <function test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows.<locals>.<lambda> at 0x742fce688c10>",
+        "",
+        "    def _assert_failure(code: str, call) -> None:",
+        "        from src.security_lifecycle_listing_evidence import ListingEvidenceFailure",
+        "    ",
+        ">       with pytest.raises(ListingEvidenceFailure) as captured:",
+        "E       Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
+        "",
+        "tests/test_security_lifecycle_listing_evidence.py:80: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved3]",
+        "1 failed in 0.35s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_listing_evidence.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "cd114e7777f2aa608f0aa40c02fa07fbc5ce0cc18d3f5afafde8f5a9010f35d4",
+          "before_sha256": "cd114e7777f2aa608f0aa40c02fa07fbc5ce0cc18d3f5afafde8f5a9010f35d4",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_listing_evidence.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_listing_authority_transport.py::test_massive_query_secret_never_leaves_the_request_boundary"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_listing_authority_transport.py::test_massive_query_secret_never_leaves_the_request_boundary"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_listing_authority_transport.py::test_massive_query_secret_never_leaves_the_request_boundary"
+      ],
+      "id": "M06",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "log Massive API key",
+      "output_tail": [
+        ">       assert payload.source_url == (",
+        "            \"https://api.massive.com/v3/reference/tickers?\"",
+        "            \"ticker=AAPL&active=true&market=stocks&limit=2\"",
+        "        )",
+        "E       AssertionError: assert 'https://api....=secret-value' == 'https://api....tocks&limit=2'",
+        "E         ",
+        "E         Skipping 79 identical leading characters in diff, use -v to show",
+        "E         - cks&limit=2",
+        "E         + cks&limit=2&apiKey=secret-value",
+        "",
+        "tests/test_listing_authority_transport.py:200: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_listing_authority_transport.py::test_massive_query_secret_never_leaves_the_request_boundary",
+        "1 failed in 0.29s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "data_sources/listing_authority_transport.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "e9a8c9e0f721d96cbbf653fc1586ba738042bb1b578344b337e5bc61fde9e2d9",
+          "before_sha256": "e9a8c9e0f721d96cbbf653fc1586ba738042bb1b578344b337e5bc61fde9e2d9",
+          "byte_identical": true,
+          "path": "data_sources/listing_authority_transport.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved0]"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved0]"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved0]"
+      ],
+      "id": "M07",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "accept Massive inactive without delisted_utc",
+      "output_tail": [
+        "",
+        "code = 'listing_status_unresolved'",
+        "call = <function test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows.<locals>.<lambda> at 0x790096288c10>",
+        "",
+        "    def _assert_failure(code: str, call) -> None:",
+        "        from src.security_lifecycle_listing_evidence import ListingEvidenceFailure",
+        "    ",
+        ">       with pytest.raises(ListingEvidenceFailure) as captured:",
+        "E       Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
+        "",
+        "tests/test_security_lifecycle_listing_evidence.py:80: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved0]",
+        "1 failed in 0.37s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_listing_evidence.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "cd114e7777f2aa608f0aa40c02fa07fbc5ce0cc18d3f5afafde8f5a9010f35d4",
+          "before_sha256": "cd114e7777f2aa608f0aa40c02fa07fbc5ce0cc18d3f5afafde8f5a9010f35d4",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_listing_evidence.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 2,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-excerpt-evidence_content_sha256]",
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-excerpt-evidence_content_sha256]"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-excerpt-evidence_content_sha256]",
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-excerpt-evidence_content_sha256]"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 2,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-excerpt-evidence_content_sha256]",
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-excerpt-evidence_content_sha256]"
+      ],
+      "id": "M08",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "remove producer-to-kernel hash validation",
+      "output_tail": [
+        "                replace(facts[0], source_span_end=facts[0].source_span_end - 1),",
+        "                *facts[1:],",
+        "            )",
+        "    ",
+        ">       with pytest.raises(ValueError, match=f\"^{expected}$\"):",
+        "E       AssertionError: ",
+        "E       - fact_citation",
+        "E       + evidence_content_sha256",
+        "",
+        "tests/test_security_lifecycle_fact_kernel.py:401: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-excerpt-evidence_content_sha256]",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-excerpt-evidence_content_sha256]",
+        "2 failed in 0.45s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_fact_kernel.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "3cb5c30767c706b15a625c88f2de446178f9e4e1351be9d82cc2ecae82622509",
+          "before_sha256": "3cb5c30767c706b15a625c88f2de446178f9e4e1351be9d82cc2ecae82622509",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_fact_kernel.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 2,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-span-fact_citation]",
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-span-fact_citation]"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-span-fact_citation]",
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-span-fact_citation]"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 2,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-span-fact_citation]",
+        "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-span-fact_citation]"
+      ],
+      "id": "M09",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "remove producer-to-kernel citation validation",
+      "output_tail": [
+        "        else:",
+        "            facts = (",
+        "                replace(facts[0], source_span_end=facts[0].source_span_end - 1),",
+        "                *facts[1:],",
+        "            )",
+        "    ",
+        ">       with pytest.raises(ValueError, match=f\"^{expected}$\"):",
+        "E       Failed: DID NOT RAISE <class 'ValueError'>",
+        "",
+        "tests/test_security_lifecycle_fact_kernel.py:401: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-span-fact_citation]",
+        "FAILED tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-span-fact_citation]",
+        "2 failed in 0.39s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_fact_kernel.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "3cb5c30767c706b15a625c88f2de446178f9e4e1351be9d82cc2ecae82622509",
+          "before_sha256": "3cb5c30767c706b15a625c88f2de446178f9e4e1351be9d82cc2ecae82622509",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_fact_kernel.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_equal_time_disagreement_inside_one_listing_component_fails_closed"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_decision_policy.py::test_equal_time_disagreement_inside_one_listing_component_fails_closed"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_equal_time_disagreement_inside_one_listing_component_fails_closed"
+      ],
+      "id": "M10",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "select one latest listing record and discard the rest",
+      "output_tail": [
+        "        )",
+        "    ",
+        "        assert decision.decision_tier == \"review_suggested\"",
+        "        assert decision.action_readiness == \"action_blocked\"",
+        ">       assert decision.decision_issues == (\"listing_authority_conflict\",)",
+        "E       AssertionError: assert ('listing_active_missing',) == ('listing_aut...ty_conflict',)",
+        "E         ",
+        "E         At index 0 diff: 'listing_active_missing' != 'listing_authority_conflict'",
+        "E         Use -v to get more diff",
+        "",
+        "tests/test_security_lifecycle_decision_policy.py:760: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_decision_policy.py::test_equal_time_disagreement_inside_one_listing_component_fails_closed",
+        "1 failed in 0.15s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_decision_policy.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "045d456993f7738f0d6b4f7e4cea402c40dde45595a1440c87db619483a51ec7",
+          "before_sha256": "045d456993f7738f0d6b4f7e4cea402c40dde45595a1440c87db619483a51ec7",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_decision_policy.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_ibkr_missing_never_proves_terminal"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_decision_policy.py::test_ibkr_missing_never_proves_terminal"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_ibkr_missing_never_proves_terminal"
+      ],
+      "id": "M11",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "allow IBKR missing to prove delisting",
+      "output_tail": [
+        "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ",
+        "",
+        ".0 = <tuple_iterator object at 0x7da028ddc7c0>",
+        "",
+        ">       transition_preview=lambda _request: (_ for _ in ()).throw(",
+        "            AssertionError(\"IBKR missing must not preview terminal action\")",
+        "        ),",
+        "    )",
+        "E   AssertionError: IBKR missing must not preview terminal action",
+        "",
+        "tests/test_security_lifecycle_decision_policy.py:601: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_decision_policy.py::test_ibkr_missing_never_proves_terminal",
+        "1 failed in 0.18s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_decision_policy.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "045d456993f7738f0d6b4f7e4cea402c40dde45595a1440c87db619483a51ec7",
+          "before_sha256": "045d456993f7738f0d6b4f7e4cea402c40dde45595a1440c87db619483a51ec7",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_decision_policy.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_quote_freshness_is_inert_for_v4_acceptance"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_decision_policy.py::test_quote_freshness_is_inert_for_v4_acceptance"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_quote_freshness_is_inert_for_v4_acceptance"
+      ],
+      "id": "M12",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "require a fresh quote for listing acceptance",
+      "output_tail": [
+        "            facts=fixture[\"facts\"] + ibkr_facts,",
+        "            transition_preview=_eligible_preview,",
+        "        )",
+        "    ",
+        ">       assert baseline.action_readiness == \"transition_eligible\"",
+        "E       AssertionError: assert 'action_blocked' == 'transition_eligible'",
+        "E         ",
+        "E         - transition_eligible",
+        "E         + action_blocked",
+        "",
+        "tests/test_security_lifecycle_decision_policy.py:676: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_decision_policy.py::test_quote_freshness_is_inert_for_v4_acceptance",
+        "1 failed in 0.15s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_decision_policy.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "045d456993f7738f0d6b4f7e4cea402c40dde45595a1440c87db619483a51ec7",
+          "before_sha256": "045d456993f7738f0d6b4f7e4cea402c40dde45595a1440c87db619483a51ec7",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_decision_policy.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_publisher_evidence_cannot_change_v4_decision"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_decision_policy.py::test_publisher_evidence_cannot_change_v4_decision"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_publisher_evidence_cannot_change_v4_decision"
+      ],
+      "id": "M13",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "allow publisher evidence into v4 material",
+      "output_tail": [
+        "E         ",
+        "E         Omitting 9 identical items, use -vv to show",
+        "E         Differing attributes:",
+        "E         ['decision_tier',",
+        "E          'action_readiness',",
+        "E          'confidence',",
+        "E          'outcomes',...",
+        "E         ",
+        "E         ...Full output truncated (56 lines hidden), use '-vv' to show",
+        "",
+        "tests/test_security_lifecycle_decision_policy.py:704: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_decision_policy.py::test_publisher_evidence_cannot_change_v4_decision",
+        "1 failed in 0.15s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_decision_policy.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "045d456993f7738f0d6b4f7e4cea402c40dde45595a1440c87db619483a51ec7",
+          "before_sha256": "045d456993f7738f0d6b4f7e4cea402c40dde45595a1440c87db619483a51ec7",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_decision_policy.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check"
+      ],
+      "id": "M14",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "restore publisher as pending-monitoring required family",
+      "output_tail": [
+        "                \"listing_authority\": \"available\",",
+        "            },",
+        "            source_deadlines=(deadline,),",
+        "            at=\"2026-08-27T12:00:00Z\",",
+        "        )",
+        "        assert final is not None",
+        ">       assert final.retryable is False",
+        "E       AssertionError: assert True is False",
+        "E        +  where True = AutomationBlocker(code='sec_evidence_insufficient', retryable=True, context={'monitoring_reason': 'event_completion_no....explicit_transaction_termination_date', 'source_deadline_rule_version': '4', 'next_check_at': '2026-09-05T00:00:00Z'}).retryable",
+        "",
+        "tests/test_security_lifecycle_automation_scheduler.py:1197: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check",
+        "1 failed in 0.36s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/service/security_lifecycle_automation_scheduler.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "279b8c806015e446fa3fbac2ce31e8fd3bc47a8f959c02ac8e88ab520e8fa7ed",
+          "before_sha256": "279b8c806015e446fa3fbac2ce31e8fd3bc47a8f959c02ac8e88ab520e8fa7ed",
+          "byte_identical": true,
+          "path": "src/service/security_lifecycle_automation_scheduler.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage"
+      ],
+      "id": "M15",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "expose publisher evidence through active detail",
+      "output_tail": [
+        "                    \"regulator\",",
+        "                    \"listing_authority\",",
+        "                    \"market_infrastructure\",",
+        "                }",
+        "E               AssertionError: assert {'listing_aut..., 'regulator'} == {'listing_aut..., 'regulator'}",
+        "E                 ",
+        "E                 Extra items in the left set:",
+        "E                 'publisher'",
+        "E                 Use -v to get more diff",
+        "",
+        "tests/test_security_lifecycle_tools.py:362: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage",
+        "1 failed in 0.29s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/tools/security_lifecycle_tools.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "63a596c143a8931e26bcf343ade3392f00e353c1b5710670c826540bb4b9bef0",
+          "before_sha256": "63a596c143a8931e26bcf343ade3392f00e353c1b5710670c826540bb4b9bef0",
+          "byte_identical": true,
+          "path": "src/tools/security_lifecycle_tools.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_translation.py::test_listing_snapshot_translation_rejects_before_every_downstream_boundary"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_translation.py::test_listing_snapshot_translation_rejects_before_every_downstream_boundary"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_translation.py::test_listing_snapshot_translation_rejects_before_every_downstream_boundary"
+      ],
+      "id": "M16",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "translate a listing snapshot",
+      "output_tail": [
+        "    cached = store.get_evidence_translation(",
+        "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ",
+        "",
+        "_kwargs = {'evidence_content_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'evidence_id': 'sle_listing', 'locale': 'zh-Hant'}",
+        "",
+        "    @staticmethod",
+        "    def get_evidence_translation(**_kwargs):",
+        ">       pytest.fail(\"listing translation reached cache lookup\")",
+        "E       Failed: listing translation reached cache lookup",
+        "",
+        "tests/test_security_lifecycle_translation.py:75: Failed",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_translation.py::test_listing_snapshot_translation_rejects_before_every_downstream_boundary",
+        "1 failed in 1.30s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_translation.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "ccf3335e7543e844167276e93a9270ca7bf1ec197bde6020b6a21be17b3ddbd7",
+          "before_sha256": "ccf3335e7543e844167276e93a9270ca7bf1ec197bde6020b6a21be17b3ddbd7",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_translation.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
+      ],
+      "id": "M17",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "add a second Massive secret field",
+      "output_tail": [
+        "_____________ test_massive_reuses_the_polygon_credential_authority _____________",
+        "",
+        "    def test_massive_reuses_the_polygon_credential_authority():",
+        "        assert [(f.field, f.env_var) for f in dpc.PROVIDER_FIELDS[\"polygon\"]] == [",
+        "            (\"api_key\", \"POLYGON_API_KEY\")",
+        "        ]",
+        ">       assert \"massive\" not in dpc.PROVIDER_FIELDS",
+        "E       AssertionError: assert 'massive' not in {'financial_datasets': [FieldDef(field='api_key', env_var='FINANCIAL_DATASETS_API_KEY', secret=True, label='API key', ...r placement needs another independently authorized id (see data_sources/ibkr_client_id.py).', import_aliases=())], ...}",
+        "E        +  where {'financial_datasets': [FieldDef(field='api_key', env_var='FINANCIAL_DATASETS_API_KEY', secret=True, label='API key', ...r placement needs another independently authorized id (see data_sources/ibkr_client_id.py).', import_aliases=())], ...} = dpc.PROVIDER_FIELDS",
+        "",
+        "tests/test_data_provider_config.py:73: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority",
+        "1 failed in 0.27s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/data_provider_config.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "3a5bf85f96651df9ed43e2bce29a0773eede17ef21719e99955fd1ac21d8f867",
+          "before_sha256": "3a5bf85f96651df9ed43e2bce29a0773eede17ef21719e99955fd1ac21d8f867",
+          "byte_identical": true,
+          "path": "src/data_provider_config.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "id": "M18",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "fail to preserve one v2 publisher row during migration",
+      "output_tail": [
+        "            ).fetchone()",
+        "            if row is None or _normalize_sql(row[0]) != _normalize_sql(expected):",
+        "                raise LifecycleSchemaMismatch(f\"lifecycle table mismatch: {name}\")",
+        "        for name, expected in indexes.items():",
+        "            if _normalize_sql(actual_indexes[name]) != _normalize_sql(expected):",
+        "                raise LifecycleSchemaMismatch(f\"lifecycle index mismatch: {name}\")",
+        "        if conn.execute(\"PRAGMA foreign_key_check\").fetchall():",
+        ">           raise LifecycleSchemaMismatch(\"lifecycle foreign key mismatch\")",
+        "E           src.security_lifecycle_schema.LifecycleSchemaMismatch: lifecycle foreign key mismatch",
+        "",
+        "src/security_lifecycle_schema.py:793: LifecycleSchemaMismatch",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+        "1 failed in 0.34s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_listing_migration.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "0e9b4b55b928237618aee434fe18c081ab5571bdb11c0a6b86df06753077e2ba",
+          "before_sha256": "0e9b4b55b928237618aee434fe18c081ab5571bdb11c0a6b86df06753077e2ba",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_listing_migration.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "id": "M19",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "change one v2 translated-text byte during migration",
+      "output_tail": [
+        "            verify_profile_connection(conn)",
+        "            verify_ticker_identity_connection(conn)",
+        "            if conn.execute(\"PRAGMA foreign_key_check\").fetchall():",
+        "                raise ListingMigrationRejected(\"postflight_foreign_key_failed\")",
+        "            if str(conn.execute(\"PRAGMA integrity_check\").fetchone()[0]) != \"ok\":",
+        "                raise ListingMigrationRejected(\"postflight_integrity_failed\")",
+        "            if _snapshot_tables(conn, _V3_LIFECYCLE_TABLES) != snapshots:",
+        ">               raise ListingMigrationRejected(\"lifecycle_rows_changed\")",
+        "E               src.security_lifecycle_listing_migration.ListingMigrationRejected: lifecycle_rows_changed",
+        "",
+        "src/security_lifecycle_listing_migration.py:656: ListingMigrationRejected",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+        "1 failed in 0.31s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_listing_migration.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "0e9b4b55b928237618aee434fe18c081ab5571bdb11c0a6b86df06753077e2ba",
+          "before_sha256": "0e9b4b55b928237618aee434fe18c081ab5571bdb11c0a6b86df06753077e2ba",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_listing_migration.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    },
+    {
+      "actual_failure_count": 1,
+      "actual_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "command": [
+        "pytest",
+        "-q",
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "exit_code": 1,
+      "expected_failure_count": 1,
+      "expected_owner_node_ids": [
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "id": "M20",
+      "killed": true,
+      "missing_owner_node_ids": [],
+      "mutation": "allow a v3 binary to verify a v2 database without migration",
+      "output_tail": [
+        "        before_identity = _identity_state(source)",
+        "        before_unowned = _unowned_state(source)",
+        "    ",
+        "        preflight = preflight_listing_authority_migration(source)",
+        ">       assert preflight.schema_version == \"v2\"",
+        "E       AssertionError: assert 'v3' == 'v2'",
+        "E         ",
+        "E         - v2",
+        "E         + v3",
+        "",
+        "tests/test_security_lifecycle_listing_migration.py:529: AssertionError",
+        "=========================== short test summary info ============================",
+        "FAILED tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+        "1 failed in 0.27s"
+      ],
+      "passing_test_count": 0,
+      "product_files": [
+        "src/security_lifecycle_schema.py"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "6c000445cd8de8298113c985e0ca8163e4a41ed759d29e0e0cfaef11b2a7bae8",
+          "before_sha256": "6c000445cd8de8298113c985e0ca8163e4a41ed759d29e0e0cfaef11b2a7bae8",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_schema.py"
+        }
+      ],
+      "runner_error": null,
+      "skipped_test_count": 0,
+      "unexpected_owner_node_ids": []
+    }
+  ],
+  "schema_version": 1,
+  "unexpected_owner_drift": []
+}

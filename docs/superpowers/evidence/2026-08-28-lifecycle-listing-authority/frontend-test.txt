@@ -1,0 +1,13 @@
+
+> arkscope-web@0.0.1 test
+> vitest run
+
+
+ RUN  v4.1.8 /tmp/arkscope-lifecycle-ux-honesty/apps/arkscope-web
+
+
+ Test Files  106 passed (106)
+      Tests  1305 passed (1305)
+   Start at  06:03:58
+   Duration  11.11s (transform 62.19s, setup 24.71s, import 74.95s, tests 58.09s, environment 58.39s)
+

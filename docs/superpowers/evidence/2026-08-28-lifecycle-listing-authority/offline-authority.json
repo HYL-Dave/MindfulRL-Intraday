@@ -1,0 +1,1576 @@
+{
+  "declared_authority": {
+    "app_restarts": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
+    "merges": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
+    "production_database_backups": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
+    "production_database_migrations": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
+    "production_database_preflights": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
+    "production_database_reads": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
+    "production_database_restores": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
+    "production_database_writes": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
+    "provider_calls": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    },
+    "pushes": {
+      "basis": "declared_not_authorized",
+      "value": 0
+    }
+  },
+  "observer": {
+    "calibrated_target_count": 7,
+    "calibration": {
+      "data_sources.listing_authority_transport.ListingAuthorityTransport.fetch_massive_ticker": 1,
+      "data_sources.listing_authority_transport.ListingAuthorityTransport.fetch_nasdaq": 1,
+      "data_sources.sec_transport.SecTransport.get": 1,
+      "requests.sessions.Session.request": 1,
+      "src.security_lifecycle_ibkr_evidence.read_ibkr_contract_evidence": 1,
+      "src.security_lifecycle_listing_migration.migrate_listing_authority_schema": 1
+    },
+    "forbidden_calls": {
+      "data_sources.listing_authority_transport.ListingAuthorityTransport.fetch_massive_ticker": 0,
+      "data_sources.listing_authority_transport.ListingAuthorityTransport.fetch_nasdaq": 0,
+      "data_sources.sec_transport.SecTransport.get": 0,
+      "requests.sessions.Session.request": 0,
+      "src.security_lifecycle_ibkr_evidence.read_ibkr_contract_evidence": 0
+    },
+    "method": "calibrated_fail_closed_wrappers_and_sqlite_path_guard",
+    "migration": {
+      "allowed_scratch": 1,
+      "blocked_outside": 1
+    },
+    "sqlite": {
+      "allowed_memory": 0,
+      "allowed_scratch": 27,
+      "blocked_outside": 0
+    },
+    "sqlite_calibration": {
+      "allowed_memory": 0,
+      "allowed_scratch": 1,
+      "blocked_outside": 1
+    },
+    "sqlite_path_guard": "all file-backed opens constrained to designated temporary root; in-memory opens have no filesystem path"
+  },
+  "schema_version": 1,
+  "scope": "offline_fixture_and_scratch_only",
+  "scratch_migration": {
+    "backup": {
+      "mode": "0o600",
+      "sha256": "6562b1cd793ac79ad42e1ef4d8ba934d3e01fbef54501f3b3081bfb1ebaab358"
+    },
+    "backup_restore_byte_identical": true,
+    "migration": {
+      "backup_sha256": "6562b1cd793ac79ad42e1ef4d8ba934d3e01fbef54501f3b3081bfb1ebaab358",
+      "changed": true,
+      "mapped_table_counts": [
+        [
+          "security_lifecycle_action_proposals",
+          1
+        ],
+        [
+          "security_lifecycle_assessment_evidence",
+          1
+        ],
+        [
+          "security_lifecycle_assessment_outcomes",
+          1
+        ],
+        [
+          "security_lifecycle_assessments",
+          1
+        ],
+        [
+          "security_lifecycle_automation_facts",
+          1
+        ],
+        [
+          "security_lifecycle_automation_run_blockers",
+          19
+        ],
+        [
+          "security_lifecycle_automation_runs",
+          2
+        ],
+        [
+          "security_lifecycle_case_acknowledgements",
+          1
+        ],
+        [
+          "security_lifecycle_cases",
+          1
+        ],
+        [
+          "security_lifecycle_evidence",
+          1
+        ],
+        [
+          "security_lifecycle_evidence_translations",
+          1
+        ],
+        [
+          "security_lifecycle_investigation_runs",
+          1
+        ],
+        [
+          "security_lifecycle_migration_receipts",
+          1
+        ],
+        [
+          "ticker_identity_links",
+          1
+        ],
+        [
+          "ticker_identity_transition_activity",
+          1
+        ],
+        [
+          "ticker_identity_transition_attempts",
+          1
+        ],
+        [
+          "ticker_identity_transitions",
+          1
+        ]
+      ],
+      "postflight_approval_sha256": "ca4fd1c127b2aaaccbc41a0c950b42637f9c8c625c6b8183ae5a9e95b1e275b7",
+      "preflight_approval_sha256": "e846796407d8654179e5cf4b5e9385352608c94a9bf8034164e166876a51fb4f",
+      "source_schema_version": "v2",
+      "target_schema_version": "v3"
+    },
+    "old_code_startup": {
+      "foreign_key_violations": 0,
+      "integrity": "ok",
+      "old_code_started": true
+    },
+    "restore": {
+      "approval_sha256": "e846796407d8654179e5cf4b5e9385352608c94a9bf8034164e166876a51fb4f",
+      "path": "scratch/restored-v2.db",
+      "schema_version": "v2",
+      "sha256": "6562b1cd793ac79ad42e1ef4d8ba934d3e01fbef54501f3b3081bfb1ebaab358"
+    },
+    "restored_v2_state": {
+      "foreign_key_violations": 0,
+      "integrity": "ok",
+      "table_counts": {
+        "security_lifecycle_action_proposals": 1,
+        "security_lifecycle_assessment_evidence": 1,
+        "security_lifecycle_assessment_outcomes": 1,
+        "security_lifecycle_assessments": 1,
+        "security_lifecycle_automation_facts": 1,
+        "security_lifecycle_automation_run_blockers": 19,
+        "security_lifecycle_automation_runs": 2,
+        "security_lifecycle_case_acknowledgements": 1,
+        "security_lifecycle_cases": 1,
+        "security_lifecycle_evidence": 1,
+        "security_lifecycle_evidence_translations": 1,
+        "security_lifecycle_investigation_runs": 1,
+        "security_lifecycle_migration_receipts": 1,
+        "ticker_identity_links": 1,
+        "ticker_identity_transition_activity": 1,
+        "ticker_identity_transition_attempts": 1,
+        "ticker_identity_transitions": 1
+      },
+      "version": "v2"
+    },
+    "row_and_sequence_identity": true,
+    "source_preflight": {
+      "approval_sha256": "e846796407d8654179e5cf4b5e9385352608c94a9bf8034164e166876a51fb4f",
+      "foreign_key_violation_count": 0,
+      "integrity": "ok",
+      "lifecycle_sequences": [
+        [
+          "security_lifecycle_assessment_evidence",
+          41
+        ]
+      ],
+      "owned_rows_sha256": "327932becf3cadb537c996d1aab9abb4132e34e0e945ea6dde95b695f383d117",
+      "owned_schema_object_sha256": [
+        [
+          "index:idx_security_lifecycle_assessments_case_revision",
+          "8ec8118f435109b2693f94503f250501175ce4fb54da06f2ed3ed11c4f7b78be"
+        ],
+        [
+          "index:idx_security_lifecycle_automation_blockers_run",
+          "c19e4c67d92914bb8cbafb36488aaba3c8466644988f69bc9195974fa941691e"
+        ],
+        [
+          "index:idx_security_lifecycle_automation_runs_case_created",
+          "06634ad617616d9f9847aba75d771d13da55449282577091426d61c87cea2b69"
+        ],
+        [
+          "index:idx_security_lifecycle_cases_identity",
+          "22cf2cc5b697fdb0e266245a20be4ce52fb8755fa7a5ee3f39f1b9381201cf17"
+        ],
+        [
+          "index:idx_security_lifecycle_evidence_automation_run",
+          "e6adbae573cf6f0bceeba9ae28f5c1719a84527585c56a2db9ef3a38050f2361"
+        ],
+        [
+          "index:idx_security_lifecycle_evidence_case_created",
+          "d428e660da6187ed4a0fa0354b879f71979fbdd29c17cda0e150f7a948f06a42"
+        ],
+        [
+          "index:idx_security_lifecycle_facts_run_type",
+          "792fc5d9a44798ee45e816080169ff157561759f7f975ec68e9920cb71b90a77"
+        ],
+        [
+          "index:idx_security_lifecycle_one_current_ack",
+          "ea29a25306415120b20225cd7334741d2efac87295965951e2902442d3265046"
+        ],
+        [
+          "index:idx_security_lifecycle_runs_case_created",
+          "3fd032a5e9d5c73f744924005ba8c7a93b4c471728263277d3142c834c1d0c43"
+        ],
+        [
+          "index:idx_security_lifecycle_translations_evidence_locale",
+          "1dd310008736f5a6467d60ad3f1054c14804a4635ea998332ced97a0ed93bfd7"
+        ],
+        [
+          "index:idx_ticker_identity_activity_transition",
+          "0971550681c22d4289ccdf0a8289b3fbc743a2982d9f99be966a847396901ca7"
+        ],
+        [
+          "index:idx_ticker_identity_activity_unacknowledged",
+          "5579fcc1855051015a7dbf4e4e10eca0c72187e1bd4280e9d3054e654e7c0a7f"
+        ],
+        [
+          "index:idx_ticker_identity_attempts_transition",
+          "5cbdb914427e011ab67f3bdbbae401e339e58a1d939a625f53d0cdac6fa11e17"
+        ],
+        [
+          "index:idx_ticker_identity_links_source",
+          "6ca89192868ef78823bb2364933c84817ffde7eaaabc2b27e37c2349d18d1531"
+        ],
+        [
+          "index:idx_ticker_identity_links_successor",
+          "31cf3c89ca607bd883b18f9be6ac70e7cd8bbbf07b15c279c55a917f3aeaebca"
+        ],
+        [
+          "index:idx_ticker_identity_transitions_due",
+          "e6977d0f969d1499ff612cac8fdc40dbcebc7086118b3c97cbbca1c3db2601c7"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_action_proposals_1",
+          "9e54d568de9537029dd8306643b2d645fba70d800c6820974adbe01c8998e186"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_action_proposals_2",
+          "f8bd81c6197af002a6b54ef7fa8d121f717bb43b703084efa2aea9348ebdf3de"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_assessment_outcomes_1",
+          "03dafd9118cb1eb9f159358ebe06d58f58087624ab788ec185bb73a76910ad27"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_assessments_1",
+          "656030f823f5b566f41a2dc942062810f71fbc47c0b6aabd3a9ec64673245122"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_assessments_2",
+          "8884d1ef8911b0ec0f80f5b7c518f840b1ea2d109048f6939a536151ebaef06f"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_automation_facts_1",
+          "60f9d03e729c45934bc87edefc04387cf8733d41af5c23a7f4aac12bf2890951"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_automation_facts_2",
+          "1e581a8716a81a87ec3d96ff82702299082cdc3907b49563fa2ec7d52f78a239"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_automation_run_blockers_1",
+          "d8380766f539bdecb1e3171942efcd4d8f54515ec9a0d5817fa91925af177711"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_automation_runs_1",
+          "c75170ca24cc70782a7af5b665c3802c8bce1fc5c865ebb0e0919c0404e50ae6"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_automation_runs_2",
+          "b5cfe58328de51c45dbc7f9ff644a8d252c96417bca136ec917f6c7d98c4e762"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_case_acknowledgements_1",
+          "023a64e2e7796bc6c3e83666e913cb63495b5994d09ab255d46fb3ebabf841f9"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_cases_1",
+          "cb73cecae3ec47d93bdab10c7f9a7cf72d393a9640cef6b80c583630c60f45f7"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_cases_2",
+          "68cd2aeb8f6f4bdbb14c2b03536e7f9889e2885e33a9f1fb87ea1e93504ff0af"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_evidence_1",
+          "b3c8b0d14ed176c1118eded980b22743d9150b7af9d47b7767f9118747752f42"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_evidence_2",
+          "caf8f4a0ddd7f3c970477561849e3e3c22a7483144e8647ccdb3c6e1f479007b"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_evidence_3",
+          "1b888aae90b5c5f71e6bfc95138269e958edaa4e799e0d2ec02af503a70fc435"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_evidence_translations_1",
+          "18828e40cc1dcc598043f05e9989dad4b7ec3f95b01e393369c2eda7d6f548b7"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_investigation_runs_1",
+          "5183e397a2e74e61f0d1f1f1cea615b3f4ce9102fe4543734556ffcfe58671c6"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_migration_receipts_1",
+          "43c592c293da1a821a41d80f01f0e54a2c7de3c45152fce5bd7672c9dba90788"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_links_1",
+          "4a6e468ffd6b107f6154e808011663a073f64cef0d5db63a3d61d9718c6587a2"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_links_2",
+          "aa0d65273e9b39073b5a34ba2571b3d3e3169df4568edab5249e75e24750bdbe"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_transition_activity_1",
+          "68691fbee409f2a4d7258459816f1fd91ece666e6d703a3a2f08bc47f7acd0de"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_transition_attempts_1",
+          "8b0c3a32c8de937c4139ad9455639e7d9b70f1b7fbc0d39a02cd526d21b097f0"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_transitions_1",
+          "89dbd5f842aeb1ebe31948f438ac1225b8b747a3efeee29330f076c05d4ccfd7"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_transitions_2",
+          "a498484edbb7ff051e04d5f45aec1b161d368622fb6637a8cd364fcb0410711b"
+        ],
+        [
+          "table:security_lifecycle_action_proposals",
+          "90b41130a05007b98812ddb7b8d2a9b2099f3f3b83783397a14a72302e929ff4"
+        ],
+        [
+          "table:security_lifecycle_assessment_evidence",
+          "7d3364f46e5e89adaca689f74817031dfe025b44902cadaff9c5061298a85c6b"
+        ],
+        [
+          "table:security_lifecycle_assessment_outcomes",
+          "2904c0c774466dc087a0e64eb272bbd15ac29c10a92f97a0c834fa060a06a7e4"
+        ],
+        [
+          "table:security_lifecycle_assessments",
+          "df9008679addfa7c7eb4132209668e1f5ab52feaff4a63e95ab099c9e00c4194"
+        ],
+        [
+          "table:security_lifecycle_automation_facts",
+          "68d0537973bf825e659e67f92238f7789f82fef55e884300f9cee93ec2aacf4c"
+        ],
+        [
+          "table:security_lifecycle_automation_run_blockers",
+          "1cd22e528ae48224721b6d9ca3de98e6fded86f180396d16fba4e8083eafd8b5"
+        ],
+        [
+          "table:security_lifecycle_automation_runs",
+          "3ae6a6c24216dca1b89296b9beb2beb78da93cb5787de5ba5badc6bdf91f54c4"
+        ],
+        [
+          "table:security_lifecycle_case_acknowledgements",
+          "d418eb3d248bca8c0c110fb26ae27bcf219c923fb17faf30b1211b966e0ecbfd"
+        ],
+        [
+          "table:security_lifecycle_cases",
+          "d9a0172789c64ea20215271cb7369e98226fa5b46da2b26e617d9958a215d691"
+        ],
+        [
+          "table:security_lifecycle_evidence",
+          "422fd0140c3674167e8d2b7d84e76e477a449e7740980a0d513c5932f55ac9d6"
+        ],
+        [
+          "table:security_lifecycle_evidence_translations",
+          "9953427a7b9aa40ec3b3a9f6ccfb3f890029f173fb55a854e3be547a0e49470a"
+        ],
+        [
+          "table:security_lifecycle_investigation_runs",
+          "682752db402d2e1872df35f5ea1dfb06c8566d546c29627c49d69a16b4992eef"
+        ],
+        [
+          "table:security_lifecycle_migration_receipts",
+          "2163e268df244e32c3951165e0d25958a5feae05971dc32791cdae3ffaee76eb"
+        ],
+        [
+          "table:ticker_identity_links",
+          "f95e1f8e2c682ca0097b94f7046b5881f8100892fa3e9bf13909c54c9fe9702c"
+        ],
+        [
+          "table:ticker_identity_transition_activity",
+          "e8c4065a8831662c82d6df1949a5e4f9bebc67fa04ce1c50c9e2aaee66d62ba2"
+        ],
+        [
+          "table:ticker_identity_transition_attempts",
+          "dd4f69fd0b4344b6c6e328ac383912fe0398ebba27cad8a8c59d15fa9dead6c3"
+        ],
+        [
+          "table:ticker_identity_transitions",
+          "51deee80098034288be4077dca2d8103c82065395307b4680bfac0d1d7421bb3"
+        ]
+      ],
+      "owned_schema_sha256": "201c868baadde99ed0ae22923b0188ad39f884d8fb431ca20c67086f7d65a4fa",
+      "owned_table_counts": [
+        [
+          "security_lifecycle_action_proposals",
+          1
+        ],
+        [
+          "security_lifecycle_assessment_evidence",
+          1
+        ],
+        [
+          "security_lifecycle_assessment_outcomes",
+          1
+        ],
+        [
+          "security_lifecycle_assessments",
+          1
+        ],
+        [
+          "security_lifecycle_automation_facts",
+          1
+        ],
+        [
+          "security_lifecycle_automation_run_blockers",
+          19
+        ],
+        [
+          "security_lifecycle_automation_runs",
+          2
+        ],
+        [
+          "security_lifecycle_case_acknowledgements",
+          1
+        ],
+        [
+          "security_lifecycle_cases",
+          1
+        ],
+        [
+          "security_lifecycle_evidence",
+          1
+        ],
+        [
+          "security_lifecycle_evidence_translations",
+          1
+        ],
+        [
+          "security_lifecycle_investigation_runs",
+          1
+        ],
+        [
+          "security_lifecycle_migration_receipts",
+          1
+        ],
+        [
+          "ticker_identity_links",
+          1
+        ],
+        [
+          "ticker_identity_transition_activity",
+          1
+        ],
+        [
+          "ticker_identity_transition_attempts",
+          1
+        ],
+        [
+          "ticker_identity_transitions",
+          1
+        ]
+      ],
+      "owned_table_row_sha256": [
+        [
+          "security_lifecycle_action_proposals",
+          "3b4ceb8e0168c56ac507cef583705972d924d114bd42e29513abb38b29617f88"
+        ],
+        [
+          "security_lifecycle_assessment_evidence",
+          "8521a36da873ab8de0174afb4e355f1ccef0294d8d57e2f7933295a3a46a3e83"
+        ],
+        [
+          "security_lifecycle_assessment_outcomes",
+          "bc32ff613953150fed06e953fe6c644cd1af2798a15b9838f1d98513994e89f8"
+        ],
+        [
+          "security_lifecycle_assessments",
+          "4c56ff61a663da255b8e1bb80c9faf59603d53320949f0bef924d9e921ec55a4"
+        ],
+        [
+          "security_lifecycle_automation_facts",
+          "228de01513a149ff30881cdafccbd4a5dfcd7b52de848cd10fde7097a00ed790"
+        ],
+        [
+          "security_lifecycle_automation_run_blockers",
+          "3b2994a1fc21bc1928a9933eeb0dc4adc761a7a90990b1a4d30abb12f4afd19d"
+        ],
+        [
+          "security_lifecycle_automation_runs",
+          "b278db0b1e13f6a73391da15aca272a843e1e35455a468a6c0f5fd807ab52e68"
+        ],
+        [
+          "security_lifecycle_case_acknowledgements",
+          "afb0e8e22cfa87c84267859ad9bce3af839d19c31b02d6bf056b51765e3dfb59"
+        ],
+        [
+          "security_lifecycle_cases",
+          "927bf326acc8b8855f290416bdcc5b2536d1abf925805ff09deecf4cdf6dfe23"
+        ],
+        [
+          "security_lifecycle_evidence",
+          "b01043afab38f13f3cb29975e9c6950fdae71e5fd83563a0d713fa2dbb1b9c80"
+        ],
+        [
+          "security_lifecycle_evidence_translations",
+          "38284aeb176975263bc216683e3bf4def638c7f55be38430a465e5a662562da2"
+        ],
+        [
+          "security_lifecycle_investigation_runs",
+          "e6c9975a86000cf45b435926099ebdc6f9c17f3566b886ed16d5ba4854a1d783"
+        ],
+        [
+          "security_lifecycle_migration_receipts",
+          "d24324ea309a114cdd5c656bb8a45c44c4e9626443686786ad6eca51d0e66d1b"
+        ],
+        [
+          "ticker_identity_links",
+          "5621513affbfc2ba0ae3784cd7d6aab59e663c370676a5d6ff406abb713bc2f3"
+        ],
+        [
+          "ticker_identity_transition_activity",
+          "b5ca19c3075d1a43de103fdde32615b6b6dc71f286ae36621b9cf0d9e8b853fa"
+        ],
+        [
+          "ticker_identity_transition_attempts",
+          "7b80ddb826bde15fb0d4045c77c63f28ea62d3219cadbd868955beeb129864a3"
+        ],
+        [
+          "ticker_identity_transitions",
+          "7448971dcfaeb96076028c613b392e92c7904e486bbb2ebbff29da0defea0c83"
+        ]
+      ],
+      "owned_table_rowid_sha256": [
+        [
+          "security_lifecycle_action_proposals",
+          "c11b909d609bf418762ff72a9c7d39aea3a8cd72bbdd47b6a9199d9588012f6b"
+        ],
+        [
+          "security_lifecycle_assessment_evidence",
+          "dbdfdd7574ffd53341a4700a144aa43b7550869f0fa18085a367b842837aecc7"
+        ],
+        [
+          "security_lifecycle_assessment_outcomes",
+          "6d79037ffe34ea09719d3e2a116835870d073f3a892254c3a5ec51725f9a0fb9"
+        ],
+        [
+          "security_lifecycle_assessments",
+          "75b95b60eb50bf705c48dc81ee4a5d9db94b0db8b12b9cd703b67662b6354091"
+        ],
+        [
+          "security_lifecycle_automation_facts",
+          "12ababee71f7228590ff7588ed65995cf3add825c1f31ff115d695e319a252a4"
+        ],
+        [
+          "security_lifecycle_automation_run_blockers",
+          "840c6dafd7d53666a3d8e97796c3bba1eecb31434da9c5da9c49d4f696d0bf9f"
+        ],
+        [
+          "security_lifecycle_automation_runs",
+          "61cb167cda4df58177f45593142de347eb0eef6e9f8cd8e1e15f5a54405c5c7b"
+        ],
+        [
+          "security_lifecycle_case_acknowledgements",
+          "74ffcf35cbcfd9efb55be4d72aeb76e33853d89f6f846e3ec7ec618b478aca00"
+        ],
+        [
+          "security_lifecycle_cases",
+          "414af7579ff4103aaa3b3ed72bfd1584dcca2b5a5a6132c94e6392509cdd946b"
+        ],
+        [
+          "security_lifecycle_evidence",
+          "a2b3e0dcc5570955e535048529428e835dcc24b6e2d6cd758ef01f51708482c4"
+        ],
+        [
+          "security_lifecycle_evidence_translations",
+          "f8d3df00ca4171b3fc581c3445831e10feb4a54334d0fb5ed2082e52babc9e65"
+        ],
+        [
+          "security_lifecycle_investigation_runs",
+          "b6cc126538e3f669662b7857633ccd7315b7c008fc3d11dd48d4f03b2f325f6d"
+        ],
+        [
+          "security_lifecycle_migration_receipts",
+          "d2cc840056bb7c3cec9e5052076ac4edfa5973388786d800de9819c61f49ea5c"
+        ],
+        [
+          "ticker_identity_links",
+          "a4b575874d83f5647332048b72074d35a562503e8eb110953ac1b452b16f0ca8"
+        ],
+        [
+          "ticker_identity_transition_activity",
+          "ac57b5b52ba769be64d46572545c3f6dee27e976b7c352aba0379cdcaacef556"
+        ],
+        [
+          "ticker_identity_transition_attempts",
+          "13c94814cf8038eb0e6493e49f22610dc73696e86abb2a5d0afdc405737c5469"
+        ],
+        [
+          "ticker_identity_transitions",
+          "96d29e7221627cc9a93312576f68500e075207800311cddc9d3afb1ea0864ac2"
+        ]
+      ],
+      "schema_version": "v2"
+    },
+    "target_preflight": {
+      "approval_sha256": "ca4fd1c127b2aaaccbc41a0c950b42637f9c8c625c6b8183ae5a9e95b1e275b7",
+      "foreign_key_violation_count": 0,
+      "integrity": "ok",
+      "lifecycle_sequences": [
+        [
+          "security_lifecycle_assessment_evidence",
+          41
+        ]
+      ],
+      "owned_rows_sha256": "327932becf3cadb537c996d1aab9abb4132e34e0e945ea6dde95b695f383d117",
+      "owned_schema_object_sha256": [
+        [
+          "index:idx_security_lifecycle_assessments_case_revision",
+          "8ec8118f435109b2693f94503f250501175ce4fb54da06f2ed3ed11c4f7b78be"
+        ],
+        [
+          "index:idx_security_lifecycle_automation_blockers_run",
+          "c19e4c67d92914bb8cbafb36488aaba3c8466644988f69bc9195974fa941691e"
+        ],
+        [
+          "index:idx_security_lifecycle_automation_runs_case_created",
+          "06634ad617616d9f9847aba75d771d13da55449282577091426d61c87cea2b69"
+        ],
+        [
+          "index:idx_security_lifecycle_cases_identity",
+          "22cf2cc5b697fdb0e266245a20be4ce52fb8755fa7a5ee3f39f1b9381201cf17"
+        ],
+        [
+          "index:idx_security_lifecycle_evidence_automation_run",
+          "e6adbae573cf6f0bceeba9ae28f5c1719a84527585c56a2db9ef3a38050f2361"
+        ],
+        [
+          "index:idx_security_lifecycle_evidence_case_created",
+          "d428e660da6187ed4a0fa0354b879f71979fbdd29c17cda0e150f7a948f06a42"
+        ],
+        [
+          "index:idx_security_lifecycle_facts_run_type",
+          "792fc5d9a44798ee45e816080169ff157561759f7f975ec68e9920cb71b90a77"
+        ],
+        [
+          "index:idx_security_lifecycle_one_current_ack",
+          "ea29a25306415120b20225cd7334741d2efac87295965951e2902442d3265046"
+        ],
+        [
+          "index:idx_security_lifecycle_runs_case_created",
+          "3fd032a5e9d5c73f744924005ba8c7a93b4c471728263277d3142c834c1d0c43"
+        ],
+        [
+          "index:idx_security_lifecycle_translations_evidence_locale",
+          "1dd310008736f5a6467d60ad3f1054c14804a4635ea998332ced97a0ed93bfd7"
+        ],
+        [
+          "index:idx_ticker_identity_activity_transition",
+          "0971550681c22d4289ccdf0a8289b3fbc743a2982d9f99be966a847396901ca7"
+        ],
+        [
+          "index:idx_ticker_identity_activity_unacknowledged",
+          "5579fcc1855051015a7dbf4e4e10eca0c72187e1bd4280e9d3054e654e7c0a7f"
+        ],
+        [
+          "index:idx_ticker_identity_attempts_transition",
+          "5cbdb914427e011ab67f3bdbbae401e339e58a1d939a625f53d0cdac6fa11e17"
+        ],
+        [
+          "index:idx_ticker_identity_links_source",
+          "6ca89192868ef78823bb2364933c84817ffde7eaaabc2b27e37c2349d18d1531"
+        ],
+        [
+          "index:idx_ticker_identity_links_successor",
+          "31cf3c89ca607bd883b18f9be6ac70e7cd8bbbf07b15c279c55a917f3aeaebca"
+        ],
+        [
+          "index:idx_ticker_identity_transitions_due",
+          "e6977d0f969d1499ff612cac8fdc40dbcebc7086118b3c97cbbca1c3db2601c7"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_action_proposals_1",
+          "9e54d568de9537029dd8306643b2d645fba70d800c6820974adbe01c8998e186"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_action_proposals_2",
+          "f8bd81c6197af002a6b54ef7fa8d121f717bb43b703084efa2aea9348ebdf3de"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_assessment_outcomes_1",
+          "03dafd9118cb1eb9f159358ebe06d58f58087624ab788ec185bb73a76910ad27"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_assessments_1",
+          "656030f823f5b566f41a2dc942062810f71fbc47c0b6aabd3a9ec64673245122"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_assessments_2",
+          "8884d1ef8911b0ec0f80f5b7c518f840b1ea2d109048f6939a536151ebaef06f"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_automation_facts_1",
+          "60f9d03e729c45934bc87edefc04387cf8733d41af5c23a7f4aac12bf2890951"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_automation_facts_2",
+          "1e581a8716a81a87ec3d96ff82702299082cdc3907b49563fa2ec7d52f78a239"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_automation_run_blockers_1",
+          "d8380766f539bdecb1e3171942efcd4d8f54515ec9a0d5817fa91925af177711"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_automation_runs_1",
+          "c75170ca24cc70782a7af5b665c3802c8bce1fc5c865ebb0e0919c0404e50ae6"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_automation_runs_2",
+          "b5cfe58328de51c45dbc7f9ff644a8d252c96417bca136ec917f6c7d98c4e762"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_case_acknowledgements_1",
+          "023a64e2e7796bc6c3e83666e913cb63495b5994d09ab255d46fb3ebabf841f9"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_cases_1",
+          "cb73cecae3ec47d93bdab10c7f9a7cf72d393a9640cef6b80c583630c60f45f7"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_cases_2",
+          "68cd2aeb8f6f4bdbb14c2b03536e7f9889e2885e33a9f1fb87ea1e93504ff0af"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_evidence_1",
+          "b3c8b0d14ed176c1118eded980b22743d9150b7af9d47b7767f9118747752f42"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_evidence_2",
+          "caf8f4a0ddd7f3c970477561849e3e3c22a7483144e8647ccdb3c6e1f479007b"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_evidence_3",
+          "1b888aae90b5c5f71e6bfc95138269e958edaa4e799e0d2ec02af503a70fc435"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_evidence_translations_1",
+          "18828e40cc1dcc598043f05e9989dad4b7ec3f95b01e393369c2eda7d6f548b7"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_investigation_runs_1",
+          "5183e397a2e74e61f0d1f1f1cea615b3f4ce9102fe4543734556ffcfe58671c6"
+        ],
+        [
+          "index:sqlite_autoindex_security_lifecycle_migration_receipts_1",
+          "43c592c293da1a821a41d80f01f0e54a2c7de3c45152fce5bd7672c9dba90788"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_links_1",
+          "4a6e468ffd6b107f6154e808011663a073f64cef0d5db63a3d61d9718c6587a2"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_links_2",
+          "aa0d65273e9b39073b5a34ba2571b3d3e3169df4568edab5249e75e24750bdbe"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_transition_activity_1",
+          "68691fbee409f2a4d7258459816f1fd91ece666e6d703a3a2f08bc47f7acd0de"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_transition_attempts_1",
+          "8b0c3a32c8de937c4139ad9455639e7d9b70f1b7fbc0d39a02cd526d21b097f0"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_transitions_1",
+          "89dbd5f842aeb1ebe31948f438ac1225b8b747a3efeee29330f076c05d4ccfd7"
+        ],
+        [
+          "index:sqlite_autoindex_ticker_identity_transitions_2",
+          "a498484edbb7ff051e04d5f45aec1b161d368622fb6637a8cd364fcb0410711b"
+        ],
+        [
+          "table:security_lifecycle_action_proposals",
+          "90b41130a05007b98812ddb7b8d2a9b2099f3f3b83783397a14a72302e929ff4"
+        ],
+        [
+          "table:security_lifecycle_assessment_evidence",
+          "7d3364f46e5e89adaca689f74817031dfe025b44902cadaff9c5061298a85c6b"
+        ],
+        [
+          "table:security_lifecycle_assessment_outcomes",
+          "2904c0c774466dc087a0e64eb272bbd15ac29c10a92f97a0c834fa060a06a7e4"
+        ],
+        [
+          "table:security_lifecycle_assessments",
+          "df9008679addfa7c7eb4132209668e1f5ab52feaff4a63e95ab099c9e00c4194"
+        ],
+        [
+          "table:security_lifecycle_automation_facts",
+          "68d0537973bf825e659e67f92238f7789f82fef55e884300f9cee93ec2aacf4c"
+        ],
+        [
+          "table:security_lifecycle_automation_run_blockers",
+          "71e891e79205d89f13ca2f8d3ffa4ab77ecd7492ef4bec8f1820275b2f233fe6"
+        ],
+        [
+          "table:security_lifecycle_automation_runs",
+          "3ae6a6c24216dca1b89296b9beb2beb78da93cb5787de5ba5badc6bdf91f54c4"
+        ],
+        [
+          "table:security_lifecycle_case_acknowledgements",
+          "d418eb3d248bca8c0c110fb26ae27bcf219c923fb17faf30b1211b966e0ecbfd"
+        ],
+        [
+          "table:security_lifecycle_cases",
+          "d9a0172789c64ea20215271cb7369e98226fa5b46da2b26e617d9958a215d691"
+        ],
+        [
+          "table:security_lifecycle_evidence",
+          "84b69ca996ec9d3e296aab8f8f1fddf19952d2932f6ac977db957b4b8965d9a9"
+        ],
+        [
+          "table:security_lifecycle_evidence_translations",
+          "9953427a7b9aa40ec3b3a9f6ccfb3f890029f173fb55a854e3be547a0e49470a"
+        ],
+        [
+          "table:security_lifecycle_investigation_runs",
+          "682752db402d2e1872df35f5ea1dfb06c8566d546c29627c49d69a16b4992eef"
+        ],
+        [
+          "table:security_lifecycle_migration_receipts",
+          "2163e268df244e32c3951165e0d25958a5feae05971dc32791cdae3ffaee76eb"
+        ],
+        [
+          "table:ticker_identity_links",
+          "f95e1f8e2c682ca0097b94f7046b5881f8100892fa3e9bf13909c54c9fe9702c"
+        ],
+        [
+          "table:ticker_identity_transition_activity",
+          "e8c4065a8831662c82d6df1949a5e4f9bebc67fa04ce1c50c9e2aaee66d62ba2"
+        ],
+        [
+          "table:ticker_identity_transition_attempts",
+          "dd4f69fd0b4344b6c6e328ac383912fe0398ebba27cad8a8c59d15fa9dead6c3"
+        ],
+        [
+          "table:ticker_identity_transitions",
+          "51deee80098034288be4077dca2d8103c82065395307b4680bfac0d1d7421bb3"
+        ]
+      ],
+      "owned_schema_sha256": "30b0158029c34da3a1eaff08d6a9192dda6a5e4aa99b8d4b239fd02ed4aabb25",
+      "owned_table_counts": [
+        [
+          "security_lifecycle_action_proposals",
+          1
+        ],
+        [
+          "security_lifecycle_assessment_evidence",
+          1
+        ],
+        [
+          "security_lifecycle_assessment_outcomes",
+          1
+        ],
+        [
+          "security_lifecycle_assessments",
+          1
+        ],
+        [
+          "security_lifecycle_automation_facts",
+          1
+        ],
+        [
+          "security_lifecycle_automation_run_blockers",
+          19
+        ],
+        [
+          "security_lifecycle_automation_runs",
+          2
+        ],
+        [
+          "security_lifecycle_case_acknowledgements",
+          1
+        ],
+        [
+          "security_lifecycle_cases",
+          1
+        ],
+        [
+          "security_lifecycle_evidence",
+          1
+        ],
+        [
+          "security_lifecycle_evidence_translations",
+          1
+        ],
+        [
+          "security_lifecycle_investigation_runs",
+          1
+        ],
+        [
+          "security_lifecycle_migration_receipts",
+          1
+        ],
+        [
+          "ticker_identity_links",
+          1
+        ],
+        [
+          "ticker_identity_transition_activity",
+          1
+        ],
+        [
+          "ticker_identity_transition_attempts",
+          1
+        ],
+        [
+          "ticker_identity_transitions",
+          1
+        ]
+      ],
+      "owned_table_row_sha256": [
+        [
+          "security_lifecycle_action_proposals",
+          "3b4ceb8e0168c56ac507cef583705972d924d114bd42e29513abb38b29617f88"
+        ],
+        [
+          "security_lifecycle_assessment_evidence",
+          "8521a36da873ab8de0174afb4e355f1ccef0294d8d57e2f7933295a3a46a3e83"
+        ],
+        [
+          "security_lifecycle_assessment_outcomes",
+          "bc32ff613953150fed06e953fe6c644cd1af2798a15b9838f1d98513994e89f8"
+        ],
+        [
+          "security_lifecycle_assessments",
+          "4c56ff61a663da255b8e1bb80c9faf59603d53320949f0bef924d9e921ec55a4"
+        ],
+        [
+          "security_lifecycle_automation_facts",
+          "228de01513a149ff30881cdafccbd4a5dfcd7b52de848cd10fde7097a00ed790"
+        ],
+        [
+          "security_lifecycle_automation_run_blockers",
+          "3b2994a1fc21bc1928a9933eeb0dc4adc761a7a90990b1a4d30abb12f4afd19d"
+        ],
+        [
+          "security_lifecycle_automation_runs",
+          "b278db0b1e13f6a73391da15aca272a843e1e35455a468a6c0f5fd807ab52e68"
+        ],
+        [
+          "security_lifecycle_case_acknowledgements",
+          "afb0e8e22cfa87c84267859ad9bce3af839d19c31b02d6bf056b51765e3dfb59"
+        ],
+        [
+          "security_lifecycle_cases",
+          "927bf326acc8b8855f290416bdcc5b2536d1abf925805ff09deecf4cdf6dfe23"
+        ],
+        [
+          "security_lifecycle_evidence",
+          "b01043afab38f13f3cb29975e9c6950fdae71e5fd83563a0d713fa2dbb1b9c80"
+        ],
+        [
+          "security_lifecycle_evidence_translations",
+          "38284aeb176975263bc216683e3bf4def638c7f55be38430a465e5a662562da2"
+        ],
+        [
+          "security_lifecycle_investigation_runs",
+          "e6c9975a86000cf45b435926099ebdc6f9c17f3566b886ed16d5ba4854a1d783"
+        ],
+        [
+          "security_lifecycle_migration_receipts",
+          "d24324ea309a114cdd5c656bb8a45c44c4e9626443686786ad6eca51d0e66d1b"
+        ],
+        [
+          "ticker_identity_links",
+          "5621513affbfc2ba0ae3784cd7d6aab59e663c370676a5d6ff406abb713bc2f3"
+        ],
+        [
+          "ticker_identity_transition_activity",
+          "b5ca19c3075d1a43de103fdde32615b6b6dc71f286ae36621b9cf0d9e8b853fa"
+        ],
+        [
+          "ticker_identity_transition_attempts",
+          "7b80ddb826bde15fb0d4045c77c63f28ea62d3219cadbd868955beeb129864a3"
+        ],
+        [
+          "ticker_identity_transitions",
+          "7448971dcfaeb96076028c613b392e92c7904e486bbb2ebbff29da0defea0c83"
+        ]
+      ],
+      "owned_table_rowid_sha256": [
+        [
+          "security_lifecycle_action_proposals",
+          "c11b909d609bf418762ff72a9c7d39aea3a8cd72bbdd47b6a9199d9588012f6b"
+        ],
+        [
+          "security_lifecycle_assessment_evidence",
+          "dbdfdd7574ffd53341a4700a144aa43b7550869f0fa18085a367b842837aecc7"
+        ],
+        [
+          "security_lifecycle_assessment_outcomes",
+          "6d79037ffe34ea09719d3e2a116835870d073f3a892254c3a5ec51725f9a0fb9"
+        ],
+        [
+          "security_lifecycle_assessments",
+          "75b95b60eb50bf705c48dc81ee4a5d9db94b0db8b12b9cd703b67662b6354091"
+        ],
+        [
+          "security_lifecycle_automation_facts",
+          "12ababee71f7228590ff7588ed65995cf3add825c1f31ff115d695e319a252a4"
+        ],
+        [
+          "security_lifecycle_automation_run_blockers",
+          "840c6dafd7d53666a3d8e97796c3bba1eecb31434da9c5da9c49d4f696d0bf9f"
+        ],
+        [
+          "security_lifecycle_automation_runs",
+          "61cb167cda4df58177f45593142de347eb0eef6e9f8cd8e1e15f5a54405c5c7b"
+        ],
+        [
+          "security_lifecycle_case_acknowledgements",
+          "74ffcf35cbcfd9efb55be4d72aeb76e33853d89f6f846e3ec7ec618b478aca00"
+        ],
+        [
+          "security_lifecycle_cases",
+          "414af7579ff4103aaa3b3ed72bfd1584dcca2b5a5a6132c94e6392509cdd946b"
+        ],
+        [
+          "security_lifecycle_evidence",
+          "a2b3e0dcc5570955e535048529428e835dcc24b6e2d6cd758ef01f51708482c4"
+        ],
+        [
+          "security_lifecycle_evidence_translations",
+          "f8d3df00ca4171b3fc581c3445831e10feb4a54334d0fb5ed2082e52babc9e65"
+        ],
+        [
+          "security_lifecycle_investigation_runs",
+          "b6cc126538e3f669662b7857633ccd7315b7c008fc3d11dd48d4f03b2f325f6d"
+        ],
+        [
+          "security_lifecycle_migration_receipts",
+          "d2cc840056bb7c3cec9e5052076ac4edfa5973388786d800de9819c61f49ea5c"
+        ],
+        [
+          "ticker_identity_links",
+          "a4b575874d83f5647332048b72074d35a562503e8eb110953ac1b452b16f0ca8"
+        ],
+        [
+          "ticker_identity_transition_activity",
+          "ac57b5b52ba769be64d46572545c3f6dee27e976b7c352aba0379cdcaacef556"
+        ],
+        [
+          "ticker_identity_transition_attempts",
+          "13c94814cf8038eb0e6493e49f22610dc73696e86abb2a5d0afdc405737c5469"
+        ],
+        [
+          "ticker_identity_transitions",
+          "96d29e7221627cc9a93312576f68500e075207800311cddc9d3afb1ea0864ac2"
+        ]
+      ],
+      "schema_version": "v3"
+    },
+    "v2_state": {
+      "foreign_key_violations": 0,
+      "integrity": "ok",
+      "table_counts": {
+        "security_lifecycle_action_proposals": 1,
+        "security_lifecycle_assessment_evidence": 1,
+        "security_lifecycle_assessment_outcomes": 1,
+        "security_lifecycle_assessments": 1,
+        "security_lifecycle_automation_facts": 1,
+        "security_lifecycle_automation_run_blockers": 19,
+        "security_lifecycle_automation_runs": 2,
+        "security_lifecycle_case_acknowledgements": 1,
+        "security_lifecycle_cases": 1,
+        "security_lifecycle_evidence": 1,
+        "security_lifecycle_evidence_translations": 1,
+        "security_lifecycle_investigation_runs": 1,
+        "security_lifecycle_migration_receipts": 1,
+        "ticker_identity_links": 1,
+        "ticker_identity_transition_activity": 1,
+        "ticker_identity_transition_attempts": 1,
+        "ticker_identity_transitions": 1
+      },
+      "version": "v2"
+    },
+    "v3_state": {
+      "foreign_key_violations": 0,
+      "integrity": "ok",
+      "table_counts": {
+        "security_lifecycle_action_proposals": 1,
+        "security_lifecycle_assessment_evidence": 1,
+        "security_lifecycle_assessment_outcomes": 1,
+        "security_lifecycle_assessments": 1,
+        "security_lifecycle_automation_facts": 1,
+        "security_lifecycle_automation_run_blockers": 19,
+        "security_lifecycle_automation_runs": 2,
+        "security_lifecycle_case_acknowledgements": 1,
+        "security_lifecycle_cases": 1,
+        "security_lifecycle_evidence": 1,
+        "security_lifecycle_evidence_translations": 1,
+        "security_lifecycle_investigation_runs": 1,
+        "security_lifecycle_migration_receipts": 1,
+        "ticker_identity_links": 1,
+        "ticker_identity_transition_activity": 1,
+        "ticker_identity_transition_attempts": 1,
+        "ticker_identity_transitions": 1
+      },
+      "version": "v3"
+    }
+  },
+  "shadow": {
+    "case_count": 9,
+    "cases": [
+      {
+        "case": "HAPN",
+        "decision": {
+          "action_readiness": "not_applicable",
+          "cash_per_security_decimal": null,
+          "conclusion": "The tracked security continued from LC to HAPN.",
+          "confidence": "high",
+          "consideration_currency": null,
+          "counterparty_cik": null,
+          "counterparty_name": null,
+          "counterparty_ticker": null,
+          "decision_issues": [],
+          "decision_tier": "verified_automatic",
+          "destination_venue": "NASDAQ",
+          "effective_date": "2026-08-24",
+          "exchange_ratio_decimal": null,
+          "impact_summary": "The case already uses the successor symbol; no A-to-A transition is created.",
+          "outcomes": [
+            "symbol_changed"
+          ],
+          "relevance": "direct_tracked_security",
+          "rule_id": "lifecycle.simple_symbol_continuation",
+          "rule_version": "1",
+          "successor_ticker": "HAPN",
+          "transition_requested": false
+        },
+        "fixture": "historical_hapn",
+        "historical_sec_fact_authority": "frozen_repository_helper_no_provider_bytes",
+        "listing_authority": {
+          "adapters": [
+            "nasdaq_symbol_directory"
+          ],
+          "document_sha256": [
+            "27fbb0cf60b6843f840e223a1998a82af293ac21594f12fb94ad89dbe815d671"
+          ],
+          "kernel_evidence_count": 1,
+          "kernel_fact_count": 2,
+          "kernel_non_listing_anchor_fact_count": 0,
+          "strict_record_count": 1
+        },
+        "preview_calls": 0,
+        "publisher_injection_inert": true
+      },
+      {
+        "case": "QBTS",
+        "decision": {
+          "action_readiness": "not_applicable",
+          "cash_per_security_decimal": null,
+          "conclusion": "QBTS moves from NYSE to NASDAQ without changing symbol.",
+          "confidence": "high",
+          "consideration_currency": null,
+          "counterparty_cik": null,
+          "counterparty_name": null,
+          "counterparty_ticker": null,
+          "decision_issues": [],
+          "decision_tier": "verified_automatic",
+          "destination_venue": "NASDAQ",
+          "effective_date": "2026-08-24",
+          "exchange_ratio_decimal": null,
+          "impact_summary": "Notify the venue change and keep tracking the same symbol.",
+          "outcomes": [
+            "venue_transfer"
+          ],
+          "relevance": "direct_tracked_security",
+          "rule_id": "lifecycle.venue_transfer",
+          "rule_version": "1",
+          "successor_ticker": "QBTS",
+          "transition_requested": false
+        },
+        "fixture": "same_symbol_venue_transfer",
+        "historical_sec_fact_authority": "frozen_repository_helper_no_provider_bytes",
+        "listing_authority": {
+          "adapters": [
+            "nasdaq_symbol_directory"
+          ],
+          "document_sha256": [
+            "257f9c97fb0f39e4cbf90f28e004051fde72d76602dd9fb741922d765ebd237e"
+          ],
+          "kernel_evidence_count": 1,
+          "kernel_fact_count": 2,
+          "kernel_non_listing_anchor_fact_count": 0,
+          "strict_record_count": 1
+        },
+        "preview_calls": 0,
+        "publisher_injection_inert": true
+      },
+      {
+        "case": "CCL",
+        "decision": {
+          "action_readiness": "not_applicable",
+          "cash_per_security_decimal": null,
+          "conclusion": "The cited event does not change the tracked security identity.",
+          "confidence": "high",
+          "consideration_currency": null,
+          "counterparty_cik": null,
+          "counterparty_name": null,
+          "counterparty_ticker": null,
+          "decision_issues": [],
+          "decision_tier": "verified_automatic",
+          "destination_venue": null,
+          "effective_date": null,
+          "exchange_ratio_decimal": null,
+          "impact_summary": "Keep tracking the existing symbol; no transition is proposed.",
+          "outcomes": [
+            "no_tracked_security_change"
+          ],
+          "relevance": "issuer_related",
+          "rule_id": "lifecycle.no_identity_change",
+          "rule_version": "1",
+          "successor_ticker": null,
+          "transition_requested": false
+        },
+        "fixture": "historical_ccl",
+        "historical_sec_fact_authority": "frozen_repository_helper_no_provider_bytes",
+        "listing_authority": {
+          "adapters": [
+            "nasdaq_symbol_directory"
+          ],
+          "document_sha256": [
+            "88e25928f3856173d1d82a0f53c743e92081a798dab40ea0b77319eeb15a9f94"
+          ],
+          "kernel_evidence_count": 1,
+          "kernel_fact_count": 2,
+          "kernel_non_listing_anchor_fact_count": 0,
+          "strict_record_count": 1
+        },
+        "preview_calls": 0,
+        "publisher_injection_inert": true
+      },
+      {
+        "case": "BLBD",
+        "decision": {
+          "action_readiness": "not_applicable",
+          "cash_per_security_decimal": null,
+          "conclusion": "The cited event does not change the tracked security identity.",
+          "confidence": "high",
+          "consideration_currency": null,
+          "counterparty_cik": null,
+          "counterparty_name": "Example Assets LLC",
+          "counterparty_ticker": null,
+          "decision_issues": [],
+          "decision_tier": "verified_automatic",
+          "destination_venue": null,
+          "effective_date": null,
+          "exchange_ratio_decimal": null,
+          "impact_summary": "Keep tracking the existing symbol; no transition is proposed. Known transaction terms are prefilled.",
+          "outcomes": [
+            "no_tracked_security_change"
+          ],
+          "relevance": "issuer_related",
+          "rule_id": "lifecycle.no_identity_change",
+          "rule_version": "1",
+          "successor_ticker": null,
+          "transition_requested": false
+        },
+        "fixture": "historical_blbd",
+        "historical_sec_fact_authority": "frozen_repository_helper_no_provider_bytes",
+        "listing_authority": {
+          "adapters": [
+            "nasdaq_symbol_directory"
+          ],
+          "document_sha256": [
+            "7c0c7d45c2726386750e213f6eaf273196e95ae8eb69069b1f133646b6d89ba1"
+          ],
+          "kernel_evidence_count": 1,
+          "kernel_fact_count": 2,
+          "kernel_non_listing_anchor_fact_count": 0,
+          "strict_record_count": 1
+        },
+        "preview_calls": 0,
+        "publisher_injection_inert": true
+      },
+      {
+        "case": "NMS-A",
+        "decision": {
+          "action_readiness": "transition_eligible",
+          "cash_per_security_decimal": null,
+          "conclusion": "The tracked security will continue from OLD to NEW.",
+          "confidence": "high",
+          "consideration_currency": null,
+          "counterparty_cik": null,
+          "counterparty_name": null,
+          "counterparty_ticker": null,
+          "decision_issues": [],
+          "decision_tier": "verified_automatic",
+          "destination_venue": "NASDAQ",
+          "effective_date": "2026-08-24",
+          "exchange_ratio_decimal": null,
+          "impact_summary": "The cited identity transition is eligible for scheduling.",
+          "outcomes": [
+            "symbol_changed"
+          ],
+          "relevance": "direct_tracked_security",
+          "rule_id": "lifecycle.simple_symbol_continuation",
+          "rule_version": "1",
+          "successor_ticker": "NEW",
+          "transition_requested": true
+        },
+        "fixture": "nms_symbol_continuation",
+        "historical_sec_fact_authority": "frozen_repository_helper_no_provider_bytes",
+        "listing_authority": {
+          "adapters": [
+            "nasdaq_symbol_directory"
+          ],
+          "document_sha256": [
+            "df37ecb12a5f5070702c12956591fd62a4162d6103d9e3338b9f185b139e701e"
+          ],
+          "kernel_evidence_count": 1,
+          "kernel_fact_count": 2,
+          "kernel_non_listing_anchor_fact_count": 0,
+          "strict_record_count": 1
+        },
+        "preview_calls": 1,
+        "publisher_injection_inert": true
+      },
+      {
+        "case": "OTC-A",
+        "decision": {
+          "action_readiness": "transition_eligible",
+          "cash_per_security_decimal": null,
+          "conclusion": "The tracked security will continue from OLD to NEW.",
+          "confidence": "high",
+          "consideration_currency": null,
+          "counterparty_cik": null,
+          "counterparty_name": null,
+          "counterparty_ticker": null,
+          "decision_issues": [],
+          "decision_tier": "verified_automatic",
+          "destination_venue": "OTC",
+          "effective_date": "2026-08-24",
+          "exchange_ratio_decimal": null,
+          "impact_summary": "The cited identity transition is eligible for scheduling.",
+          "outcomes": [
+            "symbol_changed",
+            "venue_transfer"
+          ],
+          "relevance": "direct_tracked_security",
+          "rule_id": "lifecycle.simple_symbol_continuation",
+          "rule_version": "1",
+          "successor_ticker": "NEW",
+          "transition_requested": true
+        },
+        "fixture": "otc_symbol_continuation",
+        "historical_sec_fact_authority": "frozen_repository_helper_no_provider_bytes",
+        "listing_authority": {
+          "adapters": [
+            "massive_reference"
+          ],
+          "document_sha256": [
+            "15467749295f3054dc49f2374fa397b8d462eecb5fa71381d00088196d343188"
+          ],
+          "kernel_evidence_count": 1,
+          "kernel_fact_count": 4,
+          "kernel_non_listing_anchor_fact_count": 0,
+          "strict_record_count": 1
+        },
+        "preview_calls": 1,
+        "publisher_injection_inert": true
+      },
+      {
+        "case": "TERM",
+        "decision": {
+          "action_readiness": "transition_eligible",
+          "cash_per_security_decimal": null,
+          "conclusion": "The cited regulator record and current listing authorities establish that listing of OLD ended.",
+          "confidence": "high",
+          "consideration_currency": null,
+          "counterparty_cik": null,
+          "counterparty_name": null,
+          "counterparty_ticker": null,
+          "decision_issues": [],
+          "decision_tier": "verified_automatic",
+          "destination_venue": null,
+          "effective_date": "2026-08-24",
+          "exchange_ratio_decimal": null,
+          "impact_summary": "Notify now; profile action follows the eligible preview.",
+          "outcomes": [
+            "listing_ended"
+          ],
+          "relevance": "direct_tracked_security",
+          "rule_id": "lifecycle.terminal_delisting",
+          "rule_version": "1",
+          "successor_ticker": null,
+          "transition_requested": true
+        },
+        "fixture": "terminal_delisting",
+        "historical_sec_fact_authority": "frozen_repository_helper_no_provider_bytes",
+        "listing_authority": {
+          "adapters": [
+            "massive_reference",
+            "nasdaq_symbol_directory"
+          ],
+          "document_sha256": [
+            "09c5739cb35b5318d62cbb539acdd109bf07569bd0c9a1fa08cf335189a10b4a",
+            "71fb4b1f445be5f86ea622d7aff89fab47aaa772eac2562d774288326f67a8bd",
+            "e59c0ff18547a0d3c43d852f021c39876a643f3c90908a04763dfa860cfd560d"
+          ],
+          "kernel_evidence_count": 3,
+          "kernel_fact_count": 0,
+          "kernel_non_listing_anchor_fact_count": 1,
+          "strict_record_count": 3
+        },
+        "preview_calls": 1,
+        "publisher_injection_inert": true
+      },
+      {
+        "case": "MISS",
+        "decision": {
+          "action_readiness": "waiting_market_confirmation",
+          "cash_per_security_decimal": null,
+          "conclusion": "Current directory absence does not establish an explicit terminal listing state.",
+          "confidence": "high",
+          "consideration_currency": null,
+          "counterparty_cik": null,
+          "counterparty_name": null,
+          "counterparty_ticker": null,
+          "decision_issues": [
+            "massive_explicit_inactive_missing"
+          ],
+          "decision_tier": "verified_automatic",
+          "destination_venue": null,
+          "effective_date": "2026-08-24",
+          "exchange_ratio_decimal": null,
+          "impact_summary": "Keep the case in Monitoring until explicit listing authority supports terminal action.",
+          "outcomes": [
+            "undetermined"
+          ],
+          "relevance": "direct_tracked_security",
+          "rule_id": "lifecycle.terminal_delisting",
+          "rule_version": "1",
+          "successor_ticker": null,
+          "transition_requested": false
+        },
+        "fixture": "nasdaq_absence_only",
+        "historical_sec_fact_authority": "frozen_repository_helper_no_provider_bytes",
+        "listing_authority": {
+          "adapters": [
+            "nasdaq_symbol_directory"
+          ],
+          "document_sha256": [
+            "09c5739cb35b5318d62cbb539acdd109bf07569bd0c9a1fa08cf335189a10b4a",
+            "71fb4b1f445be5f86ea622d7aff89fab47aaa772eac2562d774288326f67a8bd"
+          ],
+          "kernel_evidence_count": 2,
+          "kernel_fact_count": 0,
+          "kernel_non_listing_anchor_fact_count": 1,
+          "strict_record_count": 2
+        },
+        "preview_calls": 0,
+        "publisher_injection_inert": true
+      },
+      {
+        "case": "CONFLICT",
+        "decision": {
+          "action_readiness": "action_blocked",
+          "cash_per_security_decimal": null,
+          "conclusion": "Current listing authority contains incompatible records.",
+          "confidence": "low",
+          "consideration_currency": null,
+          "counterparty_cik": null,
+          "counterparty_name": null,
+          "counterparty_ticker": null,
+          "decision_issues": [
+            "listing_authority_conflict"
+          ],
+          "decision_tier": "review_suggested",
+          "destination_venue": null,
+          "effective_date": null,
+          "exchange_ratio_decimal": null,
+          "impact_summary": "No listing state was selected by source count.",
+          "outcomes": [
+            "undetermined"
+          ],
+          "relevance": "direct_tracked_security",
+          "rule_id": "lifecycle.source_conflict",
+          "rule_version": "1",
+          "successor_ticker": null,
+          "transition_requested": false
+        },
+        "fixture": "listing_cik_conflict",
+        "historical_sec_fact_authority": "frozen_repository_helper_no_provider_bytes",
+        "listing_authority": {
+          "adapters": [
+            "massive_reference",
+            "nasdaq_symbol_directory"
+          ],
+          "document_sha256": [
+            "35fb27fb4e5021f72329b0b309a741278b51039c4b710c74538dc4428d4e0921",
+            "df37ecb12a5f5070702c12956591fd62a4162d6103d9e3338b9f185b139e701e"
+          ],
+          "kernel_evidence_count": 2,
+          "kernel_fact_count": 6,
+          "kernel_non_listing_anchor_fact_count": 0,
+          "strict_record_count": 2
+        },
+        "preview_calls": 0,
+        "publisher_injection_inert": true
+      }
+    ],
+    "fixture_authority": "tests/fixtures/listing_authority/shadow-cases.json",
+    "historical_sec_limitation": "Historical SEC facts use frozen repository helpers because this packet contains no provider bytes or calls.",
+    "listing_material_path": "strict_parser_to_builder_to_fact_kernel_to_policy",
+    "non_transition_preview_calls": 0,
+    "policy_version": "trusted-lifecycle-automation-v4",
+    "publisher_injection_inert_count": 9,
+    "schema_version": 1,
+    "transition_preview_calls": 3
+  }
+}
