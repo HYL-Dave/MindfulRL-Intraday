@@ -875,6 +875,68 @@ def _navigate(page, scenario_name: str, locale: str) -> tuple[str, str, dict[str
     }
 
 
+def _geometry(page) -> dict:
+    metrics = STAGE5._geometry(page)
+    controls = page.evaluate(
+        """() => {
+          const clips = (value) => ['auto', 'clip', 'hidden', 'scroll'].includes(value);
+          const visibleRect = (node) => {
+            const style = getComputedStyle(node);
+            const original = node.getBoundingClientRect();
+            if (style.visibility === 'hidden' || style.display === 'none'
+              || original.width <= 0 || original.height <= 0) return null;
+            const rect = {
+              left: Math.max(0, original.left),
+              right: Math.min(innerWidth, original.right),
+              top: Math.max(0, original.top),
+              bottom: Math.min(innerHeight, original.bottom),
+            };
+            for (let parent = node.parentElement; parent; parent = parent.parentElement) {
+              const parentStyle = getComputedStyle(parent);
+              const parentRect = parent.getBoundingClientRect();
+              if (clips(parentStyle.overflowX)) {
+                rect.left = Math.max(rect.left, parentRect.left);
+                rect.right = Math.min(rect.right, parentRect.right);
+              }
+              if (clips(parentStyle.overflowY)) {
+                rect.top = Math.max(rect.top, parentRect.top);
+                rect.bottom = Math.min(rect.bottom, parentRect.bottom);
+              }
+            }
+            if (rect.right <= rect.left || rect.bottom <= rect.top) return null;
+            const hit = document.elementFromPoint(
+              (rect.left + rect.right) / 2,
+              (rect.top + rect.bottom) / 2,
+            );
+            if (!hit || (!node.contains(hit) && !hit.contains(node))) return null;
+            return rect;
+          };
+          return [...document.querySelectorAll(
+            '.lifecycle-activity-band button, .ui-drawer button, .ui-drawer input, '
+            + '.ui-drawer select, .ui-drawer textarea, .ui-drawer a'
+          )].flatMap((node) => {
+            const rect = visibleRect(node);
+            if (!rect) return [];
+            return [{
+              tag: node.tagName,
+              text: (node.textContent || node.getAttribute('aria-label') || '').trim(),
+              ...rect,
+            }];
+          });
+        }"""
+    )
+    overlaps = []
+    for index, left in enumerate(controls):
+        for right in controls[index + 1 :]:
+            width = min(left["right"], right["right"]) - max(left["left"], right["left"])
+            height = min(left["bottom"], right["bottom"]) - max(left["top"], right["top"])
+            if width > 1 and height > 1:
+                overlaps.append([left, right])
+    metrics["controls"] = controls
+    metrics["overlaps"] = overlaps
+    return metrics
+
+
 def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int) -> dict:
     OUTPUT.mkdir(parents=True, exist_ok=True)
     scenario = SCENARIOS[scenario_name]
@@ -935,7 +997,7 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
         assert page.get_by_role("button", name=re.compile(r"Translate|翻譯")).count() == 0
     assert page.locator("[data-action='open-content-translation-settings']").count() == 0
 
-    metrics = STAGE5._geometry(page)
+    metrics = _geometry(page)
     STAGE5._assert_geometry(metrics)
     screenshot = OUTPUT / f"{width}x{height}-{locale}-{scenario_name}.png"
     page.screenshot(path=str(screenshot), full_page=False)

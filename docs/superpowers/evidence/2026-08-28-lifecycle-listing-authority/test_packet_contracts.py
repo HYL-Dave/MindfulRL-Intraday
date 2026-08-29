@@ -11,6 +11,7 @@ from types import ModuleType
 from unittest.mock import patch
 
 import pytest
+from playwright.sync_api import sync_playwright
 
 
 PACKET = Path(__file__).resolve().parent
@@ -112,7 +113,7 @@ def test_preexisting_product_test_fixture_authorities_are_preserved() -> None:
 def test_every_mutation_has_baseline_probe_and_stable_signatures() -> None:
     mutations = _load("run_mutations")
 
-    assert len(mutations.MUTATIONS) == 34
+    assert len(mutations.MUTATIONS) == 35
     for mutation in mutations.MUTATIONS:
         assert mutation.failure_signatures
         assert mutation.command[:4] == (
@@ -337,6 +338,53 @@ def test_browser_post_apply_surface_validator_fails_closed() -> None:
     for field in valid:
         with pytest.raises(AssertionError, match="^browser_post_apply_surface_mismatch:"):
             browser._assert_post_apply_surface_counts(**{**valid, field: 0})
+
+
+def test_browser_geometry_uses_the_visible_overflow_clipped_control_rect() -> None:
+    browser_fixture = _load("run_browser_matrix")
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        page.set_content(
+            """
+            <style>
+              * { box-sizing: border-box; }
+              body { margin: 0; }
+              .ui-drawer {
+                width: 390px;
+                height: 844px;
+                display: grid;
+                grid-template-rows: 48px minmax(0, 1fr);
+              }
+              .ui-overlay-head {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                padding: 8px 12px;
+              }
+              .ui-drawer-body { overflow: auto; }
+              button { height: 28px; }
+            </style>
+            <aside class="ui-drawer">
+              <header class="ui-overlay-head"><button>Close</button></header>
+              <div class="ui-drawer-body">
+                <div style="height: 12px"></div>
+                <button id="save">Save draft</button>
+                <div style="height: 900px"></div>
+              </div>
+            </aside>
+            """
+        )
+        page.locator(".ui-drawer-body").evaluate("node => { node.scrollTop = 25; }")
+
+        metrics = browser_fixture._geometry(page)
+        browser_fixture.STAGE5._assert_geometry(metrics)
+        save = next(control for control in metrics["controls"] if control["text"] == "Save draft")
+        body_top = page.locator(".ui-drawer-body").bounding_box()["y"]
+
+        assert save["top"] == body_top, "visible_overflow_clip"
+        browser.close()
 
 
 def test_log_normalization_removes_machine_paths_and_trailing_blank_lines(

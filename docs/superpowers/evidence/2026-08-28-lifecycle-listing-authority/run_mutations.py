@@ -862,6 +862,28 @@ MUTATIONS = (
             "nested_locator]",
         ),
     ),
+    Mutation(
+        "M35",
+        "measure unclipped control rectangles in the browser matrix",
+        PACKET_BROWSER,
+        "    metrics = STAGE5._geometry(page)\n"
+        "    controls = page.evaluate(\n",
+        "    metrics = STAGE5._geometry(page)\n"
+        "    return metrics\n"
+        "    controls = page.evaluate(\n",
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_geometry_uses_the_visible_overflow_clipped_control_rect",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_geometry_uses_the_visible_overflow_clipped_control_rect",
+        ),
+    ),
 )
 
 
@@ -903,6 +925,7 @@ FAILURE_SIGNATURES = {
     "M32": ("DID NOT RAISE",),
     "M33": ("DID NOT RAISE",),
     "M34": ("transition_eligible", "waiting_market_confirmation"),
+    "M35": ("visible_overflow_clip",),
 }
 assert set(FAILURE_SIGNATURES) == {mutation.mutation_id for mutation in MUTATIONS}
 
