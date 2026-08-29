@@ -34,11 +34,11 @@ rm -f \
 
 git archive fe34ffe769ce747e3847bb429936540775815744 src | tar -x -C "$OLD_CODE"
 
-pytest -q "$PACKET/test_packet_contracts.py" \
-  2>&1 | tee "$PACKET/packet-contracts.txt"
-
 python "$PACKET/run_mutations.py" --output "$PACKET/mutation-ledger.json" \
   2>&1 | tee "$PACKET/mutation-run.txt"
+
+pytest -q "$PACKET/test_packet_contracts.py" \
+  2>&1 | tee "$PACKET/packet-contracts.txt"
 
 python "$PACKET/capture_offline_authority.py" \
   --old-code-root "$OLD_CODE" --output /tmp/arkscope-listing-authority-a.json \
