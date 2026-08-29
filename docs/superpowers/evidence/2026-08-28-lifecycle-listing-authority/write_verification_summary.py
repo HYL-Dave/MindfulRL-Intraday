@@ -38,6 +38,16 @@ def _frontend_test_counts() -> dict:
     return {"files_passed": int(files.group(1)), "tests_passed": int(tests.group(1))}
 
 
+def _measured_operation_count(entries: list[dict], key: str) -> int:
+    count = 0
+    for entry in entries:
+        rows = entry.get(key)
+        if not isinstance(rows, list):
+            raise TypeError(f"browser_operation_rows:{key}")
+        count += len(rows)
+    return count
+
+
 def main() -> int:
     authority = _json("offline-authority.json")
     mutations = _json("mutation-ledger.json")
@@ -158,10 +168,10 @@ def main() -> int:
             "packet_replay_scope": "offline_fixture_and_scratch_only",
             "declared_unexecuted_operations": authority["declared_authority"],
             "measured_browser_operations": {
-                "external_requests": sum(
-                    entry["external_requests"] for entry in entries
+                "external_requests": _measured_operation_count(
+                    entries, "external_requests"
                 ),
-                "writes": sum(entry["writes"] for entry in entries),
+                "writes": _measured_operation_count(entries, "writes"),
             },
         },
         "repository": {

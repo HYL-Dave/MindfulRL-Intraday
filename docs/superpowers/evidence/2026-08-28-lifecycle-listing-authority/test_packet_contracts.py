@@ -805,6 +805,20 @@ def test_packet_secret_scanner_rejects_environment_values_without_echoing_them(
     assert json.loads(report)["finding_count"] == 1
 
 
+def test_verification_summary_counts_measured_browser_operation_rows() -> None:
+    writer = _load("write_verification_summary")
+    entries = [
+        {"external_requests": [], "writes": []},
+        {"external_requests": [{"url": "https://blocked.invalid"}], "writes": []},
+        {"external_requests": [], "writes": [{"method": "POST"}]},
+    ]
+
+    assert writer._measured_operation_count(entries, "external_requests") == 1
+    assert writer._measured_operation_count(entries, "writes") == 1
+    with pytest.raises(TypeError, match="^browser_operation_rows:writes$"):
+        writer._measured_operation_count([{"writes": 0}], "writes")
+
+
 def test_sealed_summary_binds_repository_and_exact_full_node_sets() -> None:
     summary_path = PACKET / "verification-summary.json"
     if (
