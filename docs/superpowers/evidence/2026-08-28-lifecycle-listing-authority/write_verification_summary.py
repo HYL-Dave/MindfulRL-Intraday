@@ -29,8 +29,8 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _frontend_test_counts() -> dict:
-    text = (PACKET / "frontend-test.txt").read_text(encoding="utf-8")
+def _frontend_test_counts(name: str) -> dict:
+    text = (PACKET / name).read_text(encoding="utf-8")
     files = re.search(r"Test Files\s+(\d+) passed", text)
     tests = re.search(r"Tests\s+(\d+) passed", text)
     if files is None or tests is None:
@@ -60,6 +60,8 @@ def main() -> int:
     focused_b = _pytest("backend-focused-b.txt")
     full_a = _pytest("backend-full-a.txt")
     full_b = _pytest("backend-full-b.txt")
+    frontend_test_a = _frontend_test_counts("frontend-test-a.txt")
+    frontend_test_b = _frontend_test_counts("frontend-test-b.txt")
     packet_contracts = _pytest("packet-contracts.txt")
     nodes_a = (PACKET / "focused-nodes-a.txt").read_text(encoding="utf-8").splitlines()
     nodes_b = (PACKET / "focused-nodes-b.txt").read_text(encoding="utf-8").splitlines()
@@ -73,6 +75,7 @@ def main() -> int:
     assert full_nodes_a == full_nodes_b and full_nodes_a
     assert focused_a == focused_b and focused_a["failures"] == 0
     assert full_a == full_b and full_a["failures"] == 0
+    assert frontend_test_a == frontend_test_b
     assert mutations["all_mutations_killed"] is True
     assert mutations["all_baselines_admitted"] is True
     assert (
@@ -266,12 +269,19 @@ def main() -> int:
             "full_b": full_b,
             "full_collected_nodes": len(full_nodes_a),
             "full_node_sets_identical": True,
-            "frontend": {
-                "test": {"status": "passed", **_frontend_test_counts()},
+            "frontend_a": {
+                "test": {"status": "passed", **frontend_test_a},
                 "typecheck": "passed",
                 "check_i18n_literals": "passed",
                 "build": "passed",
             },
+            "frontend_b": {
+                "test": {"status": "passed", **frontend_test_b},
+                "typecheck": "passed",
+                "check_i18n_literals": "passed",
+                "build": "passed",
+            },
+            "frontend_test_counts_identical": True,
             "packet_contracts": packet_contracts,
         },
         "fixture_sha256": {

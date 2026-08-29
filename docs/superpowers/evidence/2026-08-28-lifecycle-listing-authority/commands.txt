@@ -31,7 +31,7 @@ rm -f \
   "$PACKET"/browser-run.txt \
   "$PACKET"/focused-nodes-{a,b}.txt \
   "$PACKET"/full-nodes-{a,b}.txt \
-  "$PACKET"/frontend-{build,i18n-literals,test,typecheck}.txt \
+  "$PACKET"/frontend-{build,i18n-literals,test,typecheck}-{a,b}.txt \
   "$PACKET"/mutation-ledger.json "$PACKET"/mutation-run.txt \
   "$PACKET"/log-normalization.json "$PACKET"/packet-contracts.txt \
   "$PACKET"/offline-authority.json "$PACKET"/offline-authority-run-{a,b}.txt \
@@ -105,10 +105,14 @@ ARKSCOPE_PACKET_SUMMARY_PENDING=1 \
 ARKSCOPE_PACKET_SUMMARY_PENDING=1 \
   pytest --basetemp=/tmp/arkscope-listing-full-b -q \
   2>&1 | tee "$PACKET/backend-full-b.txt"
-npm --prefix apps/arkscope-web test 2>&1 | tee "$PACKET/frontend-test.txt"
-npm --prefix apps/arkscope-web run typecheck 2>&1 | tee "$PACKET/frontend-typecheck.txt"
-npm --prefix apps/arkscope-web run check:i18n-literals 2>&1 | tee "$PACKET/frontend-i18n-literals.txt"
-npm --prefix apps/arkscope-web run build 2>&1 | tee "$PACKET/frontend-build.txt"
+npm --prefix apps/arkscope-web test 2>&1 | tee "$PACKET/frontend-test-a.txt"
+npm --prefix apps/arkscope-web run typecheck 2>&1 | tee "$PACKET/frontend-typecheck-a.txt"
+npm --prefix apps/arkscope-web run check:i18n-literals 2>&1 | tee "$PACKET/frontend-i18n-literals-a.txt"
+npm --prefix apps/arkscope-web run build 2>&1 | tee "$PACKET/frontend-build-a.txt"
+npm --prefix apps/arkscope-web test 2>&1 | tee "$PACKET/frontend-test-b.txt"
+npm --prefix apps/arkscope-web run typecheck 2>&1 | tee "$PACKET/frontend-typecheck-b.txt"
+npm --prefix apps/arkscope-web run check:i18n-literals 2>&1 | tee "$PACKET/frontend-i18n-literals-b.txt"
+npm --prefix apps/arkscope-web run build 2>&1 | tee "$PACKET/frontend-build-b.txt"
 
 node node_modules/vite/bin/vite.js apps/arkscope-web --host 127.0.0.1 --port 4208 --strictPort \
   > "$PACKET/vite.txt" 2>&1 &
