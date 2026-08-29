@@ -620,11 +620,14 @@ def test_mutation_output_normalization_redacts_environment_secrets(
 ) -> None:
     mutations = _load("run_mutations")
     secret = "fixture-secret-value-1234"
+    openai_shape = "s" + "k-" + "a" * 24
+    github_shape = "github" + "_pat_" + "b" * 24
     monkeypatch.setenv("OPENAI_API_KEY", secret)
     output = (
         f"direct token={secret}\n"
         "E assert key in environ({'OPENAI_API_KEY': "
         f"'{secret}', 'HOME': '/home/example'}})\n"
+        f"owner[{openai_shape}] owner[{github_shape}] owner[{openai_shape}]\n"
     )
 
     normalized = mutations._normalize_output(output)
@@ -633,6 +636,10 @@ def test_mutation_output_normalization_redacts_environment_secrets(
     assert "<REDACTED_ENV:OPENAI_API_KEY>" in normalized
     assert "<REDACTED_ENVIRONMENT>" in normalized
     assert "'HOME'" not in normalized
+    assert openai_shape not in normalized
+    assert github_shape not in normalized
+    assert normalized.count("<TOKEN_SHAPE_1>") == 2
+    assert normalized.count("<TOKEN_SHAPE_2>") == 1
 
 
 def test_repository_binding_accepts_only_generated_packet_changes(

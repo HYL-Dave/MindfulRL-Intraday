@@ -76,6 +76,11 @@ PACKET_NORMALIZER = (
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
     "normalize_packet_logs.py"
 )
+_TOKEN_SHAPE = re.compile(
+    r"sk-(?:proj-)?[A-Za-z0-9_-]{20,}"
+    r"|github_pat_[A-Za-z0-9_]{20,}"
+    r"|gh[pousr]_[A-Za-z0-9]{20,}"
+)
 
 
 MUTATIONS = (
@@ -1201,6 +1206,15 @@ def _normalize_output(output: str) -> str:
         re.sub(r"environ\(\{.*\}\)", "environ(<REDACTED_ENVIRONMENT>)", line)
         for line in normalized.split("\n")
     )
+    replacements: dict[str, str] = {}
+
+    def redact_token_shape(match: re.Match[str]) -> str:
+        token = match.group(0)
+        if token not in replacements:
+            replacements[token] = f"<TOKEN_SHAPE_{len(replacements) + 1}>"
+        return replacements[token]
+
+    normalized = _TOKEN_SHAPE.sub(redact_token_shape, normalized)
     return normalized
 
 
