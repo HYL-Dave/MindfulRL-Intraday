@@ -179,8 +179,10 @@ LABELS = {
         "open_nav": "Open navigation",
         "lifecycle": "Security event investigation",
         "listing_family": "Listing authority",
+        "acknowledge": "Acknowledge",
         "reverse_transition": "Reverse transition",
         "reverse_activity": "Reverse tracking change",
+        "translate_evidence": "Translate evidence",
         "statuses": {
             "active": "Active",
             "inactive": "Inactive",
@@ -193,8 +195,10 @@ LABELS = {
         "open_nav": "開啟導覽",
         "lifecycle": "標的事件調查",
         "listing_family": "上市主管機關",
+        "acknowledge": "知道了",
         "reverse_transition": "反轉代號轉移",
         "reverse_activity": "還原追蹤變更",
+        "translate_evidence": "翻譯證據",
         "statuses": {
             "active": "有效",
             "inactive": "非有效",
@@ -202,6 +206,58 @@ LABELS = {
         },
     },
 }
+
+
+def _assert_evidence_surface_counts(
+    *,
+    expected_listing_count: int,
+    regulator_evidence_count: int,
+    expanded_regulator_evidence_count: int,
+    regulator_translation_button_count: int,
+    listing_evidence_count: int,
+    expanded_listing_evidence_count: int,
+    listing_translation_button_count: int,
+) -> None:
+    expected = {
+        "regulator_evidence_count": 1,
+        "expanded_regulator_evidence_count": 1,
+        "regulator_translation_button_count": 1,
+        "listing_evidence_count": expected_listing_count,
+        "expanded_listing_evidence_count": expected_listing_count,
+        "listing_translation_button_count": 0,
+    }
+    actual = {
+        "regulator_evidence_count": regulator_evidence_count,
+        "expanded_regulator_evidence_count": expanded_regulator_evidence_count,
+        "regulator_translation_button_count": regulator_translation_button_count,
+        "listing_evidence_count": listing_evidence_count,
+        "expanded_listing_evidence_count": expanded_listing_evidence_count,
+        "listing_translation_button_count": listing_translation_button_count,
+    }
+    if actual != expected:
+        raise AssertionError(
+            "browser_evidence_surface_mismatch:"
+            + json.dumps(actual, sort_keys=True, separators=(",", ":"))
+        )
+
+
+def _assert_post_apply_surface_counts(
+    *,
+    acknowledgement_count: int,
+    reverse_transition_count: int,
+    reverse_activity_count: int,
+) -> None:
+    actual = {
+        "acknowledgement_count": acknowledgement_count,
+        "reverse_transition_count": reverse_transition_count,
+        "reverse_activity_count": reverse_activity_count,
+    }
+    expected = {key: 1 for key in actual}
+    if actual != expected:
+        raise AssertionError(
+            "browser_post_apply_surface_mismatch:"
+            + json.dumps(actual, sort_keys=True, separators=(",", ":"))
+        )
 
 
 def _summary(name: str) -> dict:
@@ -303,6 +359,15 @@ def _applied_transition(name: str) -> dict:
             "transition_kind": projection["kind"],
         }
     )
+    if projection["kind"] == "terminal_delisting":
+        preview.update(
+            {
+                "active_sources": ["manual_lists"],
+                "provider_owned_sources": [],
+                "caveats": [],
+            }
+        )
+        preview["effects"]["suppression"]["hide_source"] = True
     preview["preview_sha256"] = _preview_digest(preview)
     activity = deepcopy(transition["activity_history"][0])
     activity.update(
@@ -321,6 +386,8 @@ def _applied_transition(name: str) -> dict:
             "reverse_readiness": {"reversible": True, "block_reasons": []},
         }
     )
+    if projection["kind"] == "terminal_delisting":
+        activity["provider_owned_retained"] = []
     transition.update(
         {
             "transition_id": transition_id,
@@ -599,7 +666,7 @@ def _api_response(route, path: str, query: str, locale: str) -> None:
     STAGE5._response(route, payload)
 
 
-def _navigate(page, scenario_name: str, locale: str) -> tuple[str, str]:
+def _navigate(page, scenario_name: str, locale: str) -> tuple[str, str, dict[str, int]]:
     scenario = SCENARIOS[scenario_name]
     labels = LABELS[locale]
     if scenario.get("settings"):
@@ -618,7 +685,17 @@ def _navigate(page, scenario_name: str, locale: str) -> tuple[str, str]:
         if row.count() == 0:
             row = massive.locator("xpath=ancestor::tr")
         assert page.locator('input[type="password"]').count() == 1
-        return page.locator("body").inner_text(), "settings"
+        return page.locator("body").inner_text(), "settings", {
+            "regulator_evidence_count": 0,
+            "expanded_regulator_evidence_count": 0,
+            "regulator_translation_button_count": 0,
+            "listing_evidence_count": 0,
+            "expanded_listing_evidence_count": 0,
+            "listing_translation_button_count": 0,
+            "acknowledgement_count": 0,
+            "reverse_transition_count": 0,
+            "reverse_activity_count": 0,
+        }
 
     universe = page.get_by_role("button", name=labels["universe"], exact=True)
     if not universe.is_visible():
@@ -638,19 +715,93 @@ def _navigate(page, scenario_name: str, locale: str) -> tuple[str, str]:
         assert labels["statuses"][listing["listing_status"]] in text
     if scenario_name == "otc-continuation":
         assert "OTC" in text
+
+    evidence_items = drawer.locator("details.lifecycle-evidence-item")
+    regulator_items = evidence_items.filter(
+        has_text=f"Regulatory fixture: {scenario['ticker']}"
+    )
+    regulator_evidence_count = regulator_items.count()
+    expanded_regulator_evidence_count = 0
+    regulator_translation_button_count = 0
+    if regulator_evidence_count == 1:
+        regulator = regulator_items.first
+        regulator.locator("summary").click()
+        expanded_regulator_evidence_count = int(
+            regulator.get_attribute("open") is not None
+        )
+        translate = regulator.get_by_role(
+            "button", name=labels["translate_evidence"], exact=True
+        )
+        regulator_translation_button_count = int(
+            translate.count() == 1 and translate.is_visible()
+        )
+
+    listing_items = drawer.locator(
+        "details.lifecycle-evidence-item:has(.lifecycle-assessment-facts)"
+    )
+    listing_evidence_count = listing_items.count()
+    expanded_listing_evidence_count = 0
+    listing_translation_button_count = 0
+    for index in range(listing_evidence_count):
+        listing_item = listing_items.nth(index)
+        listing_item.locator("summary").click()
+        expanded_listing_evidence_count += int(
+            listing_item.get_attribute("open") is not None
+        )
+        listing_translation_button_count += listing_item.get_by_role(
+            "button", name=labels["translate_evidence"], exact=True
+        ).count()
+    _assert_evidence_surface_counts(
+        expected_listing_count=len(scenario["listings"]),
+        regulator_evidence_count=regulator_evidence_count,
+        expanded_regulator_evidence_count=expanded_regulator_evidence_count,
+        regulator_translation_button_count=regulator_translation_button_count,
+        listing_evidence_count=listing_evidence_count,
+        expanded_listing_evidence_count=expanded_listing_evidence_count,
+        listing_translation_button_count=listing_translation_button_count,
+    )
+
+    acknowledgement_count = 0
+    reverse_transition_count = 0
+    reverse_activity_count = 0
     if scenario.get("synthetic_post_apply_projection") is True:
         assert labels["reverse_transition"] in text
         assert labels["reverse_activity"] in text
+        acknowledgement = drawer.get_by_role(
+            "button", name=labels["acknowledge"], exact=True
+        )
         reverse_transition = drawer.get_by_role(
             "button", name=labels["reverse_transition"], exact=True
         )
         reverse_activity = drawer.get_by_role(
             "button", name=labels["reverse_activity"], exact=True
         )
-        assert reverse_transition.count() == 1 and reverse_transition.is_visible()
-        assert reverse_activity.count() == 1 and reverse_activity.is_visible()
+        acknowledgement_count = int(
+            acknowledgement.count() == 1 and acknowledgement.is_visible()
+        )
+        reverse_transition_count = int(
+            reverse_transition.count() == 1 and reverse_transition.is_visible()
+        )
+        reverse_activity_count = int(
+            reverse_activity.count() == 1 and reverse_activity.is_visible()
+        )
+        _assert_post_apply_surface_counts(
+            acknowledgement_count=acknowledgement_count,
+            reverse_transition_count=reverse_transition_count,
+            reverse_activity_count=reverse_activity_count,
+        )
         reverse_activity.scroll_into_view_if_needed()
-    return text, "lifecycle"
+    return drawer.inner_text(), "lifecycle", {
+        "regulator_evidence_count": regulator_evidence_count,
+        "expanded_regulator_evidence_count": expanded_regulator_evidence_count,
+        "regulator_translation_button_count": regulator_translation_button_count,
+        "listing_evidence_count": listing_evidence_count,
+        "expanded_listing_evidence_count": expanded_listing_evidence_count,
+        "listing_translation_button_count": listing_translation_button_count,
+        "acknowledgement_count": acknowledgement_count,
+        "reverse_transition_count": reverse_transition_count,
+        "reverse_activity_count": reverse_activity_count,
+    }
 
 
 def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int) -> dict:
@@ -699,7 +850,9 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
     page.route("**/*", handler)
     page.goto(APP_URL, wait_until="networkidle", timeout=20_000)
     try:
-        visible_text, surface = _navigate(page, scenario_name, locale)
+        visible_text, surface, surface_counts = _navigate(
+            page, scenario_name, locale
+        )
     except Exception:
         print(json.dumps({"console_errors": console_errors, "page_errors": page_errors}))
         raise
@@ -707,7 +860,8 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
     body_text = page.locator("body").inner_text()
     forbidden_publisher_labels = ("Publisher reporting", "新聞出版來源")
     assert not any(label in body_text for label in forbidden_publisher_labels)
-    assert page.get_by_role("button", name=re.compile(r"Translate|翻譯")).count() == 0
+    if scenario.get("settings"):
+        assert page.get_by_role("button", name=re.compile(r"Translate|翻譯")).count() == 0
     assert page.locator("[data-action='open-content-translation-settings']").count() == 0
 
     metrics = STAGE5._geometry(page)
@@ -747,6 +901,13 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
     )
     if synthetic_projection:
         assert len(transition_surface_witnesses) == 2
+    acknowledgement_surface_witnesses = (
+        [LABELS[locale]["acknowledge"]]
+        if surface_counts["acknowledgement_count"] == 1
+        else []
+    )
+    if synthetic_projection:
+        assert len(acknowledgement_surface_witnesses) == 1
     result = {
         "scenario": scenario_name,
         "surface": surface,
@@ -763,7 +924,21 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
         "console_errors": console_errors,
         "page_errors": page_errors,
         "publisher_family_text_count": sum(body_text.count(label) for label in forbidden_publisher_labels),
-        "listing_translation_button_count": 0,
+        "regulator_evidence_count": surface_counts["regulator_evidence_count"],
+        "expanded_regulator_evidence_count": surface_counts[
+            "expanded_regulator_evidence_count"
+        ],
+        "regulator_translation_button_count": surface_counts[
+            "regulator_translation_button_count"
+        ],
+        "expected_listing_evidence_count": len(scenario.get("listings", [])),
+        "listing_evidence_count": surface_counts["listing_evidence_count"],
+        "expanded_listing_evidence_count": surface_counts[
+            "expanded_listing_evidence_count"
+        ],
+        "listing_translation_button_count": surface_counts[
+            "listing_translation_button_count"
+        ],
         "overlap_count": len(metrics["overlaps"]),
         "clipped_text_count": len(metrics["textOverflow"]),
         "synthetic_post_apply_projection": synthetic_projection,
@@ -774,6 +949,7 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
             else "local_browser_fixture"
         ),
         "transition_surface_witnesses": transition_surface_witnesses,
+        "acknowledgement_surface_witnesses": acknowledgement_surface_witnesses,
         "fixture_cik_shape": (
             None
             if scenario.get("settings")
@@ -803,7 +979,7 @@ def main() -> int:
         ]
         browser.close()
     payload = {
-        "schema_version": 2,
+        "schema_version": 3,
         "app_url": APP_URL,
         "fixture_only": True,
         "provider_calls": dict(DECLARED_ZERO),
@@ -834,6 +1010,13 @@ def main() -> int:
         "page_errors": sum(len(item["page_errors"]) for item in entries),
         "publisher_family_text_count": sum(item["publisher_family_text_count"] for item in entries),
         "listing_translation_button_count": sum(item["listing_translation_button_count"] for item in entries),
+        "regulator_translation_button_count": sum(
+            item["regulator_translation_button_count"] for item in entries
+        ),
+        "listing_evidence_count": sum(item["listing_evidence_count"] for item in entries),
+        "expanded_listing_evidence_count": sum(
+            item["expanded_listing_evidence_count"] for item in entries
+        ),
         "overlap_count": sum(item["overlap_count"] for item in entries),
         "clipped_text_count": sum(item["clipped_text_count"] for item in entries),
         "synthetic_post_apply_projection_entries": sum(
@@ -841,6 +1024,9 @@ def main() -> int:
         ),
         "transition_surface_witnesses": sum(
             len(item["transition_surface_witnesses"]) for item in entries
+        ),
+        "acknowledgement_surface_witnesses": sum(
+            len(item["acknowledgement_surface_witnesses"]) for item in entries
         ),
     }
     print(json.dumps(totals, sort_keys=True))

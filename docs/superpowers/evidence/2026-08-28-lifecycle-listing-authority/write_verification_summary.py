@@ -74,9 +74,12 @@ def main() -> int:
     ):
         assert browser[field] == declared_zero
     synthetic = [item for item in entries if item["synthetic_post_apply_projection"]]
+    lifecycle_entries = [item for item in entries if item["surface"] == "lifecycle"]
+    settings_entries = [item for item in entries if item["surface"] == "settings"]
     assert len(synthetic) == 8
     assert all(item["produced_by_shadow_execution"] is False for item in synthetic)
     assert all(len(item["transition_surface_witnesses"]) == 2 for item in synthetic)
+    assert all(len(item["acknowledgement_surface_witnesses"]) == 1 for item in synthetic)
     conflict = [item for item in entries if item["scenario"] == "conflict-attention"]
     assert len(conflict) == 4
     assert all(
@@ -97,6 +100,30 @@ def main() -> int:
     assert all(not entry[field] for entry in entries for field in zero_fields)
     assert all(entry["publisher_family_text_count"] == 0 for entry in entries)
     assert all(entry["listing_translation_button_count"] == 0 for entry in entries)
+    assert all(entry["regulator_evidence_count"] == 1 for entry in lifecycle_entries)
+    assert all(
+        entry["expanded_regulator_evidence_count"] == 1
+        for entry in lifecycle_entries
+    )
+    assert all(
+        entry["regulator_translation_button_count"] == 1
+        for entry in lifecycle_entries
+    )
+    assert all(
+        entry["listing_evidence_count"] == entry["expected_listing_evidence_count"]
+        for entry in lifecycle_entries
+    )
+    assert all(
+        entry["expanded_listing_evidence_count"]
+        == entry["expected_listing_evidence_count"]
+        for entry in lifecycle_entries
+    )
+    assert all(
+        entry["regulator_evidence_count"] == 0
+        and entry["regulator_translation_button_count"] == 0
+        and entry["listing_evidence_count"] == 0
+        for entry in settings_entries
+    )
     assert all(entry["overlap_count"] == 0 for entry in entries)
     assert all(entry["clipped_text_count"] == 0 for entry in entries)
     scratch = authority["scratch_migration"]
@@ -166,6 +193,18 @@ def main() -> int:
             "transition_surface_witnesses": sum(
                 len(item["transition_surface_witnesses"]) for item in entries
             ),
+            "acknowledgement_surface_witnesses": sum(
+                len(item["acknowledgement_surface_witnesses"]) for item in entries
+            ),
+            "regulator_translation_controls": sum(
+                item["regulator_translation_button_count"] for item in entries
+            ),
+            "listing_evidence_expanded": sum(
+                item["expanded_listing_evidence_count"] for item in entries
+            ),
+            "listing_translation_controls": sum(
+                item["listing_translation_button_count"] for item in entries
+            ),
         },
         "gates": {
             "focused_a": focused_a,
@@ -189,6 +228,7 @@ def main() -> int:
                 "shadow-cases.json",
                 "shadow-massive-conflict-active.json",
                 "shadow-massive-otc-active.json",
+                "shadow-massive-stocks-empty.json",
                 "shadow-massive-term-inactive.json",
                 "shadow-nasdaqlisted.txt",
                 "shadow-otherlisted.txt",

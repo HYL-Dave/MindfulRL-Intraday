@@ -12,6 +12,7 @@ from pathlib import Path
 import sqlite3
 import sys
 from tempfile import TemporaryDirectory
+from urllib.parse import urlencode
 
 
 PACKET = Path(__file__).resolve().parent
@@ -149,102 +150,17 @@ def _read_bound_payload(binding: dict) -> bytes:
     return body
 
 
-def _nasdaq_records(item: dict) -> tuple[tuple, list[dict]]:
-    from src.security_lifecycle_listing_evidence import parse_nasdaq_directories
-
-    bindings = {
-        binding["component"]: binding
-        for binding in item["listing_payloads"]
-        if binding["adapter"] == "nasdaq_symbol_directory"
-    }
-    if set(bindings) != {"nasdaq_listed", "other_listed"}:
-        raise AssertionError(f"shadow_nasdaq_binding_set:{item['id']}")
-    nasdaq = _read_bound_payload(bindings["nasdaq_listed"])
-    other = _read_bound_payload(bindings["other_listed"])
-    snapshot = parse_nasdaq_directories(
-        nasdaq_bytes=nasdaq,
-        other_bytes=other,
-        retrieved_at=AT,
-    )
-    observed = [
-        {
-            "filename": binding["filename"],
-            "configured_sha256": binding["sha256"],
-            "parser_input_sha256": hashlib.sha256(body).hexdigest(),
-            "parser_received_exact_repository_bytes": True,
-        }
-        for binding, body in (
-            (bindings["nasdaq_listed"], nasdaq),
-            (bindings["other_listed"], other),
-        )
-    ]
-    return snapshot.lookup(item["listing_query"]["ticker"]), observed
-
-
-def _massive_record(item: dict, binding: dict) -> tuple[object, dict]:
-    from src.security_lifecycle_listing_evidence import (
-        _massive_source_url,
-        parse_massive_ticker,
-    )
-
-    ticker = item["listing_query"]["ticker"]
-    body = _read_bound_payload(binding)
-    record = parse_massive_ticker(
-        body,
-        ticker,
-        expected_active=binding["expected_active"],
-        market=binding["market"],
-        retrieved_at=AT,
-        source_url=_massive_source_url(
-            ticker,
-            binding["expected_active"],
-            binding["market"],
-        ),
-    )
-    return record, {
-        "filename": binding["filename"],
-        "configured_sha256": binding["sha256"],
-        "parser_input_sha256": hashlib.sha256(body).hexdigest(),
-        "parser_received_exact_repository_bytes": True,
-    }
-
-
-def _listing_records(item: dict) -> tuple[tuple, str, str, list[dict]]:
-    records: tuple = ()
-    observed: list[dict] = []
-    if any(
-        binding["adapter"] == "nasdaq_symbol_directory"
-        for binding in item["listing_payloads"]
-    ):
-        nasdaq_records, nasdaq_observed = _nasdaq_records(item)
-        records += tuple(nasdaq_records)
-        observed.extend(nasdaq_observed)
-    for binding in item["listing_payloads"]:
-        if binding["adapter"] != "massive_reference":
-            continue
-        record, payload_observed = _massive_record(item, binding)
-        records += (record,)
-        observed.append(payload_observed)
-    if not records:
-        raise AssertionError(f"shadow_listing_records_missing:{item['id']}")
-    query = item["listing_query"]
-    return records, query["source_ticker"], query["issuer_cik"], observed
-
-
-def _persist_listing(item: dict, root: Path) -> tuple[tuple[dict, ...], tuple[dict, ...], dict]:
-    from src.security_lifecycle_fact_kernel import SecurityLifecycleFactKernel
-    from src.security_lifecycle_investigation import SecurityLifecycleInvestigationStore
-    from src.security_lifecycle_listing_evidence import _result
+def _identity_context(item: dict):
     from src.security_lifecycle_sec_evidence import IdentityContext
 
-    name = item["fixture"]
-    records, source_ticker, cik, payloads = _listing_records(item)
-    context = IdentityContext(
-        case_id=f"offline-{name}",
+    query = item["listing_query"]
+    source_ticker = query["source_ticker"]
+    return IdentityContext(
+        case_id=f"offline-{item['fixture']}",
         current_ticker=source_ticker,
         ticker_aliases=(source_ticker,),
         ibkr_conids=(),
-        cik=cik,
+        cik=query["issuer_cik"],
         issuer_name="Offline fixture issuer",
         filing_date="2026-08-28",
         accession="offline-accession",
@@ -256,15 +172,233 @@ def _persist_listing(item: dict, root: Path) -> tuple[tuple[dict, ...], tuple[di
         widened_start="2026-07-29",
         widened_end="2026-09-27",
     )
-    result = _result(
-        context=context,
-        records=tuple(records),
-        blockers=(),
-        diagnostics={"listing_records": len(records)},
+
+
+class FakeProductionListingTransport:
+    """Production-interface transport backed only by digest-bound repository bytes."""
+
+    def __init__(
+        self,
+        item: dict,
+        *,
+        nasdaq_failure: bool = False,
+        malformed_massive_binding: dict | None = None,
+    ) -> None:
+        self.item = item
+        self.nasdaq_failure = nasdaq_failure
+        self.malformed_massive_binding = malformed_massive_binding
+        self.calls: list[str] = []
+        self.payloads: list[dict] = []
+        self.closed = False
+
+    def _bound_payload(self, binding: dict) -> bytes:
+        body = _read_bound_payload(binding)
+        digest = hashlib.sha256(body).hexdigest()
+        self.payloads.append(
+            {
+                "filename": binding["filename"],
+                "configured_sha256": binding["sha256"],
+                "transport_body_sha256": digest,
+                "transport_returned_exact_repository_bytes": digest
+                == binding["sha256"],
+            }
+        )
+        return body
+
+    def fetch_nasdaq(self, source_url, *, budget):
+        from data_sources.listing_authority_transport import (
+            NASDAQ_LISTED_URL,
+            OTHER_LISTED_URL,
+            ListingHttpPayload,
+            ListingTransportFailure,
+        )
+
+        components = {
+            NASDAQ_LISTED_URL: "nasdaq_listed",
+            OTHER_LISTED_URL: "other_listed",
+        }
+        component = components.get(source_url)
+        if component is None:
+            raise AssertionError("shadow_nasdaq_url")
+        self.calls.append(f"nasdaq:{component}")
+        budget.reserve_nasdaq_request(source_url)
+        if self.nasdaq_failure:
+            raise ListingTransportFailure("nasdaq_transport_unavailable")
+        bindings = [
+            binding
+            for binding in self.item["listing_payloads"]
+            if binding["adapter"] == "nasdaq_symbol_directory"
+            and binding["component"] == component
+        ]
+        if len(bindings) != 1:
+            raise AssertionError(f"shadow_nasdaq_binding:{self.item['id']}:{component}")
+        body = self._bound_payload(bindings[0])
+        budget.record_nasdaq_body(len(body))
+        return ListingHttpPayload(
+            source_url=source_url,
+            retrieved_at=AT,
+            status_code=200,
+            content_type="text/plain",
+            body=body,
+        )
+
+    def fetch_massive_ticker(
+        self,
+        ticker,
+        *,
+        expected_active,
+        market,
+        api_key,
+        budget,
+    ):
+        from data_sources.listing_authority_transport import (
+            MASSIVE_TICKERS_URL,
+            ListingHttpPayload,
+        )
+
+        if api_key != "shadow-fixture-key":
+            raise AssertionError("shadow_massive_key_authority")
+        active = "true" if expected_active else "false"
+        identity = (ticker, expected_active, market)
+        self.calls.append(f"massive:{ticker}:{active}:{market}")
+        budget.reserve_massive_request(identity)
+        if self.malformed_massive_binding is not None:
+            binding = self.malformed_massive_binding
+        else:
+            bindings = [
+                binding
+                for binding in self.item["listing_payloads"]
+                if binding["adapter"] == "massive_reference"
+                and binding["expected_active"] is expected_active
+                and binding["market"] == market
+            ]
+            if len(bindings) != 1:
+                raise AssertionError(
+                    f"shadow_massive_binding:{self.item['id']}:{identity}"
+                )
+            binding = bindings[0]
+        body = self._bound_payload(binding)
+        budget.record_massive_body(len(body))
+        source_url = f"{MASSIVE_TICKERS_URL}?{urlencode((('ticker', ticker), ('active', active), ('market', market), ('limit', '2')))}"
+        return ListingHttpPayload(
+            source_url=source_url,
+            retrieved_at=AT,
+            status_code=200,
+            content_type="application/json",
+            body=body,
+        )
+
+    @staticmethod
+    def diagnostics(budget):
+        return budget.diagnostics()
+
+    def close(self) -> None:
+        self.closed = True
+
+
+def _session_lookup(
+    item: dict,
+    *,
+    nasdaq_failure: bool = False,
+    malformed_massive_binding: dict | None = None,
+    repeat: bool = False,
+):
+    from data_sources.listing_authority_transport import ListingRequestBudget
+    from src.security_lifecycle_listing_evidence import ListingAuthoritySession
+
+    transport = FakeProductionListingTransport(
+        item,
+        nasdaq_failure=nasdaq_failure,
+        malformed_massive_binding=malformed_massive_binding,
     )
+    budget = ListingRequestBudget.lifecycle()
+    require_explicit_inactive = item["fixture"] in {
+        "terminal_delisting",
+        "nasdaq_absence_only",
+    }
+    session = ListingAuthoritySession(
+        transport=transport,
+        budget=budget,
+        retrieved_at=AT,
+        massive_api_key=(
+            None if item["id"] == "MISS" else "shadow-fixture-key"
+        ),
+    )
+    query = item["listing_query"]
+    result = session.lookup(
+        context=_identity_context(item),
+        candidate_tickers=(query["ticker"],),
+        require_explicit_inactive=require_explicit_inactive,
+    )
+    before_repeat = (tuple(transport.calls), dict(budget.diagnostics()))
+    repeated_byte_identical = False
+    if repeat:
+        repeated = session.lookup(
+            context=_identity_context(item),
+            candidate_tickers=(query["ticker"],),
+            require_explicit_inactive=require_explicit_inactive,
+        )
+        repeated_byte_identical = repeated == result
+        assert (tuple(transport.calls), dict(budget.diagnostics())) == before_repeat
+    session.close()
+    assert transport.closed is True
+    return result, {
+        "calls": transport.calls,
+        "payloads": transport.payloads,
+        "diagnostics": dict(budget.diagnostics()),
+        "blockers": list(result.blockers),
+        "require_explicit_inactive": require_explicit_inactive,
+        "lookup_calls": 1 + int(repeat),
+        "repeated_lookup_additional_requests": (
+            len(transport.calls) - len(before_repeat[0]) if repeat else None
+        ),
+        "repeated_lookup_byte_identical": (
+            repeated_byte_identical if repeat else None
+        ),
+    }
+
+
+def _listing_material(item: dict):
+    primary, session = _session_lookup(item, repeat=item["id"] == "OTC-A")
+    evidence = primary.evidence
+    facts = primary.facts
+    blockers = primary.blockers
+    sessions = [session]
+    if item["id"] == "CONFLICT":
+        supplemental, supplemental_session = _session_lookup(
+            item,
+            nasdaq_failure=True,
+        )
+        massive_ids = {
+            row.evidence_id
+            for row in supplemental.evidence
+            if row.adapter == "massive_reference"
+        }
+        evidence = evidence + tuple(
+            row for row in supplemental.evidence if row.evidence_id in massive_ids
+        )
+        facts = facts + tuple(
+            row for row in supplemental.facts if row.evidence_id in massive_ids
+        )
+        sessions.append(supplemental_session)
+    return evidence, facts, blockers, sessions
+
+
+def _persist_listing(item: dict, root: Path) -> tuple[tuple[dict, ...], tuple[dict, ...], dict]:
+    from src.security_lifecycle_fact_kernel import (
+        AutomationBlocker,
+        SecurityLifecycleFactKernel,
+    )
+    from src.security_lifecycle_investigation import SecurityLifecycleInvestigationStore
+
+    name = item["fixture"]
+    query = item["listing_query"]
+    source_ticker = query["source_ticker"]
+    cik = query["issuer_cik"]
+    listing_rows, listing_facts, blocker_codes, sessions = _listing_material(item)
     anchor_evidence = ()
     anchor_facts = ()
-    if not result.facts:
+    if not listing_facts:
         anchor = K._evidence(f"listing-{name}")
         anchor_evidence = (anchor,)
         anchor_facts = (K._fact(anchor),)
@@ -289,21 +423,25 @@ def _persist_listing(item: dict, root: Path) -> tuple[tuple[dict, ...], tuple[di
             mode="historical",
             execution_revision="trusted-lifecycle-execution-r1",
             query_context={"case_id": case_id, "cik": cik, "aliases": [source_ticker]},
-            diagnostics={"listing_records": len(records)},
+            diagnostics={"listing_records": len(listing_rows)},
             at=AT,
+        )
+        blockers = tuple(
+            AutomationBlocker(code=code, retryable=True, context={})
+            for code in blocker_codes
         )
         completed = kernel.complete_run(
             run_id=claim.run_id,
-            evidence=result.evidence + anchor_evidence,
-            facts=result.facts + anchor_facts,
-            blockers=(),
-            decision_tier="verified_automatic",
-            action_readiness="not_applicable",
-            retry_at=None,
-            diagnostics={"listing_records": len(records)},
+            evidence=listing_rows + anchor_evidence,
+            facts=listing_facts + anchor_facts,
+            blockers=blockers,
+            decision_tier=None if blockers else "verified_automatic",
+            action_readiness=None if blockers else "not_applicable",
+            retry_at="2026-08-29T22:00:00Z" if blockers else None,
+            diagnostics={"listing_records": len(listing_rows)},
             at=AT,
         )
-        assert completed.status == "succeeded"
+        assert completed.status == ("blocked" if blockers else "succeeded")
         evidence = tuple(
             row
             for row in store.list_evidence(case_id)
@@ -319,19 +457,68 @@ def _persist_listing(item: dict, root: Path) -> tuple[tuple[dict, ...], tuple[di
             )
             if row["evidence_id"] in listing_evidence_ids
         )
-        assert len(evidence) == len(result.evidence)
-        assert len(facts) == len(result.facts)
+        assert len(evidence) == len(listing_rows)
+        assert len(facts) == len(listing_facts)
+        payloads = [payload for row in sessions for payload in row["payloads"]]
+        document_sha256 = sorted(
+            {
+                json.loads(row["source_locator_json"])["source_document_sha256"]
+                for row in evidence
+            }
+        )
+        assert set(document_sha256) <= {
+            payload["transport_body_sha256"] for payload in payloads
+        }
         return evidence, facts, {
-            "strict_record_count": len(records),
+            "strict_record_count": len(listing_rows),
             "kernel_evidence_count": len(evidence),
             "kernel_fact_count": len(facts),
             "kernel_non_listing_anchor_fact_count": len(anchor_facts),
-            "adapters": sorted({record.adapter for record in records}),
-            "document_sha256": sorted({record.source_document_sha256 for record in records}),
+            "kernel_status": completed.status,
+            "session_blockers": list(blocker_codes),
+            "adapters": sorted({row["adapter"] for row in evidence}),
+            "document_sha256": document_sha256,
             "payloads": payloads,
+            "sessions": sessions,
         }
     finally:
         connection.close()
+
+
+def _parser_blocker_probe(item: dict):
+    malformed = {
+        "adapter": "massive_reference",
+        "expected_active": False,
+        "market": "stocks",
+        "filename": "nasdaqlisted.txt",
+        "sha256": "09c5739cb35b5318d62cbb539acdd109bf07569bd0c9a1fa08cf335189a10b4a",
+    }
+    result, session = _session_lookup(
+        item,
+        nasdaq_failure=True,
+        malformed_massive_binding=malformed,
+    )
+    assert result.blockers == (
+        "listing_directory_unavailable",
+        "massive_reference_unavailable",
+    )
+    return session
+
+
+def _budget_within_limits(diagnostics: dict) -> bool:
+    from data_sources.listing_authority_transport import (
+        MAX_MASSIVE_REQUESTS,
+        MAX_MASSIVE_TOTAL_BYTES,
+        MAX_NASDAQ_REQUESTS,
+        MAX_NASDAQ_TOTAL_BYTES,
+    )
+
+    return (
+        0 <= diagnostics["nasdaq_request_count"] <= MAX_NASDAQ_REQUESTS
+        and 0 <= diagnostics["nasdaq_body_bytes"] <= MAX_NASDAQ_TOTAL_BYTES
+        and 0 <= diagnostics["massive_request_count"] <= MAX_MASSIVE_REQUESTS
+        and 0 <= diagnostics["massive_body_bytes"] <= MAX_MASSIVE_TOTAL_BYTES
+    )
 
 
 def _publisher_injection():
@@ -357,11 +544,22 @@ def run() -> dict:
     authority = json.loads(FIXTURE.read_text(encoding="utf-8"))
     rows = []
     total_preview_calls = 0
+    budget_witnesses = []
+    real_session_lookup_calls = 0
     with TemporaryDirectory(prefix="arkscope-listing-shadow-") as directory:
       root = Path(directory)
       for item in authority["cases"]:
         fixture = _fixture(item["fixture"])
         listing_evidence, listing_facts, listing_authority = _persist_listing(item, root)
+        for ordinal, session in enumerate(listing_authority["sessions"], start=1):
+            real_session_lookup_calls += session["lookup_calls"]
+            budget_witnesses.append(
+                {
+                    "case": item["id"],
+                    "session": ordinal,
+                    **session["diagnostics"],
+                }
+            )
         base_evidence = tuple(
             row for row in fixture["evidence"] if row["source_family"] != "listing_authority"
         )
@@ -426,6 +624,17 @@ def run() -> dict:
             }
         )
 
+      items_by_id = {item["id"]: item for item in authority["cases"]}
+      parser_probe = _parser_blocker_probe(items_by_id["TERM"])
+      real_session_lookup_calls += parser_probe["lookup_calls"]
+      budget_witnesses.append(
+          {
+              "case": "PARSER-BLOCKER-PROBE",
+              "session": 1,
+              **parser_probe["diagnostics"],
+          }
+      )
+
     by_id = {row["case"]: row for row in rows}
     assert by_id["HAPN"]["decision"]["transition_requested"] is False
     assert by_id["QBTS"]["decision"]["outcomes"] == ("venue_transfer",)
@@ -442,17 +651,76 @@ def run() -> dict:
     assert by_id["CONFLICT"]["decision"]["decision_issues"] == (
         "listing_authority_conflict",
     )
+    term_session = by_id["TERM"]["listing_authority"]["sessions"][0]
+    assert term_session["require_explicit_inactive"] is True
+    assert "massive:OLD:false:stocks" in term_session["calls"]
+    nms_session = by_id["NMS-A"]["listing_authority"]["sessions"][0]
+    assert nms_session["require_explicit_inactive"] is False
+    assert all(not call.startswith("massive:") for call in nms_session["calls"])
+    otc_session = by_id["OTC-A"]["listing_authority"]["sessions"][0]
+    assert otc_session["calls"] == [
+        "nasdaq:nasdaq_listed",
+        "nasdaq:other_listed",
+        "massive:NEW:true:stocks",
+        "massive:NEW:true:otc",
+    ]
+    assert otc_session["repeated_lookup_additional_requests"] == 0
+    assert otc_session["repeated_lookup_byte_identical"] is True
+    miss_session = by_id["MISS"]["listing_authority"]["sessions"][0]
+    assert miss_session["blockers"] == ["massive_credential_missing"]
+    assert all(
+        payload["transport_returned_exact_repository_bytes"]
+        for row in rows
+        for payload in row["listing_authority"]["payloads"]
+    )
+    assert all(_budget_within_limits(row) for row in budget_witnesses)
+    session_contract = {
+        "transport": "fake_production_interface_exact_repository_bytes",
+        "session": "real_listing_authority_session",
+        "real_session_lookup_calls": real_session_lookup_calls,
+        "provider_calls": 0,
+        "terminal_requiredness": {
+            "candidate_ticker": "OLD",
+            "massive_expected_active": False,
+            "massive_market": "stocks",
+            "require_explicit_inactive": True,
+        },
+        "nms_requiredness": {
+            "candidate_ticker": "NEW",
+            "massive_requested": False,
+            "require_explicit_inactive": False,
+        },
+        "otc_fallback_order": otc_session["calls"],
+        "deduplication": {
+            "case": "OTC-A",
+            "repeated_lookup_additional_requests": otc_session[
+                "repeated_lookup_additional_requests"
+            ],
+            "repeated_lookup_byte_identical": otc_session[
+                "repeated_lookup_byte_identical"
+            ],
+        },
+        "blocker_normalization": {
+            "missing_credential": miss_session["blockers"][0],
+            "parser_failure": parser_probe["blockers"][1],
+        },
+        "request_budgets": {
+            "all_within_limits": True,
+            "witnesses": budget_witnesses,
+        },
+    }
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "fixture_authority": str(FIXTURE.relative_to(ROOT)),
         "policy_version": "trusted-lifecycle-automation-v4",
         "case_count": len(rows),
         "transition_preview_calls": total_preview_calls,
         "non_transition_preview_calls": 0,
         "publisher_injection_inert_count": len(rows),
-        "listing_material_path": "repository_fixture_bytes_to_parser_session_to_listing_evidence_builder_to_real_fact_kernel_temporary_sqlite_to_policy",
-        "listing_payload_bytes": "exact_repository_bytes_no_substitution_mutation_or_reserialization_before_parser_input",
+        "listing_material_path": "repository_fixture_bytes_to_fake_production_transport_to_real_listing_authority_session_to_real_fact_kernel_temporary_sqlite_to_policy",
+        "listing_payload_bytes": "exact_repository_bytes_no_substitution_mutation_or_reserialization_before_real_session_parser_input",
         "historical_sec_limitation": "Historical SEC facts use frozen repository helpers because this packet contains no provider bytes or calls.",
+        "session_contract": session_contract,
         "cases": rows,
     }
 

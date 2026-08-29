@@ -1,4 +1,4 @@
-"""Apply the twenty listing-authority admission mutations independently."""
+"""Apply the listing-authority admission mutations independently."""
 
 from __future__ import annotations
 
@@ -60,6 +60,14 @@ TRANSLATION = "src/security_lifecycle_translation.py"
 PROVIDERS = "src/data_provider_config.py"
 MIGRATION = "src/security_lifecycle_listing_migration.py"
 SCHEMA = "src/security_lifecycle_schema.py"
+FRONTEND_PRESENTATION = "apps/arkscope-web/src/lifecycle/lifecyclePresentation.ts"
+PACKET_SHADOW = (
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_shadow.py"
+)
+PACKET_BROWSER = (
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+    "run_browser_matrix.py"
+)
 
 
 MUTATIONS = (
@@ -516,6 +524,294 @@ MUTATIONS = (
             "test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
         ),
     ),
+    Mutation(
+        "M21",
+        "drop identity facts from exact inactive Massive evidence",
+        LISTING,
+        "    inactive_massive = (\n"
+        "        record.adapter == \"massive_reference\"\n"
+        "        and record.listing_status == \"inactive\"\n"
+        "    )\n",
+        "    inactive_massive = False\n",
+        (
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_real_listing_session_terminal_output_drives_exact_terminal_policy",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_real_listing_session_terminal_output_drives_exact_terminal_policy",
+        ),
+    ),
+    Mutation(
+        "M22",
+        "bypass the exact terminal Massive locator gate",
+        POLICY,
+        "        if not (\n"
+        "            snapshot.get(\"locator_kind\") == \"listing_directory_snapshot\"\n",
+        "        if False and not (\n"
+        "            snapshot.get(\"locator_kind\") == \"listing_directory_snapshot\"\n",
+        tuple(
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_real_terminal_pipeline_requires_exact_inactive_massive_locator["
+            + value
+            + "]"
+            for value in (
+                "wrong_expected_intent",
+                "wrong_market",
+                "incomplete_snapshot",
+            )
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_real_terminal_pipeline_requires_exact_inactive_massive_locator",
+        ),
+    ),
+    Mutation(
+        "M23",
+        "remove lifecycle dependency-log secret redaction",
+        TRANSPORT,
+        "        with dependency_log_redaction(secret_values):\n",
+        "        if True:\n",
+        (
+            "tests/test_listing_authority_transport.py::"
+            "test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_listing_authority_transport.py::"
+            "test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs",
+        ),
+    ),
+    Mutation(
+        "M24",
+        "require explicit inactive Massive before the SEC effective date",
+        SCHEDULER,
+        "    explicit_inactive_required = terminal and (\n"
+        "        effective is None or today >= effective\n"
+        "    )\n",
+        "    explicit_inactive_required = terminal\n",
+        (
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler",
+        ),
+    ),
+    Mutation(
+        "M25",
+        "retain Massive as a required component before the SEC effective date",
+        SCHEDULER,
+        "    if terminal and not explicit_inactive_required:\n"
+        "        required_listing_components = required_listing_components - {\"massive\"}\n",
+        "    if False and terminal and not explicit_inactive_required:\n"
+        "        required_listing_components = required_listing_components - {\"massive\"}\n",
+        (
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler",
+        ),
+    ),
+    Mutation(
+        "M26",
+        "persist listing body-byte diagnostics without content-safe naming",
+        SCHEDULER,
+        '            key.replace("_body_bytes", "_payload_bytes"): value\n',
+        "            key: value\n",
+        (
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler",
+        ),
+    ),
+    Mutation(
+        "M27",
+        "drop Massive component provenance from session parser failures",
+        LISTING,
+        '            result = (None, "massive_reference_unavailable")\n',
+        "            result = (None, exc.code)\n",
+        (
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_listing_session_maps_massive_parser_failures_to_component_blocker["
+            "source-candidate]",
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_listing_session_maps_massive_parser_failures_to_component_blocker["
+            "successor-candidate]",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_real_session_filters_optional_massive_parser_failure_for_nms_successor",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_listing_session_maps_massive_parser_failures_to_component_blocker",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_real_session_filters_optional_massive_parser_failure_for_nms_successor",
+        ),
+    ),
+    Mutation(
+        "M28",
+        "overwrite a completed worker result after listing cleanup failure",
+        SCHEDULER,
+        "        except Exception as close_exc:\n"
+        "            logger.warning(\n"
+        '                "security lifecycle listing transport cleanup failed code=%s",\n'
+        "                type(close_exc).__name__,\n"
+        "            )\n"
+        "    return result\n",
+        "        except Exception as close_exc:\n"
+        "            logger.warning(\n"
+        '                "security lifecycle listing transport cleanup failed code=%s",\n'
+        "                type(close_exc).__name__,\n"
+        "            )\n"
+        "        return security_lifecycle_automation_failure(\n"
+        '            "automation_scheduler_failed"\n'
+        "        )\n"
+        "    return result\n",
+        (
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_listing_session_close_failure_retains_result_with_sanitized_cleanup_witness",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_listing_session_close_failure_retains_result_with_sanitized_cleanup_witness",
+        ),
+    ),
+    Mutation(
+        "M29",
+        "drop all v3 listing blocker presentation mappings",
+        FRONTEND_PRESENTATION,
+        "    listing_directory_unavailable: copy.listingDirectoryUnavailable,\n"
+        "    listing_directory_schema_mismatch: copy.listingDirectorySchemaMismatch,\n"
+        "    listing_directory_stale: copy.listingDirectoryStale,\n"
+        "    listing_status_unresolved: copy.listingStatusUnresolved,\n"
+        "    listing_authority_conflict: copy.listingAuthorityConflict,\n"
+        "    massive_credential_missing: copy.massiveCredentialMissing,\n"
+        "    massive_access_denied: copy.massiveAccessDenied,\n"
+        "    massive_rate_limited: copy.massiveRateLimited,\n"
+        "    massive_reference_unavailable: copy.massiveReferenceUnavailable,\n",
+        "",
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_frontend_presentation_maps_every_v3_listing_blocker",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_frontend_presentation_maps_every_v3_listing_blocker",
+        ),
+    ),
+    Mutation(
+        "M30",
+        "replace the real shadow listing session with an inert object",
+        PACKET_SHADOW,
+        "    session = ListingAuthoritySession(\n",
+        "    session = object()\n"
+        "    if False:\n"
+        "        session = ListingAuthoritySession(\n",
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_shadow_executes_real_listing_session_transport_contract",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_shadow_executes_real_listing_session_transport_contract",
+        ),
+    ),
+    Mutation(
+        "M31",
+        "retain an open portfolio source in the terminal browser projection",
+        PACKET_BROWSER,
+        '    if projection["kind"] == "terminal_delisting":\n'
+        "        preview.update(\n",
+        '    if False and projection["kind"] == "terminal_delisting":\n'
+        "        preview.update(\n",
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_terminal_projection_is_preflight_valid",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_terminal_projection_is_preflight_valid",
+        ),
+    ),
+    Mutation(
+        "M32",
+        "bypass measured browser evidence-surface validation",
+        PACKET_BROWSER,
+        "    if actual != expected:\n"
+        "        raise AssertionError(\n"
+        '            "browser_evidence_surface_mismatch:"\n',
+        "    if False and actual != expected:\n"
+        "        raise AssertionError(\n"
+        '            "browser_evidence_surface_mismatch:"\n',
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_evidence_surface_validator_fails_closed",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_evidence_surface_validator_fails_closed",
+        ),
+    ),
+    Mutation(
+        "M33",
+        "bypass visible post-apply command-surface validation",
+        PACKET_BROWSER,
+        "    if actual != expected:\n"
+        "        raise AssertionError(\n"
+        '            "browser_post_apply_surface_mismatch:"\n',
+        "    if False and actual != expected:\n"
+        "        raise AssertionError(\n"
+        '            "browser_post_apply_surface_mismatch:"\n',
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_post_apply_surface_validator_fails_closed",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_post_apply_surface_validator_fails_closed",
+        ),
+    ),
 )
 
 
@@ -540,6 +836,19 @@ FAILURE_SIGNATURES = {
     "M18": ("lifecycle foreign key mismatch",),
     "M19": ("lifecycle_rows_changed",),
     "M20": ("assert 'v3' == 'v2'",),
+    "M21": ("Right contains 2 more items",),
+    "M22": ("transition_eligible", "waiting_market_confirmation"),
+    "M23": ("lifecycle massive key+/%",),
+    "M24": ("case_processing_blocked",),
+    "M25": ("case_processing_blocked",),
+    "M26": ("case_processing_failed",),
+    "M27": ("listing_status_unresolved",),
+    "M28": ("automation_scheduler_failed",),
+    "M29": ("listing_directory_unavailable",),
+    "M30": ("AttributeError", "object", "lookup"),
+    "M31": ("portfolio_open",),
+    "M32": ("DID NOT RAISE",),
+    "M33": ("DID NOT RAISE",),
 }
 assert set(FAILURE_SIGNATURES) == {mutation.mutation_id for mutation in MUTATIONS}
 

@@ -8,6 +8,9 @@ import json
 from pathlib import Path
 import sys
 from types import ModuleType
+from unittest.mock import patch
+
+import pytest
 
 
 PACKET = Path(__file__).resolve().parent
@@ -42,6 +45,55 @@ def test_shadow_cases_bind_exact_repository_payload_bytes() -> None:
             assert hashlib.sha256(body).hexdigest() == expected
 
 
+def test_shadow_executes_real_listing_session_transport_contract() -> None:
+    shadow = _load("run_shadow")
+    from src.security_lifecycle_listing_evidence import ListingAuthoritySession
+
+    real_lookup = ListingAuthoritySession.lookup
+    observed = []
+
+    def observed_lookup(self, **kwargs):
+        observed.append(
+            {
+                "candidate_tickers": kwargs["candidate_tickers"],
+                "require_explicit_inactive": kwargs["require_explicit_inactive"],
+            }
+        )
+        return real_lookup(self, **kwargs)
+
+    with patch.object(ListingAuthoritySession, "lookup", observed_lookup):
+        result = shadow.run()
+
+    assert observed, "shadow bypassed ListingAuthoritySession.lookup"
+    contract = result["session_contract"]
+    assert contract["transport"] == "fake_production_interface_exact_repository_bytes"
+    assert contract["session"] == "real_listing_authority_session"
+    assert contract["real_session_lookup_calls"] == len(observed)
+    assert contract["provider_calls"] == 0
+    assert contract["terminal_requiredness"] == {
+        "candidate_ticker": "OLD",
+        "massive_expected_active": False,
+        "massive_market": "stocks",
+        "require_explicit_inactive": True,
+    }
+    assert contract["otc_fallback_order"] == [
+        "nasdaq:nasdaq_listed",
+        "nasdaq:other_listed",
+        "massive:NEW:true:stocks",
+        "massive:NEW:true:otc",
+    ]
+    assert contract["deduplication"] == {
+        "case": "OTC-A",
+        "repeated_lookup_additional_requests": 0,
+        "repeated_lookup_byte_identical": True,
+    }
+    assert contract["blocker_normalization"] == {
+        "missing_credential": "massive_credential_missing",
+        "parser_failure": "massive_reference_unavailable",
+    }
+    assert contract["request_budgets"]["all_within_limits"] is True
+
+
 def test_preexisting_product_test_fixture_authorities_are_preserved() -> None:
     expected = {
         "massive-active.json": "f8ab57e07d82eb4dbec4fa254730540931ac1ec432e3ce30befee0219ceed3cc",
@@ -60,7 +112,7 @@ def test_preexisting_product_test_fixture_authorities_are_preserved() -> None:
 def test_every_mutation_has_baseline_probe_and_stable_signatures() -> None:
     mutations = _load("run_mutations")
 
-    assert len(mutations.MUTATIONS) == 20
+    assert len(mutations.MUTATIONS) == 33
     for mutation in mutations.MUTATIONS:
         assert mutation.failure_signatures
         assert mutation.command[:4] == (
@@ -69,6 +121,41 @@ def test_every_mutation_has_baseline_probe_and_stable_signatures() -> None:
             "mutation_pytest_probe",
             "-vv",
         )
+
+
+def test_frontend_presentation_maps_every_v3_listing_blocker() -> None:
+    presentation = (
+        ROOT / "apps/arkscope-web/src/lifecycle/lifecyclePresentation.ts"
+    ).read_text(encoding="utf-8")
+    api = (ROOT / "apps/arkscope-web/src/api.ts").read_text(encoding="utf-8")
+    en = (ROOT / "apps/arkscope-web/src/i18n/resources/en/explore.ts").read_text(
+        encoding="utf-8"
+    )
+    zh_hant = (
+        ROOT / "apps/arkscope-web/src/i18n/resources/zh-Hant/explore.ts"
+    ).read_text(encoding="utf-8")
+    runtime_owner = (
+        ROOT / "apps/arkscope-web/src/lifecycle/lifecyclePresentation.test.ts"
+    ).read_text(encoding="utf-8")
+    blockers = {
+        "listing_directory_unavailable": "listingDirectoryUnavailable",
+        "listing_directory_schema_mismatch": "listingDirectorySchemaMismatch",
+        "listing_directory_stale": "listingDirectoryStale",
+        "listing_status_unresolved": "listingStatusUnresolved",
+        "listing_authority_conflict": "listingAuthorityConflict",
+        "massive_credential_missing": "massiveCredentialMissing",
+        "massive_access_denied": "massiveAccessDenied",
+        "massive_rate_limited": "massiveRateLimited",
+        "massive_reference_unavailable": "massiveReferenceUnavailable",
+    }
+
+    assert len(blockers) == 9
+    for code, copy_key in blockers.items():
+        assert f'  | "{code}"' in api, code
+        assert f"    {code}: copy.{copy_key}," in presentation, code
+        assert f"      {copy_key}: " in en, code
+        assert f"      {copy_key}: " in zh_hant, code
+        assert f'"{code}"' in runtime_owner, code
 
 
 def test_old_code_path_resolution_follows_file_uri_symlinks(tmp_path: Path) -> None:
@@ -83,12 +170,33 @@ def test_old_code_path_resolution_follows_file_uri_symlinks(tmp_path: Path) -> N
     assert old_code._is_within(outside.resolve(), allowed.resolve()) is False
 
 
-def test_browser_applied_projections_have_transition_and_reverse_witnesses() -> None:
+def test_browser_terminal_projection_is_preflight_valid() -> None:
+    browser = _load("run_browser_matrix")
+
+    detail = browser._detail("inactive-history")
+    transition = detail["ticker_transition"]
+    preview = transition["approved_preview"]
+    activity = transition["activity_history"][0]
+
+    assert transition["kind"] == "terminal_delisting"
+    assert preview["eligible"] is True
+    assert preview["block_reasons"] == []
+    assert "portfolio_open" not in preview["active_sources"]
+    assert "portfolio_open" not in preview["provider_owned_sources"]
+    assert "portfolio_position_retained" not in preview["caveats"]
+    assert "portfolio_open" not in activity["provider_owned_retained"]
+
+
+def test_browser_applied_projections_have_visible_command_and_evidence_witnesses() -> None:
     browser = _load("run_browser_matrix")
 
     conflict = browser.SCENARIOS["conflict-attention"]
     assert {row["listing_status"] for row in conflict["listings"]} == {"active"}
     assert len({row["issuer_cik"] for row in conflict["listings"]}) == 2
+
+    for labels in browser.LABELS.values():
+        assert labels["acknowledge"]
+        assert labels["translate_evidence"]
 
     for name in ("inactive-history", "otc-continuation"):
         scenario = browser.SCENARIOS[name]
@@ -99,10 +207,65 @@ def test_browser_applied_projections_have_transition_and_reverse_witnesses() -> 
         assert transition["activity_history"]
         assert transition["reverse_readiness"]["reversible"] is True
 
+    for name, scenario in browser.SCENARIOS.items():
+        if scenario.get("settings"):
+            continue
+        detail = browser._detail(name)
+        listing_evidence = [
+            item
+            for item in detail["evidence"]
+            if item["source_family"] == "listing_authority"
+        ]
+        regulator_evidence = [
+            item for item in detail["evidence"] if item["source_family"] == "regulator"
+        ]
+        assert len(listing_evidence) == len(scenario["listings"])
+        assert len(regulator_evidence) == 1
+        assert regulator_evidence[0]["translations"] == []
+        assert all("translations" not in item for item in listing_evidence)
+
     assert browser.DECLARED_ZERO == {
         "value": 0,
         "basis": "declared_not_authorized",
     }
+
+
+def test_browser_evidence_surface_validator_fails_closed() -> None:
+    browser = _load("run_browser_matrix")
+    valid = {
+        "expected_listing_count": 2,
+        "regulator_evidence_count": 1,
+        "expanded_regulator_evidence_count": 1,
+        "regulator_translation_button_count": 1,
+        "listing_evidence_count": 2,
+        "expanded_listing_evidence_count": 2,
+        "listing_translation_button_count": 0,
+    }
+    browser._assert_evidence_surface_counts(**valid)
+
+    invalid = (
+        {**valid, "regulator_translation_button_count": 0},
+        {**valid, "listing_evidence_count": 1},
+        {**valid, "expanded_listing_evidence_count": 1},
+        {**valid, "listing_translation_button_count": 1},
+    )
+    for counts in invalid:
+        with pytest.raises(AssertionError, match="^browser_evidence_surface_mismatch:"):
+            browser._assert_evidence_surface_counts(**counts)
+
+
+def test_browser_post_apply_surface_validator_fails_closed() -> None:
+    browser = _load("run_browser_matrix")
+    valid = {
+        "acknowledgement_count": 1,
+        "reverse_transition_count": 1,
+        "reverse_activity_count": 1,
+    }
+    browser._assert_post_apply_surface_counts(**valid)
+
+    for field in valid:
+        with pytest.raises(AssertionError, match="^browser_post_apply_surface_mismatch:"):
+            browser._assert_post_apply_surface_counts(**{**valid, field: 0})
 
 
 def test_log_normalization_removes_machine_paths_and_trailing_blank_lines(
