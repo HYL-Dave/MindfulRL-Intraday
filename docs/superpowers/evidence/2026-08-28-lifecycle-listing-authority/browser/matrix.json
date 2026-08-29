@@ -154,9 +154,9 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          23.55,
-          25.54,
-          27.933
+          23.951,
+          25.907,
+          28.248
         ],
         "extrema": [
           [
@@ -195,7 +195,7 @@
         1440,
         900
       ],
-      "visible_text_sha256": "43b5dc6415fc9d1e1fd67b6fa58fb86246f19254ce22d8450aab3d5c484d0298",
+      "visible_text_sha256": "31b652a505d76391271a41448364405b299cdfbc0e37a0354b209cb15e3c9019",
       "writes": []
     },
     {
@@ -350,9 +350,9 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          21.335,
-          22.243,
-          22.853
+          21.243,
+          22.151,
+          22.765
         ],
         "extrema": [
           [
@@ -388,7 +388,7 @@
         1440,
         900
       ],
-      "visible_text_sha256": "93f4c63519aa732a14a1e2b5b3db5817fd88f2c5c1b1c86d47fa3af73df2a3b2",
+      "visible_text_sha256": "fea6f70044f75e68541409a9fa02f38e184a1305d4bb211792f79ea65b2f8137",
       "writes": []
     },
     {
@@ -544,22 +544,22 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          22.92,
-          24.735,
-          26.915
+          23.114,
+          24.929,
+          27.105
         ],
         "extrema": [
           [
             4,
-            255
+            230
           ],
           [
             6,
-            255
+            237
           ],
           [
             7,
-            255
+            243
           ]
         ],
         "size": [
@@ -585,7 +585,7 @@
         1440,
         900
       ],
-      "visible_text_sha256": "ff66337bf8b11f5e0c84a3da52ef0b76f87a33ddf99a3cfaabcd4a61c1f9e6c0",
+      "visible_text_sha256": "4d175712d3cad78f1eb9bce4a33d602bb14a64889531e43f2cbc1662b1a50f0d",
       "writes": []
     },
     {
@@ -740,9 +740,9 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          19.612,
-          20.488,
-          21.073
+          19.506,
+          20.383,
+          20.971
         ],
         "extrema": [
           [
@@ -778,7 +778,7 @@
         1440,
         900
       ],
-      "visible_text_sha256": "18720b9c2d2e048ea59846746e74a29bc698fce30f84c36df5b0995c0e188601",
+      "visible_text_sha256": "40760015813b58056d11554c707e28497d79a80c98cb51135084471f9c1e9e73",
       "writes": []
     },
     {
@@ -934,9 +934,9 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          39.662,
-          40.201,
-          40.466
+          39.67,
+          40.203,
+          40.461
         ],
         "extrema": [
           [
@@ -975,7 +975,7 @@
         390,
         844
       ],
-      "visible_text_sha256": "43b5dc6415fc9d1e1fd67b6fa58fb86246f19254ce22d8450aab3d5c484d0298",
+      "visible_text_sha256": "31b652a505d76391271a41448364405b299cdfbc0e37a0354b209cb15e3c9019",
       "writes": []
     },
     {
@@ -1130,9 +1130,9 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          26.492,
-          27.763,
-          28.354
+          26.6,
+          27.869,
+          28.457
         ],
         "extrema": [
           [
@@ -1168,7 +1168,7 @@
         390,
         844
       ],
-      "visible_text_sha256": "60767bd600c027c048b89bebf9b51a44f01a810b9485df7bdd1540a4cfba8657",
+      "visible_text_sha256": "58926139759fe7fcae90e7f46de1a5357fbfb7dab56a1a629ef69e9d99508784",
       "writes": []
     },
     {
@@ -1324,9 +1324,9 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          36.787,
-          37.354,
-          37.689
+          37.451,
+          38.007,
+          38.32
         ],
         "extrema": [
           [
@@ -1365,7 +1365,7 @@
         390,
         844
       ],
-      "visible_text_sha256": "ff66337bf8b11f5e0c84a3da52ef0b76f87a33ddf99a3cfaabcd4a61c1f9e6c0",
+      "visible_text_sha256": "4d175712d3cad78f1eb9bce4a33d602bb14a64889531e43f2cbc1662b1a50f0d",
       "writes": []
     },
     {
@@ -1520,9 +1520,9 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          24.925,
-          26.16,
-          26.721
+          24.68,
+          25.921,
+          26.487
         ],
         "extrema": [
           [
@@ -1558,7 +1558,7 @@
         390,
         844
       ],
-      "visible_text_sha256": "47e59a3406623928ad47854c299cacb6b72eb4e6e87b1e006c17a89b155656ef",
+      "visible_text_sha256": "df20685ff7b74e7106deee4dfa29371adc32872e47968cdc3f0572317c5490d2",
       "writes": []
     }
   ],

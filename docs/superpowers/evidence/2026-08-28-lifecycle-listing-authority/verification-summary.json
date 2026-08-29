@@ -59,15 +59,15 @@
   "gates": {
     "focused_a": {
       "failures": 0,
-      "passed": 344,
+      "passed": 347,
       "skipped": 0
     },
     "focused_b": {
       "failures": 0,
-      "passed": 344,
+      "passed": 347,
       "skipped": 0
     },
-    "focused_collected_nodes": 344,
+    "focused_collected_nodes": 347,
     "focused_node_sets_identical": true,
     "frontend": {
       "build": "passed",
@@ -81,18 +81,18 @@
     },
     "full_a": {
       "failures": 0,
-      "passed": 4855,
+      "passed": 4872,
       "skipped": 12
     },
     "full_b": {
       "failures": 0,
-      "passed": 4855,
+      "passed": 4872,
       "skipped": 12
     },
     "full_collection_counts_identical": true,
     "packet_contracts": {
       "failures": 0,
-      "passed": 11,
+      "passed": 14,
       "skipped": 0
     }
   },
@@ -197,9 +197,9 @@
     }
   },
   "mutations": {
-    "baselines_admitted": 33,
-    "defined": 33,
-    "killed": 33,
+    "baselines_admitted": 35,
+    "defined": 35,
+    "killed": 35,
     "restored": true,
     "scope_anomalies": 0,
     "unexpected_failures_inside_declared_scopes": 0

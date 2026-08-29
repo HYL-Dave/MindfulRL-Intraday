@@ -1,1 +1,1 @@
-{"killed": 33, "mutations": 33, "restored": true, "scope_anomalies": 0}
+{"killed": 35, "mutations": 35, "restored": true, "scope_anomalies": 0}
