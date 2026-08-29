@@ -108,7 +108,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "657c23ce9913016cd1c0ae39cce32a0e3856343db549f92c67b8e9b9358bef23",
+        "output_sha256": "85a48ef0ce85db2c4317a1504535b36ff938412120355dfb94d053f009f0ff54",
         "output_tail": [
           "collecting ... collected 4 items",
           "TASK8_COLLECTED_NODE tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[http://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt]",
@@ -133,7 +133,7 @@
           "",
           "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt?x=1] PASSED [100%]",
           "",
-          "============================== 4 passed in 0.26s ==============================="
+          "============================== 4 passed in 0.27s ==============================="
         ],
         "passed_node_count": 4,
         "skipped_node_count": 0
@@ -197,7 +197,7 @@
           "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt?x=1]",
           "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/unknown.txt]"
         ],
-        "output_sha256": "7314b4b7c45d9e186c2d3211a20c18d7b6575eb363701fc839602ef1ce019618",
+        "output_sha256": "430d26f49a4e2df166de24aad23f698da3b9a90b0236a73ce969b183d7ca6358",
         "output_tail": [
           "    return self._request_inside_redaction(",
           "data_sources/listing_authority_transport.py:248: in _request_inside_redaction",
@@ -222,7 +222,7 @@
           "FAILED tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/unknown.txt] - IndexError: pop from empty list",
           "FAILED tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://evil.example/dynamic/SymDir/nasdaqlisted.txt] - IndexError: pop from empty list",
           "FAILED tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt?x=1] - IndexError: pop from empty list",
-          "============================== 4 failed in 0.36s ==============================="
+          "============================== 4 failed in 0.37s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -474,7 +474,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[missing_footer-<lambda>-listing_directory_schema_mismatch]"
         ],
-        "output_sha256": "41fe54afafc580ee190d5a78f898429e5d092ebf838eba029648e2b0d7d654dd",
+        "output_sha256": "bb0d9900a0576fbeb17e3b85c26854ebbff2e47139bd964555e683c839ff2a29",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -498,7 +498,7 @@
           "E   Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[missing_footer-<lambda>-listing_directory_schema_mismatch] - Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
-          "============================== 1 failed in 0.36s ==============================="
+          "============================== 1 failed in 0.38s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -548,7 +548,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "fc38fabff5536ecdf9475bb4431562eb9550b36aaab1b12d2ddc8e57e0f234c0",
+        "output_sha256": "4de0b52ac7f47e03c58a55ad5cf80202a0b031e366b123d1b2eef7db49063507",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -563,7 +563,7 @@
           "",
           "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[stale_file-<lambda>-listing_directory_stale] PASSED [100%]",
           "",
-          "============================== 1 passed in 0.32s ==============================="
+          "============================== 1 passed in 0.33s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -687,7 +687,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "ca0efb6f99cfad79d721bebddaf41a9d456b6dda5630e1c4cd0a4cf0b3815a9f",
+        "output_sha256": "3e2b918e4fb0cd45e0e687979fed417cb66701998540925aa923bcd44313fd27",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -702,7 +702,7 @@
           "",
           "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved3] PASSED [100%]",
           "",
-          "============================== 1 passed in 0.31s ==============================="
+          "============================== 1 passed in 0.32s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -826,7 +826,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "184234246eede539b94c3468e8559a6004e721461aa7ec5a051670503ff178fc",
+        "output_sha256": "45a8e612da66f08a97d7c30b2d29b947fe29f6eb82b69c1343d45d9ab3f91391",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -841,7 +841,7 @@
           "",
           "tests/test_listing_authority_transport.py::test_massive_query_secret_never_leaves_the_request_boundary PASSED [100%]",
           "",
-          "============================== 1 passed in 0.26s ==============================="
+          "============================== 1 passed in 0.27s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -890,7 +890,7 @@
         "failed_node_ids": [
           "tests/test_listing_authority_transport.py::test_massive_query_secret_never_leaves_the_request_boundary"
         ],
-        "output_sha256": "1938c19a6e54cbf2a0bfbc1a78b30098f755d970eabdd6de7f1ae58207b779f4",
+        "output_sha256": "9f0a97db6b1fa8061d989a55ddd7695a60f17b9186a387801c5ac2f438c2032f",
         "output_tail": [
           "collecting ... collected 1 item",
           "TASK8_COLLECTED_NODE tests/test_listing_authority_transport.py::test_massive_query_secret_never_leaves_the_request_boundary",
@@ -915,7 +915,7 @@
           "  - https://api.massive.com/v3/reference/tickers?ticker=AAPL&active=true&market=stocks&limit=2",
           "  + https://api.massive.com/v3/reference/tickers?ticker=AAPL&active=true&market=stocks&limit=2&apiKey=secret-value",
           "  ?                                                                                           ++++++++++++++++++++",
-          "============================== 1 failed in 0.30s ==============================="
+          "============================== 1 failed in 0.31s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -1029,7 +1029,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved0]"
         ],
-        "output_sha256": "2ab935652120d6fbfc3901a2eeb0e9c6282532525772a5db373f89818997ff26",
+        "output_sha256": "269dbd88d250e4f46e1c8215ae556d4f9a9b7735bf093fbec2f4e9c56c031248",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -1053,7 +1053,7 @@
           "E   Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved0] - Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
-          "============================== 1 failed in 0.37s ==============================="
+          "============================== 1 failed in 0.36s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -1263,7 +1263,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "d198356a244b85100b00ee91000375dc1225c74d732f955896580770654292c1",
+        "output_sha256": "f8bb2c1e7b89e80a33322bd439658fd36f2bd15b703b7e8ec3c709ef51c0992e",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -1283,7 +1283,7 @@
           "",
           "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-span-fact_citation] PASSED [100%]",
           "",
-          "============================== 2 passed in 0.32s ==============================="
+          "============================== 2 passed in 0.33s ==============================="
         ],
         "passed_node_count": 2,
         "skipped_node_count": 0
@@ -1340,7 +1340,7 @@
           "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-span-fact_citation]",
           "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-span-fact_citation]"
         ],
-        "output_sha256": "62ccf8a9e1462ffc029a275d0d467ef0e944f1f039e6191d5ec74fd3e341e9ab",
+        "output_sha256": "ff020cbc9c47323e90ebe9c05db229567444fdc06fd5e91d920655b1227caf2c",
         "output_tail": [
           "TASK8_COLLECTED_NODE tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-span-fact_citation]",
           "",
@@ -1365,7 +1365,7 @@
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-span-fact_citation] - Failed: DID NOT RAISE <class 'ValueError'>",
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-span-fact_citation] - Failed: DID NOT RAISE <class 'ValueError'>",
-          "============================== 2 failed in 0.41s ==============================="
+          "============================== 2 failed in 0.40s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -1617,7 +1617,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_decision_policy.py::test_ibkr_missing_never_proves_terminal"
         ],
-        "output_sha256": "af2ef62e635f80cdaf478abbb47d35c6fa63ecd78018f796ea83c2f19bd5a859",
+        "output_sha256": "c9605bd6c3d994adb95e0c1f5f2b096d9e48f55d173169108085da217fec4cd8",
         "output_tail": [
           "",
           "tests/test_security_lifecycle_decision_policy.py::test_ibkr_missing_never_proves_terminal ",
@@ -1642,7 +1642,7 @@
           "E   AssertionError: IBKR missing must not preview terminal action",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_decision_policy.py::test_ibkr_missing_never_proves_terminal - AssertionError: IBKR missing must not preview terminal action",
-          "============================== 1 failed in 0.18s ==============================="
+          "============================== 1 failed in 0.19s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -1831,7 +1831,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "9985a32c295f8ce61f2134956ea4f720d35095573fa1417487807ec2f937082e",
+        "output_sha256": "2394a31a71855eb6c8dea14ea85d794d128449fa0549695e276fac6039e21dbb",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -1846,7 +1846,7 @@
           "",
           "tests/test_security_lifecycle_decision_policy.py::test_publisher_evidence_cannot_change_v4_decision PASSED [100%]",
           "",
-          "============================== 1 passed in 0.14s ==============================="
+          "============================== 1 passed in 0.13s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -2110,7 +2110,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "f2838d600ce3a7859b8a02afb415fce49eeefcbb126d25aee18a8bb594799151",
+        "output_sha256": "8eadb12d18b2fbac650e9b5ab13ed0de782c6ad5486f5d1fdc945180cf6449e3",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -2125,7 +2125,7 @@
           "",
           "tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage PASSED [100%]",
           "",
-          "============================== 1 passed in 0.27s ==============================="
+          "============================== 1 passed in 0.28s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -2175,7 +2175,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage"
         ],
-        "output_sha256": "140a1de30c68ec1b774c5088b6a177ba0316122a1d5a42effef27b1ec3579b13",
+        "output_sha256": "e0c08762d1b92442c501f835b16debf3175d2c2784c90fffcb04911264788d0d",
         "output_tail": [
           "E     ",
           "E     Full diff:",
@@ -2187,7 +2187,7 @@
           "E           'regulator',",
           "E       }",
           "=========================== short test summary info ============================",
-          "FAILED tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage - AssertionError: assert {'publisher', 'regulator', 'market_infrastructure', 'manual', 'listing_authority'} == {'market_infrastructure', 'regulator', 'manual', 'listing_authority'}",
+          "FAILED tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage - AssertionError: assert {'listing_authority', 'manual', 'market_infrastructure', 'regulator', 'publisher'} == {'listing_authority', 'manual', 'market_infrastructure', 'regulator'}",
           "  ",
           "  Extra items in the left set:",
           "  'publisher'",
@@ -2250,7 +2250,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "5581562849baae560eb0d961609db329891d430619ef125e7bf28dbccdcf1208",
+        "output_sha256": "9ec1add731bfef06942ebac264aa098857bde3dcc69048ed0aa7e3698216658d",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -2265,7 +2265,7 @@
           "",
           "tests/test_security_lifecycle_translation.py::test_listing_snapshot_translation_rejects_before_every_downstream_boundary PASSED [100%]",
           "",
-          "============================== 1 passed in 1.23s ==============================="
+          "============================== 1 passed in 1.22s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -2314,7 +2314,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_translation.py::test_listing_snapshot_translation_rejects_before_every_downstream_boundary"
         ],
-        "output_sha256": "9ac4145ef37f07f852ac61909b0d3a47148c66077314ef5bd96cce48b93e244e",
+        "output_sha256": "830ba7dd36f895577ccdd79b42127ea293f3b18ba9cae40c13071783eb7fe127",
         "output_tail": [
           "rootdir: <REPO_ROOT>",
           "plugins: anyio-4.14.2",
@@ -2339,7 +2339,7 @@
           "E   Failed: listing translation reached cache lookup",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_translation.py::test_listing_snapshot_translation_rejects_before_every_downstream_boundary - Failed: listing translation reached cache lookup",
-          "============================== 1 failed in 1.35s ==============================="
+          "============================== 1 failed in 1.34s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -2525,7 +2525,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "e9a6e5f97b08a7a4624a5c3520dfbb0e9ab9ea82686ea313f3a96ae6ae10a11c",
+        "output_sha256": "b36035d7f925c2011cff872f85ea1fc8e08987e4d80b621b5f0f9c8e56d36752",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -2540,7 +2540,7 @@
           "",
           "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows PASSED [100%]",
           "",
-          "============================== 1 passed in 0.30s ==============================="
+          "============================== 1 passed in 0.31s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -2589,7 +2589,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
         ],
-        "output_sha256": "0c7a64dffe19824ce30935c1979eed5e6198c70d34c650b49dce7490ac0c6363",
+        "output_sha256": "041db8df3b76c54531bde4295ac7486b0c6c5702cc5732733abf66e955df7577",
         "output_tail": [
           "rootdir: <REPO_ROOT>",
           "plugins: anyio-4.14.2",
@@ -2614,7 +2614,7 @@
           "E   src.security_lifecycle_schema.LifecycleSchemaMismatch: lifecycle foreign key mismatch",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows - src.security_lifecycle_schema.LifecycleSchemaMismatch: lifecycle foreign key mismatch",
-          "============================== 1 failed in 0.31s ==============================="
+          "============================== 1 failed in 0.32s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -2626,6 +2626,143 @@
       ],
       "required_failure_signatures": [
         "lifecycle foreign key mismatch"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "0e9b4b55b928237618aee434fe18c081ab5571bdb11c0a6b86df06753077e2ba",
+          "before_sha256": "0e9b4b55b928237618aee434fe18c081ab5571bdb11c0a6b86df06753077e2ba",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_listing_migration.py"
+        }
+      ],
+      "runner_error": null,
+      "unexpected_failures_inside_declared_scope": []
+    },
+    {
+      "actual_failed_node_ids": [
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "actual_failure_count": 1,
+      "all_required_failure_signatures_observed": true,
+      "baseline": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 0,
+        "failed_node_ids": [],
+        "output_sha256": "bacf9ab764134d96f911f7ea40451568041c937b407ebb31cd334a80aa793da4",
+        "output_tail": [
+          "============================= test session starts ==============================",
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+          "",
+          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows ",
+          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+          "",
+          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows PASSED [100%]",
+          "",
+          "============================== 1 passed in 0.28s ==============================="
+        ],
+        "passed_node_count": 1,
+        "skipped_node_count": 0
+      },
+      "baseline_admitted": true,
+      "commands_identical": true,
+      "declared_command": [
+        "pytest",
+        "-p",
+        "mutation_pytest_probe",
+        "-vv",
+        "--tb=short",
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "declared_scope_node_ids": [
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "expected_failed_node_ids": [
+        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+      ],
+      "expected_failure_count": 1,
+      "failure_signature_matches": {
+        "lifecycle_rows_changed": true
+      },
+      "id": "M19",
+      "killed": true,
+      "missing_expected_failures_inside_declared_scope": [],
+      "mutant": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 1,
+        "failed_node_ids": [
+          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
+        ],
+        "output_sha256": "b35f5868eb41268e505834e2f38f0d688c2ad27d4fa03b07d1373718fdae0f1a",
+        "output_tail": [
+          "============================= test session starts ==============================",
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+          "",
+          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows ",
+          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+          "",
+          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows FAILED [100%]",
+          "",
+          "=================================== FAILURES ===================================",
+          "_____ test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows _____",
+          "tests/test_security_lifecycle_listing_migration.py:535: in test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
+          "    result = migrate_listing_authority_schema(",
+          "src/security_lifecycle_listing_migration.py:656: in migrate_listing_authority_schema",
+          "    raise ListingMigrationRejected(\"lifecycle_rows_changed\")",
+          "E   src.security_lifecycle_listing_migration.ListingMigrationRejected: lifecycle_rows_changed",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows - src.security_lifecycle_listing_migration.ListingMigrationRejected: lifecycle_rows_changed",
+          "============================== 1 failed in 0.33s ==============================="
+        ],
+        "passed_node_count": 0,
+        "skipped_node_count": 0
+      },
+      "mutation": "change one v2 translated-text byte during migration",
+      "mutation_applied": true,
+      "product_files": [
+        "src/security_lifecycle_listing_migration.py"
+      ],
+      "required_failure_signatures": [
+        "lifecycle_rows_changed"
       ],
       "restored_files": [
         {
@@ -2701,143 +2838,6 @@
       ],
       "expected_failure_count": 1,
       "failure_signature_matches": {
-        "lifecycle_rows_changed": true
-      },
-      "id": "M19",
-      "killed": true,
-      "missing_expected_failures_inside_declared_scope": [],
-      "mutant": {
-        "collected_node_ids": [
-          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
-        ],
-        "collection_markers_unique": true,
-        "command": [
-          "pytest",
-          "-p",
-          "mutation_pytest_probe",
-          "-vv",
-          "--tb=short",
-          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
-        ],
-        "executed_node_ids": [
-          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
-        ],
-        "execution_markers_unique": true,
-        "exit_code": 1,
-        "failed_node_ids": [
-          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
-        ],
-        "output_sha256": "bebbfe2d4f058d45838b6ff9f7cba71b5a429b1dd29a1da4a3f832ee009a5c48",
-        "output_tail": [
-          "============================= test session starts ==============================",
-          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
-          "cachedir: .pytest_cache",
-          "rootdir: <REPO_ROOT>",
-          "plugins: anyio-4.14.2",
-          "collecting ... collected 1 item",
-          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
-          "",
-          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows ",
-          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
-          "",
-          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows FAILED [100%]",
-          "",
-          "=================================== FAILURES ===================================",
-          "_____ test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows _____",
-          "tests/test_security_lifecycle_listing_migration.py:535: in test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
-          "    result = migrate_listing_authority_schema(",
-          "src/security_lifecycle_listing_migration.py:656: in migrate_listing_authority_schema",
-          "    raise ListingMigrationRejected(\"lifecycle_rows_changed\")",
-          "E   src.security_lifecycle_listing_migration.ListingMigrationRejected: lifecycle_rows_changed",
-          "=========================== short test summary info ============================",
-          "FAILED tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows - src.security_lifecycle_listing_migration.ListingMigrationRejected: lifecycle_rows_changed",
-          "============================== 1 failed in 0.31s ==============================="
-        ],
-        "passed_node_count": 0,
-        "skipped_node_count": 0
-      },
-      "mutation": "change one v2 translated-text byte during migration",
-      "mutation_applied": true,
-      "product_files": [
-        "src/security_lifecycle_listing_migration.py"
-      ],
-      "required_failure_signatures": [
-        "lifecycle_rows_changed"
-      ],
-      "restored_files": [
-        {
-          "after_sha256": "0e9b4b55b928237618aee434fe18c081ab5571bdb11c0a6b86df06753077e2ba",
-          "before_sha256": "0e9b4b55b928237618aee434fe18c081ab5571bdb11c0a6b86df06753077e2ba",
-          "byte_identical": true,
-          "path": "src/security_lifecycle_listing_migration.py"
-        }
-      ],
-      "runner_error": null,
-      "unexpected_failures_inside_declared_scope": []
-    },
-    {
-      "actual_failed_node_ids": [
-        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
-      ],
-      "actual_failure_count": 1,
-      "all_required_failure_signatures_observed": true,
-      "baseline": {
-        "collected_node_ids": [
-          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
-        ],
-        "collection_markers_unique": true,
-        "command": [
-          "pytest",
-          "-p",
-          "mutation_pytest_probe",
-          "-vv",
-          "--tb=short",
-          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
-        ],
-        "executed_node_ids": [
-          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
-        ],
-        "execution_markers_unique": true,
-        "exit_code": 0,
-        "failed_node_ids": [],
-        "output_sha256": "53515904a3d8b0d29d2ddd3b1d896772a682d817cfb78d6384742e45c9120ba6",
-        "output_tail": [
-          "============================= test session starts ==============================",
-          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
-          "cachedir: .pytest_cache",
-          "rootdir: <REPO_ROOT>",
-          "plugins: anyio-4.14.2",
-          "collecting ... collected 1 item",
-          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
-          "",
-          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows ",
-          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows",
-          "",
-          "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows PASSED [100%]",
-          "",
-          "============================== 1 passed in 0.29s ==============================="
-        ],
-        "passed_node_count": 1,
-        "skipped_node_count": 0
-      },
-      "baseline_admitted": true,
-      "commands_identical": true,
-      "declared_command": [
-        "pytest",
-        "-p",
-        "mutation_pytest_probe",
-        "-vv",
-        "--tb=short",
-        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
-      ],
-      "declared_scope_node_ids": [
-        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
-      ],
-      "expected_failed_node_ids": [
-        "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
-      ],
-      "expected_failure_count": 1,
-      "failure_signature_matches": {
         "assert 'v3' == 'v2'": true
       },
       "id": "M20",
@@ -2864,7 +2864,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
         ],
-        "output_sha256": "a4f9bd74560fb89e09ae19536774f10eb9c5d4ceb1bf222eae23ff9ebecf4837",
+        "output_sha256": "cc046eaa13668102d0d0babd22d23d406e36d70e2585ab5577f7eeef42fbff47",
         "output_tail": [
           "rootdir: <REPO_ROOT>",
           "plugins: anyio-4.14.2",
@@ -2889,7 +2889,7 @@
           "  ",
           "  - v2",
           "  + v3",
-          "============================== 1 failed in 0.27s ==============================="
+          "============================== 1 failed in 0.29s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -3002,7 +3002,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_evidence.py::test_real_listing_session_terminal_output_drives_exact_terminal_policy"
         ],
-        "output_sha256": "964fa850acde008c03bb2b14ebf464f35f825e8d9b7434b1a2d8f9a16defab8f",
+        "output_sha256": "0a3960eee9927a82bc0297194cdfe0d3dcd2ca61c3a1397856a34f56c6c49620",
         "output_tail": [
           "E   AssertionError: assert {} == {'issuer_cik': '0000000002', 'security_class': 'common_stock'}",
           "E     ",
@@ -3027,7 +3027,7 @@
           "  -     'issuer_cik': '0000000002',",
           "  -     'security_class': 'common_stock',",
           "  - }",
-          "============================== 1 failed in 0.37s ==============================="
+          "============================== 1 failed in 0.38s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -3082,7 +3082,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "6bb4ff6de64a96d08e65a987a5282237a8247f3c788088edc663165c93c699b8",
+        "output_sha256": "465f73fedba5515f8fc3f1fdcde20ab1975b4e2195ac2d79c59590fe6bf42b99",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -3107,7 +3107,7 @@
           "",
           "tests/test_security_lifecycle_listing_evidence.py::test_real_terminal_pipeline_requires_exact_inactive_massive_locator[incomplete_snapshot] PASSED [100%]",
           "",
-          "============================== 3 passed in 0.35s ==============================="
+          "============================== 3 passed in 0.34s ==============================="
         ],
         "passed_node_count": 3,
         "skipped_node_count": 0
@@ -3167,7 +3167,7 @@
           "tests/test_security_lifecycle_listing_evidence.py::test_real_terminal_pipeline_requires_exact_inactive_massive_locator[wrong_expected_intent]",
           "tests/test_security_lifecycle_listing_evidence.py::test_real_terminal_pipeline_requires_exact_inactive_massive_locator[wrong_market]"
         ],
-        "output_sha256": "a4fb8c5f8cac66a6107d2d7f1db2becf41ba38cf619af86de996c420e7b9982e",
+        "output_sha256": "61157ee14e47b0a2c59e614270aad82858f23583c8ddd2195c4e95579c8a59d3",
         "output_tail": [
           "E     ",
           "E     - waiting_market_confirmation",
@@ -3192,7 +3192,7 @@
           "  ",
           "  - waiting_market_confirmation",
           "  + transition_eligible",
-          "============================== 3 failed in 0.42s ==============================="
+          "============================== 3 failed in 0.41s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -3242,7 +3242,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "4bb7bd1ea31b5806892f823f35dd05084a214b55b1a9135b3153934a35b79752",
+        "output_sha256": "ab0f460e71c51da5ed4db5c26287a9f61c1da68a6f08d7b55716ee352751ff2d",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -3257,7 +3257,7 @@
           "",
           "tests/test_listing_authority_transport.py::test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs PASSED [100%]",
           "",
-          "============================== 1 passed in 0.26s ==============================="
+          "============================== 1 passed in 0.27s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -3306,7 +3306,7 @@
         "failed_node_ids": [
           "tests/test_listing_authority_transport.py::test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs"
         ],
-        "output_sha256": "e1560c63fd37e013963536a1c254adba0b07affb78536f7319b0686a263ce033",
+        "output_sha256": "d95426cc4b6c49c71a4fd82c997fb1a67535334d20d06a13eb1eb42374092692",
         "output_tail": [
           "=================================== FAILURES ===================================",
           "_____ test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs _____",
@@ -3331,7 +3331,7 @@
           "  ?                                                                                     ++++++++++++++++++++++++",
           "    DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 stream raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
           "    DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 close raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
-          "============================== 1 failed in 0.30s ==============================="
+          "============================== 1 failed in 0.31s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -3380,7 +3380,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "3e36910452d3f1d192aa8da658ecd56f1dfde762ab089f8774c6604ae7cbebf3",
+        "output_sha256": "6d5777ac07b1bbccc52a62fcba8743d0a5ee0aa2ffb2a9c0a766efff233691bc",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -3395,7 +3395,7 @@
           "",
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler PASSED [100%]",
           "",
-          "============================== 1 passed in 0.44s ==============================="
+          "============================== 1 passed in 0.46s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -3444,7 +3444,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler"
         ],
-        "output_sha256": "bc7bb857f59901315acc57a576f0b4ccb39db484835bc3c436a365f68da64ca0",
+        "output_sha256": "d3f9ef9a9dc89c69f3264dc61040081a7af0760358b2144e86740e726b511aea",
         "output_tail": [
           "  Full diff:",
           "    {",
@@ -3469,7 +3469,7 @@
           "  -     'status': 'succeeded',",
           "  +     'status': 'partial',",
           "    }",
-          "============================== 1 failed in 0.48s ==============================="
+          "============================== 1 failed in 0.50s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -3518,7 +3518,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "abf1405cc327662ccafd7ef9766112a95617c87379a7e5c4db445f2eb13a2b82",
+        "output_sha256": "101ff2aaf2bf6e28fb5b66f43678c458a821a44af3002dc860fa38004e3e4210",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -3533,7 +3533,7 @@
           "",
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler PASSED [100%]",
           "",
-          "============================== 1 passed in 0.43s ==============================="
+          "============================== 1 passed in 0.45s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -3582,7 +3582,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler"
         ],
-        "output_sha256": "cc19a79b193ec5ba40c9cbd12860769905867c24fabedc083f57344e0bd0a806",
+        "output_sha256": "170c722150a516ea99a172d12300a3729c046c057b8bf3dc40dec0de6887f01d",
         "output_tail": [
           "  Full diff:",
           "    {",
@@ -3656,7 +3656,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "3e36910452d3f1d192aa8da658ecd56f1dfde762ab089f8774c6604ae7cbebf3",
+        "output_sha256": "101ff2aaf2bf6e28fb5b66f43678c458a821a44af3002dc860fa38004e3e4210",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -3671,7 +3671,7 @@
           "",
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler PASSED [100%]",
           "",
-          "============================== 1 passed in 0.44s ==============================="
+          "============================== 1 passed in 0.45s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -3720,7 +3720,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler"
         ],
-        "output_sha256": "e1c6a4a148514970e71d0a530474a9b23227d0a297473ce0e1e452ead507878b",
+        "output_sha256": "fb7c7474a1d7f10a3c3dbde6a2ebcfcf76eaf5f75bf7783a09d881ae64538a12",
         "output_tail": [
           "  Full diff:",
           "    {",
@@ -3745,7 +3745,7 @@
           "  -     'status': 'succeeded',",
           "  +     'status': 'partial',",
           "    }",
-          "============================== 1 failed in 0.47s ==============================="
+          "============================== 1 failed in 0.49s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -3801,7 +3801,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "ab61d6a6a02c10d05af5f02697921336b8a6a2db6b3a522f77a7e653fcc79fef",
+        "output_sha256": "df22f6c738fd342778be36b624f42a5e2e03275245519e2104bb16387c19a856",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -3826,7 +3826,7 @@
           "",
           "tests/test_security_lifecycle_automation_scheduler.py::test_real_session_filters_optional_massive_parser_failure_for_nms_successor PASSED [100%]",
           "",
-          "============================== 3 passed in 0.35s ==============================="
+          "============================== 3 passed in 0.34s ==============================="
         ],
         "passed_node_count": 3,
         "skipped_node_count": 0
@@ -3887,7 +3887,7 @@
           "tests/test_security_lifecycle_listing_evidence.py::test_listing_session_maps_massive_parser_failures_to_component_blocker[source-candidate]",
           "tests/test_security_lifecycle_listing_evidence.py::test_listing_session_maps_massive_parser_failures_to_component_blocker[successor-candidate]"
         ],
-        "output_sha256": "7307a02775db20b7f160adb6d2850106655bd020e4bc3b1bcca98a380a459b55",
+        "output_sha256": "9733bd51316331d025d999afaee1c0b63b6828771ff2e967e72036f7f5fd0b55",
         "output_tail": [
           "    result = (None, exc.code)",
           "E   UnboundLocalError: local variable 'exc' referenced before assignment",
@@ -3912,7 +3912,7 @@
           "FAILED tests/test_security_lifecycle_listing_evidence.py::test_listing_session_maps_massive_parser_failures_to_component_blocker[source-candidate] - UnboundLocalError: local variable 'exc' referenced before assignment",
           "FAILED tests/test_security_lifecycle_listing_evidence.py::test_listing_session_maps_massive_parser_failures_to_component_blocker[successor-candidate] - UnboundLocalError: local variable 'exc' referenced before assignment",
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_real_session_filters_optional_massive_parser_failure_for_nms_successor - UnboundLocalError: local variable 'exc' referenced before assignment",
-          "============================== 3 failed in 0.49s ==============================="
+          "============================== 3 failed in 0.50s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -4025,7 +4025,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_automation_scheduler.py::test_listing_session_close_failure_retains_result_with_sanitized_cleanup_witness"
         ],
-        "output_sha256": "701b57f0cf0197f750f5dc93069bed9281844c347c26ef04695813e78f7948f8",
+        "output_sha256": "4ab9aff59dac1e96413643f77c83245f283e0cfa50769bc6a25a5f57b6df4fac",
         "output_tail": [
           "  +     'case_ids': [],",
           "  ?                  ++",
@@ -4236,7 +4236,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "32b943d561d277c42341117ddb62da46075ab26a5de93233d34504cfe78f74f4",
+        "output_sha256": "ed3ec54d537266f568a38a8eee5cd5a504566f7c7ebda1626c2321e112d49ba1",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -4251,7 +4251,7 @@
           "",
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_shadow_executes_real_listing_session_transport_contract PASSED [100%]",
           "",
-          "============================== 1 passed in 0.84s ==============================="
+          "============================== 1 passed in 0.91s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0

@@ -15,4 +15,4 @@ dist/assets/index-BELZ43HY.js   1,071.06 kB │ gzip: 317.32 kB
 - Using dynamic import() to code-split the application
 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
-✓ built in 2.72s
+✓ built in 2.63s
