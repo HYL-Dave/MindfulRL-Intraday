@@ -43,6 +43,8 @@ def main() -> int:
     mutations = _json("mutation-ledger.json")
     browser = _json("browser/matrix.json")
     normalization = _json("log-normalization.json")
+    repository_binding = _json("repository-binding.json")
+    secret_scan = _json("secret-scan.json")
     entries = browser["entries"]
     focused_a = _pytest("backend-focused-a.txt")
     focused_b = _pytest("backend-focused-b.txt")
@@ -51,14 +53,21 @@ def main() -> int:
     packet_contracts = _pytest("packet-contracts.txt")
     nodes_a = (PACKET / "focused-nodes-a.txt").read_text(encoding="utf-8").splitlines()
     nodes_b = (PACKET / "focused-nodes-b.txt").read_text(encoding="utf-8").splitlines()
+    full_nodes_a = (
+        (PACKET / "full-nodes-a.txt").read_text(encoding="utf-8").splitlines()
+    )
+    full_nodes_b = (
+        (PACKET / "full-nodes-b.txt").read_text(encoding="utf-8").splitlines()
+    )
     assert nodes_a == nodes_b and nodes_a
+    assert full_nodes_a == full_nodes_b and full_nodes_a
     assert focused_a == focused_b and focused_a["failures"] == 0
     assert full_a == full_b and full_a["failures"] == 0
     assert mutations["all_mutations_killed"] is True
     assert mutations["all_baselines_admitted"] is True
-    assert mutations[
-        "all_declared_commands_identical_between_baseline_and_mutant"
-    ] is True
+    assert (
+        mutations["all_declared_commands_identical_between_baseline_and_mutant"] is True
+    )
     assert mutations["unexpected_failures_inside_declared_mutation_scopes"] == 0
     assert mutations["mutation_scope_anomalies"] == []
     assert mutations["all_product_files_restored_byte_identically"] is True
@@ -79,11 +88,14 @@ def main() -> int:
     assert len(synthetic) == 8
     assert all(item["produced_by_shadow_execution"] is False for item in synthetic)
     assert all(len(item["transition_surface_witnesses"]) == 2 for item in synthetic)
-    assert all(len(item["acknowledgement_surface_witnesses"]) == 1 for item in synthetic)
+    assert all(
+        len(item["acknowledgement_surface_witnesses"]) == 1 for item in synthetic
+    )
     conflict = [item for item in entries if item["scenario"] == "conflict-attention"]
     assert len(conflict) == 4
     assert all(
-        item["fixture_cik_shape"] == {
+        item["fixture_cik_shape"]
+        == {
             "regulator_issuer_cik": "0001409970",
             "listing_issuer_ciks": [None, "0000000001"],
         }
@@ -102,12 +114,10 @@ def main() -> int:
     assert all(entry["listing_translation_button_count"] == 0 for entry in entries)
     assert all(entry["regulator_evidence_count"] == 1 for entry in lifecycle_entries)
     assert all(
-        entry["expanded_regulator_evidence_count"] == 1
-        for entry in lifecycle_entries
+        entry["expanded_regulator_evidence_count"] == 1 for entry in lifecycle_entries
     )
     assert all(
-        entry["regulator_translation_button_count"] == 1
-        for entry in lifecycle_entries
+        entry["regulator_translation_button_count"] == 1 for entry in lifecycle_entries
     )
     assert all(
         entry["listing_evidence_count"] == entry["expected_listing_evidence_count"]
@@ -132,26 +142,55 @@ def main() -> int:
     assert old_guard["inside_calibration"]["delegated_connect_calls"] == 1
     assert old_guard["actual_restored_database"]["read_only_opens"] == 1
     assert normalization["semantic_counts_and_results_preserved"] is True
+    assert repository_binding["replay_head_unchanged"] is True
+    assert repository_binding["allowed_packet_changes_only"] is True
+    assert repository_binding["product_code_modified_during_replay"] is False
+    assert secret_scan["finding_count"] == 0
+    assert len(full_nodes_a) == full_a["passed"] + full_a["skipped"]
     for name in normalization["files"]:
         text = (PACKET / name).read_text(encoding="utf-8")
         assert str(ROOT) not in text
         assert str(Path(sys.prefix).resolve()) not in text
         assert not text.endswith("\n\n")
     summary = {
-        "schema_version": 2,
+        "schema_version": 3,
         "boundary": {
-            "packet_and_fixture_only": True,
-            "product_code_modified": False,
-            "live_provider_calls": authority["declared_authority"]["provider_calls"],
-            "production_database_migrations": authority["declared_authority"]["production_database_migrations"],
-            "merges": authority["declared_authority"]["merges"],
-            "pushes": authority["declared_authority"]["pushes"],
+            "packet_replay_scope": "offline_fixture_and_scratch_only",
+            "declared_unexecuted_operations": authority["declared_authority"],
+            "measured_browser_operations": {
+                "external_requests": sum(
+                    entry["external_requests"] for entry in entries
+                ),
+                "writes": sum(entry["writes"] for entry in entries),
+            },
+        },
+        "repository": {
+            key: repository_binding[key]
+            for key in (
+                "schema_version",
+                "tested_branch",
+                "tested_git_head",
+                "tested_git_tree",
+                "start_worktree_clean",
+                "replay_head_unchanged",
+                "product_code_modified_during_replay",
+                "allowed_packet_changes_only",
+                "dependency_paths",
+                "dependencies",
+            )
+        },
+        "secret_scan": {
+            "finding_count": secret_scan["finding_count"],
         },
         "shadow": {
             "cases": authority["shadow"]["case_count"],
             "preview_calls": authority["shadow"]["transition_preview_calls"],
-            "non_transition_preview_calls": authority["shadow"]["non_transition_preview_calls"],
-            "publisher_injection_inert": authority["shadow"]["publisher_injection_inert_count"],
+            "non_transition_preview_calls": authority["shadow"][
+                "non_transition_preview_calls"
+            ],
+            "publisher_injection_inert": authority["shadow"][
+                "publisher_injection_inert_count"
+            ],
             "strict_path": authority["shadow"]["listing_material_path"],
             "sec_limitation": authority["shadow"]["historical_sec_limitation"],
         },
@@ -185,7 +224,9 @@ def main() -> int:
             "entries": len(entries),
             "screenshots": len(entries),
             "locales": sorted({entry["locale"] for entry in entries}),
-            "viewports": sorted({"x".join(map(str, entry["viewport"])) for entry in entries}),
+            "viewports": sorted(
+                {"x".join(map(str, entry["viewport"])) for entry in entries}
+            ),
             "scenarios": sorted({entry["scenario"] for entry in entries}),
             "all_negative_counts": 0,
             "synthetic_post_apply_projection_entries": len(synthetic),
@@ -213,7 +254,8 @@ def main() -> int:
             "focused_node_sets_identical": True,
             "full_a": full_a,
             "full_b": full_b,
-            "full_collection_counts_identical": full_a == full_b,
+            "full_collected_nodes": len(full_nodes_a),
+            "full_node_sets_identical": True,
             "frontend": {
                 "test": {"status": "passed", **_frontend_test_counts()},
                 "typecheck": "passed",
@@ -235,12 +277,29 @@ def main() -> int:
             )
         },
         "log_normalization": normalization,
+        "limitations": [
+            "Frozen repository helpers provide SEC facts; this packet does not claim real SEC payload coverage.",
+            "TERM and OTC browser states are synthetic post-apply projections, not outputs of the nine-case shadow execution.",
+            "Listing evidence is structured status data, so listing translation controls are intentionally absent; regulator source text retains translation controls.",
+            "The separately authorized Massive canary is an unsealed operator observation and is not part of this offline packet.",
+            "Browser overlap and clipping measurements cover lifecycle activity bands and drawers; positive overlap and vertical-clipping calibrations prove those checks can fail.",
+        ],
     }
     (PACKET / "verification-summary.json").write_text(
         json.dumps(summary, ensure_ascii=True, indent=2, sort_keys=True) + "\n",
         encoding="ascii",
     )
-    print(json.dumps({"focused": focused_a["passed"], "full": full_a["passed"], "browser": len(entries), "mutations": mutations["killed_count"]}, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "focused": focused_a["passed"],
+                "full": full_a["passed"],
+                "browser": len(entries),
+                "mutations": mutations["killed_count"],
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 

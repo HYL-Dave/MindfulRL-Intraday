@@ -5,6 +5,7 @@ export PYTHONDONTWRITEBYTECODE=1
 ROOT="$(git rev-parse --show-toplevel)"
 PACKET="$ROOT/docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority"
 OLD_CODE="$(mktemp -d /tmp/arkscope-listing-old-code.XXXXXX)"
+REPOSITORY_BINDING_START="$(mktemp /tmp/arkscope-listing-binding.XXXXXX)"
 VITE_PID=""
 
 cleanup() {
@@ -13,12 +14,15 @@ cleanup() {
     wait "$VITE_PID" 2>/dev/null || true
   fi
   rm -rf "$OLD_CODE"
+  rm -f "$REPOSITORY_BINDING_START"
 }
 trap cleanup EXIT
 
 cd "$ROOT"
 test "$(git rev-parse --abbrev-ref HEAD)" = "lifecycle-listing-authority"
 git merge-base --is-ancestor dac3d5a6a3f26ae360a5452ecc573addeb894eed HEAD
+python "$PACKET/capture_repository_binding.py" start \
+  --root "$ROOT" --output "$REPOSITORY_BINDING_START"
 find "$PACKET" -type d -name __pycache__ -prune -exec rm -rf {} +
 rm -rf "$PACKET/browser"
 rm -f \
@@ -26,10 +30,12 @@ rm -f \
   "$PACKET"/backend-full-{a,b}.txt \
   "$PACKET"/browser-run.txt \
   "$PACKET"/focused-nodes-{a,b}.txt \
+  "$PACKET"/full-nodes-{a,b}.txt \
   "$PACKET"/frontend-{build,i18n-literals,test,typecheck}.txt \
   "$PACKET"/mutation-ledger.json "$PACKET"/mutation-run.txt \
   "$PACKET"/log-normalization.json "$PACKET"/packet-contracts.txt \
   "$PACKET"/offline-authority.json "$PACKET"/offline-authority-run-{a,b}.txt \
+  "$PACKET"/repository-binding.json "$PACKET"/secret-scan.json \
   "$PACKET"/verification-summary.json "$PACKET"/vite.txt "$PACKET"/SHA256SUMS
 
 git archive fe34ffe769ce747e3847bb429936540775815744 src | tar -x -C "$OLD_CODE"
@@ -38,6 +44,7 @@ python "$PACKET/run_mutations.py" --output "$PACKET/mutation-ledger.json" \
   2>&1 | tee "$PACKET/mutation-run.txt"
 
 pytest -q "$PACKET/test_packet_contracts.py" \
+  -k 'not sealed_summary_binds_repository_and_exact_full_node_sets' \
   2>&1 | tee "$PACKET/packet-contracts.txt"
 
 python "$PACKET/capture_offline_authority.py" \
@@ -65,6 +72,9 @@ FOCUSED=(
 pytest --collect-only -q "${FOCUSED[@]}" | sed -n '/::/p' > "$PACKET/focused-nodes-a.txt"
 pytest --collect-only -q "${FOCUSED[@]}" | sed -n '/::/p' > "$PACKET/focused-nodes-b.txt"
 cmp "$PACKET/focused-nodes-a.txt" "$PACKET/focused-nodes-b.txt"
+pytest --collect-only -q | sed -n '/::/p' > "$PACKET/full-nodes-a.txt"
+pytest --collect-only -q | sed -n '/::/p' > "$PACKET/full-nodes-b.txt"
+cmp "$PACKET/full-nodes-a.txt" "$PACKET/full-nodes-b.txt"
 
 pytest --basetemp=/tmp/arkscope-listing-focused-a \
   tests/test_listing_authority_transport.py \
@@ -89,8 +99,12 @@ pytest --basetemp=/tmp/arkscope-listing-focused-b \
   tests/test_security_lifecycle_tools.py \
   tests/test_security_lifecycle_routes.py -q 2>&1 | tee "$PACKET/backend-focused-b.txt"
 
-pytest --basetemp=/tmp/arkscope-listing-full-a -q 2>&1 | tee "$PACKET/backend-full-a.txt"
-pytest --basetemp=/tmp/arkscope-listing-full-b -q 2>&1 | tee "$PACKET/backend-full-b.txt"
+ARKSCOPE_PACKET_SUMMARY_PENDING=1 \
+  pytest --basetemp=/tmp/arkscope-listing-full-a -q \
+  2>&1 | tee "$PACKET/backend-full-a.txt"
+ARKSCOPE_PACKET_SUMMARY_PENDING=1 \
+  pytest --basetemp=/tmp/arkscope-listing-full-b -q \
+  2>&1 | tee "$PACKET/backend-full-b.txt"
 npm --prefix apps/arkscope-web test 2>&1 | tee "$PACKET/frontend-test.txt"
 npm --prefix apps/arkscope-web run typecheck 2>&1 | tee "$PACKET/frontend-typecheck.txt"
 npm --prefix apps/arkscope-web run check:i18n-literals 2>&1 | tee "$PACKET/frontend-i18n-literals.txt"
@@ -121,5 +135,30 @@ VITE_PID=""
 find "$PACKET" -type d -name __pycache__ -prune -exec rm -rf {} +
 test -z "$(find "$PACKET" -type d -name __pycache__ -print -quit)"
 python "$PACKET/normalize_packet_logs.py" --output "$PACKET/log-normalization.json"
+python "$PACKET/capture_repository_binding.py" finish \
+  --root "$ROOT" \
+  --packet-relative docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority \
+  --start "$REPOSITORY_BINDING_START" \
+  --output "$PACKET/repository-binding.json" \
+  --dependency docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py \
+  --dependency docs/superpowers/evidence/2026-08-26-lifecycle-automated-disposition/run_browser_matrix.py \
+  --dependency docs/superpowers/evidence/2026-08-25-trusted-lifecycle-automation-stage-5-repair/run_browser_matrix.py
+python "$PACKET/scan_packet_secrets.py" \
+  --packet "$PACKET" --output "$PACKET/secret-scan.json"
 python "$PACKET/write_verification_summary.py"
+pytest -q "$PACKET/test_packet_contracts.py" \
+  2>&1 | tee "$PACKET/packet-contracts.txt"
+python "$PACKET/write_verification_summary.py"
+python "$PACKET/capture_repository_binding.py" finish \
+  --root "$ROOT" \
+  --packet-relative docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority \
+  --start "$REPOSITORY_BINDING_START" \
+  --output "$PACKET/repository-binding.json" \
+  --dependency docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py \
+  --dependency docs/superpowers/evidence/2026-08-26-lifecycle-automated-disposition/run_browser_matrix.py \
+  --dependency docs/superpowers/evidence/2026-08-25-trusted-lifecycle-automation-stage-5-repair/run_browser_matrix.py
+python "$PACKET/scan_packet_secrets.py" \
+  --packet "$PACKET" --output "$PACKET/secret-scan.json"
+pytest -q "$PACKET/test_packet_contracts.py" \
+  -k sealed_summary_binds_repository_and_exact_full_node_sets
 python "$PACKET/seal_packet.py"

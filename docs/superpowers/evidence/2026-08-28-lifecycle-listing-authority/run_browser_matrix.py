@@ -27,7 +27,9 @@ BASE_RUNNER = (
 
 
 def _load_base() -> ModuleType:
-    spec = importlib.util.spec_from_file_location("disposition_browser_fixture", BASE_RUNNER)
+    spec = importlib.util.spec_from_file_location(
+        "disposition_browser_fixture", BASE_RUNNER
+    )
     if spec is None or spec.loader is None:
         raise RuntimeError("browser_fixture_loader_unavailable")
     module = importlib.util.module_from_spec(spec)
@@ -129,7 +131,7 @@ SCENARIOS = {
                 "primary_exchange": "XNAS",
                 "candidate_ticker": "TERM",
                 "issuer_cik": "0001409970",
-            }
+            },
         ],
     },
     "conflict-attention": {
@@ -290,8 +292,12 @@ def _summary(name: str) -> dict:
             "source_ref": f"fixture-{name}",
             "ticker": scenario["ticker"],
             "issuer_name": scenario["issuer"],
-            "workflow_state": "resolved" if scenario["queue"] == "history" else "unresolved",
-            "kinds": [{"event_type": "listing_status_review", "effective_date": "2026-08-28"}],
+            "workflow_state": "resolved"
+            if scenario["queue"] == "history"
+            else "unresolved",
+            "kinds": [
+                {"event_type": "listing_status_review", "effective_date": "2026-08-28"}
+            ],
             "current_assessment": None,
             "current_acknowledgement": None,
             "investigation_run_count": 0,
@@ -393,9 +399,7 @@ def _assert_terminal_product_invariants(scenario: dict, transition: dict) -> Non
         {"change_type": "source_hidden", "count": 1},
         {"change_type": "watchlist_membership_archived", "count": 1},
     ]
-    assert {row["candidate_ticker"] for row in scenario["listings"]} == {
-        source_ticker
-    }
+    assert {row["candidate_ticker"] for row in scenario["listings"]} == {source_ticker}
     assert {
         (row["authority"], row.get("directory"), row["listing_status"])
         for row in scenario["listings"]
@@ -794,17 +798,21 @@ def _navigate(page, scenario_name: str, locale: str) -> tuple[str, str, dict[str
         if row.count() == 0:
             row = massive.locator("xpath=ancestor::tr")
         assert page.locator('input[type="password"]').count() == 1
-        return page.locator("body").inner_text(), "settings", {
-            "regulator_evidence_count": 0,
-            "expanded_regulator_evidence_count": 0,
-            "regulator_translation_button_count": 0,
-            "listing_evidence_count": 0,
-            "expanded_listing_evidence_count": 0,
-            "listing_translation_button_count": 0,
-            "acknowledgement_count": 0,
-            "reverse_transition_count": 0,
-            "reverse_activity_count": 0,
-        }
+        return (
+            page.locator("body").inner_text(),
+            "settings",
+            {
+                "regulator_evidence_count": 0,
+                "expanded_regulator_evidence_count": 0,
+                "regulator_translation_button_count": 0,
+                "listing_evidence_count": 0,
+                "expanded_listing_evidence_count": 0,
+                "listing_translation_button_count": 0,
+                "acknowledgement_count": 0,
+                "reverse_transition_count": 0,
+                "reverse_activity_count": 0,
+            },
+        )
 
     universe = page.get_by_role("button", name=labels["universe"], exact=True)
     if not universe.is_visible():
@@ -813,7 +821,9 @@ def _navigate(page, scenario_name: str, locale: str) -> tuple[str, str, dict[str
     page.get_by_role("tab", name=labels["lifecycle"], exact=True).click()
     if scenario["queue"] != "attention":
         page.locator(f"[data-queue-view='{scenario['queue']}']").click()
-    trigger = page.get_by_role("button", name=re.compile(rf"^{re.escape(scenario['ticker'])}\b"))
+    trigger = page.get_by_role(
+        "button", name=re.compile(rf"^{re.escape(scenario['ticker'])}\b")
+    )
     trigger.wait_for(state="visible")
     trigger.click()
     drawer = page.locator(".ui-drawer")
@@ -900,28 +910,38 @@ def _navigate(page, scenario_name: str, locale: str) -> tuple[str, str, dict[str
             reverse_activity_count=reverse_activity_count,
         )
         reverse_activity.scroll_into_view_if_needed()
-    return drawer.inner_text(), "lifecycle", {
-        "regulator_evidence_count": regulator_evidence_count,
-        "expanded_regulator_evidence_count": expanded_regulator_evidence_count,
-        "regulator_translation_button_count": regulator_translation_button_count,
-        "listing_evidence_count": listing_evidence_count,
-        "expanded_listing_evidence_count": expanded_listing_evidence_count,
-        "listing_translation_button_count": listing_translation_button_count,
-        "acknowledgement_count": acknowledgement_count,
-        "reverse_transition_count": reverse_transition_count,
-        "reverse_activity_count": reverse_activity_count,
-    }
+    return (
+        drawer.inner_text(),
+        "lifecycle",
+        {
+            "regulator_evidence_count": regulator_evidence_count,
+            "expanded_regulator_evidence_count": expanded_regulator_evidence_count,
+            "regulator_translation_button_count": regulator_translation_button_count,
+            "listing_evidence_count": listing_evidence_count,
+            "expanded_listing_evidence_count": expanded_listing_evidence_count,
+            "listing_translation_button_count": listing_translation_button_count,
+            "acknowledgement_count": acknowledgement_count,
+            "reverse_transition_count": reverse_transition_count,
+            "reverse_activity_count": reverse_activity_count,
+        },
+    )
 
 
 def _geometry(page) -> dict:
     metrics = STAGE5._geometry(page)
-    controls = page.evaluate(
+    listing_metrics = page.evaluate(
         """() => {
           const clips = (value) => ['auto', 'clip', 'hidden', 'scroll'].includes(value);
+          const surface = (node) => {
+            if (node.closest('.ui-drawer')) return 'drawer';
+            if (node.closest('.lifecycle-activity-band')) return 'activity';
+            return null;
+          };
           const visibleRect = (node) => {
             const style = getComputedStyle(node);
             const original = node.getBoundingClientRect();
-            if (style.visibility === 'hidden' || style.display === 'none'
+            if (!node.checkVisibility()
+              || style.visibility === 'hidden' || style.display === 'none'
               || original.width <= 0 || original.height <= 0) return null;
             const rect = {
               left: Math.max(0, original.left),
@@ -946,10 +966,12 @@ def _geometry(page) -> dict:
               (rect.left + rect.right) / 2,
               (rect.top + rect.bottom) / 2,
             );
-            if (!hit || (!node.contains(hit) && !hit.contains(node))) return null;
-            return rect;
+            if (!hit) return null;
+            if (!node.contains(hit) && !hit.contains(node)
+              && surface(hit) !== surface(node)) return null;
+            return {...rect, surface: surface(node)};
           };
-          return [...document.querySelectorAll(
+          const controls = [...document.querySelectorAll(
             '.lifecycle-activity-band button, .ui-drawer button, .ui-drawer input, '
             + '.ui-drawer select, .ui-drawer textarea, .ui-drawer a'
           )].flatMap((node) => {
@@ -961,21 +983,51 @@ def _geometry(page) -> dict:
               ...rect,
             }];
           });
+          const textOverflow = [...document.querySelectorAll(
+            '.lifecycle-activity-band strong, .lifecycle-activity-band p, '
+            + '.ui-drawer h3, .ui-drawer h4, .ui-drawer h5, .ui-drawer strong, '
+            + '.ui-drawer p, .ui-drawer dt, .ui-drawer dd, .ui-drawer label, '
+            + '.ui-drawer button'
+          )].flatMap((node) => {
+            if (!visibleRect(node)) return [];
+            const horizontal = node.scrollWidth > node.clientWidth + 1;
+            const vertical = node.scrollHeight > node.clientHeight + 1;
+            if (!horizontal && !vertical) return [];
+            return [{
+              tag: node.tagName,
+              text: (node.textContent || '').trim(),
+              horizontal,
+              vertical,
+              scrollWidth: node.scrollWidth,
+              clientWidth: node.clientWidth,
+              scrollHeight: node.scrollHeight,
+              clientHeight: node.clientHeight,
+            }];
+          });
+          return {controls, textOverflow};
         }"""
     )
+    controls = listing_metrics["controls"]
     overlaps = []
     for index, left in enumerate(controls):
         for right in controls[index + 1 :]:
-            width = min(left["right"], right["right"]) - max(left["left"], right["left"])
-            height = min(left["bottom"], right["bottom"]) - max(left["top"], right["top"])
+            width = min(left["right"], right["right"]) - max(
+                left["left"], right["left"]
+            )
+            height = min(left["bottom"], right["bottom"]) - max(
+                left["top"], right["top"]
+            )
             if width > 1 and height > 1:
                 overlaps.append([left, right])
     metrics["controls"] = controls
     metrics["overlaps"] = overlaps
+    metrics["textOverflow"] = listing_metrics["textOverflow"]
     return metrics
 
 
-def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int) -> dict:
+def _run_entry(
+    browser, scenario_name: str, locale: str, width: int, height: int
+) -> dict:
     OUTPUT.mkdir(parents=True, exist_ok=True)
     scenario = SCENARIOS[scenario_name]
     state = {"requests": [], "external": []}
@@ -1014,18 +1066,20 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
         if request.method == "OPTIONS":
             STAGE5._response(route, {}, 204)
         elif request.method != "GET":
-            STAGE5._response(route, {"detail": {"code": "fixture_write_forbidden"}}, 405)
+            STAGE5._response(
+                route, {"detail": {"code": "fixture_write_forbidden"}}, 405
+            )
         else:
             _api_response(route, parsed.path, parsed.query, locale)
 
     page.route("**/*", handler)
     page.goto(APP_URL, wait_until="networkidle", timeout=20_000)
     try:
-        visible_text, surface, surface_counts = _navigate(
-            page, scenario_name, locale
-        )
+        visible_text, surface, surface_counts = _navigate(page, scenario_name, locale)
     except Exception:
-        print(json.dumps({"console_errors": console_errors, "page_errors": page_errors}))
+        print(
+            json.dumps({"console_errors": console_errors, "page_errors": page_errors})
+        )
         raise
     page.wait_for_timeout(250)
     body_text = page.locator("body").inner_text()
@@ -1033,7 +1087,9 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
     assert not any(label in body_text for label in forbidden_publisher_labels)
     if scenario.get("settings"):
         assert page.get_by_role("button", name=re.compile(r"Translate|翻譯")).count() == 0
-    assert page.locator("[data-action='open-content-translation-settings']").count() == 0
+    assert (
+        page.locator("[data-action='open-content-translation-settings']").count() == 0
+    )
 
     metrics = _geometry(page)
     STAGE5._assert_geometry(metrics)
@@ -1041,12 +1097,16 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
     page.screenshot(path=str(screenshot), full_page=False)
     pixels = STAGE5._pixel_check(screenshot, width, height)
     writes = [
-        item for item in state["requests"]
+        item
+        for item in state["requests"]
         if item["method"] in {"POST", "PUT", "PATCH", "DELETE"}
     ]
     command_calls = [
-        item for item in state["requests"]
-        if item["path"].endswith(("/run", "/accept", "/execute", "/reverse", "/acknowledge"))
+        item
+        for item in state["requests"]
+        if item["path"].endswith(
+            ("/run", "/accept", "/execute", "/reverse", "/acknowledge")
+        )
     ]
     render_acknowledgements = [
         item for item in state["requests"] if item["path"].endswith("/acknowledge")
@@ -1094,7 +1154,9 @@ def _run_entry(browser, scenario_name: str, locale: str, width: int, height: int
         "render_acknowledgements": render_acknowledgements,
         "console_errors": console_errors,
         "page_errors": page_errors,
-        "publisher_family_text_count": sum(body_text.count(label) for label in forbidden_publisher_labels),
+        "publisher_family_text_count": sum(
+            body_text.count(label) for label in forbidden_publisher_labels
+        ),
         "regulator_evidence_count": surface_counts["regulator_evidence_count"],
         "expanded_regulator_evidence_count": surface_counts[
             "expanded_regulator_evidence_count"
@@ -1176,15 +1238,23 @@ def main() -> int:
         "external_requests": sum(len(item["external_requests"]) for item in entries),
         "writes": sum(len(item["writes"]) for item in entries),
         "command_calls": sum(len(item["command_calls"]) for item in entries),
-        "render_acknowledgements": sum(len(item["render_acknowledgements"]) for item in entries),
+        "render_acknowledgements": sum(
+            len(item["render_acknowledgements"]) for item in entries
+        ),
         "console_errors": sum(len(item["console_errors"]) for item in entries),
         "page_errors": sum(len(item["page_errors"]) for item in entries),
-        "publisher_family_text_count": sum(item["publisher_family_text_count"] for item in entries),
-        "listing_translation_button_count": sum(item["listing_translation_button_count"] for item in entries),
+        "publisher_family_text_count": sum(
+            item["publisher_family_text_count"] for item in entries
+        ),
+        "listing_translation_button_count": sum(
+            item["listing_translation_button_count"] for item in entries
+        ),
         "regulator_translation_button_count": sum(
             item["regulator_translation_button_count"] for item in entries
         ),
-        "listing_evidence_count": sum(item["listing_evidence_count"] for item in entries),
+        "listing_evidence_count": sum(
+            item["listing_evidence_count"] for item in entries
+        ),
         "expanded_listing_evidence_count": sum(
             item["expanded_listing_evidence_count"] for item in entries
         ),

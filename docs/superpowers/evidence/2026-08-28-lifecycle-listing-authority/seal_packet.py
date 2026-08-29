@@ -11,12 +11,14 @@ PACKET = Path(__file__).resolve().parent
 STATIC = {
     "README.md",
     "capture_offline_authority.py",
+    "capture_repository_binding.py",
     "commands.txt",
     "mutation_pytest_probe.py",
     "normalize_packet_logs.py",
     "run_browser_matrix.py",
     "run_mutations.py",
     "run_shadow.py",
+    "scan_packet_secrets.py",
     "seal_packet.py",
     "test_packet_contracts.py",
     "verify_old_code.py",
@@ -30,6 +32,8 @@ GENERATED = {
     "browser-run.txt",
     "focused-nodes-a.txt",
     "focused-nodes-b.txt",
+    "full-nodes-a.txt",
+    "full-nodes-b.txt",
     "frontend-build.txt",
     "frontend-i18n-literals.txt",
     "frontend-test.txt",
@@ -41,6 +45,8 @@ GENERATED = {
     "offline-authority-run-b.txt",
     "offline-authority.json",
     "packet-contracts.txt",
+    "repository-binding.json",
+    "secret-scan.json",
     "verification-summary.json",
     "vite.txt",
     "browser/matrix.json",
@@ -65,9 +71,7 @@ def main() -> int:
     manifest = PACKET / "SHA256SUMS"
     manifest.unlink(missing_ok=True)
     disk = {
-        str(path.relative_to(PACKET))
-        for path in PACKET.rglob("*")
-        if path.is_file()
+        str(path.relative_to(PACKET)) for path in PACKET.rglob("*") if path.is_file()
     }
     if disk != EXPECTED:
         raise SystemExit(
@@ -86,7 +90,8 @@ def main() -> int:
         check=True,
     )
     manifest_names = {
-        line.split("  ", 1)[1] for line in manifest.read_text(encoding="ascii").splitlines()
+        line.split("  ", 1)[1]
+        for line in manifest.read_text(encoding="ascii").splitlines()
     }
     final_disk = {
         str(path.relative_to(PACKET))

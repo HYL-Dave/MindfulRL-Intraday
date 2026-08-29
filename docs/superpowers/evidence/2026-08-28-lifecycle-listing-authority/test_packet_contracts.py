@@ -5,7 +5,9 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
+import subprocess
 import sys
 from types import ModuleType
 from unittest.mock import patch
@@ -29,11 +31,20 @@ def _load(name: str) -> ModuleType:
     return module
 
 
+def _git(repo: Path, *args: str) -> None:
+    subprocess.run(
+        ["git", *args],
+        cwd=repo,
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+
+
 def test_shadow_cases_bind_exact_repository_payload_bytes() -> None:
     shadow = _load("run_shadow")
-    authority = json.loads(
-        (FIXTURES / "shadow-cases.json").read_text(encoding="utf-8")
-    )
+    authority = json.loads((FIXTURES / "shadow-cases.json").read_text(encoding="utf-8"))
 
     assert len(authority["cases"]) == 9
     for case in authority["cases"]:
@@ -113,7 +124,7 @@ def test_preexisting_product_test_fixture_authorities_are_preserved() -> None:
 def test_every_mutation_has_baseline_probe_and_stable_signatures() -> None:
     mutations = _load("run_mutations")
 
-    assert len(mutations.MUTATIONS) == 39
+    assert len(mutations.MUTATIONS) == 45
     for mutation in mutations.MUTATIONS:
         assert mutation.failure_signatures
         assert mutation.command[:4] == (
@@ -347,7 +358,9 @@ def test_browser_post_apply_surface_validator_fails_closed() -> None:
     browser._assert_post_apply_surface_counts(**valid)
 
     for field in valid:
-        with pytest.raises(AssertionError, match="^browser_post_apply_surface_mismatch:"):
+        with pytest.raises(
+            AssertionError, match="^browser_post_apply_surface_mismatch:"
+        ):
             browser._assert_post_apply_surface_counts(**{**valid, field: 0})
 
 
@@ -391,7 +404,11 @@ def test_browser_geometry_uses_the_visible_overflow_clipped_control_rect() -> No
 
         metrics = browser_fixture._geometry(page)
         browser_fixture.STAGE5._assert_geometry(metrics)
-        save = next(control for control in metrics["controls"] if control["text"] == "Save draft")
+        save = next(
+            control
+            for control in metrics["controls"]
+            if control["text"] == "Save draft"
+        )
         body_top = page.locator(".ui-drawer-body").bounding_box()["y"]
 
         assert save["top"] == body_top, "visible_overflow_clip"
@@ -448,9 +465,9 @@ def test_browser_geometry_clips_other_edges_and_omits_fully_hidden_controls() ->
             if control["text"] == "Bottom"
         )
         body = page.locator(".ui-drawer-body").bounding_box()
-        assert bottom["bottom"] == body["y"] + body["height"], (
-            "visible_overflow_bottom_clip"
-        )
+        assert (
+            bottom["bottom"] == body["y"] + body["height"]
+        ), "visible_overflow_bottom_clip"
 
         render(
             '<div style="height:12px"></div><button id="hidden">Hidden</button>'
@@ -458,10 +475,358 @@ def test_browser_geometry_clips_other_edges_and_omits_fully_hidden_controls() ->
         )
         page.locator(".ui-drawer-body").evaluate("node => { node.scrollTop = 100; }")
         controls = browser_fixture._geometry(page)["controls"]
-        assert all(control["text"] != "Hidden" for control in controls), (
-            "fully_clipped_control_hidden"
-        )
+        assert all(
+            control["text"] != "Hidden" for control in controls
+        ), "fully_clipped_control_hidden"
         browser.close()
+
+
+def test_browser_geometry_detects_overlapping_controls_in_the_same_surface() -> None:
+    browser_fixture = _load("run_browser_matrix")
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        page.set_content(
+            """
+            <style>
+              body { margin: 0; }
+              .ui-drawer { position: relative; width: 390px; height: 844px; }
+              button {
+                position: absolute;
+                left: 20px;
+                top: 20px;
+                width: 160px;
+                height: 40px;
+              }
+              #covered { z-index: 1; }
+              #covering { z-index: 2; }
+            </style>
+            <aside class="ui-drawer">
+              <button id="covered">Covered</button>
+              <button id="covering">Covering</button>
+            </aside>
+            """
+        )
+
+        metrics = browser_fixture._geometry(page)
+
+        assert {control["text"] for control in metrics["controls"]} == {
+            "Covered",
+            "Covering",
+        }
+        assert len(metrics["overlaps"]) == 1, "same_surface_overlap_not_detected"
+        with pytest.raises(AssertionError):
+            browser_fixture.STAGE5._assert_geometry(metrics)
+        browser.close()
+
+
+def test_browser_geometry_detects_vertical_text_clipping() -> None:
+    browser_fixture = _load("run_browser_matrix")
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        page.set_content(
+            """
+            <style>
+              body { margin: 0; }
+              .ui-drawer { width: 390px; height: 844px; }
+              p {
+                width: 160px;
+                height: 18px;
+                line-height: 18px;
+                overflow: hidden;
+              }
+            </style>
+            <aside class="ui-drawer">
+              <p id="clipped">First line<br>Second line</p>
+            </aside>
+            """
+        )
+
+        metrics = browser_fixture._geometry(page)
+
+        assert len(metrics["textOverflow"]) == 1, "vertical_text_clip_not_detected"
+        assert metrics["textOverflow"][0]["vertical"] is True
+        with pytest.raises(AssertionError):
+            browser_fixture.STAGE5._assert_geometry(metrics)
+        browser.close()
+
+
+def test_browser_geometry_ignores_background_controls_covered_by_a_drawer() -> None:
+    browser_fixture = _load("run_browser_matrix")
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        page.set_content(
+            """
+            <style>
+              body { margin: 0; }
+              .lifecycle-activity-band { position: absolute; inset: 0; }
+              .ui-overlay { position: absolute; inset: 0; z-index: 2; }
+              .ui-drawer { width: 390px; height: 844px; background: white; }
+            </style>
+            <section class="lifecycle-activity-band">
+              <button>Background action</button>
+            </section>
+            <div class="ui-overlay">
+              <aside class="ui-drawer"><button>Drawer action</button></aside>
+            </div>
+            """
+        )
+
+        metrics = browser_fixture._geometry(page)
+
+        assert [control["text"] for control in metrics["controls"]] == ["Drawer action"]
+        browser_fixture.STAGE5._assert_geometry(metrics)
+        browser.close()
+
+
+def test_browser_geometry_omits_controls_hidden_by_closed_details() -> None:
+    browser_fixture = _load("run_browser_matrix")
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        page.set_content(
+            """
+            <aside class="ui-drawer" style="position:relative;width:300px;height:300px">
+              <details>
+                <summary>Supplemental evidence</summary>
+                <button style="position:absolute;left:20px;top:60px;width:180px;height:32px">
+                  Hidden action
+                </button>
+              </details>
+              <button style="position:absolute;left:20px;top:60px;width:180px;height:32px">
+                Visible action
+              </button>
+            </aside>
+            """
+        )
+
+        metrics = browser_fixture._geometry(page)
+
+        assert [control["text"] for control in metrics["controls"]] == [
+            "Visible action"
+        ]
+        browser_fixture.STAGE5._assert_geometry(metrics)
+        browser.close()
+
+
+def test_mutation_output_normalization_redacts_environment_secrets(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    mutations = _load("run_mutations")
+    secret = "fixture-secret-value-1234"
+    monkeypatch.setenv("OPENAI_API_KEY", secret)
+    output = (
+        f"direct token={secret}\n"
+        "E assert key in environ({'OPENAI_API_KEY': "
+        f"'{secret}', 'HOME': '/home/example'}})\n"
+    )
+
+    normalized = mutations._normalize_output(output)
+
+    assert secret not in normalized
+    assert "<REDACTED_ENV:OPENAI_API_KEY>" in normalized
+    assert "<REDACTED_ENVIRONMENT>" in normalized
+    assert "'HOME'" not in normalized
+
+
+def test_repository_binding_accepts_only_generated_packet_changes(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    packet = repo / "docs/evidence"
+    (repo / "src").mkdir(parents=True)
+    packet.mkdir(parents=True)
+    (repo / "src/app.py").write_text("VALUE = 1\n", encoding="utf-8")
+    (packet / "seal_packet.py").write_text(
+        "GENERATED = {'generated.txt', 'repository-binding.json'}\n"
+        "SCREENSHOTS = set()\n",
+        encoding="utf-8",
+    )
+    _git(repo, "init", "-q")
+    _git(repo, "config", "user.email", "packet@example.invalid")
+    _git(repo, "config", "user.name", "Packet Test")
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-qm", "fixture")
+    start = tmp_path / "start.json"
+    controller = PACKET / "capture_repository_binding.py"
+
+    started = subprocess.run(
+        [
+            sys.executable,
+            str(controller),
+            "start",
+            "--root",
+            str(repo),
+            "--output",
+            str(start),
+        ],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    assert started.returncode == 0, started.stderr
+    (packet / "generated.txt").write_text("evidence\n", encoding="utf-8")
+    report_path = packet / "repository-binding.json"
+    finished = subprocess.run(
+        [
+            sys.executable,
+            str(controller),
+            "finish",
+            "--root",
+            str(repo),
+            "--packet-relative",
+            "docs/evidence",
+            "--start",
+            str(start),
+            "--output",
+            str(report_path),
+            "--dependency",
+            "src/app.py",
+        ],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    assert finished.returncode == 0, finished.stderr
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    assert (
+        report["tested_git_head"]
+        == subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=repo, text=True
+        ).strip()
+    )
+    assert len(report["tested_git_tree"]) == 40
+    assert report["product_code_modified_during_replay"] is False
+    assert report["dependency_paths"] == ["src/app.py"]
+
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-qm", "generated")
+    rejected_start = tmp_path / "rejected-start.json"
+    _git(repo, "status", "--short")
+    subprocess.run(
+        [
+            sys.executable,
+            str(controller),
+            "start",
+            "--root",
+            str(repo),
+            "--output",
+            str(rejected_start),
+        ],
+        check=True,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    (repo / "src/app.py").write_text("VALUE = 2\n", encoding="utf-8")
+    rejected = subprocess.run(
+        [
+            sys.executable,
+            str(controller),
+            "finish",
+            "--root",
+            str(repo),
+            "--packet-relative",
+            "docs/evidence",
+            "--start",
+            str(rejected_start),
+            "--output",
+            str(packet / "rejected.json"),
+            "--dependency",
+            "src/app.py",
+        ],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    assert rejected.returncode != 0
+    assert "repository_replay_scope_changed" in rejected.stderr
+
+
+def test_packet_secret_scanner_rejects_environment_values_without_echoing_them(
+    tmp_path: Path,
+) -> None:
+    scanner = PACKET / "scan_packet_secrets.py"
+    packet = tmp_path / "packet"
+    packet.mkdir()
+    (packet / "clean.txt").write_text("clean\n", encoding="utf-8")
+    output = packet / "secret-scan.json"
+    secret = "fixture-environment-secret-1234"
+    env = {**os.environ, "OPENAI_API_KEY": secret}
+
+    clean = subprocess.run(
+        [
+            sys.executable,
+            str(scanner),
+            "--packet",
+            str(packet),
+            "--output",
+            str(output),
+        ],
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    assert clean.returncode == 0, clean.stderr
+    assert json.loads(output.read_text(encoding="utf-8"))["finding_count"] == 0
+
+    (packet / "leak.txt").write_text(f"credential={secret}\n", encoding="utf-8")
+    leaked = subprocess.run(
+        [
+            sys.executable,
+            str(scanner),
+            "--packet",
+            str(packet),
+            "--output",
+            str(output),
+        ],
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    assert leaked.returncode != 0
+    report = output.read_text(encoding="utf-8")
+    assert secret not in report
+    assert json.loads(report)["finding_count"] == 1
+
+
+def test_sealed_summary_binds_repository_and_exact_full_node_sets() -> None:
+    summary_path = PACKET / "verification-summary.json"
+    if (
+        not summary_path.exists()
+        and os.environ.get("ARKSCOPE_PACKET_SUMMARY_PENDING") == "1"
+    ):
+        pytest.skip("packet replay summary is generated after the full backend gates")
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+
+    assert "product_code_modified" not in summary["boundary"]
+    assert summary["boundary"]["packet_replay_scope"] == (
+        "offline_fixture_and_scratch_only"
+    )
+    assert summary["boundary"]["declared_unexecuted_operations"]["provider_calls"] == {
+        "value": 0,
+        "basis": "declared_not_authorized",
+    }
+    assert summary["boundary"]["measured_browser_operations"] == {
+        "external_requests": 0,
+        "writes": 0,
+    }
+    assert len(summary["repository"]["tested_git_head"]) == 40
+    assert len(summary["repository"]["tested_git_tree"]) == 40
+    assert summary["repository"]["product_code_modified_during_replay"] is False
+    full_a = (PACKET / "full-nodes-a.txt").read_text(encoding="utf-8").splitlines()
+    full_b = (PACKET / "full-nodes-b.txt").read_text(encoding="utf-8").splitlines()
+    assert full_a == full_b and len(full_a) == summary["gates"]["full_collected_nodes"]
+    assert summary["gates"]["full_node_sets_identical"] is True
+    assert summary["secret_scan"]["finding_count"] == 0
 
 
 def test_log_normalization_removes_machine_paths_and_trailing_blank_lines(
@@ -469,7 +834,9 @@ def test_log_normalization_removes_machine_paths_and_trailing_blank_lines(
 ) -> None:
     normalizer = _load("normalize_packet_logs")
     path = tmp_path / "gate.txt"
-    path.write_text(f"{ROOT}/src\n{normalizer.PYTHON_ENV}/bin/python\n\n", encoding="utf-8")
+    path.write_text(
+        f"{ROOT}/src\n{normalizer.PYTHON_ENV}/bin/python\n\n", encoding="utf-8"
+    )
 
     counts = normalizer._normalize_file(path)
 
@@ -479,3 +846,26 @@ def test_log_normalization_removes_machine_paths_and_trailing_blank_lines(
     assert counts["repo_root_replacements"] == 1
     assert counts["python_env_replacements"] == 1
     assert counts["trailing_blank_lines_removed"] == 1
+
+
+def test_log_normalization_redacts_token_shapes_without_collapsing_node_order(
+    tmp_path: Path,
+) -> None:
+    normalizer = _load("normalize_packet_logs")
+    openai_shape = "s" + "k-" + "a" * 24
+    github_shape = "github" + "_pat_" + "b" * 24
+    path = tmp_path / "nodes.txt"
+    path.write_text(
+        f"owner[{openai_shape}]\nowner[{github_shape}]\nowner[{openai_shape}]\n",
+        encoding="utf-8",
+    )
+
+    counts = normalizer._normalize_file(path)
+    normalized = path.read_text(encoding="utf-8")
+
+    assert normalized.splitlines() == [
+        "owner[<TOKEN_SHAPE_1>]",
+        "owner[<TOKEN_SHAPE_2>]",
+        "owner[<TOKEN_SHAPE_1>]",
+    ], "fixture_token_shape_not_redacted"
+    assert counts["token_shape_replacements"] == 3

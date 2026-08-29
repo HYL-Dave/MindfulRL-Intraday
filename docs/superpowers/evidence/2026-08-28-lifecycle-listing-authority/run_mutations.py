@@ -68,6 +68,14 @@ PACKET_BROWSER = (
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
     "run_browser_matrix.py"
 )
+PACKET_MUTATIONS = (
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+    "run_mutations.py"
+)
+PACKET_NORMALIZER = (
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+    "normalize_packet_logs.py"
+)
 
 
 MUTATIONS = (
@@ -116,11 +124,11 @@ MUTATIONS = (
         "accept a missing Nasdaq footer",
         LISTING,
         "    lines = _decode_nasdaq(body)\n"
-        "    expected_header = _NASDAQ_HEADER if directory == \"nasdaq_listed\" else _OTHER_HEADER\n",
+        '    expected_header = _NASDAQ_HEADER if directory == "nasdaq_listed" else _OTHER_HEADER\n',
         "    lines = _decode_nasdaq(body)\n"
         "    if _FOOTER.fullmatch(lines[-1]) is None:\n"
         '        lines.append("File Creation Time: 08282026|120000")\n'
-        "    expected_header = _NASDAQ_HEADER if directory == \"nasdaq_listed\" else _OTHER_HEADER\n",
+        '    expected_header = _NASDAQ_HEADER if directory == "nasdaq_listed" else _OTHER_HEADER\n',
         (
             "tests/test_security_lifecycle_listing_evidence.py::"
             "test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files"
@@ -267,8 +275,7 @@ MUTATIONS = (
         "M10",
         "select one latest listing record and discard the rest",
         POLICY,
-        "        if len(rows) == 1:\n"
-        "            return tuple(rows)\n",
+        "        if len(rows) == 1:\n" "            return tuple(rows)\n",
         "        if rows:\n"
         "            return (sorted(rows, key=lambda row: row.evidence_id)[-1],)\n",
         (
@@ -316,8 +323,7 @@ MUTATIONS = (
         "M12",
         "require a fresh quote for listing acceptance",
         POLICY,
-        "    listing = _selected_listing_rows(evidence)\n"
-        "    market = tuple(\n",
+        "    listing = _selected_listing_rows(evidence)\n" "    market = tuple(\n",
         "    listing = (\n"
         "        _selected_listing_rows(evidence)\n"
         "        if any(\n"
@@ -367,8 +373,7 @@ MUTATIONS = (
         "M14",
         "restore publisher as pending-monitoring required family",
         SCHEDULER,
-        '        "regulator",\n'
-        '        "listing_authority",\n',
+        '        "regulator",\n' '        "listing_authority",\n',
         '        "regulator",\n'
         '        "listing_authority",\n'
         '        "publisher",\n',
@@ -387,8 +392,7 @@ MUTATIONS = (
         "M15",
         "expose publisher evidence through active detail",
         TOOLS,
-        '    "listing_authority",\n'
-        '    "market_infrastructure",\n',
+        '    "listing_authority",\n' '    "market_infrastructure",\n',
         '    "listing_authority",\n'
         '    "market_infrastructure",\n'
         '    "publisher",\n',
@@ -462,16 +466,16 @@ MUTATIONS = (
         "fail to preserve one v2 publisher row during migration",
         MIGRATION,
         "    conn.executemany(\n"
-        "        f\"INSERT INTO {_quote_identifier(table)} ({projection}) \"\n"
-        "        f\"VALUES ({placeholders})\",\n"
+        '        f"INSERT INTO {_quote_identifier(table)} ({projection}) "\n'
+        '        f"VALUES ({placeholders})",\n'
         "        snapshot.rows,\n"
         "    )\n",
         "    rows = snapshot.rows\n"
         '    if table == "security_lifecycle_evidence":\n'
         '        rows = tuple(row for row in rows if "sle_publisher" not in row)\n'
         "    conn.executemany(\n"
-        "        f\"INSERT INTO {_quote_identifier(table)} ({projection}) \"\n"
-        "        f\"VALUES ({placeholders})\",\n"
+        '        f"INSERT INTO {_quote_identifier(table)} ({projection}) "\n'
+        '        f"VALUES ({placeholders})",\n'
         "        rows,\n"
         "    )\n",
         (
@@ -490,8 +494,8 @@ MUTATIONS = (
         "change one v2 translated-text byte during migration",
         MIGRATION,
         "    conn.executemany(\n"
-        "        f\"INSERT INTO {_quote_identifier(table)} ({projection}) \"\n"
-        "        f\"VALUES ({placeholders})\",\n"
+        '        f"INSERT INTO {_quote_identifier(table)} ({projection}) "\n'
+        '        f"VALUES ({placeholders})",\n'
         "        snapshot.rows,\n"
         "    )\n",
         "    rows = snapshot.rows\n"
@@ -505,8 +509,8 @@ MUTATIONS = (
         "            for row in rows\n"
         "        )\n"
         "    conn.executemany(\n"
-        "        f\"INSERT INTO {_quote_identifier(table)} ({projection}) \"\n"
-        "        f\"VALUES ({placeholders})\",\n"
+        '        f"INSERT INTO {_quote_identifier(table)} ({projection}) "\n'
+        '        f"VALUES ({placeholders})",\n'
         "        rows,\n"
         "    )\n",
         (
@@ -547,8 +551,8 @@ MUTATIONS = (
         "drop identity facts from exact inactive Massive evidence",
         LISTING,
         "    inactive_massive = (\n"
-        "        record.adapter == \"massive_reference\"\n"
-        "        and record.listing_status == \"inactive\"\n"
+        '        record.adapter == "massive_reference"\n'
+        '        and record.listing_status == "inactive"\n'
         "    )\n",
         "    inactive_massive = False\n",
         (
@@ -567,9 +571,9 @@ MUTATIONS = (
         "bypass the exact terminal Massive locator gate",
         POLICY,
         "        if not (\n"
-        "            snapshot.get(\"locator_kind\") == \"listing_directory_snapshot\"\n",
+        '            snapshot.get("locator_kind") == "listing_directory_snapshot"\n',
         "        if False and not (\n"
-        "            snapshot.get(\"locator_kind\") == \"listing_directory_snapshot\"\n",
+        '            snapshot.get("locator_kind") == "listing_directory_snapshot"\n',
         tuple(
             "tests/test_security_lifecycle_listing_evidence.py::"
             "test_real_terminal_pipeline_requires_exact_inactive_massive_locator["
@@ -641,9 +645,9 @@ MUTATIONS = (
         "retain Massive as a required component before the SEC effective date",
         SCHEDULER,
         "    if terminal and not explicit_inactive_required:\n"
-        "        required_listing_components = required_listing_components - {\"massive\"}\n",
+        '        required_listing_components = required_listing_components - {"massive"}\n',
         "    if False and terminal and not explicit_inactive_required:\n"
-        "        required_listing_components = required_listing_components - {\"massive\"}\n",
+        '        required_listing_components = required_listing_components - {"massive"}\n',
         (
             "tests/test_security_lifecycle_automation_scheduler.py::"
             "test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler",
@@ -846,8 +850,7 @@ MUTATIONS = (
         "M34",
         "accept a nested listing locator wrapper",
         POLICY,
-        '    if "listing_directory_snapshot" in snapshot:\n'
-        "        return None\n",
+        '    if "listing_directory_snapshot" in snapshot:\n' "        return None\n",
         '    nested = snapshot.get("listing_directory_snapshot")\n'
         "    if isinstance(nested, Mapping):\n"
         "        snapshot = nested\n",
@@ -869,10 +872,10 @@ MUTATIONS = (
         "measure unclipped control rectangles in the browser matrix",
         PACKET_BROWSER,
         "    metrics = STAGE5._geometry(page)\n"
-        "    controls = page.evaluate(\n",
+        "    listing_metrics = page.evaluate(\n",
         "    metrics = STAGE5._geometry(page)\n"
         "    return metrics\n"
-        "    controls = page.evaluate(\n",
+        "    listing_metrics = page.evaluate(\n",
         (
             "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
             "test_packet_contracts.py::"
@@ -971,6 +974,123 @@ MUTATIONS = (
             "test_packet_contracts.py::test_browser_terminal_projection_is_preflight_valid",
         ),
     ),
+    Mutation(
+        "M40",
+        "drop a control whose center is covered inside the same browser surface",
+        PACKET_BROWSER,
+        "            if (!node.contains(hit) && !hit.contains(node)\n"
+        "              && surface(hit) !== surface(node)) return null;\n",
+        "            if (!node.contains(hit) && !hit.contains(node)) return null;\n",
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_geometry_detects_overlapping_controls_in_the_same_surface",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_geometry_detects_overlapping_controls_in_the_same_surface",
+        ),
+    ),
+    Mutation(
+        "M41",
+        "ignore vertical browser text overflow",
+        PACKET_BROWSER,
+        "            const vertical = node.scrollHeight > node.clientHeight + 1;\n",
+        "            const vertical = false;\n",
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::test_browser_geometry_detects_vertical_text_clipping",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::test_browser_geometry_detects_vertical_text_clipping",
+        ),
+    ),
+    Mutation(
+        "M42",
+        "retain secret environment values in mutation output",
+        PACKET_MUTATIONS,
+        "    for name, value in secret_values:\n"
+        '        normalized = normalized.replace(value, f"<REDACTED_ENV:{name}>")\n',
+        "    if False:\n"
+        "        for name, value in secret_values:\n"
+        '            normalized = normalized.replace(value, f"<REDACTED_ENV:{name}>")\n',
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_mutation_output_normalization_redacts_environment_secrets",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_mutation_output_normalization_redacts_environment_secrets",
+        ),
+    ),
+    Mutation(
+        "M43",
+        "retain complete environment reprs in mutation output",
+        PACKET_MUTATIONS,
+        '        re.sub(r"environ\\(\\{.*\\}\\)", "environ(<REDACTED_ENVIRONMENT>)", line)\n',
+        "        line\n",
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_mutation_output_normalization_redacts_environment_secrets",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_mutation_output_normalization_redacts_environment_secrets",
+        ),
+    ),
+    Mutation(
+        "M44",
+        "retain controls hidden by closed browser details",
+        PACKET_BROWSER,
+        "            if (!node.checkVisibility()\n"
+        "              || style.visibility === 'hidden' || style.display === 'none'\n",
+        "            if (style.visibility === 'hidden' || style.display === 'none'\n",
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_geometry_omits_controls_hidden_by_closed_details",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_geometry_omits_controls_hidden_by_closed_details",
+        ),
+    ),
+    Mutation(
+        "M45",
+        "retain token-shaped values in normalized packet logs",
+        PACKET_NORMALIZER,
+        "    normalized, token_shape_replacements = _replace_token_shapes(normalized)\n",
+        "    token_shape_replacements = 0\n",
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_log_normalization_redacts_token_shapes_without_collapsing_node_order",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_log_normalization_redacts_token_shapes_without_collapsing_node_order",
+        ),
+    ),
 )
 
 
@@ -1017,6 +1137,12 @@ FAILURE_SIGNATURES = {
     "M37": ("MASSIVE_API_KEY",),
     "M38": ("Extra items in the right set",),
     "M39": ("proposal-remap",),
+    "M40": ("Covered",),
+    "M41": ("vertical_text_clip_not_detected",),
+    "M42": ("fixture-secret-value-1234",),
+    "M43": ("<REDACTED_ENVIRONMENT>",),
+    "M44": ("Hidden action",),
+    "M45": ("fixture_token_shape_not_redacted",),
 }
 assert set(FAILURE_SIGNATURES) == {mutation.mutation_id for mutation in MUTATIONS}
 
@@ -1058,6 +1184,23 @@ def _normalize_output(output: str) -> str:
     normalized = output.replace(str(ROOT), "<REPO_ROOT>")
     if sys.prefix != sys.base_prefix:
         normalized = normalized.replace(str(Path(sys.prefix).resolve()), "<PYTHON_ENV>")
+    secret_values = sorted(
+        (
+            (name, value)
+            for name, value in os.environ.items()
+            if value
+            and len(value) >= 8
+            and re.search(r"(?:API_KEY|TOKEN|PASSWORD|SECRET|CREDENTIAL)", name)
+        ),
+        key=lambda item: len(item[1]),
+        reverse=True,
+    )
+    for name, value in secret_values:
+        normalized = normalized.replace(value, f"<REDACTED_ENV:{name}>")
+    normalized = "\n".join(
+        re.sub(r"environ\(\{.*\}\)", "environ(<REDACTED_ENVIRONMENT>)", line)
+        for line in normalized.split("\n")
+    )
     return normalized
 
 
@@ -1068,11 +1211,16 @@ def _probe_nodes(output: str, marker: str) -> tuple[list[str], bool]:
 
 def _run_declared_command(mutation: Mutation) -> dict:
     pythonpath = os.environ.get("PYTHONPATH", "")
+    child_env = {
+        name: value
+        for name, value in os.environ.items()
+        if re.search(r"(?:API_KEY|TOKEN|PASSWORD|SECRET|CREDENTIAL)", name) is None
+    }
     process = subprocess.run(
         mutation.command,
         cwd=ROOT,
         env={
-            **os.environ,
+            **child_env,
             "PYTHONDONTWRITEBYTECODE": "1",
             "PYTHONPATH": (
                 str(PACKET) if not pythonpath else f"{PACKET}{os.pathsep}{pythonpath}"
@@ -1085,12 +1233,8 @@ def _run_declared_command(mutation: Mutation) -> dict:
     )
     output = _normalize_output(process.stdout)
     failures, passed, skipped = _pytest_failures(output)
-    collected, collection_markers_unique = _probe_nodes(
-        output, "TASK8_COLLECTED_NODE"
-    )
-    executed, execution_markers_unique = _probe_nodes(
-        output, "TASK8_EXECUTED_NODE"
-    )
+    collected, collection_markers_unique = _probe_nodes(output, "TASK8_COLLECTED_NODE")
+    executed, execution_markers_unique = _probe_nodes(output, "TASK8_EXECUTED_NODE")
     return {
         "command": list(mutation.command),
         "exit_code": process.returncode,
@@ -1288,9 +1432,12 @@ def main() -> int:
             sort_keys=True,
         )
     )
-    return 0 if payload["all_mutations_killed"] and payload[
-        "all_product_files_restored_byte_identically"
-    ] else 1
+    return (
+        0
+        if payload["all_mutations_killed"]
+        and payload["all_product_files_restored_byte_identically"]
+        else 1
+    )
 
 
 if __name__ == "__main__":

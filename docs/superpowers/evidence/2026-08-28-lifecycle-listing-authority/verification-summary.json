@@ -23,7 +23,7 @@
     "acknowledgement_surface_witnesses": 8,
     "all_negative_counts": 0,
     "entries": 24,
-    "listing_evidence_expanded": 24,
+    "listing_evidence_expanded": 32,
     "listing_translation_controls": 0,
     "locales": [
       "en",
@@ -59,15 +59,15 @@
   "gates": {
     "focused_a": {
       "failures": 0,
-      "passed": 347,
+      "passed": 358,
       "skipped": 0
     },
     "focused_b": {
       "failures": 0,
-      "passed": 347,
+      "passed": 358,
       "skipped": 0
     },
-    "focused_collected_nodes": 347,
+    "focused_collected_nodes": 358,
     "focused_node_sets_identical": true,
     "frontend": {
       "build": "passed",
@@ -81,18 +81,18 @@
     },
     "full_a": {
       "failures": 0,
-      "passed": 4872,
+      "passed": 4885,
       "skipped": 12
     },
     "full_b": {
       "failures": 0,
-      "passed": 4872,
+      "passed": 4885,
       "skipped": 12
     },
     "full_collection_counts_identical": true,
     "packet_contracts": {
       "failures": 0,
-      "passed": 14,
+      "passed": 15,
       "skipped": 0
     }
   },
@@ -197,9 +197,9 @@
     }
   },
   "mutations": {
-    "baselines_admitted": 35,
-    "defined": 35,
-    "killed": 35,
+    "baselines_admitted": 39,
+    "defined": 39,
+    "killed": 39,
     "restored": true,
     "scope_anomalies": 0,
     "unexpected_failures_inside_declared_scopes": 0

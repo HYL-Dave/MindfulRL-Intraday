@@ -136,18 +136,20 @@
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
-      "expanded_listing_evidence_count": 1,
+      "expanded_listing_evidence_count": 3,
       "expanded_regulator_evidence_count": 1,
-      "expected_listing_evidence_count": 1,
+      "expected_listing_evidence_count": 3,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
+          null,
+          null,
           "0001409970"
         ],
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
-      "listing_evidence_count": 1,
+      "listing_evidence_count": 3,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
@@ -195,7 +197,7 @@
         1440,
         900
       ],
-      "visible_text_sha256": "31b652a505d76391271a41448364405b299cdfbc0e37a0354b209cb15e3c9019",
+      "visible_text_sha256": "e5550dfa7e83768aafd67730e4244cb4a02419887311f5a97505fe59a11f3dff",
       "writes": []
     },
     {
@@ -222,9 +224,9 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          19.948,
-          22.083,
-          25.552
+          19.922,
+          22.059,
+          25.53
         ],
         "extrema": [
           [
@@ -260,7 +262,7 @@
         1440,
         900
       ],
-      "visible_text_sha256": "66ca1b6a2b006f47c0d85adbd16483f74af6dbaa5d33670dcd7fd8137ba8edc6",
+      "visible_text_sha256": "feed9506ff242892b6bc71135e7c5dcccb02ec344df101d85a87bf1df5107f88",
       "writes": []
     },
     {
@@ -526,18 +528,20 @@
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
-      "expanded_listing_evidence_count": 1,
+      "expanded_listing_evidence_count": 3,
       "expanded_regulator_evidence_count": 1,
-      "expected_listing_evidence_count": 1,
+      "expected_listing_evidence_count": 3,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
+          null,
+          null,
           "0001409970"
         ],
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
-      "listing_evidence_count": 1,
+      "listing_evidence_count": 3,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
@@ -585,7 +589,7 @@
         1440,
         900
       ],
-      "visible_text_sha256": "4d175712d3cad78f1eb9bce4a33d602bb14a64889531e43f2cbc1662b1a50f0d",
+      "visible_text_sha256": "d0a138db251daa7e7f31393ae5a9de1b84b9346294be3985b8a507e1ec090f79",
       "writes": []
     },
     {
@@ -612,9 +616,9 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          19.541,
-          21.638,
-          24.922
+          19.515,
+          21.613,
+          24.899
         ],
         "extrema": [
           [
@@ -650,7 +654,7 @@
         1440,
         900
       ],
-      "visible_text_sha256": "6a67a324d8f5c4d9de91e90bbfb893dd0be9cb648aa4873676b0324e8eef90b3",
+      "visible_text_sha256": "81d4f786d81c67a2f7e76d1eca495e53e4a55d534b43262acfdb3a0fed35eefd",
       "writes": []
     },
     {
@@ -916,27 +920,29 @@
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
-      "expanded_listing_evidence_count": 1,
+      "expanded_listing_evidence_count": 3,
       "expanded_regulator_evidence_count": 1,
-      "expected_listing_evidence_count": 1,
+      "expected_listing_evidence_count": 3,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
+          null,
+          null,
           "0001409970"
         ],
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
-      "listing_evidence_count": 1,
+      "listing_evidence_count": 3,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          39.67,
-          40.203,
-          40.461
+          39.793,
+          40.323,
+          40.577
         ],
         "extrema": [
           [
@@ -975,7 +981,7 @@
         390,
         844
       ],
-      "visible_text_sha256": "31b652a505d76391271a41448364405b299cdfbc0e37a0354b209cb15e3c9019",
+      "visible_text_sha256": "e5550dfa7e83768aafd67730e4244cb4a02419887311f5a97505fe59a11f3dff",
       "writes": []
     },
     {
@@ -1002,9 +1008,9 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          24.297,
-          24.471,
-          25.61
+          24.218,
+          24.392,
+          25.536
         ],
         "extrema": [
           [
@@ -1040,7 +1046,7 @@
         390,
         844
       ],
-      "visible_text_sha256": "66ca1b6a2b006f47c0d85adbd16483f74af6dbaa5d33670dcd7fd8137ba8edc6",
+      "visible_text_sha256": "feed9506ff242892b6bc71135e7c5dcccb02ec344df101d85a87bf1df5107f88",
       "writes": []
     },
     {
@@ -1306,18 +1312,20 @@
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
-      "expanded_listing_evidence_count": 1,
+      "expanded_listing_evidence_count": 3,
       "expanded_regulator_evidence_count": 1,
-      "expected_listing_evidence_count": 1,
+      "expected_listing_evidence_count": 3,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
+          null,
+          null,
           "0001409970"
         ],
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
-      "listing_evidence_count": 1,
+      "listing_evidence_count": 3,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
@@ -1365,7 +1373,7 @@
         390,
         844
       ],
-      "visible_text_sha256": "4d175712d3cad78f1eb9bce4a33d602bb14a64889531e43f2cbc1662b1a50f0d",
+      "visible_text_sha256": "d0a138db251daa7e7f31393ae5a9de1b84b9346294be3985b8a507e1ec090f79",
       "writes": []
     },
     {
@@ -1392,9 +1400,9 @@
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          23.755,
-          23.947,
-          24.885
+          23.674,
+          23.866,
+          24.809
         ],
         "extrema": [
           [
@@ -1430,7 +1438,7 @@
         390,
         844
       ],
-      "visible_text_sha256": "6a67a324d8f5c4d9de91e90bbfb893dd0be9cb648aa4873676b0324e8eef90b3",
+      "visible_text_sha256": "81d4f786d81c67a2f7e76d1eca495e53e4a55d534b43262acfdb3a0fed35eefd",
       "writes": []
     },
     {

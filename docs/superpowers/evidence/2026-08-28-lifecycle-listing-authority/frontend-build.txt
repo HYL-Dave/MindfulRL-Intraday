@@ -15,4 +15,4 @@ dist/assets/index-CD5Gt8Y9.js   1,071.04 kB │ gzip: 317.31 kB
 - Using dynamic import() to code-split the application
 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
-✓ built in 2.70s
+✓ built in 2.74s
