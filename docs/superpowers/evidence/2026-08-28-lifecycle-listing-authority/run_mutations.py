@@ -580,6 +580,7 @@ MUTATIONS = (
                 "wrong_market",
                 "incomplete_snapshot",
                 "massive_directory_not_none",
+                "massive_directory_missing",
             )
         ),
         tuple(
@@ -594,6 +595,7 @@ MUTATIONS = (
                     "wrong_market",
                     "incomplete_snapshot",
                     "massive_directory_not_none",
+                    "massive_directory_missing",
                 )
             )
         ),
@@ -875,6 +877,9 @@ MUTATIONS = (
             "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
             "test_packet_contracts.py::"
             "test_browser_geometry_uses_the_visible_overflow_clipped_control_rect",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_geometry_clips_other_edges_and_omits_fully_hidden_controls",
         ),
         (
             "pytest",
@@ -882,6 +887,88 @@ MUTATIONS = (
             "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
             "test_packet_contracts.py::"
             "test_browser_geometry_uses_the_visible_overflow_clipped_control_rect",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::"
+            "test_browser_geometry_clips_other_edges_and_omits_fully_hidden_controls",
+        ),
+    ),
+    Mutation(
+        "M36",
+        "stop padding supported short RFC3339 fractions for Python 3.10",
+        LISTING,
+        '    fractional = "" if fraction is None else f".{fraction[:6].ljust(6, \'0\')}"\n',
+        '    fractional = "" if fraction is None else f".{fraction[:6]}"\n',
+        (
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_massive_parser_accepts_each_supported_rfc3339_fraction_length[1]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_massive_parser_accepts_each_supported_rfc3339_fraction_length[1]",
+        ),
+    ),
+    Mutation(
+        "M37",
+        "skip final runtime-alias authority reconciliation",
+        PROVIDERS,
+        "    for defs in PROVIDER_FIELDS.values():\n"
+        "        for fdef in defs:\n"
+        "            honor_real_runtime_authority(fdef)\n"
+        "    return frozenset(_APP_APPLIED)\n",
+        "    if False:\n"
+        "        for defs in PROVIDER_FIELDS.values():\n"
+        "            for fdef in defs:\n"
+        "                honor_real_runtime_authority(fdef)\n"
+        "    return frozenset(_APP_APPLIED)\n",
+        (
+            "tests/test_data_provider_config.py::"
+            "test_real_legacy_polygon_env_wins_over_primary_file_fallback",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_data_provider_config.py::"
+            "test_real_legacy_polygon_env_wins_over_primary_file_fallback",
+        ),
+    ),
+    Mutation(
+        "M38",
+        "omit Nasdaq absence rows from the terminal browser witness",
+        PACKET_BROWSER,
+        '        authority = listing["authority"]\n'
+        '        directory = listing.get("directory")\n',
+        '        authority = listing["authority"]\n'
+        '        if name == "inactive-history" and authority == "nasdaq_trader":\n'
+        "            continue\n"
+        '        directory = listing.get("directory")\n',
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::test_browser_terminal_projection_is_preflight_valid",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::test_browser_terminal_projection_is_preflight_valid",
+        ),
+    ),
+    Mutation(
+        "M39",
+        "retain a remap proposal on the terminal browser preview",
+        PACKET_BROWSER,
+        '                "proposal_ids": [],\n',
+        '                "proposal_ids": ["proposal-remap"],\n',
+        (
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::test_browser_terminal_projection_is_preflight_valid",
+        ),
+        (
+            "pytest",
+            "-q",
+            "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/"
+            "test_packet_contracts.py::test_browser_terminal_projection_is_preflight_valid",
         ),
     ),
 )
@@ -925,7 +1012,11 @@ FAILURE_SIGNATURES = {
     "M32": ("DID NOT RAISE",),
     "M33": ("DID NOT RAISE",),
     "M34": ("transition_eligible", "waiting_market_confirmation"),
-    "M35": ("visible_overflow_clip",),
+    "M35": ("visible_overflow_clip", "visible_overflow_left_clip"),
+    "M36": ("ListingEvidenceFailure: listing_status_unresolved",),
+    "M37": ("MASSIVE_API_KEY",),
+    "M38": ("Extra items in the right set",),
+    "M39": ("proposal-remap",),
 }
 assert set(FAILURE_SIGNATURES) == {mutation.mutation_id for mutation in MUTATIONS}
 

@@ -30,7 +30,7 @@ this packet does not claim real SEC payload coverage.
 
 ## Admission Rules
 
-- Each M01-M35 entry runs its unchanged declared pytest command before mutation,
+- Each M01-M39 entry runs its unchanged declared pytest command before mutation,
   admits an exact collected/executed node set with zero failures, then requires
   exit 1, the exact expected failures, and mutation-specific failure signatures.
 - Mutation anomaly counts cover only unexpected failures inside each declared
@@ -49,7 +49,7 @@ this packet does not claim real SEC payload coverage.
 ## Contents
 
 - `offline-authority.json`: calibrated boundaries, nine-case strict shadow, and v2/v3 scratch migration/restore with old-code startup.
-- `mutation-ledger.json`: M01-M35 baseline/mutant commands, exact nodes, signatures,
+- `mutation-ledger.json`: M01-M39 baseline/mutant commands, exact nodes, signatures,
   scoped failure outcomes, and byte-identical restoration.
 - `browser/matrix.json`: 24 locale/viewport/scenario entries, typed forbidden-operation
   declarations, projection provenance, transition/acknowledgement witnesses, expanded

@@ -54,6 +54,7 @@ SCENARIOS = {
         "listings": [
             {
                 "authority": "nasdaq_trader",
+                "directory": "nasdaq_listed",
                 "listing_status": "active",
                 "market": "stocks",
                 "primary_exchange": "XNAS",
@@ -75,6 +76,7 @@ SCENARIOS = {
         "listings": [
             {
                 "authority": "nasdaq_trader",
+                "directory": "nasdaq_listed",
                 "listing_status": "not_found",
                 "market": "stocks",
                 "primary_exchange": None,
@@ -103,6 +105,24 @@ SCENARIOS = {
         },
         "listings": [
             {
+                "authority": "nasdaq_trader",
+                "directory": "nasdaq_listed",
+                "listing_status": "not_found",
+                "market": "stocks",
+                "primary_exchange": None,
+                "candidate_ticker": "TERM",
+                "issuer_cik": None,
+            },
+            {
+                "authority": "nasdaq_trader",
+                "directory": "other_listed",
+                "listing_status": "not_found",
+                "market": "stocks",
+                "primary_exchange": None,
+                "candidate_ticker": "TERM",
+                "issuer_cik": None,
+            },
+            {
                 "authority": "massive",
                 "listing_status": "inactive",
                 "market": "stocks",
@@ -125,6 +145,7 @@ SCENARIOS = {
         "listings": [
             {
                 "authority": "nasdaq_trader",
+                "directory": "other_listed",
                 "listing_status": "active",
                 "market": "stocks",
                 "primary_exchange": "XNYS",
@@ -306,6 +327,12 @@ def _listing_evidence(name: str) -> list[dict]:
     rows = []
     for index, listing in enumerate(scenario["listings"], 1):
         authority = listing["authority"]
+        directory = listing.get("directory")
+        if authority == "nasdaq_trader" and directory not in {
+            "nasdaq_listed",
+            "other_listed",
+        }:
+            raise AssertionError("browser_nasdaq_directory_missing")
         rows.append(
             {
                 "evidence_id": f"listing-{name}-{index}",
@@ -313,13 +340,15 @@ def _listing_evidence(name: str) -> list[dict]:
                 "kind": "listing_directory_snapshot",
                 "source_url": (
                     "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt"
-                    if authority == "nasdaq_trader"
+                    if directory == "nasdaq_listed"
+                    else "https://www.nasdaqtrader.com/dynamic/SymDir/otherlisted.txt"
+                    if directory == "other_listed"
                     else "https://api.massive.com/v3/reference/tickers"
                 ),
                 "created_at": "2026-08-28T08:00:00Z",
                 "listing": {
                     "authority": authority,
-                    "directory": "nasdaq_listed" if authority == "nasdaq_trader" else None,
+                    "directory": directory if authority == "nasdaq_trader" else None,
                     "candidate_ticker": listing["candidate_ticker"],
                     "listing_status": listing["listing_status"],
                     "market": listing["market"],
@@ -364,9 +393,17 @@ def _assert_terminal_product_invariants(scenario: dict, transition: dict) -> Non
         {"change_type": "source_hidden", "count": 1},
         {"change_type": "watchlist_membership_archived", "count": 1},
     ]
-    assert [row["candidate_ticker"] for row in scenario["listings"]] == [
+    assert {row["candidate_ticker"] for row in scenario["listings"]} == {
         source_ticker
-    ]
+    }
+    assert {
+        (row["authority"], row.get("directory"), row["listing_status"])
+        for row in scenario["listings"]
+    } == {
+        ("nasdaq_trader", "nasdaq_listed", "not_found"),
+        ("nasdaq_trader", "other_listed", "not_found"),
+        ("massive", None, "inactive"),
+    }
     assert transition["source_ticker"] == source_ticker
     assert transition["successor_ticker"] is None
     assert preview["source_ticker"] == source_ticker
@@ -420,6 +457,7 @@ def _applied_transition(name: str) -> dict:
                 "active_sources": ["manual_lists"],
                 "provider_owned_sources": [],
                 "caveats": [],
+                "proposal_ids": [],
             }
         )
         preview["effects"]["watchlists"] = {

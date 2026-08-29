@@ -113,7 +113,7 @@ def test_preexisting_product_test_fixture_authorities_are_preserved() -> None:
 def test_every_mutation_has_baseline_probe_and_stable_signatures() -> None:
     mutations = _load("run_mutations")
 
-    assert len(mutations.MUTATIONS) == 35
+    assert len(mutations.MUTATIONS) == 39
     for mutation in mutations.MUTATIONS:
         assert mutation.failure_signatures
         assert mutation.command[:4] == (
@@ -195,14 +195,25 @@ def test_browser_terminal_projection_is_preflight_valid() -> None:
     transition = detail["ticker_transition"]
     preview = transition["approved_preview"]
     activity = transition["activity_history"][0]
-    listing = next(
-        row for row in detail["evidence"] if row["source_family"] == "listing_authority"
-    )
+    listings = [
+        row["listing"]
+        for row in detail["evidence"]
+        if row["source_family"] == "listing_authority"
+    ]
 
     assert transition["kind"] == "terminal_delisting"
-    assert listing["listing"]["candidate_ticker"] == "TERM"
+    assert {listing["candidate_ticker"] for listing in listings} == {"TERM"}
+    assert {
+        (listing["authority"], listing["directory"], listing["listing_status"])
+        for listing in listings
+    } == {
+        ("nasdaq_trader", "nasdaq_listed", "not_found"),
+        ("nasdaq_trader", "other_listed", "not_found"),
+        ("massive", None, "inactive"),
+    }
     assert preview["source_ticker"] == "TERM"
     assert preview["successor_ticker"] is None
+    assert preview["proposal_ids"] == []
     assert preview["eligible"] is True
     assert preview["block_reasons"] == []
     assert preview["effects"]["watchlists"] == {
@@ -384,6 +395,72 @@ def test_browser_geometry_uses_the_visible_overflow_clipped_control_rect() -> No
         body_top = page.locator(".ui-drawer-body").bounding_box()["y"]
 
         assert save["top"] == body_top, "visible_overflow_clip"
+        browser.close()
+
+
+def test_browser_geometry_clips_other_edges_and_omits_fully_hidden_controls() -> None:
+    browser_fixture = _load("run_browser_matrix")
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+
+        def render(content: str) -> None:
+            page.set_content(
+                f"""
+                <style>
+                  * {{ box-sizing: border-box; }}
+                  body {{ margin: 0; }}
+                  .ui-drawer {{
+                    width: 200px;
+                    height: 200px;
+                    display: grid;
+                    grid-template-rows: 48px minmax(0, 1fr);
+                  }}
+                  .ui-overlay-head {{ display: flex; justify-content: flex-end; }}
+                  .ui-drawer-body {{ overflow: auto; }}
+                  button {{ width: 40px; height: 28px; }}
+                </style>
+                <aside class="ui-drawer">
+                  <header class="ui-overlay-head"><button>Close</button></header>
+                  <div class="ui-drawer-body">{content}</div>
+                </aside>
+                """
+            )
+
+        render(
+            '<div style="width:400px">'
+            '<button id="left" style="margin-left:12px">Left</button></div>'
+        )
+        page.locator(".ui-drawer-body").evaluate("node => { node.scrollLeft = 25; }")
+        left = next(
+            control
+            for control in browser_fixture._geometry(page)["controls"]
+            if control["text"] == "Left"
+        )
+        body = page.locator(".ui-drawer-body").bounding_box()
+        assert left["left"] == body["x"], "visible_overflow_left_clip"
+
+        render('<div style="height:140px"></div><button id="bottom">Bottom</button>')
+        bottom = next(
+            control
+            for control in browser_fixture._geometry(page)["controls"]
+            if control["text"] == "Bottom"
+        )
+        body = page.locator(".ui-drawer-body").bounding_box()
+        assert bottom["bottom"] == body["y"] + body["height"], (
+            "visible_overflow_bottom_clip"
+        )
+
+        render(
+            '<div style="height:12px"></div><button id="hidden">Hidden</button>'
+            '<div style="height:900px"></div>'
+        )
+        page.locator(".ui-drawer-body").evaluate("node => { node.scrollTop = 100; }")
+        controls = browser_fixture._geometry(page)["controls"]
+        assert all(control["text"] != "Hidden" for control in controls), (
+            "fully_clipped_control_hidden"
+        )
         browser.close()
 
 
