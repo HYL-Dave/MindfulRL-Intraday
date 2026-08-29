@@ -1229,18 +1229,53 @@
           "kernel_evidence_count": 1,
           "kernel_fact_count": 2,
           "kernel_non_listing_anchor_fact_count": 0,
+          "kernel_status": "succeeded",
           "payloads": [
             {
               "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
               "filename": "shadow-nasdaqlisted.txt",
-              "parser_input_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+              "transport_returned_exact_repository_bytes": true
             },
             {
               "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
               "filename": "shadow-otherlisted.txt",
-              "parser_input_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+              "transport_returned_exact_repository_bytes": true
+            }
+          ],
+          "session_blockers": [],
+          "sessions": [
+            {
+              "blockers": [],
+              "calls": [
+                "nasdaq:nasdaq_listed",
+                "nasdaq:other_listed"
+              ],
+              "diagnostics": {
+                "massive_body_bytes": 0,
+                "massive_request_count": 0,
+                "nasdaq_body_bytes": 539,
+                "nasdaq_request_count": 2
+              },
+              "lookup_calls": 1,
+              "payloads": [
+                {
+                  "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "filename": "shadow-nasdaqlisted.txt",
+                  "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "filename": "shadow-otherlisted.txt",
+                  "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "transport_returned_exact_repository_bytes": true
+                }
+              ],
+              "repeated_lookup_additional_requests": null,
+              "repeated_lookup_byte_identical": null,
+              "require_explicit_inactive": false
             }
           ],
           "strict_record_count": 1
@@ -1286,18 +1321,53 @@
           "kernel_evidence_count": 1,
           "kernel_fact_count": 2,
           "kernel_non_listing_anchor_fact_count": 0,
+          "kernel_status": "succeeded",
           "payloads": [
             {
               "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
               "filename": "shadow-nasdaqlisted.txt",
-              "parser_input_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+              "transport_returned_exact_repository_bytes": true
             },
             {
               "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
               "filename": "shadow-otherlisted.txt",
-              "parser_input_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+              "transport_returned_exact_repository_bytes": true
+            }
+          ],
+          "session_blockers": [],
+          "sessions": [
+            {
+              "blockers": [],
+              "calls": [
+                "nasdaq:nasdaq_listed",
+                "nasdaq:other_listed"
+              ],
+              "diagnostics": {
+                "massive_body_bytes": 0,
+                "massive_request_count": 0,
+                "nasdaq_body_bytes": 539,
+                "nasdaq_request_count": 2
+              },
+              "lookup_calls": 1,
+              "payloads": [
+                {
+                  "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "filename": "shadow-nasdaqlisted.txt",
+                  "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "filename": "shadow-otherlisted.txt",
+                  "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "transport_returned_exact_repository_bytes": true
+                }
+              ],
+              "repeated_lookup_additional_requests": null,
+              "repeated_lookup_byte_identical": null,
+              "require_explicit_inactive": false
             }
           ],
           "strict_record_count": 1
@@ -1343,18 +1413,53 @@
           "kernel_evidence_count": 1,
           "kernel_fact_count": 2,
           "kernel_non_listing_anchor_fact_count": 0,
+          "kernel_status": "succeeded",
           "payloads": [
             {
               "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
               "filename": "shadow-nasdaqlisted.txt",
-              "parser_input_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+              "transport_returned_exact_repository_bytes": true
             },
             {
               "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
               "filename": "shadow-otherlisted.txt",
-              "parser_input_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+              "transport_returned_exact_repository_bytes": true
+            }
+          ],
+          "session_blockers": [],
+          "sessions": [
+            {
+              "blockers": [],
+              "calls": [
+                "nasdaq:nasdaq_listed",
+                "nasdaq:other_listed"
+              ],
+              "diagnostics": {
+                "massive_body_bytes": 0,
+                "massive_request_count": 0,
+                "nasdaq_body_bytes": 539,
+                "nasdaq_request_count": 2
+              },
+              "lookup_calls": 1,
+              "payloads": [
+                {
+                  "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "filename": "shadow-nasdaqlisted.txt",
+                  "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "filename": "shadow-otherlisted.txt",
+                  "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "transport_returned_exact_repository_bytes": true
+                }
+              ],
+              "repeated_lookup_additional_requests": null,
+              "repeated_lookup_byte_identical": null,
+              "require_explicit_inactive": false
             }
           ],
           "strict_record_count": 1
@@ -1400,18 +1505,53 @@
           "kernel_evidence_count": 1,
           "kernel_fact_count": 2,
           "kernel_non_listing_anchor_fact_count": 0,
+          "kernel_status": "succeeded",
           "payloads": [
             {
               "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
               "filename": "shadow-nasdaqlisted.txt",
-              "parser_input_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+              "transport_returned_exact_repository_bytes": true
             },
             {
               "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
               "filename": "shadow-otherlisted.txt",
-              "parser_input_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+              "transport_returned_exact_repository_bytes": true
+            }
+          ],
+          "session_blockers": [],
+          "sessions": [
+            {
+              "blockers": [],
+              "calls": [
+                "nasdaq:nasdaq_listed",
+                "nasdaq:other_listed"
+              ],
+              "diagnostics": {
+                "massive_body_bytes": 0,
+                "massive_request_count": 0,
+                "nasdaq_body_bytes": 539,
+                "nasdaq_request_count": 2
+              },
+              "lookup_calls": 1,
+              "payloads": [
+                {
+                  "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "filename": "shadow-nasdaqlisted.txt",
+                  "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "filename": "shadow-otherlisted.txt",
+                  "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "transport_returned_exact_repository_bytes": true
+                }
+              ],
+              "repeated_lookup_additional_requests": null,
+              "repeated_lookup_byte_identical": null,
+              "require_explicit_inactive": false
             }
           ],
           "strict_record_count": 1
@@ -1457,18 +1597,53 @@
           "kernel_evidence_count": 1,
           "kernel_fact_count": 2,
           "kernel_non_listing_anchor_fact_count": 0,
+          "kernel_status": "succeeded",
           "payloads": [
             {
               "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
               "filename": "shadow-nasdaqlisted.txt",
-              "parser_input_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+              "transport_returned_exact_repository_bytes": true
             },
             {
               "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
               "filename": "shadow-otherlisted.txt",
-              "parser_input_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+              "transport_returned_exact_repository_bytes": true
+            }
+          ],
+          "session_blockers": [],
+          "sessions": [
+            {
+              "blockers": [],
+              "calls": [
+                "nasdaq:nasdaq_listed",
+                "nasdaq:other_listed"
+              ],
+              "diagnostics": {
+                "massive_body_bytes": 0,
+                "massive_request_count": 0,
+                "nasdaq_body_bytes": 539,
+                "nasdaq_request_count": 2
+              },
+              "lookup_calls": 1,
+              "payloads": [
+                {
+                  "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "filename": "shadow-nasdaqlisted.txt",
+                  "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "filename": "shadow-otherlisted.txt",
+                  "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "transport_returned_exact_repository_bytes": true
+                }
+              ],
+              "repeated_lookup_additional_requests": null,
+              "repeated_lookup_byte_identical": null,
+              "require_explicit_inactive": false
             }
           ],
           "strict_record_count": 1
@@ -1507,23 +1682,94 @@
         "historical_sec_fact_authority": "frozen_repository_helper_no_provider_bytes",
         "listing_authority": {
           "adapters": [
-            "massive_reference"
+            "massive_reference",
+            "nasdaq_symbol_directory"
           ],
           "document_sha256": [
-            "92eb7e26a79784dad80108253bebb86b6030b6566788a032f4349e68fa71a88d"
+            "09c5739cb35b5318d62cbb539acdd109bf07569bd0c9a1fa08cf335189a10b4a",
+            "71fb4b1f445be5f86ea622d7aff89fab47aaa772eac2562d774288326f67a8bd",
+            "92eb7e26a79784dad80108253bebb86b6030b6566788a032f4349e68fa71a88d",
+            "aa13dce291cbd3791992628cd3beb392d5376b5cc3b70730736e35442007afde"
           ],
-          "kernel_evidence_count": 1,
+          "kernel_evidence_count": 4,
           "kernel_fact_count": 4,
           "kernel_non_listing_anchor_fact_count": 0,
+          "kernel_status": "succeeded",
           "payloads": [
+            {
+              "configured_sha256": "09c5739cb35b5318d62cbb539acdd109bf07569bd0c9a1fa08cf335189a10b4a",
+              "filename": "nasdaqlisted.txt",
+              "transport_body_sha256": "09c5739cb35b5318d62cbb539acdd109bf07569bd0c9a1fa08cf335189a10b4a",
+              "transport_returned_exact_repository_bytes": true
+            },
+            {
+              "configured_sha256": "71fb4b1f445be5f86ea622d7aff89fab47aaa772eac2562d774288326f67a8bd",
+              "filename": "otherlisted.txt",
+              "transport_body_sha256": "71fb4b1f445be5f86ea622d7aff89fab47aaa772eac2562d774288326f67a8bd",
+              "transport_returned_exact_repository_bytes": true
+            },
+            {
+              "configured_sha256": "aa13dce291cbd3791992628cd3beb392d5376b5cc3b70730736e35442007afde",
+              "filename": "shadow-massive-stocks-empty.json",
+              "transport_body_sha256": "aa13dce291cbd3791992628cd3beb392d5376b5cc3b70730736e35442007afde",
+              "transport_returned_exact_repository_bytes": true
+            },
             {
               "configured_sha256": "92eb7e26a79784dad80108253bebb86b6030b6566788a032f4349e68fa71a88d",
               "filename": "shadow-massive-otc-active.json",
-              "parser_input_sha256": "92eb7e26a79784dad80108253bebb86b6030b6566788a032f4349e68fa71a88d",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "92eb7e26a79784dad80108253bebb86b6030b6566788a032f4349e68fa71a88d",
+              "transport_returned_exact_repository_bytes": true
             }
           ],
-          "strict_record_count": 1
+          "session_blockers": [],
+          "sessions": [
+            {
+              "blockers": [],
+              "calls": [
+                "nasdaq:nasdaq_listed",
+                "nasdaq:other_listed",
+                "massive:NEW:true:stocks",
+                "massive:NEW:true:otc"
+              ],
+              "diagnostics": {
+                "massive_body_bytes": 269,
+                "massive_request_count": 2,
+                "nasdaq_body_bytes": 380,
+                "nasdaq_request_count": 2
+              },
+              "lookup_calls": 2,
+              "payloads": [
+                {
+                  "configured_sha256": "09c5739cb35b5318d62cbb539acdd109bf07569bd0c9a1fa08cf335189a10b4a",
+                  "filename": "nasdaqlisted.txt",
+                  "transport_body_sha256": "09c5739cb35b5318d62cbb539acdd109bf07569bd0c9a1fa08cf335189a10b4a",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "71fb4b1f445be5f86ea622d7aff89fab47aaa772eac2562d774288326f67a8bd",
+                  "filename": "otherlisted.txt",
+                  "transport_body_sha256": "71fb4b1f445be5f86ea622d7aff89fab47aaa772eac2562d774288326f67a8bd",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "aa13dce291cbd3791992628cd3beb392d5376b5cc3b70730736e35442007afde",
+                  "filename": "shadow-massive-stocks-empty.json",
+                  "transport_body_sha256": "aa13dce291cbd3791992628cd3beb392d5376b5cc3b70730736e35442007afde",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "92eb7e26a79784dad80108253bebb86b6030b6566788a032f4349e68fa71a88d",
+                  "filename": "shadow-massive-otc-active.json",
+                  "transport_body_sha256": "92eb7e26a79784dad80108253bebb86b6030b6566788a032f4349e68fa71a88d",
+                  "transport_returned_exact_repository_bytes": true
+                }
+              ],
+              "repeated_lookup_additional_requests": 0,
+              "repeated_lookup_byte_identical": true,
+              "require_explicit_inactive": false
+            }
+          ],
+          "strict_record_count": 4
         },
         "preview_calls": 1,
         "publisher_injection_inert": true
@@ -1567,26 +1813,68 @@
             "9ee93b089344d955581c137d425ca0b23e844017d17e09bb6f6c85f94abede08"
           ],
           "kernel_evidence_count": 3,
-          "kernel_fact_count": 0,
-          "kernel_non_listing_anchor_fact_count": 1,
+          "kernel_fact_count": 2,
+          "kernel_non_listing_anchor_fact_count": 0,
+          "kernel_status": "succeeded",
           "payloads": [
             {
               "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
               "filename": "shadow-nasdaqlisted.txt",
-              "parser_input_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+              "transport_returned_exact_repository_bytes": true
             },
             {
               "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
               "filename": "shadow-otherlisted.txt",
-              "parser_input_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+              "transport_returned_exact_repository_bytes": true
             },
             {
               "configured_sha256": "9ee93b089344d955581c137d425ca0b23e844017d17e09bb6f6c85f94abede08",
               "filename": "shadow-massive-term-inactive.json",
-              "parser_input_sha256": "9ee93b089344d955581c137d425ca0b23e844017d17e09bb6f6c85f94abede08",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "9ee93b089344d955581c137d425ca0b23e844017d17e09bb6f6c85f94abede08",
+              "transport_returned_exact_repository_bytes": true
+            }
+          ],
+          "session_blockers": [],
+          "sessions": [
+            {
+              "blockers": [],
+              "calls": [
+                "nasdaq:nasdaq_listed",
+                "nasdaq:other_listed",
+                "massive:OLD:false:stocks"
+              ],
+              "diagnostics": {
+                "massive_body_bytes": 251,
+                "massive_request_count": 1,
+                "nasdaq_body_bytes": 539,
+                "nasdaq_request_count": 2
+              },
+              "lookup_calls": 1,
+              "payloads": [
+                {
+                  "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "filename": "shadow-nasdaqlisted.txt",
+                  "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "filename": "shadow-otherlisted.txt",
+                  "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "9ee93b089344d955581c137d425ca0b23e844017d17e09bb6f6c85f94abede08",
+                  "filename": "shadow-massive-term-inactive.json",
+                  "transport_body_sha256": "9ee93b089344d955581c137d425ca0b23e844017d17e09bb6f6c85f94abede08",
+                  "transport_returned_exact_repository_bytes": true
+                }
+              ],
+              "repeated_lookup_additional_requests": null,
+              "repeated_lookup_byte_identical": null,
+              "require_explicit_inactive": true
             }
           ],
           "strict_record_count": 3
@@ -1635,18 +1923,57 @@
           "kernel_evidence_count": 2,
           "kernel_fact_count": 0,
           "kernel_non_listing_anchor_fact_count": 1,
+          "kernel_status": "blocked",
           "payloads": [
             {
               "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
               "filename": "shadow-nasdaqlisted.txt",
-              "parser_input_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+              "transport_returned_exact_repository_bytes": true
             },
             {
               "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
               "filename": "shadow-otherlisted.txt",
-              "parser_input_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+              "transport_returned_exact_repository_bytes": true
+            }
+          ],
+          "session_blockers": [
+            "massive_credential_missing"
+          ],
+          "sessions": [
+            {
+              "blockers": [
+                "massive_credential_missing"
+              ],
+              "calls": [
+                "nasdaq:nasdaq_listed",
+                "nasdaq:other_listed"
+              ],
+              "diagnostics": {
+                "massive_body_bytes": 0,
+                "massive_request_count": 0,
+                "nasdaq_body_bytes": 539,
+                "nasdaq_request_count": 2
+              },
+              "lookup_calls": 1,
+              "payloads": [
+                {
+                  "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "filename": "shadow-nasdaqlisted.txt",
+                  "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "filename": "shadow-otherlisted.txt",
+                  "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "transport_returned_exact_repository_bytes": true
+                }
+              ],
+              "repeated_lookup_additional_requests": null,
+              "repeated_lookup_byte_identical": null,
+              "require_explicit_inactive": true
             }
           ],
           "strict_record_count": 2
@@ -1696,24 +2023,86 @@
           "kernel_evidence_count": 2,
           "kernel_fact_count": 6,
           "kernel_non_listing_anchor_fact_count": 0,
+          "kernel_status": "succeeded",
           "payloads": [
             {
               "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
               "filename": "shadow-nasdaqlisted.txt",
-              "parser_input_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+              "transport_returned_exact_repository_bytes": true
             },
             {
               "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
               "filename": "shadow-otherlisted.txt",
-              "parser_input_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+              "transport_returned_exact_repository_bytes": true
             },
             {
               "configured_sha256": "ceb87170a1cc7d61986d849b3cad950dd583a0451be370512497bf3297498523",
               "filename": "shadow-massive-conflict-active.json",
-              "parser_input_sha256": "ceb87170a1cc7d61986d849b3cad950dd583a0451be370512497bf3297498523",
-              "parser_received_exact_repository_bytes": true
+              "transport_body_sha256": "ceb87170a1cc7d61986d849b3cad950dd583a0451be370512497bf3297498523",
+              "transport_returned_exact_repository_bytes": true
+            }
+          ],
+          "session_blockers": [],
+          "sessions": [
+            {
+              "blockers": [],
+              "calls": [
+                "nasdaq:nasdaq_listed",
+                "nasdaq:other_listed"
+              ],
+              "diagnostics": {
+                "massive_body_bytes": 0,
+                "massive_request_count": 0,
+                "nasdaq_body_bytes": 539,
+                "nasdaq_request_count": 2
+              },
+              "lookup_calls": 1,
+              "payloads": [
+                {
+                  "configured_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "filename": "shadow-nasdaqlisted.txt",
+                  "transport_body_sha256": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
+                  "transport_returned_exact_repository_bytes": true
+                },
+                {
+                  "configured_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "filename": "shadow-otherlisted.txt",
+                  "transport_body_sha256": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208",
+                  "transport_returned_exact_repository_bytes": true
+                }
+              ],
+              "repeated_lookup_additional_requests": null,
+              "repeated_lookup_byte_identical": null,
+              "require_explicit_inactive": false
+            },
+            {
+              "blockers": [
+                "listing_directory_unavailable"
+              ],
+              "calls": [
+                "nasdaq:nasdaq_listed",
+                "massive:NEW:true:stocks"
+              ],
+              "diagnostics": {
+                "massive_body_bytes": 214,
+                "massive_request_count": 1,
+                "nasdaq_body_bytes": 0,
+                "nasdaq_request_count": 1
+              },
+              "lookup_calls": 1,
+              "payloads": [
+                {
+                  "configured_sha256": "ceb87170a1cc7d61986d849b3cad950dd583a0451be370512497bf3297498523",
+                  "filename": "shadow-massive-conflict-active.json",
+                  "transport_body_sha256": "ceb87170a1cc7d61986d849b3cad950dd583a0451be370512497bf3297498523",
+                  "transport_returned_exact_repository_bytes": true
+                }
+              ],
+              "repeated_lookup_additional_requests": null,
+              "repeated_lookup_byte_identical": null,
+              "require_explicit_inactive": false
             }
           ],
           "strict_record_count": 2
@@ -1724,12 +2113,137 @@
     ],
     "fixture_authority": "tests/fixtures/listing_authority/shadow-cases.json",
     "historical_sec_limitation": "Historical SEC facts use frozen repository helpers because this packet contains no provider bytes or calls.",
-    "listing_material_path": "repository_fixture_bytes_to_parser_session_to_listing_evidence_builder_to_real_fact_kernel_temporary_sqlite_to_policy",
-    "listing_payload_bytes": "exact_repository_bytes_no_substitution_mutation_or_reserialization_before_parser_input",
+    "listing_material_path": "repository_fixture_bytes_to_fake_production_transport_to_real_listing_authority_session_to_real_fact_kernel_temporary_sqlite_to_policy",
+    "listing_payload_bytes": "exact_repository_bytes_no_substitution_mutation_or_reserialization_before_real_session_parser_input",
     "non_transition_preview_calls": 0,
     "policy_version": "trusted-lifecycle-automation-v4",
     "publisher_injection_inert_count": 9,
-    "schema_version": 2,
+    "schema_version": 3,
+    "session_contract": {
+      "blocker_normalization": {
+        "missing_credential": "massive_credential_missing",
+        "parser_failure": "massive_reference_unavailable"
+      },
+      "deduplication": {
+        "case": "OTC-A",
+        "repeated_lookup_additional_requests": 0,
+        "repeated_lookup_byte_identical": true
+      },
+      "nms_requiredness": {
+        "candidate_ticker": "NEW",
+        "massive_requested": false,
+        "require_explicit_inactive": false
+      },
+      "otc_fallback_order": [
+        "nasdaq:nasdaq_listed",
+        "nasdaq:other_listed",
+        "massive:NEW:true:stocks",
+        "massive:NEW:true:otc"
+      ],
+      "provider_calls": 0,
+      "real_session_lookup_calls": 12,
+      "request_budgets": {
+        "all_within_limits": true,
+        "witnesses": [
+          {
+            "case": "HAPN",
+            "massive_body_bytes": 0,
+            "massive_request_count": 0,
+            "nasdaq_body_bytes": 539,
+            "nasdaq_request_count": 2,
+            "session": 1
+          },
+          {
+            "case": "QBTS",
+            "massive_body_bytes": 0,
+            "massive_request_count": 0,
+            "nasdaq_body_bytes": 539,
+            "nasdaq_request_count": 2,
+            "session": 1
+          },
+          {
+            "case": "CCL",
+            "massive_body_bytes": 0,
+            "massive_request_count": 0,
+            "nasdaq_body_bytes": 539,
+            "nasdaq_request_count": 2,
+            "session": 1
+          },
+          {
+            "case": "BLBD",
+            "massive_body_bytes": 0,
+            "massive_request_count": 0,
+            "nasdaq_body_bytes": 539,
+            "nasdaq_request_count": 2,
+            "session": 1
+          },
+          {
+            "case": "NMS-A",
+            "massive_body_bytes": 0,
+            "massive_request_count": 0,
+            "nasdaq_body_bytes": 539,
+            "nasdaq_request_count": 2,
+            "session": 1
+          },
+          {
+            "case": "OTC-A",
+            "massive_body_bytes": 269,
+            "massive_request_count": 2,
+            "nasdaq_body_bytes": 380,
+            "nasdaq_request_count": 2,
+            "session": 1
+          },
+          {
+            "case": "TERM",
+            "massive_body_bytes": 251,
+            "massive_request_count": 1,
+            "nasdaq_body_bytes": 539,
+            "nasdaq_request_count": 2,
+            "session": 1
+          },
+          {
+            "case": "MISS",
+            "massive_body_bytes": 0,
+            "massive_request_count": 0,
+            "nasdaq_body_bytes": 539,
+            "nasdaq_request_count": 2,
+            "session": 1
+          },
+          {
+            "case": "CONFLICT",
+            "massive_body_bytes": 0,
+            "massive_request_count": 0,
+            "nasdaq_body_bytes": 539,
+            "nasdaq_request_count": 2,
+            "session": 1
+          },
+          {
+            "case": "CONFLICT",
+            "massive_body_bytes": 214,
+            "massive_request_count": 1,
+            "nasdaq_body_bytes": 0,
+            "nasdaq_request_count": 1,
+            "session": 2
+          },
+          {
+            "case": "PARSER-BLOCKER-PROBE",
+            "massive_body_bytes": 176,
+            "massive_request_count": 1,
+            "nasdaq_body_bytes": 0,
+            "nasdaq_request_count": 1,
+            "session": 1
+          }
+        ]
+      },
+      "session": "real_listing_authority_session",
+      "terminal_requiredness": {
+        "candidate_ticker": "OLD",
+        "massive_expected_active": false,
+        "massive_market": "stocks",
+        "require_explicit_inactive": true
+      },
+      "transport": "fake_production_interface_exact_repository_bytes"
+    },
     "transition_preview_calls": 3
   }
 }

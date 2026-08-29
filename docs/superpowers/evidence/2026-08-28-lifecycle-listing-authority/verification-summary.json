@@ -20,12 +20,16 @@
     }
   },
   "browser": {
+    "acknowledgement_surface_witnesses": 8,
     "all_negative_counts": 0,
     "entries": 24,
+    "listing_evidence_expanded": 24,
+    "listing_translation_controls": 0,
     "locales": [
       "en",
       "zh-Hant"
     ],
+    "regulator_translation_controls": 20,
     "scenarios": [
       "active",
       "conflict-attention",
@@ -44,9 +48,10 @@
     ]
   },
   "fixture_sha256": {
-    "shadow-cases.json": "f75c7113d7e1c6dee4ba696940afb7958752ee0ab7a12994e28070dae41e85b6",
+    "shadow-cases.json": "dff5a1cfee3d404144f2ceb0a6b23e8b30b6dc707a030f382326a4d370ad79a9",
     "shadow-massive-conflict-active.json": "ceb87170a1cc7d61986d849b3cad950dd583a0451be370512497bf3297498523",
     "shadow-massive-otc-active.json": "92eb7e26a79784dad80108253bebb86b6030b6566788a032f4349e68fa71a88d",
+    "shadow-massive-stocks-empty.json": "aa13dce291cbd3791992628cd3beb392d5376b5cc3b70730736e35442007afde",
     "shadow-massive-term-inactive.json": "9ee93b089344d955581c137d425ca0b23e844017d17e09bb6f6c85f94abede08",
     "shadow-nasdaqlisted.txt": "27c01c0b6fc45f87c8771c97552a8b8c0a2bde78a550e8a32328558c1a475884",
     "shadow-otherlisted.txt": "708a0a7b2296f628cff9c64230abac2d3a02c8f4162d25f649899d97a77c5208"
@@ -54,15 +59,15 @@
   "gates": {
     "focused_a": {
       "failures": 0,
-      "passed": 334,
+      "passed": 344,
       "skipped": 0
     },
     "focused_b": {
       "failures": 0,
-      "passed": 334,
+      "passed": 344,
       "skipped": 0
     },
-    "focused_collected_nodes": 334,
+    "focused_collected_nodes": 344,
     "focused_node_sets_identical": true,
     "frontend": {
       "build": "passed",
@@ -70,24 +75,24 @@
       "test": {
         "files_passed": 106,
         "status": "passed",
-        "tests_passed": 1305
+        "tests_passed": 1306
       },
       "typecheck": "passed"
     },
     "full_a": {
       "failures": 0,
-      "passed": 4840,
+      "passed": 4855,
       "skipped": 12
     },
     "full_b": {
       "failures": 0,
-      "passed": 4840,
+      "passed": 4855,
       "skipped": 12
     },
     "full_collection_counts_identical": true,
     "packet_contracts": {
       "failures": 0,
-      "passed": 6,
+      "passed": 11,
       "skipped": 0
     }
   },
@@ -192,9 +197,9 @@
     }
   },
   "mutations": {
-    "baselines_admitted": 20,
-    "defined": 20,
-    "killed": 20,
+    "baselines_admitted": 33,
+    "defined": 33,
+    "killed": 33,
     "restored": true,
     "scope_anomalies": 0,
     "unexpected_failures_inside_declared_scopes": 0
@@ -264,6 +269,6 @@
     "preview_calls": 3,
     "publisher_injection_inert": 9,
     "sec_limitation": "Historical SEC facts use frozen repository helpers because this packet contains no provider bytes or calls.",
-    "strict_path": "repository_fixture_bytes_to_parser_session_to_listing_evidence_builder_to_real_fact_kernel_temporary_sqlite_to_policy"
+    "strict_path": "repository_fixture_bytes_to_fake_production_transport_to_real_listing_authority_session_to_real_fact_kernel_temporary_sqlite_to_policy"
   }
 }

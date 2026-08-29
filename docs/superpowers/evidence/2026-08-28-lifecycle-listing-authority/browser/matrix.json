@@ -2,9 +2,13 @@
   "app_url": "http://127.0.0.1:4208/",
   "entries": [
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -13,23 +17,24 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          23.304,
-          25.036,
-          27.109
+          23.539,
+          25.359,
+          27.748
         ],
         "extrema": [
           [
-            4,
+            0,
             230
           ],
           [
-            6,
+            0,
             237
           ],
           [
@@ -44,6 +49,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "active",
@@ -55,13 +62,17 @@
         1440,
         900
       ],
-      "visible_text_sha256": "dc58b815678101f3079b7af09502a232ef3366bec9d102d7e66e57eff41b86e9",
+      "visible_text_sha256": "ce037bab447f00fedec0ea27eb6528f1ac60906917a7cd04a21c3e4833677069",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -70,23 +81,24 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          23.262,
-          25.114,
-          27.535
+          23.68,
+          25.596,
+          28.288
         ],
         "extrema": [
           [
-            4,
+            0,
             230
           ],
           [
-            6,
+            0,
             237
           ],
           [
@@ -101,6 +113,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "not-found-monitoring",
@@ -112,13 +126,19 @@
         1440,
         900
       ],
-      "visible_text_sha256": "4b4507947a2277db7c80d66ac667791402b94ba6e4f751942c0f221f72febb99",
+      "visible_text_sha256": "60fdfe7fa90a80d088874f7a1831267a2afe8291d4dd7f3759cc08837d6d5795",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [
+        "Acknowledge"
+      ],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -127,15 +147,16 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          23.617,
-          25.645,
-          28.086
+          23.55,
+          25.54,
+          27.933
         ],
         "extrema": [
           [
@@ -158,6 +179,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "inactive-history",
@@ -172,13 +195,17 @@
         1440,
         900
       ],
-      "visible_text_sha256": "ab662e1f2ab66c5a0d1bc0dfb3339892946533ebf5b85fb1062eac015d8f003e",
+      "visible_text_sha256": "43b5dc6415fc9d1e1fd67b6fa58fb86246f19254ce22d8450aab3d5c484d0298",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 2,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 2,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -188,28 +215,29 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 2,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          23.728,
-          25.571,
-          27.976
+          19.948,
+          22.083,
+          25.552
         ],
         "extrema": [
           [
-            4,
+            0,
             230
           ],
           [
-            6,
+            0,
             237
           ],
           [
             7,
-            255
+            243
           ]
         ],
         "size": [
@@ -219,6 +247,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 21,
       "scenario": "conflict-attention",
@@ -230,13 +260,19 @@
         1440,
         900
       ],
-      "visible_text_sha256": "75ed411a6b7726ac45386581012a75ca34c33951b46f092bca0a355d4cfd7668",
+      "visible_text_sha256": "66ca1b6a2b006f47c0d85adbd16483f74af6dbaa5d33670dcd7fd8137ba8edc6",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [
+        "Acknowledge"
+      ],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -245,6 +281,7 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
@@ -276,6 +313,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "otc-continuation",
@@ -290,16 +329,21 @@
         1440,
         900
       ],
-      "visible_text_sha256": "8847e9c8eb5f0576cf991461ff2b6616b4f674657e9f6ae1e48e905b0a8c6742",
+      "visible_text_sha256": "983c8a846b6f422e73fa42448819edb45a9b2b6f008b0a2553564bb8541e48cb",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 0,
+      "expanded_regulator_evidence_count": 0,
+      "expected_listing_evidence_count": 0,
       "external_requests": [],
       "fixture_cik_shape": null,
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 0,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
@@ -331,6 +375,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 0,
+      "regulator_translation_button_count": 0,
       "render_acknowledgements": [],
       "request_count": 23,
       "scenario": "settings-massive-key",
@@ -346,9 +392,13 @@
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -357,23 +407,24 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          22.181,
-          23.826,
-          25.821
+          22.662,
+          24.43,
+          26.744
         ],
         "extrema": [
           [
-            4,
+            0,
             230
           ],
           [
-            6,
+            0,
             237
           ],
           [
@@ -388,6 +439,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "active",
@@ -399,13 +452,17 @@
         1440,
         900
       ],
-      "visible_text_sha256": "c07b11177bff25ea4079c1c7d2f8d7a5f3d0053081256db1c021e5c91d662b09",
+      "visible_text_sha256": "7771596634bc99371a2f2a321094da6aad1044ceb7de26684f4c3279c076d4da",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -414,23 +471,24 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          22.446,
-          24.238,
-          26.571
+          23.078,
+          24.956,
+          27.546
         ],
         "extrema": [
           [
-            4,
+            0,
             230
           ],
           [
-            6,
+            0,
             237
           ],
           [
@@ -445,6 +503,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "not-found-monitoring",
@@ -456,13 +516,19 @@
         1440,
         900
       ],
-      "visible_text_sha256": "c8c1df5a00ec0606743e9a68a47780e47e0416003946a6d6c2b3888e10f57146",
+      "visible_text_sha256": "c955fd6c779ed64918c43623493a88341b487b63757a641a5b48b9d086ebddb9",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [
+        "知道了"
+      ],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -471,28 +537,29 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          23.778,
-          25.591,
-          27.754
+          22.92,
+          24.735,
+          26.915
         ],
         "extrema": [
           [
             4,
-            230
+            255
           ],
           [
             6,
-            237
+            255
           ],
           [
             7,
-            243
+            255
           ]
         ],
         "size": [
@@ -502,6 +569,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "inactive-history",
@@ -516,13 +585,17 @@
         1440,
         900
       ],
-      "visible_text_sha256": "f9e716c8f08f41554fec790d23a5e359e01df7d16851192111a13545895d6007",
+      "visible_text_sha256": "ff66337bf8b11f5e0c84a3da52ef0b76f87a33ddf99a3cfaabcd4a61c1f9e6c0",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 2,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 2,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -532,28 +605,29 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 2,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          22.852,
-          24.642,
-          26.966
+          19.541,
+          21.638,
+          24.922
         ],
         "extrema": [
           [
-            4,
+            0,
             230
           ],
           [
-            6,
+            0,
             237
           ],
           [
             7,
-            255
+            243
           ]
         ],
         "size": [
@@ -563,6 +637,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 21,
       "scenario": "conflict-attention",
@@ -574,13 +650,19 @@
         1440,
         900
       ],
-      "visible_text_sha256": "d4360f4acfeb7c349b9e86763bbd5860406db540eb89e6006dd3cb3844c661b8",
+      "visible_text_sha256": "6a67a324d8f5c4d9de91e90bbfb893dd0be9cb648aa4873676b0324e8eef90b3",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [
+        "知道了"
+      ],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -589,6 +671,7 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
@@ -620,6 +703,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "otc-continuation",
@@ -634,16 +719,21 @@
         1440,
         900
       ],
-      "visible_text_sha256": "e337e6b0ea7099dd241a77b3b558ad177ef7fafdb232814983c17f342e09165c",
+      "visible_text_sha256": "5a727365a5beb209b5bd8a715cc5b2be0496d47c91d25bfa0ed2ed61b96f5385",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 0,
+      "expanded_regulator_evidence_count": 0,
+      "expected_listing_evidence_count": 0,
       "external_requests": [],
       "fixture_cik_shape": null,
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 0,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
@@ -675,6 +765,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 0,
+      "regulator_translation_button_count": 0,
       "render_acknowledgements": [],
       "request_count": 23,
       "scenario": "settings-massive-key",
@@ -690,9 +782,13 @@
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -701,80 +797,24 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          35.558,
-          36.125,
-          36.391
+          31.806,
+          32.226,
+          33.368
         ],
         "extrema": [
           [
-            21,
+            0,
             230
           ],
           [
-            26,
-            237
-          ],
-          [
-            33,
-            255
-          ]
-        ],
-        "size": [
-          390,
-          844
-        ]
-      },
-      "produced_by_shadow_execution": false,
-      "publisher_family_text_count": 0,
-      "render_acknowledgements": [],
-      "request_count": 22,
-      "scenario": "active",
-      "screenshot": "390x844-en-active.png",
-      "surface": "lifecycle",
-      "synthetic_post_apply_projection": false,
-      "transition_surface_witnesses": [],
-      "viewport": [
-        390,
-        844
-      ],
-      "visible_text_sha256": "dc58b815678101f3079b7af09502a232ef3366bec9d102d7e66e57eff41b86e9",
-      "writes": []
-    },
-    {
-      "clipped_text_count": 0,
-      "command_calls": [],
-      "console_errors": [],
-      "external_requests": [],
-      "fixture_cik_shape": {
-        "listing_issuer_ciks": [
-          null
-        ],
-        "regulator_issuer_cik": "0001409970"
-      },
-      "fixture_provenance": "local_browser_fixture",
-      "listing_translation_button_count": 0,
-      "locale": "en",
-      "overlap_count": 0,
-      "page_errors": [],
-      "pixels": {
-        "channel_stddev": [
-          35.835,
-          36.407,
-          36.675
-        ],
-        "extrema": [
-          [
-            21,
-            230
-          ],
-          [
-            27,
+            0,
             237
           ],
           [
@@ -789,6 +829,72 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "active",
+      "screenshot": "390x844-en-active.png",
+      "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "ce037bab447f00fedec0ea27eb6528f1ac60906917a7cd04a21c3e4833677069",
+      "writes": []
+    },
+    {
+      "acknowledgement_surface_witnesses": [],
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
+      "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 1,
+      "listing_translation_button_count": 0,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          34.294,
+          34.625,
+          35.46
+        ],
+        "extrema": [
+          [
+            0,
+            230
+          ],
+          [
+            0,
+            237
+          ],
+          [
+            33,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "produced_by_shadow_execution": false,
+      "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "not-found-monitoring",
@@ -800,13 +906,19 @@
         390,
         844
       ],
-      "visible_text_sha256": "4b4507947a2277db7c80d66ac667791402b94ba6e4f751942c0f221f72febb99",
+      "visible_text_sha256": "60fdfe7fa90a80d088874f7a1831267a2afe8291d4dd7f3759cc08837d6d5795",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [
+        "Acknowledge"
+      ],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -815,15 +927,16 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          40.806,
-          41.308,
-          41.522
+          39.662,
+          40.201,
+          40.466
         ],
         "extrema": [
           [
@@ -846,6 +959,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "inactive-history",
@@ -860,13 +975,17 @@
         390,
         844
       ],
-      "visible_text_sha256": "ab662e1f2ab66c5a0d1bc0dfb3339892946533ebf5b85fb1062eac015d8f003e",
+      "visible_text_sha256": "43b5dc6415fc9d1e1fd67b6fa58fb86246f19254ce22d8450aab3d5c484d0298",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 2,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 2,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -876,28 +995,29 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 2,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          35.473,
-          36.039,
-          36.308
+          24.297,
+          24.471,
+          25.61
         ],
         "extrema": [
           [
-            21,
+            0,
             230
           ],
           [
-            27,
+            0,
             237
           ],
           [
-            34,
-            255
+            33,
+            243
           ]
         ],
         "size": [
@@ -907,6 +1027,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 21,
       "scenario": "conflict-attention",
@@ -918,13 +1040,19 @@
         390,
         844
       ],
-      "visible_text_sha256": "75ed411a6b7726ac45386581012a75ca34c33951b46f092bca0a355d4cfd7668",
+      "visible_text_sha256": "66ca1b6a2b006f47c0d85adbd16483f74af6dbaa5d33670dcd7fd8137ba8edc6",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [
+        "Acknowledge"
+      ],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -933,6 +1061,7 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
@@ -964,6 +1093,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "otc-continuation",
@@ -978,16 +1109,21 @@
         390,
         844
       ],
-      "visible_text_sha256": "8847e9c8eb5f0576cf991461ff2b6616b4f674657e9f6ae1e48e905b0a8c6742",
+      "visible_text_sha256": "983c8a846b6f422e73fa42448819edb45a9b2b6f008b0a2553564bb8541e48cb",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 0,
+      "expanded_regulator_evidence_count": 0,
+      "expected_listing_evidence_count": 0,
       "external_requests": [],
       "fixture_cik_shape": null,
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 0,
       "listing_translation_button_count": 0,
       "locale": "en",
       "overlap_count": 0,
@@ -1019,6 +1155,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 0,
+      "regulator_translation_button_count": 0,
       "render_acknowledgements": [],
       "request_count": 23,
       "scenario": "settings-massive-key",
@@ -1034,9 +1172,13 @@
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -1045,80 +1187,24 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          34.35,
-          34.88,
-          35.099
+          34.75,
+          35.272,
+          35.848
         ],
         "extrema": [
           [
-            21,
+            0,
             230
           ],
           [
-            26,
-            237
-          ],
-          [
-            33,
-            255
-          ]
-        ],
-        "size": [
-          390,
-          844
-        ]
-      },
-      "produced_by_shadow_execution": false,
-      "publisher_family_text_count": 0,
-      "render_acknowledgements": [],
-      "request_count": 22,
-      "scenario": "active",
-      "screenshot": "390x844-zh-Hant-active.png",
-      "surface": "lifecycle",
-      "synthetic_post_apply_projection": false,
-      "transition_surface_witnesses": [],
-      "viewport": [
-        390,
-        844
-      ],
-      "visible_text_sha256": "c07b11177bff25ea4079c1c7d2f8d7a5f3d0053081256db1c021e5c91d662b09",
-      "writes": []
-    },
-    {
-      "clipped_text_count": 0,
-      "command_calls": [],
-      "console_errors": [],
-      "external_requests": [],
-      "fixture_cik_shape": {
-        "listing_issuer_ciks": [
-          null
-        ],
-        "regulator_issuer_cik": "0001409970"
-      },
-      "fixture_provenance": "local_browser_fixture",
-      "listing_translation_button_count": 0,
-      "locale": "zh-Hant",
-      "overlap_count": 0,
-      "page_errors": [],
-      "pixels": {
-        "channel_stddev": [
-          34.944,
-          35.477,
-          35.69
-        ],
-        "extrema": [
-          [
-            21,
-            230
-          ],
-          [
-            27,
+            0,
             237
           ],
           [
@@ -1133,6 +1219,72 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
+      "render_acknowledgements": [],
+      "request_count": 22,
+      "scenario": "active",
+      "screenshot": "390x844-zh-Hant-active.png",
+      "surface": "lifecycle",
+      "synthetic_post_apply_projection": false,
+      "transition_surface_witnesses": [],
+      "viewport": [
+        390,
+        844
+      ],
+      "visible_text_sha256": "7771596634bc99371a2f2a321094da6aad1044ceb7de26684f4c3279c076d4da",
+      "writes": []
+    },
+    {
+      "acknowledgement_surface_witnesses": [],
+      "clipped_text_count": 0,
+      "command_calls": [],
+      "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
+      "external_requests": [],
+      "fixture_cik_shape": {
+        "listing_issuer_ciks": [
+          null
+        ],
+        "regulator_issuer_cik": "0001409970"
+      },
+      "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 1,
+      "listing_translation_button_count": 0,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "channel_stddev": [
+          32.772,
+          33.182,
+          34.053
+        ],
+        "extrema": [
+          [
+            0,
+            230
+          ],
+          [
+            0,
+            237
+          ],
+          [
+            33,
+            255
+          ]
+        ],
+        "size": [
+          390,
+          844
+        ]
+      },
+      "produced_by_shadow_execution": false,
+      "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "not-found-monitoring",
@@ -1144,13 +1296,19 @@
         390,
         844
       ],
-      "visible_text_sha256": "c8c1df5a00ec0606743e9a68a47780e47e0416003946a6d6c2b3888e10f57146",
+      "visible_text_sha256": "c955fd6c779ed64918c43623493a88341b487b63757a641a5b48b9d086ebddb9",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [
+        "知道了"
+      ],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -1159,15 +1317,16 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          38.658,
-          39.197,
-          39.473
+          36.787,
+          37.354,
+          37.689
         ],
         "extrema": [
           [
@@ -1190,6 +1349,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "inactive-history",
@@ -1204,13 +1365,17 @@
         390,
         844
       ],
-      "visible_text_sha256": "f9e716c8f08f41554fec790d23a5e359e01df7d16851192111a13545895d6007",
+      "visible_text_sha256": "ff66337bf8b11f5e0c84a3da52ef0b76f87a33ddf99a3cfaabcd4a61c1f9e6c0",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 2,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 2,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -1220,28 +1385,29 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 2,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
         "channel_stddev": [
-          34.761,
-          35.294,
-          35.511
+          23.755,
+          23.947,
+          24.885
         ],
         "extrema": [
           [
-            21,
+            0,
             230
           ],
           [
-            27,
+            0,
             237
           ],
           [
-            34,
-            255
+            33,
+            243
           ]
         ],
         "size": [
@@ -1251,6 +1417,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 21,
       "scenario": "conflict-attention",
@@ -1262,13 +1430,19 @@
         390,
         844
       ],
-      "visible_text_sha256": "d4360f4acfeb7c349b9e86763bbd5860406db540eb89e6006dd3cb3844c661b8",
+      "visible_text_sha256": "6a67a324d8f5c4d9de91e90bbfb893dd0be9cb648aa4873676b0324e8eef90b3",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [
+        "知道了"
+      ],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 1,
+      "expanded_regulator_evidence_count": 1,
+      "expected_listing_evidence_count": 1,
       "external_requests": [],
       "fixture_cik_shape": {
         "listing_issuer_ciks": [
@@ -1277,6 +1451,7 @@
         "regulator_issuer_cik": "0001409970"
       },
       "fixture_provenance": "synthetic_post_apply_ui_projection_not_produced_by_shadow",
+      "listing_evidence_count": 1,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
@@ -1308,6 +1483,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 1,
+      "regulator_translation_button_count": 1,
       "render_acknowledgements": [],
       "request_count": 22,
       "scenario": "otc-continuation",
@@ -1322,16 +1499,21 @@
         390,
         844
       ],
-      "visible_text_sha256": "e337e6b0ea7099dd241a77b3b558ad177ef7fafdb232814983c17f342e09165c",
+      "visible_text_sha256": "5a727365a5beb209b5bd8a715cc5b2be0496d47c91d25bfa0ed2ed61b96f5385",
       "writes": []
     },
     {
+      "acknowledgement_surface_witnesses": [],
       "clipped_text_count": 0,
       "command_calls": [],
       "console_errors": [],
+      "expanded_listing_evidence_count": 0,
+      "expanded_regulator_evidence_count": 0,
+      "expected_listing_evidence_count": 0,
       "external_requests": [],
       "fixture_cik_shape": null,
       "fixture_provenance": "local_browser_fixture",
+      "listing_evidence_count": 0,
       "listing_translation_button_count": 0,
       "locale": "zh-Hant",
       "overlap_count": 0,
@@ -1363,6 +1545,8 @@
       },
       "produced_by_shadow_execution": false,
       "publisher_family_text_count": 0,
+      "regulator_evidence_count": 0,
+      "regulator_translation_button_count": 0,
       "render_acknowledgements": [],
       "request_count": 23,
       "scenario": "settings-massive-key",
@@ -1408,5 +1592,5 @@
     "basis": "declared_not_authorized",
     "value": 0
   },
-  "schema_version": 2
+  "schema_version": 3
 }
