@@ -32,6 +32,7 @@ rm -f \
   "$PACKET"/focused-nodes-{a,b}.txt \
   "$PACKET"/full-nodes-{a,b}.txt \
   "$PACKET"/frontend-{build,i18n-literals,test,typecheck}-{a,b}.txt \
+  "$PACKET"/frontend-{build,i18n-literals,test,typecheck}.txt \
   "$PACKET"/mutation-ledger.json "$PACKET"/mutation-run.txt \
   "$PACKET"/log-normalization.json "$PACKET"/packet-contracts.txt \
   "$PACKET"/offline-authority.json "$PACKET"/offline-authority-run-{a,b}.txt \
