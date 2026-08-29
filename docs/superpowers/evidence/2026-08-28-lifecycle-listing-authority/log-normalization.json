@@ -4,97 +4,141 @@
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
     "backend-focused-b.txt": {
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
     "backend-full-a.txt": {
       "content_changed": true,
       "python_env_replacements": 3,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
     "backend-full-b.txt": {
       "content_changed": true,
       "python_env_replacements": 3,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
     "browser-run.txt": {
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "focused-nodes-a.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "focused-nodes-b.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
     "frontend-build.txt": {
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
     "frontend-i18n-literals.txt": {
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
     "frontend-test.txt": {
       "content_changed": true,
       "python_env_replacements": 0,
       "repo_root_replacements": 1,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 1
     },
     "frontend-typecheck.txt": {
       "content_changed": true,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 1
+    },
+    "full-nodes-a.txt": {
+      "content_changed": true,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "token_shape_replacements": 2,
+      "trailing_blank_lines_removed": 0
+    },
+    "full-nodes-b.txt": {
+      "content_changed": true,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "token_shape_replacements": 2,
+      "trailing_blank_lines_removed": 0
     },
     "mutation-run.txt": {
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
     "offline-authority-run-a.txt": {
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
     "offline-authority-run-b.txt": {
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
     "packet-contracts.txt": {
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
     "vite.txt": {
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     }
   },
-  "method": "exact_path_placeholder_replacement_and_single_terminal_newline",
+  "method": "path_and_ordered_token_shape_placeholders_with_single_terminal_newline",
   "placeholders": {
     "checkout": "<REPO_ROOT>",
-    "python_environment": "<PYTHON_ENV>"
+    "python_environment": "<PYTHON_ENV>",
+    "token_shapes": "<TOKEN_SHAPE_N> in first-appearance order per file"
   },
   "schema_version": 1,
   "semantic_counts_and_results_preserved": true,
   "totals": {
     "python_env_replacements": 6,
     "repo_root_replacements": 1,
+    "token_shape_replacements": 4,
     "trailing_blank_lines_removed": 2
   }
 }

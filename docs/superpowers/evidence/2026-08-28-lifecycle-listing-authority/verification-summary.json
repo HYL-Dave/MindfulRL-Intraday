@@ -1,23 +1,52 @@
 {
   "boundary": {
-    "live_provider_calls": {
-      "basis": "declared_not_authorized",
-      "value": 0
+    "declared_unexecuted_operations": {
+      "app_restarts": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "merges": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "production_database_backups": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "production_database_migrations": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "production_database_preflights": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "production_database_reads": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "production_database_restores": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "production_database_writes": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "provider_calls": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "pushes": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      }
     },
-    "merges": {
-      "basis": "declared_not_authorized",
-      "value": 0
+    "measured_browser_operations": {
+      "external_requests": 0,
+      "writes": 0
     },
-    "packet_and_fixture_only": true,
-    "product_code_modified": false,
-    "production_database_migrations": {
-      "basis": "declared_not_authorized",
-      "value": 0
-    },
-    "pushes": {
-      "basis": "declared_not_authorized",
-      "value": 0
-    }
+    "packet_replay_scope": "offline_fixture_and_scratch_only"
   },
   "browser": {
     "acknowledgement_surface_witnesses": 8,
@@ -81,125 +110,177 @@
     },
     "full_a": {
       "failures": 0,
-      "passed": 4885,
-      "skipped": 12
+      "passed": 4894,
+      "skipped": 13
     },
     "full_b": {
       "failures": 0,
-      "passed": 4885,
-      "skipped": 12
+      "passed": 4894,
+      "skipped": 13
     },
-    "full_collection_counts_identical": true,
+    "full_collected_nodes": 4907,
+    "full_node_sets_identical": true,
     "packet_contracts": {
       "failures": 0,
-      "passed": 15,
+      "passed": 25,
       "skipped": 0
     }
   },
+  "limitations": [
+    "Frozen repository helpers provide SEC facts; this packet does not claim real SEC payload coverage.",
+    "TERM and OTC browser states are synthetic post-apply projections, not outputs of the nine-case shadow execution.",
+    "Listing evidence is structured status data, so listing translation controls are intentionally absent; regulator source text retains translation controls.",
+    "The separately authorized Massive canary is an unsealed operator observation and is not part of this offline packet.",
+    "Browser overlap and clipping measurements cover lifecycle activity bands and drawers; positive overlap and vertical-clipping calibrations prove those checks can fail."
+  ],
   "log_normalization": {
     "files": {
       "backend-focused-a.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
       "backend-focused-b.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
       "backend-full-a.txt": {
         "content_changed": true,
         "python_env_replacements": 3,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
       "backend-full-b.txt": {
         "content_changed": true,
         "python_env_replacements": 3,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
       "browser-run.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "focused-nodes-a.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "focused-nodes-b.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
       "frontend-build.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
       "frontend-i18n-literals.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
       "frontend-test.txt": {
         "content_changed": true,
         "python_env_replacements": 0,
         "repo_root_replacements": 1,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 1
       },
       "frontend-typecheck.txt": {
         "content_changed": true,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 1
+      },
+      "full-nodes-a.txt": {
+        "content_changed": true,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "token_shape_replacements": 2,
+        "trailing_blank_lines_removed": 0
+      },
+      "full-nodes-b.txt": {
+        "content_changed": true,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "token_shape_replacements": 2,
+        "trailing_blank_lines_removed": 0
       },
       "mutation-run.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
       "offline-authority-run-a.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
       "offline-authority-run-b.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
       "packet-contracts.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
       "vite.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       }
     },
-    "method": "exact_path_placeholder_replacement_and_single_terminal_newline",
+    "method": "path_and_ordered_token_shape_placeholders_with_single_terminal_newline",
     "placeholders": {
       "checkout": "<REPO_ROOT>",
-      "python_environment": "<PYTHON_ENV>"
+      "python_environment": "<PYTHON_ENV>",
+      "token_shapes": "<TOKEN_SHAPE_N> in first-appearance order per file"
     },
     "schema_version": 1,
     "semantic_counts_and_results_preserved": true,
     "totals": {
       "python_env_replacements": 6,
       "repo_root_replacements": 1,
+      "token_shape_replacements": 4,
       "trailing_blank_lines_removed": 2
     }
   },
   "mutations": {
-    "baselines_admitted": 39,
-    "defined": 39,
-    "killed": 39,
+    "baselines_admitted": 45,
+    "defined": 45,
+    "killed": 45,
     "restored": true,
     "scope_anomalies": 0,
     "unexpected_failures_inside_declared_scopes": 0
@@ -224,7 +305,39 @@
       "blocked_outside": 1
     }
   },
-  "schema_version": 2,
+  "repository": {
+    "allowed_packet_changes_only": true,
+    "dependencies": [
+      {
+        "git_blob": "eb931298c6f5a8b6aee353316d191fe7ffde4d24",
+        "path": "docs/superpowers/evidence/2026-08-25-trusted-lifecycle-automation-stage-5-repair/run_browser_matrix.py",
+        "sha256": "34eaf97ba912e6f3beaa54afef30c15557087b2d1162e549cdac6fdd7a136353"
+      },
+      {
+        "git_blob": "d218ed26b862b31ee68955b254956631fbdd8a3d",
+        "path": "docs/superpowers/evidence/2026-08-26-lifecycle-automated-disposition/run_browser_matrix.py",
+        "sha256": "999cb0af6cfc6ab2d24c0441a050bf17a25e71c01de772e82f78d1f2cbde43bc"
+      },
+      {
+        "git_blob": "9b4b8f6d47801c6b05078b45611b9c61d4e8d233",
+        "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py",
+        "sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9"
+      }
+    ],
+    "dependency_paths": [
+      "docs/superpowers/evidence/2026-08-25-trusted-lifecycle-automation-stage-5-repair/run_browser_matrix.py",
+      "docs/superpowers/evidence/2026-08-26-lifecycle-automated-disposition/run_browser_matrix.py",
+      "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
+    ],
+    "product_code_modified_during_replay": false,
+    "replay_head_unchanged": true,
+    "schema_version": 1,
+    "start_worktree_clean": true,
+    "tested_branch": "lifecycle-listing-authority",
+    "tested_git_head": "ce9c9dd51e8617e3df9597fb5d4e57842c64a706",
+    "tested_git_tree": "e5a0e0bb5cef56e51fbac50452230951c1c4acc2"
+  },
+  "schema_version": 3,
   "scratch_migration": {
     "backup_restore_byte_identical": true,
     "old_code_startup": {
@@ -262,6 +375,9 @@
     "row_and_sequence_identity": true,
     "source_version": "v2",
     "target_version": "v3"
+  },
+  "secret_scan": {
+    "finding_count": 0
   },
   "shadow": {
     "cases": 9,

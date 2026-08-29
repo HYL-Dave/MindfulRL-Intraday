@@ -1,0 +1,54 @@
+{
+  "allowed_packet_changes_only": true,
+  "dependencies": [
+    {
+      "git_blob": "eb931298c6f5a8b6aee353316d191fe7ffde4d24",
+      "path": "docs/superpowers/evidence/2026-08-25-trusted-lifecycle-automation-stage-5-repair/run_browser_matrix.py",
+      "sha256": "34eaf97ba912e6f3beaa54afef30c15557087b2d1162e549cdac6fdd7a136353"
+    },
+    {
+      "git_blob": "d218ed26b862b31ee68955b254956631fbdd8a3d",
+      "path": "docs/superpowers/evidence/2026-08-26-lifecycle-automated-disposition/run_browser_matrix.py",
+      "sha256": "999cb0af6cfc6ab2d24c0441a050bf17a25e71c01de772e82f78d1f2cbde43bc"
+    },
+    {
+      "git_blob": "9b4b8f6d47801c6b05078b45611b9c61d4e8d233",
+      "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py",
+      "sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9"
+    }
+  ],
+  "dependency_paths": [
+    "docs/superpowers/evidence/2026-08-25-trusted-lifecycle-automation-stage-5-repair/run_browser_matrix.py",
+    "docs/superpowers/evidence/2026-08-26-lifecycle-automated-disposition/run_browser_matrix.py",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
+  ],
+  "observed_packet_change_paths": [
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/backend-focused-a.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/backend-focused-b.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/backend-full-a.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/backend-full-b.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/1440x900-en-settings-massive-key.png",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/1440x900-zh-Hant-conflict-attention.png",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/1440x900-zh-Hant-settings-massive-key.png",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/390x844-en-settings-massive-key.png",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-build.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-test.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/full-nodes-a.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/full-nodes-b.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/log-normalization.json",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/mutation-ledger.json",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/mutation-run.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/packet-contracts.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/repository-binding.json",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/secret-scan.json",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/verification-summary.json",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/vite.txt"
+  ],
+  "product_code_modified_during_replay": false,
+  "replay_head_unchanged": true,
+  "schema_version": 1,
+  "start_worktree_clean": true,
+  "tested_branch": "lifecycle-listing-authority",
+  "tested_git_head": "ce9c9dd51e8617e3df9597fb5d4e57842c64a706",
+  "tested_git_tree": "e5a0e0bb5cef56e51fbac50452230951c1c4acc2"
+}
