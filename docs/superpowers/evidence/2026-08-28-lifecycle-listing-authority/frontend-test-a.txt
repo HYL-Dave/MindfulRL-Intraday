@@ -1,0 +1,12 @@
+
+> arkscope-web@0.0.1 test
+> vitest run
+
+
+ RUN  v4.1.8 <REPO_ROOT>/apps/arkscope-web
+
+
+ Test Files  106 passed (106)
+      Tests  1306 passed (1306)
+   Start at  00:06:25
+   Duration  11.34s (transform 64.46s, setup 26.66s, import 76.97s, tests 61.38s, environment 60.79s)

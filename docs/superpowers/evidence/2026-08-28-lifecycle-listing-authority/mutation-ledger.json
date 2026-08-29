@@ -17,17 +17,17 @@
     {
       "byte_identical": true,
       "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/normalize_packet_logs.py",
-      "sha256": "ceaeab7525d495e8e547fa6fcfc6c4c78047bebbea64390306e32f3f56a23f44"
+      "sha256": "e4597ef92167efc1a2ebc819c8b1571a00367daf9796279fc476dd9b28c57828"
     },
     {
       "byte_identical": true,
       "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py",
-      "sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9"
+      "sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d"
     },
     {
       "byte_identical": true,
       "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_mutations.py",
-      "sha256": "138aa802bee3c256e1c928dea13918b1515e43bb028c6ecd077b404f727852f2"
+      "sha256": "ba0a4879fa45823bd3992db4db67e65efab8f21dc87860cfcfc753f892b23b68"
     },
     {
       "byte_identical": true,
@@ -37,12 +37,12 @@
     {
       "byte_identical": true,
       "path": "src/data_provider_config.py",
-      "sha256": "be27d90c7d997f00dfa4a9760984faf687d812abfc10236962316ec7035d41f3"
+      "sha256": "ac74c26ee1ce9eb6179549db2fd0adc5ca460d46e4b6814757a25f77bde85c76"
     },
     {
       "byte_identical": true,
       "path": "src/security_lifecycle_decision_policy.py",
-      "sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6"
+      "sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254"
     },
     {
       "byte_identical": true,
@@ -72,16 +72,16 @@
     {
       "byte_identical": true,
       "path": "src/service/security_lifecycle_automation_scheduler.py",
-      "sha256": "b48ad7fdef50bc4fb5faf1ebdb714f4de41032b8e582ccfc12a4ea85d916c880"
+      "sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80"
     },
     {
       "byte_identical": true,
       "path": "src/tools/security_lifecycle_tools.py",
-      "sha256": "63a596c143a8931e26bcf343ade3392f00e353c1b5710670c826540bb4b9bef0"
+      "sha256": "15a18438c50580c3095a335c4483d067dcc1069a61245865186b8832f3948e22"
     }
   ],
-  "killed_count": 45,
-  "mutation_count": 45,
+  "killed_count": 51,
+  "mutation_count": 51,
   "mutation_scope_anomalies": [],
   "mutations": [
     {
@@ -207,16 +207,16 @@
           "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt?x=1]",
           "tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/unknown.txt]"
         ],
-        "output_sha256": "7314b4b7c45d9e186c2d3211a20c18d7b6575eb363701fc839602ef1ce019618",
+        "output_sha256": "42e634a1bd416a2c24b8386294598b3330f302520fd056b90894d556ff64fba9",
         "output_tail": [
           "    return self._request_inside_redaction(",
           "data_sources/listing_authority_transport.py:248: in _request_inside_redaction",
           "    response = self._session.get(",
-          "tests/test_listing_authority_transport.py:51: in get",
+          "tests/test_listing_authority_transport.py:52: in get",
           "    response = self.responses.pop(0)",
           "E   IndexError: pop from empty list",
           "_ test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt?x=1] _",
-          "tests/test_listing_authority_transport.py:148: in test_nasdaq_rejects_urls_outside_the_two_exact_files",
+          "tests/test_listing_authority_transport.py:174: in test_nasdaq_rejects_urls_outside_the_two_exact_files",
           "    transport.fetch_nasdaq(url, budget=ListingRequestBudget.lifecycle())",
           "data_sources/listing_authority_transport.py:312: in fetch_nasdaq",
           "    payload = self._request(",
@@ -224,7 +224,7 @@
           "    return self._request_inside_redaction(",
           "data_sources/listing_authority_transport.py:248: in _request_inside_redaction",
           "    response = self._session.get(",
-          "tests/test_listing_authority_transport.py:51: in get",
+          "tests/test_listing_authority_transport.py:52: in get",
           "    response = self.responses.pop(0)",
           "E   IndexError: pop from empty list",
           "=========================== short test summary info ============================",
@@ -232,7 +232,7 @@
           "FAILED tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/unknown.txt] - IndexError: pop from empty list",
           "FAILED tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://evil.example/dynamic/SymDir/nasdaqlisted.txt] - IndexError: pop from empty list",
           "FAILED tests/test_listing_authority_transport.py::test_nasdaq_rejects_urls_outside_the_two_exact_files[https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt?x=1] - IndexError: pop from empty list",
-          "============================== 4 failed in 0.36s ==============================="
+          "============================== 4 failed in 0.37s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -281,7 +281,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "230ae0cdd749857a69ca1456216b3dc5c96cad26084401215d3cbce1b0be12c3",
+        "output_sha256": "77be0abd330884a778b034c0341e3047e668a9e3d716661b7caaa35d189bc2ec",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -296,7 +296,7 @@
           "",
           "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_preserves_matching_component_and_per_file_hashes PASSED [100%]",
           "",
-          "============================== 1 passed in 0.32s ==============================="
+          "============================== 1 passed in 0.31s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -345,7 +345,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_preserves_matching_component_and_per_file_hashes"
         ],
-        "output_sha256": "58d81c0fa78c6816b2a277e4b44a659a51244a4075a3a9b525ad86698c90918d",
+        "output_sha256": "c2e298e84058e560453522c92977b2bef376ca5a82cf2bafdb1c79b0a2054080",
         "output_tail": [
           "E               '71fb4b1f445be5f86ea622d7aff89fab47aaa772eac2562d774288326f67a8bd',",
           "E           ),",
@@ -370,7 +370,7 @@
           "            '71fb4b1f445be5f86ea622d7aff89fab47aaa772eac2562d774288326f67a8bd',",
           "        ),",
           "    ]",
-          "============================== 1 failed in 0.37s ==============================="
+          "============================== 1 failed in 0.36s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -419,7 +419,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "02ab0ee2c80d8461db875ccf9431bb840f6d19453c276fa75c16df291d07f5d0",
+        "output_sha256": "5d68a85aaae754a9f3e63a1b22ea3fb8e3fce25dc413e0308820700837113e27",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -434,7 +434,7 @@
           "",
           "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[missing_footer-<lambda>-listing_directory_schema_mismatch] PASSED [100%]",
           "",
-          "============================== 1 passed in 0.32s ==============================="
+          "============================== 1 passed in 0.31s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -484,7 +484,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[missing_footer-<lambda>-listing_directory_schema_mismatch]"
         ],
-        "output_sha256": "41fe54afafc580ee190d5a78f898429e5d092ebf838eba029648e2b0d7d654dd",
+        "output_sha256": "0d4b883db07232ad377835ef61897a1b3449529ffb3628322993d936dabeddf5",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -508,7 +508,7 @@
           "E   Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[missing_footer-<lambda>-listing_directory_schema_mismatch] - Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
-          "============================== 1 failed in 0.36s ==============================="
+          "============================== 1 failed in 0.37s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -558,7 +558,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "4de0b52ac7f47e03c58a55ad5cf80202a0b031e366b123d1b2eef7db49063507",
+        "output_sha256": "fc38fabff5536ecdf9475bb4431562eb9550b36aaab1b12d2ddc8e57e0f234c0",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -573,7 +573,7 @@
           "",
           "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[stale_file-<lambda>-listing_directory_stale] PASSED [100%]",
           "",
-          "============================== 1 passed in 0.33s ==============================="
+          "============================== 1 passed in 0.32s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -623,7 +623,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[stale_file-<lambda>-listing_directory_stale]"
         ],
-        "output_sha256": "4e560ed6c6c69c00803b98850a2bdca5533fc338fdf9896de2aa68adb1fdc40b",
+        "output_sha256": "260fb17c69b6279f6226c2b1e208a7669b390f9ef25683b53578173c34dd7c78",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -647,7 +647,7 @@
           "E   Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_listing_evidence.py::test_nasdaq_parser_rejects_incomplete_stale_or_drifted_files[stale_file-<lambda>-listing_directory_stale] - Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
-          "============================== 1 failed in 0.36s ==============================="
+          "============================== 1 failed in 0.37s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -697,7 +697,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "ca0efb6f99cfad79d721bebddaf41a9d456b6dda5630e1c4cd0a4cf0b3815a9f",
+        "output_sha256": "3e2b918e4fb0cd45e0e687979fed417cb66701998540925aa923bcd44313fd27",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -712,7 +712,7 @@
           "",
           "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved3] PASSED [100%]",
           "",
-          "============================== 1 passed in 0.31s ==============================="
+          "============================== 1 passed in 0.32s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -762,7 +762,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved3]"
         ],
-        "output_sha256": "8078be90c1d32692bea55316f09f5208271a56628d415539001e27b522ffdc1a",
+        "output_sha256": "72714c1d4dd105225951167fbae46c3724602e6b892d07e06aca44d72a450273",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -786,7 +786,7 @@
           "E   Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved3] - Failed: DID NOT RAISE <class 'src.security_lifecycle_listing_evidence.ListingEvidenceFailure'>",
-          "============================== 1 failed in 0.37s ==============================="
+          "============================== 1 failed in 0.36s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -836,7 +836,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "184234246eede539b94c3468e8559a6004e721461aa7ec5a051670503ff178fc",
+        "output_sha256": "45a8e612da66f08a97d7c30b2d29b947fe29f6eb82b69c1343d45d9ab3f91391",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -851,7 +851,7 @@
           "",
           "tests/test_listing_authority_transport.py::test_massive_query_secret_never_leaves_the_request_boundary PASSED [100%]",
           "",
-          "============================== 1 passed in 0.26s ==============================="
+          "============================== 1 passed in 0.27s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -900,7 +900,7 @@
         "failed_node_ids": [
           "tests/test_listing_authority_transport.py::test_massive_query_secret_never_leaves_the_request_boundary"
         ],
-        "output_sha256": "1938c19a6e54cbf2a0bfbc1a78b30098f755d970eabdd6de7f1ae58207b779f4",
+        "output_sha256": "961b9c0a5c35bd9d6b9bbacb7f0d2be91768e0e42828b85e0fe75dbfd40e3b92",
         "output_tail": [
           "collecting ... collected 1 item",
           "TASK8_COLLECTED_NODE tests/test_listing_authority_transport.py::test_massive_query_secret_never_leaves_the_request_boundary",
@@ -912,7 +912,7 @@
           "",
           "=================================== FAILURES ===================================",
           "_________ test_massive_query_secret_never_leaves_the_request_boundary __________",
-          "tests/test_listing_authority_transport.py:202: in test_massive_query_secret_never_leaves_the_request_boundary",
+          "tests/test_listing_authority_transport.py:228: in test_massive_query_secret_never_leaves_the_request_boundary",
           "    assert payload.source_url == (",
           "E   AssertionError: assert 'https://api.massive.com/v3/reference/tickers?ticker=AAPL&active=true&market=stocks&limit=2&apiKey=secret-value' == 'https://api.massive.com/v3/reference/tickers?ticker=AAPL&active=true&market=stocks&limit=2'",
           "E     ",
@@ -925,7 +925,7 @@
           "  - https://api.massive.com/v3/reference/tickers?ticker=AAPL&active=true&market=stocks&limit=2",
           "  + https://api.massive.com/v3/reference/tickers?ticker=AAPL&active=true&market=stocks&limit=2&apiKey=secret-value",
           "  ?                                                                                           ++++++++++++++++++++",
-          "============================== 1 failed in 0.30s ==============================="
+          "============================== 1 failed in 0.31s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -974,7 +974,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "f361d752e7c96a930c21b6db1cce6f01f2d1631036b57cebc11bda466dac8372",
+        "output_sha256": "4200fbfa21035337d19653425c4145ec5013657d06917bfb8b9faf0f90e55e05",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -989,7 +989,7 @@
           "",
           "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_rejects_ambiguous_or_contradictory_inactive_rows[<lambda>-listing_status_unresolved0] PASSED [100%]",
           "",
-          "============================== 1 passed in 0.31s ==============================="
+          "============================== 1 passed in 0.32s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -1117,7 +1117,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "ccd54241b25ea1f8542a0c271359460789b0788ac65a37cd5cb9a3cdf7d57027",
+        "output_sha256": "9acec9057622b35fcb8c686f69a9c4b36a590f911c9790a73e4977531a15fca5",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -1137,7 +1137,7 @@
           "",
           "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-excerpt-evidence_content_sha256] PASSED [100%]",
           "",
-          "============================== 2 passed in 0.32s ==============================="
+          "============================== 2 passed in 0.34s ==============================="
         ],
         "passed_node_count": 2,
         "skipped_node_count": 0
@@ -1194,7 +1194,7 @@
           "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-excerpt-evidence_content_sha256]",
           "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-excerpt-evidence_content_sha256]"
         ],
-        "output_sha256": "321b5f1308d1b6d209fc170a9d2f063048735089f56e3e244b44eb11cc9bfc55",
+        "output_sha256": "e72b1f8eb0e6a5ae5f23a9bd737a014dc964d98e1711f13c4ef00ad1cfdc8aed",
         "output_tail": [
           "tests/test_security_lifecycle_fact_kernel.py:402: in test_listing_producer_mutations_fail_at_real_kernel_validator",
           "    kernel.complete_run(",
@@ -1219,7 +1219,7 @@
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-excerpt-evidence_content_sha256] - AssertionError: ",
           "- fact_citation",
           "+ evidence_content_sha256",
-          "============================== 2 failed in 0.46s ==============================="
+          "============================== 2 failed in 0.47s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -1350,7 +1350,7 @@
           "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-span-fact_citation]",
           "tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-span-fact_citation]"
         ],
-        "output_sha256": "ff020cbc9c47323e90ebe9c05db229567444fdc06fd5e91d920655b1227caf2c",
+        "output_sha256": "62ccf8a9e1462ffc029a275d0d467ef0e944f1f039e6191d5ec74fd3e341e9ab",
         "output_tail": [
           "TASK8_COLLECTED_NODE tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-span-fact_citation]",
           "",
@@ -1375,7 +1375,7 @@
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[nasdaq_symbol_directory-span-fact_citation] - Failed: DID NOT RAISE <class 'ValueError'>",
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_listing_producer_mutations_fail_at_real_kernel_validator[massive_reference-span-fact_citation] - Failed: DID NOT RAISE <class 'ValueError'>",
-          "============================== 2 failed in 0.40s ==============================="
+          "============================== 2 failed in 0.41s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -1489,11 +1489,11 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_decision_policy.py::test_equal_time_disagreement_inside_one_listing_component_fails_closed"
         ],
-        "output_sha256": "01cc2153973caa2799551377487818d010f0eb440e7ee479b179ba552c6c50aa",
+        "output_sha256": "d03df4e816983b806534ef5f30b02d203472258f95ec47b21c52038f1ee310bc",
         "output_tail": [
           "=================================== FAILURES ===================================",
           "____ test_equal_time_disagreement_inside_one_listing_component_fails_closed ____",
-          "tests/test_security_lifecycle_decision_policy.py:765: in test_equal_time_disagreement_inside_one_listing_component_fails_closed",
+          "tests/test_security_lifecycle_decision_policy.py:808: in test_equal_time_disagreement_inside_one_listing_component_fails_closed",
           "    assert decision.decision_issues == (\"listing_authority_conflict\",)",
           "E   AssertionError: assert ('listing_active_missing',) == ('listing_authority_conflict',)",
           "E     ",
@@ -1529,8 +1529,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
-          "before_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
+          "after_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "before_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
           "byte_identical": true,
           "path": "src/security_lifecycle_decision_policy.py"
         }
@@ -1627,7 +1627,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_decision_policy.py::test_ibkr_missing_never_proves_terminal"
         ],
-        "output_sha256": "a2de3c8acd2da1a7dcce8c9c2a74e70256564c2fe1c0ce2512f3d1b1c132e86a",
+        "output_sha256": "d0412ed1e8d31d9b237c30d1ab06bb6c794c69f1d706c29a7eda166f7c6c4c73",
         "output_tail": [
           "",
           "tests/test_security_lifecycle_decision_policy.py::test_ibkr_missing_never_proves_terminal ",
@@ -1637,22 +1637,22 @@
           "",
           "=================================== FAILURES ===================================",
           "___________________ test_ibkr_missing_never_proves_terminal ____________________",
-          "tests/test_security_lifecycle_decision_policy.py:602: in test_ibkr_missing_never_proves_terminal",
+          "tests/test_security_lifecycle_decision_policy.py:598: in test_ibkr_missing_never_proves_terminal",
           "    decision = _evaluate(",
-          "tests/test_security_lifecycle_decision_policy.py:904: in _evaluate",
+          "tests/test_security_lifecycle_decision_policy.py:947: in _evaluate",
           "    return evaluate_automation_decision(",
-          "src/security_lifecycle_decision_policy.py:1021: in evaluate_automation_decision",
+          "src/security_lifecycle_decision_policy.py:1009: in evaluate_automation_decision",
           "    eligible, issues = _preview(transition_preview, request)",
           "src/security_lifecycle_decision_policy.py:412: in _preview",
           "    result = evaluator(request)",
-          "tests/test_security_lifecycle_decision_policy.py:606: in <lambda>",
+          "tests/test_security_lifecycle_decision_policy.py:602: in <lambda>",
           "    transition_preview=lambda _request: (_ for _ in ()).throw(",
-          "tests/test_security_lifecycle_decision_policy.py:606: in <genexpr>",
+          "tests/test_security_lifecycle_decision_policy.py:602: in <genexpr>",
           "    transition_preview=lambda _request: (_ for _ in ()).throw(",
           "E   AssertionError: IBKR missing must not preview terminal action",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_decision_policy.py::test_ibkr_missing_never_proves_terminal - AssertionError: IBKR missing must not preview terminal action",
-          "============================== 1 failed in 0.18s ==============================="
+          "============================== 1 failed in 0.20s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -1667,8 +1667,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
-          "before_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
+          "after_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "before_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
           "byte_identical": true,
           "path": "src/security_lifecycle_decision_policy.py"
         }
@@ -1766,7 +1766,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_decision_policy.py::test_quote_freshness_is_inert_for_v4_acceptance"
         ],
-        "output_sha256": "bf1dd3fc82f565d3b47c29e295a71e8eb5428e3371871325f7fbb59a30848479",
+        "output_sha256": "c46e33cbd177619ed883c3f36d45f15a372e9c941ea33791fa15b1228ed1577e",
         "output_tail": [
           "rootdir: <REPO_ROOT>",
           "plugins: anyio-4.14.2",
@@ -1780,7 +1780,7 @@
           "",
           "=================================== FAILURES ===================================",
           "_______________ test_quote_freshness_is_inert_for_v4_acceptance ________________",
-          "tests/test_security_lifecycle_decision_policy.py:681: in test_quote_freshness_is_inert_for_v4_acceptance",
+          "tests/test_security_lifecycle_decision_policy.py:677: in test_quote_freshness_is_inert_for_v4_acceptance",
           "    assert baseline.action_readiness == \"transition_eligible\"",
           "E   AssertionError: assert 'action_blocked' == 'transition_eligible'",
           "E     ",
@@ -1807,8 +1807,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
-          "before_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
+          "after_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "before_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
           "byte_identical": true,
           "path": "src/security_lifecycle_decision_policy.py"
         }
@@ -1906,7 +1906,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_decision_policy.py::test_publisher_evidence_cannot_change_v4_decision"
         ],
-        "output_sha256": "c0739f22c0b09ee107a7e67b8967413f3aee1a356c44962645ba28eafb274a8a",
+        "output_sha256": "0d80d8c5663576fd2acf9306e84cf2a55f9dc80e0735b2a01f5981f2c0fe3b2e",
         "output_tail": [
           "  ",
           "  Drill down into differing attribute destination_venue:",
@@ -1931,7 +1931,7 @@
           "  ",
           "  Drill down into differing attribute transition_requested:",
           "    transition_requested: False != True",
-          "============================== 1 failed in 0.16s ==============================="
+          "============================== 1 failed in 0.17s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -1947,8 +1947,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
-          "before_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
+          "after_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "before_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
           "byte_identical": true,
           "path": "src/security_lifecycle_decision_policy.py"
         }
@@ -1981,7 +1981,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "f370e0bd6084be93ac96abd393c7164294608b47cc6ffcd7881a7cd1c1ed5992",
+        "output_sha256": "5455c98603813ac435fb093c680fa4107290f479d6bceed81c3bbb78b21b01d2",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -1996,7 +1996,7 @@
           "",
           "tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check PASSED [100%]",
           "",
-          "============================== 1 passed in 0.33s ==============================="
+          "============================== 1 passed in 0.34s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -2046,7 +2046,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check"
         ],
-        "output_sha256": "6a6df218ab3405c92ae79b6e743a4bc9ab30a6709fe82b976405b5098def3420",
+        "output_sha256": "2fd774109f57c04f9d1ed760ceec907db8cac6c0397fed5c22320fc3019098f7",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -2063,14 +2063,14 @@
           "",
           "=================================== FAILURES ===================================",
           "___ test_pending_event_monitoring_uses_explicit_dates_and_final_source_check ___",
-          "tests/test_security_lifecycle_automation_scheduler.py:1596: in test_pending_event_monitoring_uses_explicit_dates_and_final_source_check",
+          "tests/test_security_lifecycle_automation_scheduler.py:1602: in test_pending_event_monitoring_uses_explicit_dates_and_final_source_check",
           "    assert final.retryable is False",
           "E   AssertionError: assert True is False",
           "E    +  where True = AutomationBlocker(code='sec_evidence_insufficient', retryable=True, context={'monitoring_reason': 'event_completion_not_confirmed', 'effective_date': '2026-09-05', 'source_deadline': '2026-04-01', 'source_deadline_evidence_id': 'sle_deadline', 'source_deadline_span_start_byte': 10, 'source_deadline_span_end_byte': 80, 'source_deadline_cited_text_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'source_deadline_rule_id': 'sec.explicit_transaction_termination_date', 'source_deadline_rule_version': '4', 'next_check_at': '2026-09-05T00:00:00Z'}).retryable",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_uses_explicit_dates_and_final_source_check - AssertionError: assert True is False",
           " +  where True = AutomationBlocker(code='sec_evidence_insufficient', retryable=True, context={'monitoring_reason': 'event_completion_not_confirmed', 'effective_date': '2026-09-05', 'source_deadline': '2026-04-01', 'source_deadline_evidence_id': 'sle_deadline', 'source_deadline_span_start_byte': 10, 'source_deadline_span_end_byte': 80, 'source_deadline_cited_text_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'source_deadline_rule_id': 'sec.explicit_transaction_termination_date', 'source_deadline_rule_version': '4', 'next_check_at': '2026-09-05T00:00:00Z'}).retryable",
-          "============================== 1 failed in 0.38s ==============================="
+          "============================== 1 failed in 0.37s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -2086,8 +2086,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "b48ad7fdef50bc4fb5faf1ebdb714f4de41032b8e582ccfc12a4ea85d916c880",
-          "before_sha256": "b48ad7fdef50bc4fb5faf1ebdb714f4de41032b8e582ccfc12a4ea85d916c880",
+          "after_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
+          "before_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
           "byte_identical": true,
           "path": "src/service/security_lifecycle_automation_scheduler.py"
         }
@@ -2120,7 +2120,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "8eadb12d18b2fbac650e9b5ab13ed0de782c6ad5486f5d1fdc945180cf6449e3",
+        "output_sha256": "f2838d600ce3a7859b8a02afb415fce49eeefcbb126d25aee18a8bb594799151",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -2135,7 +2135,7 @@
           "",
           "tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage PASSED [100%]",
           "",
-          "============================== 1 passed in 0.28s ==============================="
+          "============================== 1 passed in 0.27s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -2185,7 +2185,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage"
         ],
-        "output_sha256": "6d00f365258a16d2f41fb0019fabef4e52ae14275e01f99d7aa00385ffb8a0b1",
+        "output_sha256": "090d3dd08a35b1c4ebad3be8b979f0468f17cf4fa6d62747f8f1422240e33256",
         "output_tail": [
           "E     ",
           "E     Full diff:",
@@ -2197,7 +2197,7 @@
           "E           'regulator',",
           "E       }",
           "=========================== short test summary info ============================",
-          "FAILED tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage - AssertionError: assert {'listing_authority', 'manual', 'market_infrastructure', 'publisher', 'regulator'} == {'market_infrastructure', 'listing_authority', 'regulator', 'manual'}",
+          "FAILED tests/test_security_lifecycle_tools.py::test_active_case_projection_uses_closed_families_but_preserves_storage - AssertionError: assert {'publisher', 'regulator', 'market_infrastructure', 'listing_authority', 'manual'} == {'market_infrastructure', 'manual', 'listing_authority', 'regulator'}",
           "  ",
           "  Extra items in the left set:",
           "  'publisher'",
@@ -2210,7 +2210,7 @@
           "  +     'publisher',",
           "        'regulator',",
           "    }",
-          "============================== 1 failed in 0.30s ==============================="
+          "============================== 1 failed in 0.29s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -2226,8 +2226,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "63a596c143a8931e26bcf343ade3392f00e353c1b5710670c826540bb4b9bef0",
-          "before_sha256": "63a596c143a8931e26bcf343ade3392f00e353c1b5710670c826540bb4b9bef0",
+          "after_sha256": "15a18438c50580c3095a335c4483d067dcc1069a61245865186b8832f3948e22",
+          "before_sha256": "15a18438c50580c3095a335c4483d067dcc1069a61245865186b8832f3948e22",
           "byte_identical": true,
           "path": "src/tools/security_lifecycle_tools.py"
         }
@@ -2260,7 +2260,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "2335aeb7c3e1c610eeafb2e43388938b5e92bc905c4dec6bbcbeb38afa30b0c0",
+        "output_sha256": "5cf071f1eda48f65156b1dbc92de3d60c804a172f569cf1b3e5be82af42ee3d0",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -2275,7 +2275,7 @@
           "",
           "tests/test_security_lifecycle_translation.py::test_listing_snapshot_translation_rejects_before_every_downstream_boundary PASSED [100%]",
           "",
-          "============================== 1 passed in 1.19s ==============================="
+          "============================== 1 passed in 1.20s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -2324,7 +2324,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_translation.py::test_listing_snapshot_translation_rejects_before_every_downstream_boundary"
         ],
-        "output_sha256": "818cada81abfa669b1dbb3dd766b34dcb1e1aa49c64a09d8d641fc8ebef81aa7",
+        "output_sha256": "c6df91d164e9d53d0d217bddf072ab912467e366b312f555ecfd338fca041a3a",
         "output_tail": [
           "rootdir: <REPO_ROOT>",
           "plugins: anyio-4.14.2",
@@ -2349,7 +2349,7 @@
           "E   Failed: listing translation reached cache lookup",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_translation.py::test_listing_snapshot_translation_rejects_before_every_downstream_boundary - Failed: listing translation reached cache lookup",
-          "============================== 1 failed in 1.32s ==============================="
+          "============================== 1 failed in 1.42s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -2398,7 +2398,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "eea92906cc8df8e49796869cadd178c986c4259e13718e4b8f8bc5fbbd3bcec4",
+        "output_sha256": "a026d0402749220874215b0e372294d373f19d74e87dac65f94eac3cf0a34346",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -2413,7 +2413,7 @@
           "",
           "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority PASSED [100%]",
           "",
-          "============================== 1 passed in 0.39s ==============================="
+          "============================== 1 passed in 0.40s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -2462,7 +2462,7 @@
         "failed_node_ids": [
           "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
         ],
-        "output_sha256": "de3ab93359acc5b78f0c0cffa29940ec27d76d5b58ac601839c94a822b79c0c4",
+        "output_sha256": "3b5ea886e6668223b2c2f82da310aa393ec1d23499f40c6e04e83fa47d8d2e65",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -2481,11 +2481,11 @@
           "_____________ test_massive_reuses_the_polygon_credential_authority _____________",
           "tests/test_data_provider_config.py:84: in test_massive_reuses_the_polygon_credential_authority",
           "    assert \"massive\" not in dpc.PROVIDER_FIELDS",
-          "E   AssertionError: assert 'massive' not in {'polygon': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=('POLYGON_API_KEY',), runtime_aliases=('POLYGON_API_KEY',))], 'massive': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'finnhub': [FieldDef(field='api_key', env_var='FINNHUB_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'fred': [FieldDef(field='api_key', env_var='FRED_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'financial_datasets': [FieldDef(field='api_key', env_var='FINANCIAL_DATASETS_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'ibkr': [FieldDef(field='host', env_var='IBKR_HOST', secret=False, label='Gateway host', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=()), FieldDef(field='port', env_var='IBKR_PORT', secret=False, label='Gateway port', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=()), FieldDef(field='client_id', env_var='IBKR_CLIENT_ID', secret=False, label='Client ID', default_value='1', defaulted=True, optional=False, guarded=True, guard_reason='Changing IBKR client_id can disturb active Gateway sessions; this is the base id \\u2014 all domains derive from it (options=+10, prices=+20, news=+30, iv=+40, quotes=+50, holdings=+60, portfolio_capture=+70, lifecycle=+80; the app-managed base must stay at 0 through 19 (base <= 19); order placement needs another independently authorized id (see data_sources/ibkr_client_id.py).', import_aliases=(), runtime_aliases=())], 'sec_edgar': [FieldDef(field='user_agent', env_var='ARKSCOPE_SEC_USER_AGENT', secret=False, label='\\u806f\\u7d61 Email', default_value=None, defaulted=False, optional=True, guarded=False, guard_reason=None, import_aliases=('SEC_CONTACT_EMAIL', 'SEC_USER_AGENT'), runtime_aliases=())], 'seeking_alpha': []}",
-          "E    +  where {'polygon': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=('POLYGON_API_KEY',), runtime_aliases=('POLYGON_API_KEY',))], 'massive': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'finnhub': [FieldDef(field='api_key', env_var='FINNHUB_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'fred': [FieldDef(field='api_key', env_var='FRED_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'financial_datasets': [FieldDef(field='api_key', env_var='FINANCIAL_DATASETS_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'ibkr': [FieldDef(field='host', env_var='IBKR_HOST', secret=False, label='Gateway host', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=()), FieldDef(field='port', env_var='IBKR_PORT', secret=False, label='Gateway port', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=()), FieldDef(field='client_id', env_var='IBKR_CLIENT_ID', secret=False, label='Client ID', default_value='1', defaulted=True, optional=False, guarded=True, guard_reason='Changing IBKR client_id can disturb active Gateway sessions; this is the base id \\u2014 all domains derive from it (options=+10, prices=+20, news=+30, iv=+40, quotes=+50, holdings=+60, portfolio_capture=+70, lifecycle=+80; the app-managed base must stay at 0 through 19 (base <= 19); order placement needs another independently authorized id (see data_sources/ibkr_client_id.py).', import_aliases=(), runtime_aliases=())], 'sec_edgar': [FieldDef(field='user_agent', env_var='ARKSCOPE_SEC_USER_AGENT', secret=False, label='\\u806f\\u7d61 Email', default_value=None, defaulted=False, optional=True, guarded=False, guard_reason=None, import_aliases=('SEC_CONTACT_EMAIL', 'SEC_USER_AGENT'), runtime_aliases=())], 'seeking_alpha': []} = dpc.PROVIDER_FIELDS",
+          "E   AssertionError: assert 'massive' not in {'polygon': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=False, env_file_runtime_fallback=False)], 'massive': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'finnhub': [FieldDef(field='api_key', env_var='FINNHUB_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'fred': [FieldDef(field='api_key', env_var='FRED_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'financial_datasets': [FieldDef(field='api_key', env_var='FINANCIAL_DATASETS_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'ibkr': [FieldDef(field='host', env_var='IBKR_HOST', secret=False, label='Gateway host', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True), FieldDef(field='port', env_var='IBKR_PORT', secret=False, label='Gateway port', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True), FieldDef(field='client_id', env_var='IBKR_CLIENT_ID', secret=False, label='Client ID', default_value='1', defaulted=True, optional=False, guarded=True, guard_reason='Changing IBKR client_id can disturb active Gateway sessions; this is the base id \\u2014 all domains derive from it (options=+10, prices=+20, news=+30, iv=+40, quotes=+50, holdings=+60, portfolio_capture=+70, lifecycle=+80; the app-managed base must stay at 0 through 19 (base <= 19); order placement needs another independently authorized id (see data_sources/ibkr_client_id.py).', import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'sec_edgar': [FieldDef(field='user_agent', env_var='ARKSCOPE_SEC_USER_AGENT', secret=False, label='\\u806f\\u7d61 Email', default_value=None, defaulted=False, optional=True, guarded=False, guard_reason=None, import_aliases=('SEC_CONTACT_EMAIL', 'SEC_USER_AGENT'), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'seeking_alpha': []}",
+          "E    +  where {'polygon': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=False, env_file_runtime_fallback=False)], 'massive': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'finnhub': [FieldDef(field='api_key', env_var='FINNHUB_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'fred': [FieldDef(field='api_key', env_var='FRED_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'financial_datasets': [FieldDef(field='api_key', env_var='FINANCIAL_DATASETS_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'ibkr': [FieldDef(field='host', env_var='IBKR_HOST', secret=False, label='Gateway host', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True), FieldDef(field='port', env_var='IBKR_PORT', secret=False, label='Gateway port', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True), FieldDef(field='client_id', env_var='IBKR_CLIENT_ID', secret=False, label='Client ID', default_value='1', defaulted=True, optional=False, guarded=True, guard_reason='Changing IBKR client_id can disturb active Gateway sessions; this is the base id \\u2014 all domains derive from it (options=+10, prices=+20, news=+30, iv=+40, quotes=+50, holdings=+60, portfolio_capture=+70, lifecycle=+80; the app-managed base must stay at 0 through 19 (base <= 19); order placement needs another independently authorized id (see data_sources/ibkr_client_id.py).', import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'sec_edgar': [FieldDef(field='user_agent', env_var='ARKSCOPE_SEC_USER_AGENT', secret=False, label='\\u806f\\u7d61 Email', default_value=None, defaulted=False, optional=True, guarded=False, guard_reason=None, import_aliases=('SEC_CONTACT_EMAIL', 'SEC_USER_AGENT'), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'seeking_alpha': []} = dpc.PROVIDER_FIELDS",
           "=========================== short test summary info ============================",
-          "FAILED tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority - AssertionError: assert 'massive' not in {'polygon': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=('POLYGON_API_KEY',), runtime_aliases=('POLYGON_API_KEY',))], 'massive': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'finnhub': [FieldDef(field='api_key', env_var='FINNHUB_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'fred': [FieldDef(field='api_key', env_var='FRED_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'financial_datasets': [FieldDef(field='api_key', env_var='FINANCIAL_DATASETS_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'ibkr': [FieldDef(field='host', env_var='IBKR_HOST', secret=False, label='Gateway host', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=()), FieldDef(field='port', env_var='IBKR_PORT', secret=False, label='Gateway port', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=()), FieldDef(field='client_id', env_var='IBKR_CLIENT_ID', secret=False, label='Client ID', default_value='1', defaulted=True, optional=False, guarded=True, guard_reason='Changing IBKR client_id can disturb active Gateway sessions; this is the base id \\u2014 all domains derive from it (options=+10, prices=+20, news=+30, iv=+40, quotes=+50, holdings=+60, portfolio_capture=+70, lifecycle=+80; the app-managed base must stay at 0 through 19 (base <= 19); order placement needs another independently authorized id (see data_sources/ibkr_client_id.py).', import_aliases=(), runtime_aliases=())], 'sec_edgar': [FieldDef(field='user_agent', env_var='ARKSCOPE_SEC_USER_AGENT', secret=False, label='\\u806f\\u7d61 Email', default_value=None, defaulted=False, optional=True, guarded=False, guard_reason=None, import_aliases=('SEC_CONTACT_EMAIL', 'SEC_USER_AGENT'), runtime_aliases=())], 'seeking_alpha': []}",
-          " +  where {'polygon': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=('POLYGON_API_KEY',), runtime_aliases=('POLYGON_API_KEY',))], 'massive': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'finnhub': [FieldDef(field='api_key', env_var='FINNHUB_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'fred': [FieldDef(field='api_key', env_var='FRED_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'financial_datasets': [FieldDef(field='api_key', env_var='FINANCIAL_DATASETS_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=())], 'ibkr': [FieldDef(field='host', env_var='IBKR_HOST', secret=False, label='Gateway host', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=()), FieldDef(field='port', env_var='IBKR_PORT', secret=False, label='Gateway port', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=()), FieldDef(field='client_id', env_var='IBKR_CLIENT_ID', secret=False, label='Client ID', default_value='1', defaulted=True, optional=False, guarded=True, guard_reason='Changing IBKR client_id can disturb active Gateway sessions; this is the base id \\u2014 all domains derive from it (options=+10, prices=+20, news=+30, iv=+40, quotes=+50, holdings=+60, portfolio_capture=+70, lifecycle=+80; the app-managed base must stay at 0 through 19 (base <= 19); order placement needs another independently authorized id (see data_sources/ibkr_client_id.py).', import_aliases=(), runtime_aliases=())], 'sec_edgar': [FieldDef(field='user_agent', env_var='ARKSCOPE_SEC_USER_AGENT', secret=False, label='\\u806f\\u7d61 Email', default_value=None, defaulted=False, optional=True, guarded=False, guard_reason=None, import_aliases=('SEC_CONTACT_EMAIL', 'SEC_USER_AGENT'), runtime_aliases=())], 'seeking_alpha': []} = dpc.PROVIDER_FIELDS",
+          "FAILED tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority - AssertionError: assert 'massive' not in {'polygon': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=False, env_file_runtime_fallback=False)], 'massive': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'finnhub': [FieldDef(field='api_key', env_var='FINNHUB_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'fred': [FieldDef(field='api_key', env_var='FRED_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'financial_datasets': [FieldDef(field='api_key', env_var='FINANCIAL_DATASETS_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'ibkr': [FieldDef(field='host', env_var='IBKR_HOST', secret=False, label='Gateway host', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True), FieldDef(field='port', env_var='IBKR_PORT', secret=False, label='Gateway port', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True), FieldDef(field='client_id', env_var='IBKR_CLIENT_ID', secret=False, label='Client ID', default_value='1', defaulted=True, optional=False, guarded=True, guard_reason='Changing IBKR client_id can disturb active Gateway sessions; this is the base id \\u2014 all domains derive from it (options=+10, prices=+20, news=+30, iv=+40, quotes=+50, holdings=+60, portfolio_capture=+70, lifecycle=+80; the app-managed base must stay at 0 through 19 (base <= 19); order placement needs another independently authorized id (see data_sources/ibkr_client_id.py).', import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'sec_edgar': [FieldDef(field='user_agent', env_var='ARKSCOPE_SEC_USER_AGENT', secret=False, label='\\u806f\\u7d61 Email', default_value=None, defaulted=False, optional=True, guarded=False, guard_reason=None, import_aliases=('SEC_CONTACT_EMAIL', 'SEC_USER_AGENT'), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'seeking_alpha': []}",
+          " +  where {'polygon': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=False, env_file_runtime_fallback=False)], 'massive': [FieldDef(field='api_key', env_var='MASSIVE_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'finnhub': [FieldDef(field='api_key', env_var='FINNHUB_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'fred': [FieldDef(field='api_key', env_var='FRED_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'financial_datasets': [FieldDef(field='api_key', env_var='FINANCIAL_DATASETS_API_KEY', secret=True, label='API key', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'ibkr': [FieldDef(field='host', env_var='IBKR_HOST', secret=False, label='Gateway host', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True), FieldDef(field='port', env_var='IBKR_PORT', secret=False, label='Gateway port', default_value=None, defaulted=False, optional=False, guarded=False, guard_reason=None, import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True), FieldDef(field='client_id', env_var='IBKR_CLIENT_ID', secret=False, label='Client ID', default_value='1', defaulted=True, optional=False, guarded=True, guard_reason='Changing IBKR client_id can disturb active Gateway sessions; this is the base id \\u2014 all domains derive from it (options=+10, prices=+20, news=+30, iv=+40, quotes=+50, holdings=+60, portfolio_capture=+70, lifecycle=+80; the app-managed base must stay at 0 through 19 (base <= 19); order placement needs another independently authorized id (see data_sources/ibkr_client_id.py).', import_aliases=(), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'sec_edgar': [FieldDef(field='user_agent', env_var='ARKSCOPE_SEC_USER_AGENT', secret=False, label='\\u806f\\u7d61 Email', default_value=None, defaulted=False, optional=True, guarded=False, guard_reason=None, import_aliases=('SEC_CONTACT_EMAIL', 'SEC_USER_AGENT'), runtime_aliases=(), env_file_importable=True, env_file_runtime_fallback=True)], 'seeking_alpha': []} = dpc.PROVIDER_FIELDS",
           "============================== 1 failed in 0.45s ==============================="
         ],
         "passed_node_count": 0,
@@ -2501,8 +2501,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "be27d90c7d997f00dfa4a9760984faf687d812abfc10236962316ec7035d41f3",
-          "before_sha256": "be27d90c7d997f00dfa4a9760984faf687d812abfc10236962316ec7035d41f3",
+          "after_sha256": "ac74c26ee1ce9eb6179549db2fd0adc5ca460d46e4b6814757a25f77bde85c76",
+          "before_sha256": "ac74c26ee1ce9eb6179549db2fd0adc5ca460d46e4b6814757a25f77bde85c76",
           "byte_identical": true,
           "path": "src/data_provider_config.py"
         }
@@ -2599,7 +2599,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
         ],
-        "output_sha256": "88772d6dffd38e191acf9e7988749d977924e89f4cfd8d1bf37aced8809fd762",
+        "output_sha256": "041db8df3b76c54531bde4295ac7486b0c6c5702cc5732733abf66e955df7577",
         "output_tail": [
           "rootdir: <REPO_ROOT>",
           "plugins: anyio-4.14.2",
@@ -2624,7 +2624,7 @@
           "E   src.security_lifecycle_schema.LifecycleSchemaMismatch: lifecycle foreign key mismatch",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows - src.security_lifecycle_schema.LifecycleSchemaMismatch: lifecycle foreign key mismatch",
-          "============================== 1 failed in 0.28s ==============================="
+          "============================== 1 failed in 0.32s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -2737,7 +2737,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
         ],
-        "output_sha256": "9d778cc12a142307b296a355d7ef2e0903f6ec5552862e4d65edc728911d7be2",
+        "output_sha256": "bebbfe2d4f058d45838b6ff9f7cba71b5a429b1dd29a1da4a3f832ee009a5c48",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -2761,7 +2761,7 @@
           "E   src.security_lifecycle_listing_migration.ListingMigrationRejected: lifecycle_rows_changed",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows - src.security_lifecycle_listing_migration.ListingMigrationRejected: lifecycle_rows_changed",
-          "============================== 1 failed in 0.32s ==============================="
+          "============================== 1 failed in 0.31s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -2810,7 +2810,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "e9a6e5f97b08a7a4624a5c3520dfbb0e9ab9ea82686ea313f3a96ae6ae10a11c",
+        "output_sha256": "53515904a3d8b0d29d2ddd3b1d896772a682d817cfb78d6384742e45c9120ba6",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -2825,7 +2825,7 @@
           "",
           "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows PASSED [100%]",
           "",
-          "============================== 1 passed in 0.30s ==============================="
+          "============================== 1 passed in 0.29s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -2874,7 +2874,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_migration.py::test_v2_to_v3_preserves_every_existing_cell_and_adds_no_listing_rows"
         ],
-        "output_sha256": "2adb0398900da807a12acdd0d48bfa789def59197c9fce963013387dd7709bf5",
+        "output_sha256": "a4f9bd74560fb89e09ae19536774f10eb9c5d4ceb1bf222eae23ff9ebecf4837",
         "output_tail": [
           "rootdir: <REPO_ROOT>",
           "plugins: anyio-4.14.2",
@@ -2899,7 +2899,7 @@
           "  ",
           "  - v2",
           "  + v3",
-          "============================== 1 failed in 0.28s ==============================="
+          "============================== 1 failed in 0.27s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -3012,7 +3012,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_evidence.py::test_real_listing_session_terminal_output_drives_exact_terminal_policy"
         ],
-        "output_sha256": "5ccea0efac3105d1f3704a01649008848e06168817e78a8cf1032c3a429255b4",
+        "output_sha256": "581383f1c9efc03e61370b545a5cdab5ee532c083d82f2d91edab42452aa4079",
         "output_tail": [
           "E   AssertionError: assert {} == {'issuer_cik': '0000000002', 'security_class': 'common_stock'}",
           "E     ",
@@ -3037,7 +3037,7 @@
           "  -     'issuer_cik': '0000000002',",
           "  -     'security_class': 'common_stock',",
           "  - }",
-          "============================== 1 failed in 0.37s ==============================="
+          "============================== 1 failed in 0.38s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -3102,7 +3102,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "334ca2d1c247007f8ba7e0b3b59e480b9a4f80e04b593ba5e4168227f4d7fdf5",
+        "output_sha256": "0392062cfd95b1fe640e22753cbde3755a5c17be28724175e39387b92da9420a",
         "output_tail": [
           "TASK8_COLLECTED_NODE tests/test_security_lifecycle_listing_evidence.py::test_real_terminal_pipeline_requires_exact_inactive_massive_locator[massive_directory_missing]",
           "",
@@ -3127,7 +3127,7 @@
           "",
           "tests/test_security_lifecycle_listing_evidence.py::test_real_terminal_pipeline_requires_exact_inactive_massive_locator[massive_directory_missing] PASSED [100%]",
           "",
-          "============================== 5 passed in 0.36s ==============================="
+          "============================== 5 passed in 0.35s ==============================="
         ],
         "passed_node_count": 5,
         "skipped_node_count": 0
@@ -3246,8 +3246,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
-          "before_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
+          "after_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "before_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
           "byte_identical": true,
           "path": "src/security_lifecycle_decision_policy.py"
         }
@@ -3280,7 +3280,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "4bb7bd1ea31b5806892f823f35dd05084a214b55b1a9135b3153934a35b79752",
+        "output_sha256": "ab0f460e71c51da5ed4db5c26287a9f61c1da68a6f08d7b55716ee352751ff2d",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -3295,7 +3295,7 @@
           "",
           "tests/test_listing_authority_transport.py::test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs PASSED [100%]",
           "",
-          "============================== 1 passed in 0.26s ==============================="
+          "============================== 1 passed in 0.27s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -3344,32 +3344,32 @@
         "failed_node_ids": [
           "tests/test_listing_authority_transport.py::test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs"
         ],
-        "output_sha256": "e1560c63fd37e013963536a1c254adba0b07affb78536f7319b0686a263ce033",
+        "output_sha256": "5879ec8acf1c275dafe8a902cd5b537adf833bb7d122d46778e5e05b0ec14c84",
         "output_tail": [
           "=================================== FAILURES ===================================",
           "_____ test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs _____",
-          "tests/test_listing_authority_transport.py:281: in test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs",
+          "tests/test_listing_authority_transport.py:307: in test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs",
           "    assert variant not in caplog.text",
-          "E   AssertionError: assert 'lifecycle massive key+/%' not in 'DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 request raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\nDEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 stream raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\nDEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 close raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\n'",
+          "E   AssertionError: assert 'lifecycle massive key+/%' not in 'DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 request raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\nDEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 stream raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\nDEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 close raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\n'",
           "E     ",
           "E     'lifecycle massive key+/%' is contained here:",
-          "E       DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 request raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
+          "E       DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 request raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
           "E     ?                                                                                     ++++++++++++++++++++++++",
-          "E       DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 stream raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
-          "E       DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 close raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
+          "E       DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 stream raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
+          "E       DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 close raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
           "------------------------------ Captured log call -------------------------------",
-          "DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 request raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
-          "DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 stream raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
-          "DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 close raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
+          "DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 request raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
+          "DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 stream raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
+          "DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 close raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
           "=========================== short test summary info ============================",
-          "FAILED tests/test_listing_authority_transport.py::test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs - AssertionError: assert 'lifecycle massive key+/%' not in 'DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 request raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\nDEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 stream raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\nDEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 close raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\n'",
+          "FAILED tests/test_listing_authority_transport.py::test_lifecycle_transport_redacts_massive_key_from_urllib3_debug_logs - AssertionError: assert 'lifecycle massive key+/%' not in 'DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 request raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\nDEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 stream raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\nDEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 close raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained\\n'",
           "  ",
           "  'lifecycle massive key+/%' is contained here:",
-          "    DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 request raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
+          "    DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 request raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
           "  ?                                                                                     ++++++++++++++++++++++++",
-          "    DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 stream raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
-          "    DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:236 close raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
-          "============================== 1 failed in 0.30s ==============================="
+          "    DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 stream raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
+          "    DEBUG    urllib3.connectionpool:test_listing_authority_transport.py:262 close raw=lifecycle massive key+/% encoded=lifecycle%20massive%20key%2B%2F%25 form=lifecycle+massive+key%2B%2F%25; other=retained",
+          "============================== 1 failed in 0.31s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -3418,7 +3418,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "711ab894fe219bb1d993814c09fa4854b54cea175d22f37a6f4a8129fed11715",
+        "output_sha256": "abf1405cc327662ccafd7ef9766112a95617c87379a7e5c4db445f2eb13a2b82",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -3433,7 +3433,7 @@
           "",
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler PASSED [100%]",
           "",
-          "============================== 1 passed in 0.42s ==============================="
+          "============================== 1 passed in 0.43s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -3482,7 +3482,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler"
         ],
-        "output_sha256": "8edb8cba700415567fac639e6bbafd5259f1d669675617b9513590222518dcee",
+        "output_sha256": "ce4f9f38d64f3237855b6939725c22b7a7da595a59ecbd892e89c072eb0a8359",
         "output_tail": [
           "  Full diff:",
           "    {",
@@ -3507,7 +3507,7 @@
           "  -     'status': 'succeeded',",
           "  +     'status': 'partial',",
           "    }",
-          "============================== 1 failed in 0.49s ==============================="
+          "============================== 1 failed in 0.48s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -3522,8 +3522,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "b48ad7fdef50bc4fb5faf1ebdb714f4de41032b8e582ccfc12a4ea85d916c880",
-          "before_sha256": "b48ad7fdef50bc4fb5faf1ebdb714f4de41032b8e582ccfc12a4ea85d916c880",
+          "after_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
+          "before_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
           "byte_identical": true,
           "path": "src/service/security_lifecycle_automation_scheduler.py"
         }
@@ -3556,7 +3556,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "711ab894fe219bb1d993814c09fa4854b54cea175d22f37a6f4a8129fed11715",
+        "output_sha256": "abf1405cc327662ccafd7ef9766112a95617c87379a7e5c4db445f2eb13a2b82",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -3571,7 +3571,7 @@
           "",
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler PASSED [100%]",
           "",
-          "============================== 1 passed in 0.42s ==============================="
+          "============================== 1 passed in 0.43s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -3620,7 +3620,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler"
         ],
-        "output_sha256": "d0036a4b4543044ac5f51ef9a9bb163fdac547120385f8034b447e90523e9c1b",
+        "output_sha256": "8c2a76169a1fd2f99f706b0e8847b1d3c8d7beaec15b9db6885237e79645faa1",
         "output_tail": [
           "  Full diff:",
           "    {",
@@ -3645,7 +3645,7 @@
           "  -     'status': 'succeeded',",
           "  +     'status': 'partial',",
           "    }",
-          "============================== 1 failed in 0.45s ==============================="
+          "============================== 1 failed in 0.48s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -3660,8 +3660,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "b48ad7fdef50bc4fb5faf1ebdb714f4de41032b8e582ccfc12a4ea85d916c880",
-          "before_sha256": "b48ad7fdef50bc4fb5faf1ebdb714f4de41032b8e582ccfc12a4ea85d916c880",
+          "after_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
+          "before_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
           "byte_identical": true,
           "path": "src/service/security_lifecycle_automation_scheduler.py"
         }
@@ -3694,7 +3694,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "3e36910452d3f1d192aa8da658ecd56f1dfde762ab089f8774c6604ae7cbebf3",
+        "output_sha256": "101ff2aaf2bf6e28fb5b66f43678c458a821a44af3002dc860fa38004e3e4210",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -3709,7 +3709,7 @@
           "",
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler PASSED [100%]",
           "",
-          "============================== 1 passed in 0.44s ==============================="
+          "============================== 1 passed in 0.45s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -3758,7 +3758,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_automation_scheduler.py::test_terminal_massive_requiredness_changes_on_effective_date_through_scheduler"
         ],
-        "output_sha256": "f219a957a981c9286d6b0fe022897602e3e2f82cce67f85ffcade6d4e353c225",
+        "output_sha256": "6a85611864ca6d4d89c0e5496237bf92f341d2e71440cfa8aff3ec11c57f5544",
         "output_tail": [
           "  Full diff:",
           "    {",
@@ -3798,8 +3798,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "b48ad7fdef50bc4fb5faf1ebdb714f4de41032b8e582ccfc12a4ea85d916c880",
-          "before_sha256": "b48ad7fdef50bc4fb5faf1ebdb714f4de41032b8e582ccfc12a4ea85d916c880",
+          "after_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
+          "before_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
           "byte_identical": true,
           "path": "src/service/security_lifecycle_automation_scheduler.py"
         }
@@ -3839,7 +3839,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "df22f6c738fd342778be36b624f42a5e2e03275245519e2104bb16387c19a856",
+        "output_sha256": "5cffda92008f15ad318eec7b379ea9cac09d0dec77014c86ca97482e9f6b1c32",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -3864,7 +3864,7 @@
           "",
           "tests/test_security_lifecycle_automation_scheduler.py::test_real_session_filters_optional_massive_parser_failure_for_nms_successor PASSED [100%]",
           "",
-          "============================== 3 passed in 0.34s ==============================="
+          "============================== 3 passed in 0.36s ==============================="
         ],
         "passed_node_count": 3,
         "skipped_node_count": 0
@@ -3925,7 +3925,7 @@
           "tests/test_security_lifecycle_listing_evidence.py::test_listing_session_maps_massive_parser_failures_to_component_blocker[source-candidate]",
           "tests/test_security_lifecycle_listing_evidence.py::test_listing_session_maps_massive_parser_failures_to_component_blocker[successor-candidate]"
         ],
-        "output_sha256": "1cb499a9a46f115da46bb1ee52a8ec9c7a28791877e197b547010d12e3923aec",
+        "output_sha256": "fed2a1a2b36fd163ca8f1111d1206253eb690b670d8c03773870eed65ff37ede",
         "output_tail": [
           "    )",
           "FAILED tests/test_security_lifecycle_listing_evidence.py::test_listing_session_maps_massive_parser_failures_to_component_blocker[successor-candidate] - AssertionError: assert ('listing_status_unresolved',) == ('massive_reference_unavailable',)",
@@ -3999,7 +3999,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "7aa8b53dda06402ca347557d82883cf044c294f66a09a72775768e2a052541bc",
+        "output_sha256": "ff74ac6f270bce90440aa3d3a991467125a69bee4088e8595be0c04f2b75bbeb",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -4014,7 +4014,7 @@
           "",
           "tests/test_security_lifecycle_automation_scheduler.py::test_listing_session_close_failure_retains_result_with_sanitized_cleanup_witness PASSED [100%]",
           "",
-          "============================== 1 passed in 0.34s ==============================="
+          "============================== 1 passed in 0.33s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -4063,7 +4063,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_automation_scheduler.py::test_listing_session_close_failure_retains_result_with_sanitized_cleanup_witness"
         ],
-        "output_sha256": "5295847b42883056b8133c6ad6d7fea43afc19d61bf9a9d437e574b155a3f372",
+        "output_sha256": "e12f74865239704b4b75f33553c9ab586659d5230e0765f71f873528b55c941a",
         "output_tail": [
           "  +     'case_ids': [],",
           "  ?                  ++",
@@ -4088,7 +4088,7 @@
           "  -     'status': 'succeeded',",
           "  +     'status': 'unavailable',",
           "    }",
-          "============================== 1 failed in 0.39s ==============================="
+          "============================== 1 failed in 0.38s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -4103,8 +4103,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "b48ad7fdef50bc4fb5faf1ebdb714f4de41032b8e582ccfc12a4ea85d916c880",
-          "before_sha256": "b48ad7fdef50bc4fb5faf1ebdb714f4de41032b8e582ccfc12a4ea85d916c880",
+          "after_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
+          "before_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
           "byte_identical": true,
           "path": "src/service/security_lifecycle_automation_scheduler.py"
         }
@@ -4340,7 +4340,7 @@
         "failed_node_ids": [
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_shadow_executes_real_listing_session_transport_contract"
         ],
-        "output_sha256": "65c65abc72db3fa15f1876052555cb4e07df8c150276feb7763438f96a2ca93f",
+        "output_sha256": "418aa200c6ccdef30c83568e99de9904ecb7fa06fdfbf435d90a96e085e81498",
         "output_tail": [
           "collecting ... collected 1 item",
           "TASK8_COLLECTED_NODE docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_shadow_executes_real_listing_session_transport_contract",
@@ -4365,7 +4365,7 @@
           "E   AttributeError: 'object' object has no attribute 'lookup'",
           "=========================== short test summary info ============================",
           "FAILED docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_shadow_executes_real_listing_session_transport_contract - AttributeError: 'object' object has no attribute 'lookup'",
-          "============================== 1 failed in 0.42s ==============================="
+          "============================== 1 failed in 0.41s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -4416,7 +4416,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "c09a2963da54db744231b2ff8b0cf123048c4e0bd9d54e81f5774e48d995c2d1",
+        "output_sha256": "0a2ddc6fe0eaad255ee493721c4f69471069b3c278f79ba861ee17db741c2c4f",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -4431,7 +4431,7 @@
           "",
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_terminal_projection_is_preflight_valid PASSED [100%]",
           "",
-          "============================== 1 passed in 0.09s ==============================="
+          "============================== 1 passed in 0.10s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -4520,8 +4520,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
-          "before_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
+          "after_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
+          "before_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
         }
@@ -4618,7 +4618,7 @@
         "failed_node_ids": [
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_evidence_surface_validator_fails_closed"
         ],
-        "output_sha256": "c8be9b1d17bfd102f00f1eae6136ca763efcf606d5b31c917f1d7a72af0123e0",
+        "output_sha256": "da5b0bb76b7e8b00101c768cafff9c04868b49d22b1f5321341ec39ac86b8d34",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -4640,7 +4640,7 @@
           "E   Failed: DID NOT RAISE <class 'AssertionError'>",
           "=========================== short test summary info ============================",
           "FAILED docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_evidence_surface_validator_fails_closed - Failed: DID NOT RAISE <class 'AssertionError'>",
-          "============================== 1 failed in 0.12s ==============================="
+          "============================== 1 failed in 0.11s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -4655,8 +4655,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
-          "before_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
+          "after_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
+          "before_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
         }
@@ -4790,8 +4790,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
-          "before_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
+          "after_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
+          "before_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
         }
@@ -4930,8 +4930,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
-          "before_sha256": "d566443e5e422ab8ce5d8507b1b753bc5d299a96547553fd321261e98a090ea6",
+          "after_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "before_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
           "byte_identical": true,
           "path": "src/security_lifecycle_decision_policy.py"
         }
@@ -4968,7 +4968,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "41596ad2fa0b16dea1812918e101072f083c70f629b7161d3769f27a147e2e19",
+        "output_sha256": "f494a26036be77f074dbe250ace54ae30c03102f2b7f50f5d130780479706956",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -4988,7 +4988,7 @@
           "",
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_clips_other_edges_and_omits_fully_hidden_controls PASSED [100%]",
           "",
-          "============================== 2 passed in 1.08s ==============================="
+          "============================== 2 passed in 1.07s ==============================="
         ],
         "passed_node_count": 2,
         "skipped_node_count": 0
@@ -5045,7 +5045,7 @@
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_clips_other_edges_and_omits_fully_hidden_controls",
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_uses_the_visible_overflow_clipped_control_rect"
         ],
-        "output_sha256": "b6c7bcedb61fec7e66d42cb1e3e1e455009580ec5cdf96e53c76086becb37a01",
+        "output_sha256": "d63005b320f1f84e0e95e3ab87f667d01f1fc62ec3a4a77d88cda6d56f9c68af",
         "output_tail": [
           "",
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_uses_the_visible_overflow_clipped_control_rect FAILED [ 50%]",
@@ -5070,7 +5070,7 @@
           "assert 35 == 48",
           "FAILED docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_clips_other_edges_and_omits_fully_hidden_controls - AssertionError: visible_overflow_left_clip",
           "assert -13 == 0",
-          "============================== 2 failed in 1.08s ==============================="
+          "============================== 2 failed in 1.10s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -5086,8 +5086,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
-          "before_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
+          "after_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
+          "before_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
         }
@@ -5120,7 +5120,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "21d9c24fd7d736a6cbb881ad2c6011927812d6484997b15fbd182b7fd5904f7d",
+        "output_sha256": "fa366bca2387c7f7cb1d23817eceadeafb7af79380a0c94a2bb772d46dbce99b",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -5135,7 +5135,7 @@
           "",
           "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_accepts_each_supported_rfc3339_fraction_length[1] PASSED [100%]",
           "",
-          "============================== 1 passed in 0.32s ==============================="
+          "============================== 1 passed in 0.33s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -5184,7 +5184,7 @@
         "failed_node_ids": [
           "tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_accepts_each_supported_rfc3339_fraction_length[1]"
         ],
-        "output_sha256": "df8d6e63c6b3d6b1b47fbc0b868a31312fa04aacd09a0fdf9ba547f0a77bf335",
+        "output_sha256": "22b078c3d49a17bd44846fe5f8220377ee15a8bd3301dd2ceee9fde5ab46740e",
         "output_tail": [
           "collecting ... collected 1 item",
           "TASK8_COLLECTED_NODE tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_accepts_each_supported_rfc3339_fraction_length[1]",
@@ -5209,7 +5209,7 @@
           "E   src.security_lifecycle_listing_evidence.ListingEvidenceFailure: listing_status_unresolved",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_listing_evidence.py::test_massive_parser_accepts_each_supported_rfc3339_fraction_length[1] - src.security_lifecycle_listing_evidence.ListingEvidenceFailure: listing_status_unresolved",
-          "============================== 1 failed in 0.39s ==============================="
+          "============================== 1 failed in 0.38s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -5235,13 +5235,15 @@
     },
     {
       "actual_failed_node_ids": [
-        "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback"
+        "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias",
+        "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
       ],
-      "actual_failure_count": 1,
+      "actual_failure_count": 2,
       "all_required_failure_signatures_observed": true,
       "baseline": {
         "collected_node_ids": [
-          "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback"
+          "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias",
+          "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
         ],
         "collection_markers_unique": true,
         "command": [
@@ -5250,32 +5252,39 @@
           "mutation_pytest_probe",
           "-vv",
           "--tb=short",
-          "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback"
+          "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority",
+          "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias"
         ],
         "executed_node_ids": [
-          "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback"
+          "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias",
+          "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
         ],
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "41d19eee87bcdd122d0d7453747bb26291b9fe70827b58c97bf5eb73c6668615",
+        "output_sha256": "51ddbff2b5d800965dd1824455c973c15bf0618891bf46bdaa2db4ea59dcfac6",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
           "cachedir: .pytest_cache",
           "rootdir: <REPO_ROOT>",
           "plugins: anyio-4.14.2",
-          "collecting ... collected 1 item",
-          "TASK8_COLLECTED_NODE tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback",
+          "collecting ... collected 2 items",
+          "TASK8_COLLECTED_NODE tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority",
+          "TASK8_COLLECTED_NODE tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias",
           "",
-          "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback ",
-          "TASK8_EXECUTED_NODE tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback",
+          "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority ",
+          "TASK8_EXECUTED_NODE tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority",
           "",
-          "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback PASSED [100%]",
+          "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority PASSED [ 50%]",
+          "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias ",
+          "TASK8_EXECUTED_NODE tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias",
           "",
-          "============================== 1 passed in 0.44s ==============================="
+          "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias PASSED [100%]",
+          "",
+          "============================== 2 passed in 0.40s ==============================="
         ],
-        "passed_node_count": 1,
+        "passed_node_count": 2,
         "skipped_node_count": 0
       },
       "baseline_admitted": true,
@@ -5286,15 +5295,18 @@
         "mutation_pytest_probe",
         "-vv",
         "--tb=short",
-        "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback"
+        "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority",
+        "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias"
       ],
       "declared_scope_node_ids": [
-        "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback"
+        "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias",
+        "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
       ],
       "expected_failed_node_ids": [
-        "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback"
+        "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias",
+        "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
       ],
-      "expected_failure_count": 1,
+      "expected_failure_count": 2,
       "failure_signature_matches": {
         "MASSIVE_API_KEY": true
       },
@@ -5303,7 +5315,8 @@
       "missing_expected_failures_inside_declared_scope": [],
       "mutant": {
         "collected_node_ids": [
-          "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback"
+          "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias",
+          "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
         ],
         "collection_markers_unique": true,
         "command": [
@@ -5312,47 +5325,50 @@
           "mutation_pytest_probe",
           "-vv",
           "--tb=short",
-          "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback"
+          "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority",
+          "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias"
         ],
         "executed_node_ids": [
-          "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback"
+          "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias",
+          "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
         ],
         "execution_markers_unique": true,
         "exit_code": 1,
         "failed_node_ids": [
-          "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback"
+          "tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias",
+          "tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority"
         ],
-        "output_sha256": "d1e042e4afe435e6e367f403c46c49c2512ef8f81a6cb2f4979920dafff4d1e6",
+        "output_sha256": "72a77cb7c419f8a2280ed850765613fbfe401b7dc82307fbda104dde3a4e3ad4",
         "output_tail": [
-          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
-          "cachedir: .pytest_cache",
-          "rootdir: <REPO_ROOT>",
-          "plugins: anyio-4.14.2",
-          "collecting ... collected 1 item",
-          "TASK8_COLLECTED_NODE tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback",
-          "",
-          "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback ",
-          "TASK8_EXECUTED_NODE tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback",
-          "",
-          "tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback FAILED [100%]",
-          "",
-          "=================================== FAILURES ===================================",
-          "_________ test_real_legacy_polygon_env_wins_over_primary_file_fallback _________",
-          "tests/test_data_provider_config.py:309: in test_real_legacy_polygon_env_wins_over_primary_file_fallback",
-          "    assert \"MASSIVE_API_KEY\" not in os.environ",
-          "E   AssertionError: assert 'MASSIVE_API_KEY' not in environ(<REDACTED_ENVIRONMENT>)",
-          "E    +  where environ(<REDACTED_ENVIRONMENT>) = os.environ",
-          "------------------------------ Captured log call -------------------------------",
-          "WARNING  src.data_provider_config:data_provider_config.py:470 provider_env_fallback=true: managed provider fields may use config/.env",
+          "    assert dpc.provider_field_env_value(\"polygon\", \"api_key\") is None",
+          "E   AssertionError: assert 'polygon-legacy' is None",
+          "E    +  where 'polygon-legacy' = <function provider_field_env_value at 0x7b021a315480>('polygon', 'api_key')",
+          "E    +    where <function provider_field_env_value at 0x7b021a315480> = dpc.provider_field_env_value",
           "=========================== short test summary info ============================",
-          "FAILED tests/test_data_provider_config.py::test_real_legacy_polygon_env_wins_over_primary_file_fallback - AssertionError: assert 'MASSIVE_API_KEY' not in environ(<REDACTED_ENVIRONMENT>)",
-          " +  where environ(<REDACTED_ENVIRONMENT>) = os.environ",
-          "============================== 1 failed in 0.48s ==============================="
+          "FAILED tests/test_data_provider_config.py::test_massive_reuses_the_polygon_credential_authority - AssertionError: assert ('api_key', 'MASSIVE_API_KEY', (), ('POLYGON_API_KEY',)) == ('api_key', 'MASSIVE_API_KEY', (), ())",
+          "  ",
+          "  At index 3 diff: ('POLYGON_API_KEY',) != ()",
+          "  ",
+          "  Full diff:",
+          "    (",
+          "        'api_key',",
+          "        'MASSIVE_API_KEY',",
+          "        (),",
+          "  +     (",
+          "  +         'POLYGON_API_KEY',",
+          "  -     (),",
+          "  ?     -",
+          "  +     ),",
+          "    )",
+          "FAILED tests/test_data_provider_config.py::test_massive_env_resolution_never_revives_legacy_polygon_alias - AssertionError: assert 'polygon-legacy' is None",
+          " +  where 'polygon-legacy' = <function provider_field_env_value at 0x7b021a315480>('polygon', 'api_key')",
+          " +    where <function provider_field_env_value at 0x7b021a315480> = dpc.provider_field_env_value",
+          "============================== 2 failed in 0.49s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
       },
-      "mutation": "skip final runtime-alias authority reconciliation",
+      "mutation": "revive the retired Polygon process alias for Massive",
       "mutation_applied": true,
       "product_files": [
         "src/data_provider_config.py"
@@ -5362,8 +5378,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "be27d90c7d997f00dfa4a9760984faf687d812abfc10236962316ec7035d41f3",
-          "before_sha256": "be27d90c7d997f00dfa4a9760984faf687d812abfc10236962316ec7035d41f3",
+          "after_sha256": "ac74c26ee1ce9eb6179549db2fd0adc5ca460d46e4b6814757a25f77bde85c76",
+          "before_sha256": "ac74c26ee1ce9eb6179549db2fd0adc5ca460d46e4b6814757a25f77bde85c76",
           "byte_identical": true,
           "path": "src/data_provider_config.py"
         }
@@ -5460,12 +5476,12 @@
         "failed_node_ids": [
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_terminal_projection_is_preflight_valid"
         ],
-        "output_sha256": "5dc8dfd863f75f32c36ed3b3e52efeb5b508a91dbc4d5f4c16efd99b52311391",
+        "output_sha256": "1bff0fa7acb46d5f48aac61574abbb609f3c8b7477276f16bccb0a622ccd3d1e",
         "output_tail": [
           "  ",
           "  Extra items in the right set:",
-          "  ('nasdaq_trader', 'other_listed', 'not_found')",
           "  ('nasdaq_trader', 'nasdaq_listed', 'not_found')",
+          "  ('nasdaq_trader', 'other_listed', 'not_found')",
           "  ",
           "  Full diff:",
           "    {",
@@ -5500,8 +5516,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
-          "before_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
+          "after_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
+          "before_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
         }
@@ -5638,8 +5654,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
-          "before_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
+          "after_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
+          "before_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
         }
@@ -5672,7 +5688,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "9bbac689ab162af9501db4c34126741c692a5a1a237eb3326d9a4387aea74589",
+        "output_sha256": "d5b45ee900d416a180ff25a0f677f6e3754e6a01dc81d5807b04f66716a564fb",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -5687,7 +5703,7 @@
           "",
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_detects_overlapping_controls_in_the_same_surface PASSED [100%]",
           "",
-          "============================== 1 passed in 0.52s ==============================="
+          "============================== 1 passed in 0.53s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -5736,11 +5752,11 @@
         "failed_node_ids": [
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_detects_overlapping_controls_in_the_same_surface"
         ],
-        "output_sha256": "d6ba23ccdd2dd7b248d40838798c6134abbf4367821f2288d2a82ee8f4261101",
+        "output_sha256": "3862d368e56256e1d15a5f7e9e12a6b5210f78a5df07a3e6d54aeb63a91fdbb7",
         "output_tail": [
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py:514: in test_browser_geometry_detects_overlapping_controls_in_the_same_surface",
           "    assert {control[\"text\"] for control in metrics[\"controls\"]} == {",
-          "E   AssertionError: assert {'Covering'} == {'Covered', 'Covering'}",
+          "E   AssertionError: assert {'Covering'} == {'Covering', 'Covered'}",
           "E     ",
           "E     Extra items in the right set:",
           "E     'Covered'",
@@ -5751,7 +5767,7 @@
           "E           'Covering',",
           "E       }",
           "=========================== short test summary info ============================",
-          "FAILED docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_detects_overlapping_controls_in_the_same_surface - AssertionError: assert {'Covering'} == {'Covered', 'Covering'}",
+          "FAILED docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_detects_overlapping_controls_in_the_same_surface - AssertionError: assert {'Covering'} == {'Covering', 'Covered'}",
           "  ",
           "  Extra items in the right set:",
           "  'Covered'",
@@ -5761,7 +5777,7 @@
           "  -     'Covered',",
           "        'Covering',",
           "    }",
-          "============================== 1 failed in 0.55s ==============================="
+          "============================== 1 failed in 0.57s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -5776,8 +5792,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
-          "before_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
+          "after_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
+          "before_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
         }
@@ -5810,7 +5826,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "7613358f82c8be851fcb5fbb554862aad030bb4b20662d5118aea4b8a7e0c5bd",
+        "output_sha256": "accd91ffb25bd5c6032a108967bf5a9c3758a9343c8e1fcf1eff11209d951311",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -5825,7 +5841,7 @@
           "",
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_detects_vertical_text_clipping PASSED [100%]",
           "",
-          "============================== 1 passed in 0.51s ==============================="
+          "============================== 1 passed in 0.50s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -5914,8 +5930,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
-          "before_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
+          "after_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
+          "before_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
         }
@@ -6052,8 +6068,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "138aa802bee3c256e1c928dea13918b1515e43bb028c6ecd077b404f727852f2",
-          "before_sha256": "138aa802bee3c256e1c928dea13918b1515e43bb028c6ecd077b404f727852f2",
+          "after_sha256": "ba0a4879fa45823bd3992db4db67e65efab8f21dc87860cfcfc753f892b23b68",
+          "before_sha256": "ba0a4879fa45823bd3992db4db67e65efab8f21dc87860cfcfc753f892b23b68",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_mutations.py"
         }
@@ -6187,8 +6203,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "138aa802bee3c256e1c928dea13918b1515e43bb028c6ecd077b404f727852f2",
-          "before_sha256": "138aa802bee3c256e1c928dea13918b1515e43bb028c6ecd077b404f727852f2",
+          "after_sha256": "ba0a4879fa45823bd3992db4db67e65efab8f21dc87860cfcfc753f892b23b68",
+          "before_sha256": "ba0a4879fa45823bd3992db4db67e65efab8f21dc87860cfcfc753f892b23b68",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_mutations.py"
         }
@@ -6221,7 +6237,7 @@
         "execution_markers_unique": true,
         "exit_code": 0,
         "failed_node_ids": [],
-        "output_sha256": "52905f44069b8e8873cab82c58d1412810a913240b58e7aec2fcf169a2363598",
+        "output_sha256": "29762a57826a62152c95f7d0b872541ed68425b0a108a8c01fd471084733caac",
         "output_tail": [
           "============================= test session starts ==============================",
           "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
@@ -6236,7 +6252,7 @@
           "",
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_omits_controls_hidden_by_closed_details PASSED [100%]",
           "",
-          "============================== 1 passed in 0.54s ==============================="
+          "============================== 1 passed in 0.55s ==============================="
         ],
         "passed_node_count": 1,
         "skipped_node_count": 0
@@ -6285,7 +6301,7 @@
         "failed_node_ids": [
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py::test_browser_geometry_omits_controls_hidden_by_closed_details"
         ],
-        "output_sha256": "19fc23860d98f9ebd9b0d3c6deec98dc16c34fec92df8f92ceddb59a02a5510e",
+        "output_sha256": "98c13b84887ad9eb0102510daab5c15d421507e1b24db89dbf50042f61ef8c48",
         "output_tail": [
           "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/test_packet_contracts.py:611: in test_browser_geometry_omits_controls_hidden_by_closed_details",
           "    assert [control[\"text\"] for control in metrics[\"controls\"]] == [",
@@ -6310,7 +6326,7 @@
           "  +     'Hidden action',",
           "        'Visible action',",
           "    ]",
-          "============================== 1 failed in 0.54s ==============================="
+          "============================== 1 failed in 0.56s ==============================="
         ],
         "passed_node_count": 0,
         "skipped_node_count": 0
@@ -6325,8 +6341,8 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
-          "before_sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9",
+          "after_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
+          "before_sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
         }
@@ -6463,10 +6479,839 @@
       ],
       "restored_files": [
         {
-          "after_sha256": "ceaeab7525d495e8e547fa6fcfc6c4c78047bebbea64390306e32f3f56a23f44",
-          "before_sha256": "ceaeab7525d495e8e547fa6fcfc6c4c78047bebbea64390306e32f3f56a23f44",
+          "after_sha256": "e4597ef92167efc1a2ebc819c8b1571a00367daf9796279fc476dd9b28c57828",
+          "before_sha256": "e4597ef92167efc1a2ebc819c8b1571a00367daf9796279fc476dd9b28c57828",
           "byte_identical": true,
           "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/normalize_packet_logs.py"
+        }
+      ],
+      "runner_error": null,
+      "unexpected_failures_inside_declared_scope": []
+    },
+    {
+      "actual_failed_node_ids": [
+        "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract"
+      ],
+      "actual_failure_count": 1,
+      "all_required_failure_signatures_observed": true,
+      "baseline": {
+        "collected_node_ids": [
+          "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract"
+        ],
+        "executed_node_ids": [
+          "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 0,
+        "failed_node_ids": [],
+        "output_sha256": "fd856fb1693d60129420b0c904b725d48c9cb8b49f0b553e38641120f6586c9e",
+        "output_tail": [
+          "============================= test session starts ==============================",
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract",
+          "",
+          "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract ",
+          "TASK8_EXECUTED_NODE tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract",
+          "",
+          "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract PASSED [100%]",
+          "",
+          "============================== 1 passed in 0.33s ==============================="
+        ],
+        "passed_node_count": 1,
+        "skipped_node_count": 0
+      },
+      "baseline_admitted": true,
+      "commands_identical": true,
+      "declared_command": [
+        "pytest",
+        "-p",
+        "mutation_pytest_probe",
+        "-vv",
+        "--tb=short",
+        "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract"
+      ],
+      "declared_scope_node_ids": [
+        "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract"
+      ],
+      "expected_failed_node_ids": [
+        "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract"
+      ],
+      "expected_failure_count": 1,
+      "failure_signature_matches": {
+        "ListingEvidenceFailure: listing_status_unresolved": true
+      },
+      "id": "M46",
+      "killed": true,
+      "missing_expected_failures_inside_declared_scope": [],
+      "mutant": {
+        "collected_node_ids": [
+          "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract"
+        ],
+        "executed_node_ids": [
+          "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 1,
+        "failed_node_ids": [
+          "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract"
+        ],
+        "output_sha256": "c823d99b52df70a864344302ea430eb45160ece68b0044d51cb48f6048200ad2",
+        "output_tail": [
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract",
+          "",
+          "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract ",
+          "TASK8_EXECUTED_NODE tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract",
+          "",
+          "tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract FAILED [100%]",
+          "",
+          "=================================== FAILURES ===================================",
+          "______ test_transport_timestamp_crosses_the_real_massive_parser_contract _______",
+          "tests/test_listing_authority_transport.py:115: in test_transport_timestamp_crosses_the_real_massive_parser_contract",
+          "    record = parse_massive_ticker(",
+          "src/security_lifecycle_listing_evidence.py:507: in parse_massive_ticker",
+          "    normalized_retrieved_at, retrieved = _timestamp(\"retrieved_at\", retrieved_at)",
+          "src/security_lifecycle_listing_evidence.py:237: in _timestamp",
+          "    raise ListingEvidenceFailure(\"listing_status_unresolved\")",
+          "E   src.security_lifecycle_listing_evidence.ListingEvidenceFailure: listing_status_unresolved",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_listing_authority_transport.py::test_transport_timestamp_crosses_the_real_massive_parser_contract - src.security_lifecycle_listing_evidence.ListingEvidenceFailure: listing_status_unresolved",
+          "============================== 1 failed in 0.38s ==============================="
+        ],
+        "passed_node_count": 0,
+        "skipped_node_count": 0
+      },
+      "mutation": "emit a non-RFC3339 Massive retrieval timestamp",
+      "mutation_applied": true,
+      "product_files": [
+        "data_sources/listing_authority_transport.py"
+      ],
+      "required_failure_signatures": [
+        "ListingEvidenceFailure: listing_status_unresolved"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "fccc55df92d201962751687bb2243a62db8e8b297641204b2c6b3f0512eeef2a",
+          "before_sha256": "fccc55df92d201962751687bb2243a62db8e8b297641204b2c6b3f0512eeef2a",
+          "byte_identical": true,
+          "path": "data_sources/listing_authority_transport.py"
+        }
+      ],
+      "runner_error": null,
+      "unexpected_failures_inside_declared_scope": []
+    },
+    {
+      "actual_failed_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family"
+      ],
+      "actual_failure_count": 1,
+      "all_required_failure_signatures_observed": true,
+      "baseline": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 0,
+        "failed_node_ids": [],
+        "output_sha256": "ae80d2283ab7e6654a9dfedbb3a929e51a519e6ef70394a86037e986126f1a90",
+        "output_tail": [
+          "============================= test session starts ==============================",
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family ",
+          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family PASSED [100%]",
+          "",
+          "============================== 1 passed in 0.13s ==============================="
+        ],
+        "passed_node_count": 1,
+        "skipped_node_count": 0
+      },
+      "baseline_admitted": true,
+      "commands_identical": true,
+      "declared_command": [
+        "pytest",
+        "-p",
+        "mutation_pytest_probe",
+        "-vv",
+        "--tb=short",
+        "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family"
+      ],
+      "declared_scope_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family"
+      ],
+      "expected_failed_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family"
+      ],
+      "expected_failure_count": 1,
+      "failure_signature_matches": {
+        "assert": true,
+        "is None": true
+      },
+      "id": "M47",
+      "killed": true,
+      "missing_expected_failures_inside_declared_scope": [],
+      "mutant": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 1,
+        "failed_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family"
+        ],
+        "output_sha256": "0d31e21435a7f2016d1b18bf271cf3764a9868eb17254300add1a4d60a55ecfb",
+        "output_tail": [
+          "============================= test session starts ==============================",
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family ",
+          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family FAILED [100%]",
+          "",
+          "=================================== FAILURES ===================================",
+          "____ test_listing_snapshot_admission_requires_the_listing_authority_family _____",
+          "tests/test_security_lifecycle_decision_policy.py:723: in test_listing_snapshot_admission_requires_the_listing_authority_family",
+          "    assert _listing_snapshot(row) is None",
+          "E   AssertionError: assert {'locator_kind': 'listing_directory_snapshot', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True} is None",
+          "E    +  where {'locator_kind': 'listing_directory_snapshot', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True} = <function _listing_snapshot at 0x7b3634b66f80>(_Evidence(evidence_id='publisher-listing-shape', source_family='publisher', source_locator={'locator_kind': 'listing_directory_snapshot', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True}, retrieved_at='2026-08-25T01:02:03Z'))",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_listing_authority_family - AssertionError: assert {'locator_kind': 'listing_directory_snapshot', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True} is None",
+          " +  where {'locator_kind': 'listing_directory_snapshot', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True} = <function _listing_snapshot at 0x7b3634b66f80>(_Evidence(evidence_id='publisher-listing-shape', source_family='publisher', source_locator={'locator_kind': 'listing_directory_snapshot', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True}, retrieved_at='2026-08-25T01:02:03Z'))",
+          "============================== 1 failed in 0.17s ==============================="
+        ],
+        "passed_node_count": 0,
+        "skipped_node_count": 0
+      },
+      "mutation": "admit non-listing evidence into listing status policy",
+      "mutation_applied": true,
+      "product_files": [
+        "src/security_lifecycle_decision_policy.py"
+      ],
+      "required_failure_signatures": [
+        "assert",
+        "is None"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "before_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_decision_policy.py"
+        }
+      ],
+      "runner_error": null,
+      "unexpected_failures_inside_declared_scope": []
+    },
+    {
+      "actual_failed_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind"
+      ],
+      "actual_failure_count": 1,
+      "all_required_failure_signatures_observed": true,
+      "baseline": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 0,
+        "failed_node_ids": [],
+        "output_sha256": "b0283c6b1346e5d08024aa0016308a4c9f74b3e1bc6934c47d8ffe8f4e9a9fd0",
+        "output_tail": [
+          "============================= test session starts ==============================",
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind ",
+          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind PASSED [100%]",
+          "",
+          "============================== 1 passed in 0.13s ==============================="
+        ],
+        "passed_node_count": 1,
+        "skipped_node_count": 0
+      },
+      "baseline_admitted": true,
+      "commands_identical": true,
+      "declared_command": [
+        "pytest",
+        "-p",
+        "mutation_pytest_probe",
+        "-vv",
+        "--tb=short",
+        "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind"
+      ],
+      "declared_scope_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind"
+      ],
+      "expected_failed_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind"
+      ],
+      "expected_failure_count": 1,
+      "failure_signature_matches": {
+        "assert": true,
+        "is None": true
+      },
+      "id": "M48",
+      "killed": true,
+      "missing_expected_failures_inside_declared_scope": [],
+      "mutant": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 1,
+        "failed_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind"
+        ],
+        "output_sha256": "c3f67e4abca0a253ec430d341029a9d35a35c5ef38955c19ce1216f3a7be41d9",
+        "output_tail": [
+          "============================= test session starts ==============================",
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind ",
+          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind FAILED [100%]",
+          "",
+          "=================================== FAILURES ===================================",
+          "_______ test_listing_snapshot_admission_requires_the_exact_locator_kind ________",
+          "tests/test_security_lifecycle_decision_policy.py:751: in test_listing_snapshot_admission_requires_the_exact_locator_kind",
+          "    assert _listing_snapshot(rows[\"wrong-kind\"]) is None",
+          "E   AssertionError: assert {'locator_kind': 'publisher_excerpt', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True} is None",
+          "E    +  where {'locator_kind': 'publisher_excerpt', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True} = <function _listing_snapshot at 0x793ded546f80>(_Evidence(evidence_id='wrong-kind', source_family='listing_authority', source_locator={'locator_kind': 'publisher_excerpt', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True}, retrieved_at='2026-08-25T01:02:03Z'))",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_decision_policy.py::test_listing_snapshot_admission_requires_the_exact_locator_kind - AssertionError: assert {'locator_kind': 'publisher_excerpt', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True} is None",
+          " +  where {'locator_kind': 'publisher_excerpt', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True} = <function _listing_snapshot at 0x793ded546f80>(_Evidence(evidence_id='wrong-kind', source_family='listing_authority', source_locator={'locator_kind': 'publisher_excerpt', 'adapter': 'massive_reference', 'authority': 'massive', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'listing_status': 'active', 'directory': None, 'snapshot_complete': True}, retrieved_at='2026-08-25T01:02:03Z'))",
+          "============================== 1 failed in 0.16s ==============================="
+        ],
+        "passed_node_count": 0,
+        "skipped_node_count": 0
+      },
+      "mutation": "admit a non-listing locator into listing status policy",
+      "mutation_applied": true,
+      "product_files": [
+        "src/security_lifecycle_decision_policy.py"
+      ],
+      "required_failure_signatures": [
+        "assert",
+        "is None"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "before_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_decision_policy.py"
+        }
+      ],
+      "runner_error": null,
+      "unexpected_failures_inside_declared_scope": []
+    },
+    {
+      "actual_failed_node_ids": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]"
+      ],
+      "actual_failure_count": 1,
+      "all_required_failure_signatures_observed": true,
+      "baseline": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 0,
+        "failed_node_ids": [],
+        "output_sha256": "d05a1f86952dfe7ef74283dc239c92631e68fea83406f5aac3703e461d02725b",
+        "output_tail": [
+          "============================= test session starts ==============================",
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]",
+          "",
+          "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available] ",
+          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]",
+          "",
+          "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available] PASSED [100%]",
+          "",
+          "============================== 1 passed in 0.34s ==============================="
+        ],
+        "passed_node_count": 1,
+        "skipped_node_count": 0
+      },
+      "baseline_admitted": true,
+      "commands_identical": true,
+      "declared_command": [
+        "pytest",
+        "-p",
+        "mutation_pytest_probe",
+        "-vv",
+        "--tb=short",
+        "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]"
+      ],
+      "declared_scope_node_ids": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]"
+      ],
+      "expected_failed_node_ids": [
+        "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]"
+      ],
+      "expected_failure_count": 1,
+      "failure_signature_matches": {
+        "listing_status_unresolved": true
+      },
+      "id": "M49",
+      "killed": true,
+      "missing_expected_failures_inside_declared_scope": [],
+      "mutant": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 1,
+        "failed_node_ids": [
+          "tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available]"
+        ],
+        "output_sha256": "b5913c7c36473810e5bf46278af6bc8b64178bd1c4f3d9925fa7c59795a37e09",
+        "output_tail": [
+          "=================================== FAILURES ===================================",
+          "_ test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available] _",
+          "tests/test_security_lifecycle_automation_scheduler.py:1135: in test_listing_component_requiredness_filters_before_state_and_blockers",
+          "    assert tuple(row.code for row in bundle.blockers) == expected_codes",
+          "E   AssertionError: assert ('listing_status_unresolved',) == ()",
+          "E     ",
+          "E     Left contains one more item: 'listing_status_unresolved'",
+          "E     ",
+          "E     Full diff:",
+          "E     - ()",
+          "E     + (",
+          "E     +     'listing_status_unresolved',",
+          "E     + )",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_listing_component_requiredness_filters_before_state_and_blockers[massive_otc-listing_codes1-expected_codes1-available] - AssertionError: assert ('listing_status_unresolved',) == ()",
+          "  ",
+          "  Left contains one more item: 'listing_status_unresolved'",
+          "  ",
+          "  Full diff:",
+          "  - ()",
+          "  + (",
+          "  +     'listing_status_unresolved',",
+          "  + )",
+          "============================== 1 failed in 0.38s ==============================="
+        ],
+        "passed_node_count": 0,
+        "skipped_node_count": 0
+      },
+      "mutation": "let an optional Nasdaq parse failure block a Massive-only case",
+      "mutation_applied": true,
+      "product_files": [
+        "src/service/security_lifecycle_automation_scheduler.py"
+      ],
+      "required_failure_signatures": [
+        "listing_status_unresolved"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
+          "before_sha256": "efdf3192f2dbc5c8ad4af39cd66817dd848906ee1691a2fcc249e9b61edd6f80",
+          "byte_identical": true,
+          "path": "src/service/security_lifecycle_automation_scheduler.py"
+        }
+      ],
+      "runner_error": null,
+      "unexpected_failures_inside_declared_scope": []
+    },
+    {
+      "actual_failed_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted"
+      ],
+      "actual_failure_count": 1,
+      "all_required_failure_signatures_observed": true,
+      "baseline": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 0,
+        "failed_node_ids": [],
+        "output_sha256": "f5e2d924626910ac07fa4af89b2061df924693c99b5abb08ca60f269c247ad21",
+        "output_tail": [
+          "============================= test session starts ==============================",
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted ",
+          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted PASSED [100%]",
+          "",
+          "============================== 1 passed in 0.13s ==============================="
+        ],
+        "passed_node_count": 1,
+        "skipped_node_count": 0
+      },
+      "baseline_admitted": true,
+      "commands_identical": true,
+      "declared_command": [
+        "pytest",
+        "-p",
+        "mutation_pytest_probe",
+        "-vv",
+        "--tb=short",
+        "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted"
+      ],
+      "declared_scope_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted"
+      ],
+      "expected_failed_node_ids": [
+        "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted"
+      ],
+      "expected_failure_count": 1,
+      "failure_signature_matches": {
+        "assert True is False": true
+      },
+      "id": "M50",
+      "killed": true,
+      "missing_expected_failures_inside_declared_scope": [],
+      "mutant": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 1,
+        "failed_node_ids": [
+          "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted"
+        ],
+        "output_sha256": "f14f4a377ea53f7a5d944f7f2fa19eb5efbfccf10a4ef18bdb2a162ec2aef8b5",
+        "output_tail": [
+          "============================= test session starts ==============================",
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted ",
+          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted",
+          "",
+          "tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted FAILED [100%]",
+          "",
+          "=================================== FAILURES ===================================",
+          "_________ test_unvalidated_legacy_listing_status_shape_is_not_admitted _________",
+          "tests/test_security_lifecycle_decision_policy.py:877: in test_unvalidated_legacy_listing_status_shape_is_not_admitted",
+          "    assert _listing_row_active(_evidence_rows((legacy,))[0]) is False",
+          "E   AssertionError: assert True is False",
+          "E    +  where True = <function _listing_row_active at 0x720993e47250>(_Evidence(evidence_id='legacy-active', source_family='listing_authority', source_locator={'locator_kind': 'listing_directory_snapshot', 'adapter': 'nasdaq_symbol_directory', 'authority': 'nasdaq_trader', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'directory': 'nasdaq_listed', 'snapshot_complete': True, 'status': 'found', 'active': True}, retrieved_at='2026-08-25T01:02:03Z'))",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_decision_policy.py::test_unvalidated_legacy_listing_status_shape_is_not_admitted - AssertionError: assert True is False",
+          " +  where True = <function _listing_row_active at 0x720993e47250>(_Evidence(evidence_id='legacy-active', source_family='listing_authority', source_locator={'locator_kind': 'listing_directory_snapshot', 'adapter': 'nasdaq_symbol_directory', 'authority': 'nasdaq_trader', 'candidate_ticker': 'NEW', 'expected_active_state': True, 'market': 'stocks', 'directory': 'nasdaq_listed', 'snapshot_complete': True, 'status': 'found', 'active': True}, retrieved_at='2026-08-25T01:02:03Z'))",
+          "============================== 1 failed in 0.16s ==============================="
+        ],
+        "passed_node_count": 0,
+        "skipped_node_count": 0
+      },
+      "mutation": "admit an unvalidated legacy listing status shape",
+      "mutation_applied": true,
+      "product_files": [
+        "src/security_lifecycle_decision_policy.py"
+      ],
+      "required_failure_signatures": [
+        "assert True is False"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "before_sha256": "caa30c3139331e9b4c9b9462be76d76e90e9ebac3d08ca8de83159822d84e254",
+          "byte_identical": true,
+          "path": "src/security_lifecycle_decision_policy.py"
+        }
+      ],
+      "runner_error": null,
+      "unexpected_failures_inside_declared_scope": []
+    },
+    {
+      "actual_failed_node_ids": [
+        "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto"
+      ],
+      "actual_failure_count": 1,
+      "all_required_failure_signatures_observed": true,
+      "baseline": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 0,
+        "failed_node_ids": [],
+        "output_sha256": "bc4ed101702866abd45724b8bbcc498451f5e41504ee05c997e26809576d2cda",
+        "output_tail": [
+          "============================= test session starts ==============================",
+          "platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0 -- <PYTHON_ENV>/bin/python",
+          "cachedir: .pytest_cache",
+          "rootdir: <REPO_ROOT>",
+          "plugins: anyio-4.14.2",
+          "collecting ... collected 1 item",
+          "TASK8_COLLECTED_NODE tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto",
+          "",
+          "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto ",
+          "TASK8_EXECUTED_NODE tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto",
+          "",
+          "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto PASSED [100%]",
+          "",
+          "============================== 1 passed in 1.94s ==============================="
+        ],
+        "passed_node_count": 1,
+        "skipped_node_count": 0
+      },
+      "baseline_admitted": true,
+      "commands_identical": true,
+      "declared_command": [
+        "pytest",
+        "-p",
+        "mutation_pytest_probe",
+        "-vv",
+        "--tb=short",
+        "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto"
+      ],
+      "declared_scope_node_ids": [
+        "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto"
+      ],
+      "expected_failed_node_ids": [
+        "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto"
+      ],
+      "expected_failure_count": 1,
+      "failure_signature_matches": {
+        "provider_last_updated_utc": true
+      },
+      "id": "M51",
+      "killed": true,
+      "missing_expected_failures_inside_declared_scope": [],
+      "mutant": {
+        "collected_node_ids": [
+          "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto"
+        ],
+        "collection_markers_unique": true,
+        "command": [
+          "pytest",
+          "-p",
+          "mutation_pytest_probe",
+          "-vv",
+          "--tb=short",
+          "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto"
+        ],
+        "executed_node_ids": [
+          "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto"
+        ],
+        "execution_markers_unique": true,
+        "exit_code": 1,
+        "failed_node_ids": [
+          "tests/test_security_lifecycle_routes.py::test_active_case_routes_share_closed_projection_and_compact_listing_dto"
+        ],
+        "output_sha256": "c2a43781e13ab6fc42ee9dff4fec5a1728de5abf6683b5391ac149a08ee1f06b",
+        "output_tail": [
+          "   'source_family': 'listing_authority',",
+          "   'source_url': 'https://api.massive.com/v3/reference/tickers'}",
+          "  Differing items:",
+          "  {'listing': {'authority': 'massive', 'candidate_ticker': 'B', 'directory': None, 'listing_status': 'active', ...}} != {'listing': {'authority': 'massive', 'candidate_ticker': 'B', 'directory': None, 'listing_status': 'active', ...}}",
+          "  ",
+          "  Full diff:",
+          "    {",
+          "        'created_at': '2026-08-20T00:00:00Z',",
+          "        'evidence_id': 'evidence-listing',",
+          "        'kind': 'listing_directory_snapshot',",
+          "        'listing': {",
+          "            'authority': 'massive',",
+          "            'candidate_ticker': 'B',",
+          "            'directory': None,",
+          "            'listing_status': 'active',",
+          "            'market': 'stocks',",
+          "            'primary_exchange': 'XNAS',",
+          "  -         'provider_last_updated_utc': None,",
+          "            'source_as_of': '2026-08-28',",
+          "        },",
+          "        'source_family': 'listing_authority',",
+          "        'source_url': 'https://api.massive.com/v3/reference/tickers',",
+          "    }",
+          "============================== 1 failed in 2.05s ==============================="
+        ],
+        "passed_node_count": 0,
+        "skipped_node_count": 0
+      },
+      "mutation": "omit the provider's own update timestamp from the compact listing DTO",
+      "mutation_applied": true,
+      "product_files": [
+        "src/tools/security_lifecycle_tools.py"
+      ],
+      "required_failure_signatures": [
+        "provider_last_updated_utc"
+      ],
+      "restored_files": [
+        {
+          "after_sha256": "15a18438c50580c3095a335c4483d067dcc1069a61245865186b8832f3948e22",
+          "before_sha256": "15a18438c50580c3095a335c4483d067dcc1069a61245865186b8832f3948e22",
+          "byte_identical": true,
+          "path": "src/tools/security_lifecycle_tools.py"
         }
       ],
       "runner_error": null,

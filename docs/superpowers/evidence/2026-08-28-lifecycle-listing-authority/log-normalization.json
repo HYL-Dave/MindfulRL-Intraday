@@ -49,28 +49,56 @@
       "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
-    "frontend-build.txt": {
+    "frontend-build-a.txt": {
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
       "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
-    "frontend-i18n-literals.txt": {
+    "frontend-build-b.txt": {
       "content_changed": false,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
       "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 0
     },
-    "frontend-test.txt": {
+    "frontend-i18n-literals-a.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "frontend-i18n-literals-b.txt": {
+      "content_changed": false,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
+      "trailing_blank_lines_removed": 0
+    },
+    "frontend-test-a.txt": {
       "content_changed": true,
       "python_env_replacements": 0,
       "repo_root_replacements": 1,
       "token_shape_replacements": 0,
       "trailing_blank_lines_removed": 1
     },
-    "frontend-typecheck.txt": {
+    "frontend-test-b.txt": {
+      "content_changed": true,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 1,
+      "token_shape_replacements": 0,
+      "trailing_blank_lines_removed": 1
+    },
+    "frontend-typecheck-a.txt": {
+      "content_changed": true,
+      "python_env_replacements": 0,
+      "repo_root_replacements": 0,
+      "token_shape_replacements": 0,
+      "trailing_blank_lines_removed": 1
+    },
+    "frontend-typecheck-b.txt": {
       "content_changed": true,
       "python_env_replacements": 0,
       "repo_root_replacements": 0,
@@ -137,8 +165,8 @@
   "semantic_counts_and_results_preserved": true,
   "totals": {
     "python_env_replacements": 6,
-    "repo_root_replacements": 1,
+    "repo_root_replacements": 2,
     "token_shape_replacements": 4,
-    "trailing_blank_lines_removed": 2
+    "trailing_blank_lines_removed": 4
   }
 }

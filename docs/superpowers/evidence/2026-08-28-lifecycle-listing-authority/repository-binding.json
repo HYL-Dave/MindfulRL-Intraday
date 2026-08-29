@@ -12,9 +12,9 @@
       "sha256": "999cb0af6cfc6ab2d24c0441a050bf17a25e71c01de772e82f78d1f2cbde43bc"
     },
     {
-      "git_blob": "9b4b8f6d47801c6b05078b45611b9c61d4e8d233",
+      "git_blob": "72f58cc00612ddafbcda27f1a03170787dbd0b2c",
       "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py",
-      "sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9"
+      "sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d"
     }
   ],
   "dependency_paths": [
@@ -23,16 +23,33 @@
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py"
   ],
   "observed_packet_change_paths": [
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/SHA256SUMS",
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/backend-focused-a.txt",
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/backend-focused-b.txt",
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/backend-full-a.txt",
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/backend-full-b.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/1440x900-en-conflict-attention.png",
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/1440x900-en-settings-massive-key.png",
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/1440x900-zh-Hant-conflict-attention.png",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/1440x900-zh-Hant-not-found-monitoring.png",
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/1440x900-zh-Hant-settings-massive-key.png",
-    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/390x844-en-settings-massive-key.png",
-    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-build.txt",
-    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-test.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/390x844-en-active.png",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/390x844-en-conflict-attention.png",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/390x844-en-not-found-monitoring.png",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/390x844-zh-Hant-conflict-attention.png",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/390x844-zh-Hant-not-found-monitoring.png",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/390x844-zh-Hant-settings-massive-key.png",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/browser/matrix.json",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/focused-nodes-a.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/focused-nodes-b.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-build-a.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-build-b.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-i18n-literals-a.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-i18n-literals-b.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-test-a.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-test-b.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-typecheck-a.txt",
+    "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/frontend-typecheck-b.txt",
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/full-nodes-a.txt",
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/full-nodes-b.txt",
     "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/log-normalization.json",
@@ -49,6 +66,6 @@
   "schema_version": 1,
   "start_worktree_clean": true,
   "tested_branch": "lifecycle-listing-authority",
-  "tested_git_head": "ce9c9dd51e8617e3df9597fb5d4e57842c64a706",
-  "tested_git_tree": "e5a0e0bb5cef56e51fbac50452230951c1c4acc2"
+  "tested_git_head": "63ceb8cb5ab08b262926a3dd36ed21096ea81f49",
+  "tested_git_tree": "2d3708a96949021638741bb0f98b4d154d770a68"
 }

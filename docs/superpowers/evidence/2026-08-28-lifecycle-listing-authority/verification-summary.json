@@ -88,17 +88,17 @@
   "gates": {
     "focused_a": {
       "failures": 0,
-      "passed": 358,
+      "passed": 362,
       "skipped": 0
     },
     "focused_b": {
       "failures": 0,
-      "passed": 358,
+      "passed": 362,
       "skipped": 0
     },
-    "focused_collected_nodes": 358,
+    "focused_collected_nodes": 362,
     "focused_node_sets_identical": true,
-    "frontend": {
+    "frontend_a": {
       "build": "passed",
       "check_i18n_literals": "passed",
       "test": {
@@ -108,17 +108,28 @@
       },
       "typecheck": "passed"
     },
+    "frontend_b": {
+      "build": "passed",
+      "check_i18n_literals": "passed",
+      "test": {
+        "files_passed": 106,
+        "status": "passed",
+        "tests_passed": 1306
+      },
+      "typecheck": "passed"
+    },
+    "frontend_test_counts_identical": true,
     "full_a": {
       "failures": 0,
-      "passed": 4894,
+      "passed": 4898,
       "skipped": 13
     },
     "full_b": {
       "failures": 0,
-      "passed": 4894,
+      "passed": 4898,
       "skipped": 13
     },
-    "full_collected_nodes": 4907,
+    "full_collected_nodes": 4911,
     "full_node_sets_identical": true,
     "packet_contracts": {
       "failures": 0,
@@ -184,28 +195,56 @@
         "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
-      "frontend-build.txt": {
+      "frontend-build-a.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
         "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
-      "frontend-i18n-literals.txt": {
+      "frontend-build-b.txt": {
         "content_changed": false,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
         "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 0
       },
-      "frontend-test.txt": {
+      "frontend-i18n-literals-a.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "frontend-i18n-literals-b.txt": {
+        "content_changed": false,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
+        "trailing_blank_lines_removed": 0
+      },
+      "frontend-test-a.txt": {
         "content_changed": true,
         "python_env_replacements": 0,
         "repo_root_replacements": 1,
         "token_shape_replacements": 0,
         "trailing_blank_lines_removed": 1
       },
-      "frontend-typecheck.txt": {
+      "frontend-test-b.txt": {
+        "content_changed": true,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 1,
+        "token_shape_replacements": 0,
+        "trailing_blank_lines_removed": 1
+      },
+      "frontend-typecheck-a.txt": {
+        "content_changed": true,
+        "python_env_replacements": 0,
+        "repo_root_replacements": 0,
+        "token_shape_replacements": 0,
+        "trailing_blank_lines_removed": 1
+      },
+      "frontend-typecheck-b.txt": {
         "content_changed": true,
         "python_env_replacements": 0,
         "repo_root_replacements": 0,
@@ -272,15 +311,15 @@
     "semantic_counts_and_results_preserved": true,
     "totals": {
       "python_env_replacements": 6,
-      "repo_root_replacements": 1,
+      "repo_root_replacements": 2,
       "token_shape_replacements": 4,
-      "trailing_blank_lines_removed": 2
+      "trailing_blank_lines_removed": 4
     }
   },
   "mutations": {
-    "baselines_admitted": 45,
-    "defined": 45,
-    "killed": 45,
+    "baselines_admitted": 51,
+    "defined": 51,
+    "killed": 51,
     "restored": true,
     "scope_anomalies": 0,
     "unexpected_failures_inside_declared_scopes": 0
@@ -319,9 +358,9 @@
         "sha256": "999cb0af6cfc6ab2d24c0441a050bf17a25e71c01de772e82f78d1f2cbde43bc"
       },
       {
-        "git_blob": "9b4b8f6d47801c6b05078b45611b9c61d4e8d233",
+        "git_blob": "72f58cc00612ddafbcda27f1a03170787dbd0b2c",
         "path": "docs/superpowers/evidence/2026-08-28-lifecycle-listing-authority/run_browser_matrix.py",
-        "sha256": "aa5c203ce34c1d8229c327c4ad0c9eaffff77a710222c1db71411da28fd086f9"
+        "sha256": "2e9e71f9941d675120035a3fc53d37f217d339baa689fdf5b7f39d670077249d"
       }
     ],
     "dependency_paths": [
@@ -334,8 +373,8 @@
     "schema_version": 1,
     "start_worktree_clean": true,
     "tested_branch": "lifecycle-listing-authority",
-    "tested_git_head": "ce9c9dd51e8617e3df9597fb5d4e57842c64a706",
-    "tested_git_tree": "e5a0e0bb5cef56e51fbac50452230951c1c4acc2"
+    "tested_git_head": "63ceb8cb5ab08b262926a3dd36ed21096ea81f49",
+    "tested_git_tree": "2d3708a96949021638741bb0f98b4d154d770a68"
   },
   "schema_version": 3,
   "scratch_migration": {
