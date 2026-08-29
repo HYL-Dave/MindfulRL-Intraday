@@ -123,6 +123,23 @@ def test_every_mutation_has_baseline_probe_and_stable_signatures() -> None:
         )
 
 
+def test_m27_ledger_proves_semantic_blocker_misclassification() -> None:
+    ledger = json.loads((PACKET / "mutation-ledger.json").read_text(encoding="utf-8"))
+    m27 = next(row for row in ledger["mutations"] if row["id"] == "M27")
+    signature = (
+        "At index 0 diff: 'listing_status_unresolved' != "
+        "'massive_reference_unavailable'"
+    )
+    output_tail = "\n".join(m27["mutant"]["output_tail"])
+
+    assert m27["required_failure_signatures"] == [signature]
+    assert m27["failure_signature_matches"] == {signature: True}
+    assert m27["all_required_failure_signatures_observed"] is True
+    assert m27["actual_failed_node_ids"] == m27["expected_failed_node_ids"]
+    assert "NameError" not in output_tail
+    assert "UnboundLocalError" not in output_tail
+
+
 def test_frontend_presentation_maps_every_v3_listing_blocker() -> None:
     presentation = (
         ROOT / "apps/arkscope-web/src/lifecycle/lifecyclePresentation.ts"
@@ -177,14 +194,68 @@ def test_browser_terminal_projection_is_preflight_valid() -> None:
     transition = detail["ticker_transition"]
     preview = transition["approved_preview"]
     activity = transition["activity_history"][0]
+    listing = next(
+        row for row in detail["evidence"] if row["source_family"] == "listing_authority"
+    )
 
     assert transition["kind"] == "terminal_delisting"
+    assert listing["listing"]["candidate_ticker"] == "TERM"
+    assert preview["source_ticker"] == "TERM"
+    assert preview["successor_ticker"] is None
     assert preview["eligible"] is True
     assert preview["block_reasons"] == []
+    assert preview["effects"]["watchlists"] == {
+        "add": [],
+        "archive": [
+            {
+                "list_id": 1,
+                "list_name": "Core",
+                "position": 3,
+                "ticker": "TERM",
+            }
+        ],
+        "reactivate": [],
+        "unchanged": [],
+    }
+    assert preview["effects"]["suppression"] == {
+        "hide_source": True,
+        "source_hidden": False,
+        "successor_hidden": False,
+        "unhide_successor": False,
+    }
     assert "portfolio_open" not in preview["active_sources"]
     assert "portfolio_open" not in preview["provider_owned_sources"]
     assert "portfolio_position_retained" not in preview["caveats"]
+    assert activity["source_ticker"] == "TERM"
+    assert activity["successor_ticker"] is None
+    assert activity["user_owned_changes"] == [
+        {"change_type": "source_hidden", "count": 1},
+        {"change_type": "watchlist_membership_archived", "count": 1},
+    ]
     assert "portfolio_open" not in activity["provider_owned_retained"]
+
+
+def test_browser_massive_settings_fixture_uses_one_primary_field_with_legacy_alias() -> None:
+    browser = _load("run_browser_matrix")
+    providers = browser._provider_config()["providers"]
+
+    assert set(providers) == {"polygon"}
+    assert len(providers["polygon"]["fields"]) == 1
+    assert providers["polygon"]["fields"][0] == {
+        "field": "api_key",
+        "label": "API key",
+        "secret": True,
+        "env_var": "MASSIVE_API_KEY",
+        "app_value_set": True,
+        "app_value_masked": "••••fixture",
+        "effective_source": "app",
+        "needs_import": False,
+        "import_source": None,
+        "importable_env_vars": ["MASSIVE_API_KEY", "POLYGON_API_KEY"],
+        "defaulted": False,
+        "guarded": False,
+        "guard_reason": None,
+    }
 
 
 def test_browser_applied_projections_have_visible_command_and_evidence_witnesses() -> None:

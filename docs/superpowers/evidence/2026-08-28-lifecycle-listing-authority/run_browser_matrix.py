@@ -107,7 +107,7 @@ SCENARIOS = {
                 "listing_status": "inactive",
                 "market": "stocks",
                 "primary_exchange": "XNAS",
-                "candidate_ticker": "OLD",
+                "candidate_ticker": "TERM",
                 "issuer_cik": "0001409970",
             }
         ],
@@ -343,6 +343,58 @@ def _preview_digest(preview: dict) -> str:
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
+def _terminal_activity_changes(preview: dict) -> list[dict]:
+    effects = preview["effects"]
+    counts = {
+        "source_hidden": int(bool(effects["suppression"]["hide_source"])),
+        "watchlist_membership_archived": len(effects["watchlists"]["archive"]),
+    }
+    return [
+        {"change_type": change_type, "count": count}
+        for change_type, count in sorted(counts.items())
+        if count
+    ]
+
+
+def _assert_terminal_product_invariants(scenario: dict, transition: dict) -> None:
+    source_ticker = scenario["transition"]["source_ticker"]
+    preview = transition["approved_preview"]
+    activity = transition["activity_history"][0]
+    expected_changes = [
+        {"change_type": "source_hidden", "count": 1},
+        {"change_type": "watchlist_membership_archived", "count": 1},
+    ]
+    assert [row["candidate_ticker"] for row in scenario["listings"]] == [
+        source_ticker
+    ]
+    assert transition["source_ticker"] == source_ticker
+    assert transition["successor_ticker"] is None
+    assert preview["source_ticker"] == source_ticker
+    assert preview["successor_ticker"] is None
+    assert preview["effects"]["watchlists"] == {
+        "add": [],
+        "archive": [
+            {
+                "list_id": 1,
+                "list_name": "Core",
+                "position": 3,
+                "ticker": source_ticker,
+            }
+        ],
+        "reactivate": [],
+        "unchanged": [],
+    }
+    assert preview["effects"]["suppression"] == {
+        "hide_source": True,
+        "source_hidden": False,
+        "successor_hidden": False,
+        "unhide_successor": False,
+    }
+    assert activity["source_ticker"] == source_ticker
+    assert activity["successor_ticker"] is None
+    assert activity["user_owned_changes"] == expected_changes
+
+
 def _applied_transition(name: str) -> dict:
     scenario = SCENARIOS[name]
     projection = scenario["transition"]
@@ -367,6 +419,19 @@ def _applied_transition(name: str) -> dict:
                 "caveats": [],
             }
         )
+        preview["effects"]["watchlists"] = {
+            "add": [],
+            "archive": [
+                {
+                    "list_id": 1,
+                    "list_name": "Core",
+                    "position": 3,
+                    "ticker": projection["source_ticker"],
+                }
+            ],
+            "reactivate": [],
+            "unchanged": [],
+        }
         preview["effects"]["suppression"]["hide_source"] = True
     preview["preview_sha256"] = _preview_digest(preview)
     activity = deepcopy(transition["activity_history"][0])
@@ -388,6 +453,7 @@ def _applied_transition(name: str) -> dict:
     )
     if projection["kind"] == "terminal_delisting":
         activity["provider_owned_retained"] = []
+        activity["user_owned_changes"] = _terminal_activity_changes(preview)
     transition.update(
         {
             "transition_id": transition_id,
@@ -413,6 +479,8 @@ def _applied_transition(name: str) -> dict:
             "unacknowledged_activity_count": 1,
         }
     )
+    if projection["kind"] == "terminal_delisting":
+        _assert_terminal_product_invariants(scenario, transition)
     return transition
 
 
@@ -486,13 +554,13 @@ def _provider_config() -> dict:
                         "field": "api_key",
                         "label": "API key",
                         "secret": True,
-                        "env_var": "POLYGON_API_KEY",
+                        "env_var": "MASSIVE_API_KEY",
                         "app_value_set": True,
                         "app_value_masked": "••••fixture",
                         "effective_source": "app",
                         "needs_import": False,
                         "import_source": None,
-                        "importable_env_vars": ["POLYGON_API_KEY"],
+                        "importable_env_vars": ["MASSIVE_API_KEY", "POLYGON_API_KEY"],
                         "defaulted": False,
                         "guarded": False,
                         "guard_reason": None,
@@ -674,7 +742,7 @@ def _navigate(page, scenario_name: str, locale: str) -> tuple[str, str, dict[str
         if not target.is_visible():
             page.get_by_role("button", name=labels["open_nav"], exact=True).click()
         target.click()
-        massive = page.get_by_text("Massive (Polygon)", exact=True)
+        massive = page.get_by_text("Massive", exact=True)
         try:
             massive.wait_for(state="visible")
         except Exception:

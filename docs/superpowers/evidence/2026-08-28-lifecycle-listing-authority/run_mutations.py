@@ -644,10 +644,10 @@ MUTATIONS = (
     ),
     Mutation(
         "M27",
-        "drop Massive component provenance from session parser failures",
+        "misclassify Massive parser failures as listing status unresolved",
         LISTING,
         '            result = (None, "massive_reference_unavailable")\n',
-        "            result = (None, exc.code)\n",
+        '            result = (None, "listing_status_unresolved")\n',
         (
             "tests/test_security_lifecycle_listing_evidence.py::"
             "test_listing_session_maps_massive_parser_failures_to_component_blocker["
@@ -842,7 +842,10 @@ FAILURE_SIGNATURES = {
     "M24": ("case_processing_blocked",),
     "M25": ("case_processing_blocked",),
     "M26": ("case_processing_failed",),
-    "M27": ("listing_status_unresolved",),
+    "M27": (
+        "At index 0 diff: 'listing_status_unresolved' != "
+        "'massive_reference_unavailable'",
+    ),
     "M28": ("automation_scheduler_failed",),
     "M29": ("listing_directory_unavailable",),
     "M30": ("AttributeError", "object", "lookup"),
