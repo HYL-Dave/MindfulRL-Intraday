@@ -83,3 +83,12 @@ does not use that observation as sealed admission evidence.
 - `secret-scan.json`: final packet scan for live environment values, token shapes,
   and serialized environment mappings; matched secret values are never emitted.
 - `SHA256SUMS`: exact allowlisted packet manifest; the manifest itself is excluded from its entries.
+
+The secret scanner discovers all currently present process environment values
+whose variable names match `API_KEY`, `TOKEN`, `PASSWORD`, `SECRET`, or
+`CREDENTIAL`; the names recorded in `secret-scan.json` are the values visible to
+that run, not a fixed three-name allowlist. This offline packet does not read the
+production profile database. A Massive key that exists only as
+`polygon.api_key` in that database and has not been injected into the process
+bridge is therefore outside this scan's observation boundary and requires a
+separately authorized pre-cutover check.
