@@ -371,6 +371,9 @@ def _assert_terminal_product_invariants(scenario: dict, transition: dict) -> Non
     assert transition["successor_ticker"] is None
     assert preview["source_ticker"] == source_ticker
     assert preview["successor_ticker"] is None
+    assert "portfolio_open" not in preview["active_sources"]
+    assert "portfolio_open" not in preview["provider_owned_sources"]
+    assert "portfolio_position_retained" not in preview["caveats"]
     assert preview["effects"]["watchlists"] == {
         "add": [],
         "archive": [

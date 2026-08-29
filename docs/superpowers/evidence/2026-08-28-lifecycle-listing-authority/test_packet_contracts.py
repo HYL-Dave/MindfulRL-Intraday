@@ -112,7 +112,7 @@ def test_preexisting_product_test_fixture_authorities_are_preserved() -> None:
 def test_every_mutation_has_baseline_probe_and_stable_signatures() -> None:
     mutations = _load("run_mutations")
 
-    assert len(mutations.MUTATIONS) == 33
+    assert len(mutations.MUTATIONS) == 34
     for mutation in mutations.MUTATIONS:
         assert mutation.failure_signatures
         assert mutation.command[:4] == (

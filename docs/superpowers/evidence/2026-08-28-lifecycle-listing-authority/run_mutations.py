@@ -425,8 +425,26 @@ MUTATIONS = (
         "M17",
         "add a second Massive secret field",
         PROVIDERS,
-        '    "polygon": [FieldDef("api_key", "POLYGON_API_KEY", True, "API key")],\n',
-        '    "polygon": [FieldDef("api_key", "POLYGON_API_KEY", True, "API key")],\n'
+        '    "polygon": [\n'
+        "        FieldDef(\n"
+        '            "api_key",\n'
+        '            "MASSIVE_API_KEY",\n'
+        "            True,\n"
+        '            "API key",\n'
+        '            import_aliases=("POLYGON_API_KEY",),\n'
+        '            runtime_aliases=("POLYGON_API_KEY",),\n'
+        "        )\n"
+        "    ],\n",
+        '    "polygon": [\n'
+        "        FieldDef(\n"
+        '            "api_key",\n'
+        '            "MASSIVE_API_KEY",\n'
+        "            True,\n"
+        '            "API key",\n'
+        '            import_aliases=("POLYGON_API_KEY",),\n'
+        '            runtime_aliases=("POLYGON_API_KEY",),\n'
+        "        )\n"
+        "    ],\n"
         '    "massive": [FieldDef("api_key", "MASSIVE_API_KEY", True, "API key")],\n',
         (
             "tests/test_data_provider_config.py::"
@@ -561,13 +579,23 @@ MUTATIONS = (
                 "wrong_expected_intent",
                 "wrong_market",
                 "incomplete_snapshot",
+                "massive_directory_not_none",
             )
         ),
-        (
-            "pytest",
-            "-q",
-            "tests/test_security_lifecycle_listing_evidence.py::"
-            "test_real_terminal_pipeline_requires_exact_inactive_massive_locator",
+        tuple(
+            ("pytest", "-q")
+            + tuple(
+                "tests/test_security_lifecycle_listing_evidence.py::"
+                "test_real_terminal_pipeline_requires_exact_inactive_massive_locator["
+                + value
+                + "]"
+                for value in (
+                    "wrong_expected_intent",
+                    "wrong_market",
+                    "incomplete_snapshot",
+                    "massive_directory_not_none",
+                )
+            )
         ),
     ),
     Mutation(
@@ -812,6 +840,28 @@ MUTATIONS = (
             "test_browser_post_apply_surface_validator_fails_closed",
         ),
     ),
+    Mutation(
+        "M34",
+        "accept a nested listing locator wrapper",
+        POLICY,
+        '    if "listing_directory_snapshot" in snapshot:\n'
+        "        return None\n",
+        '    nested = snapshot.get("listing_directory_snapshot")\n'
+        "    if isinstance(nested, Mapping):\n"
+        "        snapshot = nested\n",
+        (
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_real_terminal_pipeline_requires_exact_inactive_massive_locator["
+            "nested_locator]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_listing_evidence.py::"
+            "test_real_terminal_pipeline_requires_exact_inactive_massive_locator["
+            "nested_locator]",
+        ),
+    ),
 )
 
 
@@ -852,6 +902,7 @@ FAILURE_SIGNATURES = {
     "M31": ("portfolio_open",),
     "M32": ("DID NOT RAISE",),
     "M33": ("DID NOT RAISE",),
+    "M34": ("transition_eligible", "waiting_market_confirmation"),
 }
 assert set(FAILURE_SIGNATURES) == {mutation.mutation_id for mutation in MUTATIONS}
 
