@@ -605,7 +605,7 @@ def _provider_config() -> dict:
                         "effective_source": "app",
                         "needs_import": False,
                         "import_source": None,
-                        "importable_env_vars": ["MASSIVE_API_KEY", "POLYGON_API_KEY"],
+                        "importable_env_vars": [],
                         "defaulted": False,
                         "guarded": False,
                         "guard_reason": None,

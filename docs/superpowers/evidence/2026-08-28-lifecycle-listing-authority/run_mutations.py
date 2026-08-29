@@ -440,8 +440,8 @@ MUTATIONS = (
         '            "MASSIVE_API_KEY",\n'
         "            True,\n"
         '            "API key",\n'
-        '            import_aliases=("POLYGON_API_KEY",),\n'
-        '            runtime_aliases=("POLYGON_API_KEY",),\n'
+        "            env_file_importable=False,\n"
+        "            env_file_runtime_fallback=False,\n"
         "        )\n"
         "    ],\n",
         '    "polygon": [\n'
@@ -450,8 +450,8 @@ MUTATIONS = (
         '            "MASSIVE_API_KEY",\n'
         "            True,\n"
         '            "API key",\n'
-        '            import_aliases=("POLYGON_API_KEY",),\n'
-        '            runtime_aliases=("POLYGON_API_KEY",),\n'
+        "            env_file_importable=False,\n"
+        "            env_file_runtime_fallback=False,\n"
         "        )\n"
         "    ],\n"
         '    "massive": [FieldDef("api_key", "MASSIVE_API_KEY", True, "API key")],\n',
@@ -919,26 +919,26 @@ MUTATIONS = (
     ),
     Mutation(
         "M37",
-        "skip final runtime-alias authority reconciliation",
+        "revive the retired Polygon process alias for Massive",
         PROVIDERS,
-        "    for defs in PROVIDER_FIELDS.values():\n"
-        "        for fdef in defs:\n"
-        "            honor_real_runtime_authority(fdef)\n"
-        "    return frozenset(_APP_APPLIED)\n",
-        "    if False:\n"
-        "        for defs in PROVIDER_FIELDS.values():\n"
-        "            for fdef in defs:\n"
-        "                honor_real_runtime_authority(fdef)\n"
-        "    return frozenset(_APP_APPLIED)\n",
+        '            "API key",\n'
+        "            env_file_importable=False,\n",
+        '            "API key",\n'
+        '            runtime_aliases=("POLYGON_API_KEY",),\n'
+        "            env_file_importable=False,\n",
         (
             "tests/test_data_provider_config.py::"
-            "test_real_legacy_polygon_env_wins_over_primary_file_fallback",
+            "test_massive_reuses_the_polygon_credential_authority",
+            "tests/test_data_provider_config.py::"
+            "test_massive_env_resolution_never_revives_legacy_polygon_alias",
         ),
         (
             "pytest",
             "-q",
             "tests/test_data_provider_config.py::"
-            "test_real_legacy_polygon_env_wins_over_primary_file_fallback",
+            "test_massive_reuses_the_polygon_credential_authority",
+            "tests/test_data_provider_config.py::"
+            "test_massive_env_resolution_never_revives_legacy_polygon_alias",
         ),
     ),
     Mutation(
@@ -1096,6 +1096,127 @@ MUTATIONS = (
             "test_log_normalization_redacts_token_shapes_without_collapsing_node_order",
         ),
     ),
+    Mutation(
+        "M46",
+        "emit a non-RFC3339 Massive retrieval timestamp",
+        TRANSPORT,
+        "        return now.astimezone(timezone.utc).replace(microsecond=0).isoformat().replace(\n",
+        "        return now.astimezone(timezone.utc).replace(microsecond=0).isoformat(sep=\" \").replace(\n",
+        (
+            "tests/test_listing_authority_transport.py::"
+            "test_transport_timestamp_crosses_the_real_massive_parser_contract",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_listing_authority_transport.py::"
+            "test_transport_timestamp_crosses_the_real_massive_parser_contract",
+        ),
+    ),
+    Mutation(
+        "M47",
+        "admit non-listing evidence into listing status policy",
+        POLICY,
+        '    if row.source_family != "listing_authority":\n',
+        '    if False and row.source_family != "listing_authority":\n',
+        (
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_listing_snapshot_admission_requires_the_listing_authority_family",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_listing_snapshot_admission_requires_the_listing_authority_family",
+        ),
+    ),
+    Mutation(
+        "M48",
+        "admit a non-listing locator into listing status policy",
+        POLICY,
+        '    if _text(snapshot.get("locator_kind")) != "listing_directory_snapshot":\n',
+        '    if False and _text(snapshot.get("locator_kind")) != "listing_directory_snapshot":\n',
+        (
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_listing_snapshot_admission_requires_the_exact_locator_kind",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_listing_snapshot_admission_requires_the_exact_locator_kind",
+        ),
+    ),
+    Mutation(
+        "M49",
+        "let an optional Nasdaq parse failure block a Massive-only case",
+        SCHEDULER,
+        "_NASDAQ_LISTING_BLOCKERS = frozenset(\n"
+        "    {\n"
+        '        "listing_directory_unavailable",\n'
+        '        "listing_directory_stale",\n'
+        '        "listing_directory_schema_mismatch",\n'
+        '        "listing_status_unresolved",\n'
+        "    }\n"
+        ")\n",
+        "_NASDAQ_LISTING_BLOCKERS = frozenset(\n"
+        "    {\n"
+        '        "listing_directory_unavailable",\n'
+        '        "listing_directory_stale",\n'
+        '        "listing_directory_schema_mismatch",\n'
+        "    }\n"
+        ")\n",
+        (
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_listing_component_requiredness_filters_before_state_and_blockers"
+            "[massive_otc-listing_codes1-expected_codes1-available]",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_automation_scheduler.py::"
+            "test_listing_component_requiredness_filters_before_state_and_blockers"
+            "[massive_otc-listing_codes1-expected_codes1-available]",
+        ),
+    ),
+    Mutation(
+        "M50",
+        "admit an unvalidated legacy listing status shape",
+        POLICY,
+        "    return None\n\n\ndef _listing_row_active(row: _Evidence) -> bool:\n",
+        "    return (\n"
+        '        "active"\n'
+        '        if snapshot.get("status") == "found" and snapshot.get("active") is True\n'
+        "        else None\n"
+        "    )\n\n\ndef _listing_row_active(row: _Evidence) -> bool:\n",
+        (
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_unvalidated_legacy_listing_status_shape_is_not_admitted",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_decision_policy.py::"
+            "test_unvalidated_legacy_listing_status_shape_is_not_admitted",
+        ),
+    ),
+    Mutation(
+        "M51",
+        "omit the provider's own update timestamp from the compact listing DTO",
+        TOOLS,
+        '        "provider_last_updated_utc": locator["provider_last_updated_utc"],\n',
+        "",
+        (
+            "tests/test_security_lifecycle_routes.py::"
+            "test_active_case_routes_share_closed_projection_and_compact_listing_dto",
+        ),
+        (
+            "pytest",
+            "-q",
+            "tests/test_security_lifecycle_routes.py::"
+            "test_active_case_routes_share_closed_projection_and_compact_listing_dto",
+        ),
+    ),
 )
 
 
@@ -1148,6 +1269,12 @@ FAILURE_SIGNATURES = {
     "M43": ("<REDACTED_ENVIRONMENT>",),
     "M44": ("Hidden action",),
     "M45": ("fixture_token_shape_not_redacted",),
+    "M46": ("ListingEvidenceFailure: listing_status_unresolved",),
+    "M47": ("assert", "is None"),
+    "M48": ("assert", "is None"),
+    "M49": ("listing_status_unresolved",),
+    "M50": ("assert True is False",),
+    "M51": ("provider_last_updated_utc",),
 }
 assert set(FAILURE_SIGNATURES) == {mutation.mutation_id for mutation in MUTATIONS}
 

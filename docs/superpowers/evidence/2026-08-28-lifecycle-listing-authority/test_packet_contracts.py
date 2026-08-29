@@ -124,7 +124,7 @@ def test_preexisting_product_test_fixture_authorities_are_preserved() -> None:
 def test_every_mutation_has_baseline_probe_and_stable_signatures() -> None:
     mutations = _load("run_mutations")
 
-    assert len(mutations.MUTATIONS) == 45
+    assert len(mutations.MUTATIONS) == 51
     for mutation in mutations.MUTATIONS:
         assert mutation.failure_signatures
         assert mutation.command[:4] == (
@@ -258,7 +258,7 @@ def test_browser_terminal_projection_is_preflight_valid() -> None:
     assert "portfolio_open" not in activity["provider_owned_retained"]
 
 
-def test_browser_massive_settings_fixture_uses_one_primary_field_with_legacy_alias() -> None:
+def test_browser_massive_settings_fixture_uses_profile_authority_without_env_import() -> None:
     browser = _load("run_browser_matrix")
     providers = browser._provider_config()["providers"]
 
@@ -274,7 +274,7 @@ def test_browser_massive_settings_fixture_uses_one_primary_field_with_legacy_ali
         "effective_source": "app",
         "needs_import": False,
         "import_source": None,
-        "importable_env_vars": ["MASSIVE_API_KEY", "POLYGON_API_KEY"],
+        "importable_env_vars": [],
         "defaulted": False,
         "guarded": False,
         "guard_reason": None,

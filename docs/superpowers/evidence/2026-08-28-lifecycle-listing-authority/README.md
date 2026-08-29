@@ -41,13 +41,13 @@ this packet does not claim real SEC payload coverage.
 
 The separately authorized live Massive canary is not part of this offline packet.
 It is retained only as an unsealed operator observation: four bounded calls using
-the configured legacy Polygon credential observed AAPL as active and LC as
-inactive. No raw provider bytes or reproducible canary artifact were retained, so
-this packet does not use that observation as sealed admission evidence.
+the credential configured at that time observed AAPL as active and LC as inactive.
+No raw provider bytes or reproducible canary artifact were retained, so this packet
+does not use that observation as sealed admission evidence.
 
 ## Admission Rules
 
-- Each M01-M45 entry runs its unchanged declared pytest command before mutation,
+- Each M01-M51 entry runs its unchanged declared pytest command before mutation,
   admits an exact collected/executed node set with zero failures, then requires
   exit 1, the exact expected failures, and mutation-specific failure signatures.
 - Mutation anomaly counts cover only unexpected failures inside each declared
@@ -71,7 +71,7 @@ this packet does not use that observation as sealed admission evidence.
 ## Contents
 
 - `offline-authority.json`: calibrated boundaries, nine-case strict shadow, and v2/v3 scratch migration/restore with old-code startup.
-- `mutation-ledger.json`: M01-M45 baseline/mutant commands, exact nodes, signatures,
+- `mutation-ledger.json`: M01-M51 baseline/mutant commands, exact nodes, signatures,
   scoped failure outcomes, and byte-identical restoration.
 - `browser/matrix.json`: 24 locale/viewport/scenario entries, typed forbidden-operation
   declarations, projection provenance, transition/acknowledgement witnesses, expanded
