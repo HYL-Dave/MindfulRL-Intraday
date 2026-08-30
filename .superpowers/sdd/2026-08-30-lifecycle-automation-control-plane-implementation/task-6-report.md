@@ -329,3 +329,322 @@ No Critical, Important, or Minor issue remained after self-review.
 
 No known implementation concern. Per the task boundary, provider behavior was
 validated hermetically rather than through live SEC, listing, or IBKR access.
+
+## Review Round 1 Fix
+
+Fix base: `e3bf04ecfb08e06bc8a86c25352f7ac14a93236c`.
+
+Reviewer verdict read in full before the fix:
+
+- `.superpowers/sdd/2026-08-30-lifecycle-automation-control-plane-implementation/task-6-review.md`
+
+The fix addresses both Important findings and the Minor finding without
+changing the scheduler product, worker product, schema, migrations, providers,
+production database, or App code.
+
+### Decisions
+
+- Normalize every syntactically matched target and explicit predecessor before
+  comparing evidence. Any normalization `ValueError` makes the sentence
+  ambiguous evidence, so collection emits `sec_evidence_insufficient` and no
+  active deadline.
+- Compare normalized target semantics instead of grammar-match counts. Multiple
+  matches are equivalent only when they resolve to one target and no more than
+  one explicit predecessor. When equivalent matches mix forms, retain an
+  explicit extension representative when available so predecessor proof is not
+  discarded.
+- Replace the fragile immediate coordinate check with a closed sentence rule:
+  any date after the first matched target that is not a target or predecessor
+  span of an accepted grammar match makes the sentence ambiguous. This rejects
+  conditional alternate dates without depending on adjacent `and|or DATE`
+  text.
+- Fold the ordered filing chain with a set of proven `(OLD, NEW)` edges. A
+  duplicate whose target is active replaces the selected row, preserving the
+  later row's exact citation identity. A proven older edge recapped after a
+  later extension is ignored as historical. An unseen edge whose predecessor
+  is not active remains a branch and fails closed.
+- Repeated bare extensions to the active target are idempotent and replace the
+  selected row. A bare target already reached by a proven older edge may be
+  ignored as a historical recap; an unseen non-forward target fails closed.
+- No date is selected with `max()`. The resolver returns an original extracted
+  row unchanged.
+
+### RED Evidence
+
+All fix-round tests were added before product code changed.
+
+The first producer run was:
+
+```text
+pytest -q tests/test_security_lifecycle_sec_evidence.py \
+  -k 'repeated_explicit_deadline_extension or repeated_bare_deadline_extension or duplicate_same_target_grammar or deadline_extension_recap_before_next or historical_deadline_edge_recap or conditional_alternate_deadline_target or invalid_syntactic_deadline_dates' \
+  tests/test_security_lifecycle_automation_scheduler.py::test_real_sec_deadline_supersession_reaches_due_ibkr_check_with_new_citation
+FFFFFFF                                                                  [100%]
+7 failed, 31 deselected in 0.60s
+```
+
+The failures were exact:
+
+- repeated explicit `OLD -> NEW` produced
+  `('sec_evidence_insufficient',)`;
+- repeated bare `extended to NEW` produced
+  `('sec_evidence_insufficient',)`;
+- two current/outside grammar matches for the same normalized target produced
+  `('sec_evidence_insufficient',)`;
+- `OLD -> NEW`, recap `OLD -> NEW`, then `NEW -> NEXT` failed to resolve;
+- `OLD -> NEW`, `NEW -> NEXT`, then recap `OLD -> NEW` failed to resolve;
+- the conditional alternate target incorrectly selected `2026-08-30`; and
+- `February 30, 2026` escaped as `ValueError`.
+
+The `-k` expression intentionally selected the seven new producer owners but
+also deselected the scheduler parameter cases, so the required real duplicate
+producer-to-scheduler owner was run separately, still before product changes:
+
+```text
+pytest -q 'tests/test_security_lifecycle_automation_scheduler.py::test_real_sec_deadline_supersession_reaches_due_ibkr_check_with_new_citation[duplicate-extension]'
+F                                                                        [100%]
+E       AssertionError: assert [] == [('slc_deadline_supersession',
+E         '2026-08-30T12:00:00Z', (), 3)]
+1 failed in 0.45s
+```
+
+Duplicate SEC extension evidence therefore cleared the producer deadline,
+made zero IBKR calls, and could not forward the later filing's exact citation.
+
+The original invalid-date owner contained both invalid target and invalid
+predecessor cases in a loop. Its RED stopped on the first escaped target
+exception. During self-review it was split into two independent owners; the
+invalid-predecessor path is independently proved by the reverse mutation below.
+
+### GREEN Evidence
+
+Direct final owners, including both scheduler parameter cases:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_sec_evidence.py::test_repeated_explicit_deadline_extension_is_idempotent_and_selects_latest_row \
+  tests/test_security_lifecycle_sec_evidence.py::test_repeated_bare_deadline_extension_is_idempotent_and_selects_latest_row \
+  tests/test_security_lifecycle_sec_evidence.py::test_duplicate_same_target_grammar_matches_are_idempotent \
+  tests/test_security_lifecycle_sec_evidence.py::test_deadline_extension_recap_before_next_extension_preserves_chain \
+  tests/test_security_lifecycle_sec_evidence.py::test_historical_deadline_edge_recap_after_next_extension_is_ignored \
+  tests/test_security_lifecycle_sec_evidence.py::test_conditional_alternate_deadline_target_fails_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_invalid_syntactic_deadline_dates_fail_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_invalid_explicit_deadline_predecessor_fails_closed \
+  tests/test_security_lifecycle_automation_scheduler.py::test_real_sec_deadline_supersession_reaches_due_ibkr_check_with_new_citation
+..........                                                               [100%]
+10 passed in 0.47s
+```
+
+The duplicate scheduler case selects accession
+`0000000001-26-000003`, forwards that row's evidence ID and byte-exact citation,
+reaches the due IBKR path, and preserves `ibkr_max_queries=3`.
+
+Final Task 6 focused gate:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_sec_evidence.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_automation_worker.py
+154 passed in 14.41s
+```
+
+Final broader lifecycle groups:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_ibkr_evidence.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_grounded_shadow.py \
+  tests/test_security_lifecycle_decision_policy.py \
+  tests/test_security_lifecycle_automation_worker.py \
+  tests/test_security_lifecycle_sec_evidence.py
+228 passed in 14.89s
+```
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle.py \
+  tests/test_security_lifecycle_automation_migration.py \
+  tests/test_security_lifecycle_automation_runtime.py \
+  tests/test_security_lifecycle_automation_schema.py \
+  tests/test_security_lifecycle_disposition.py \
+  tests/test_security_lifecycle_fact_kernel.py
+147 passed in 3.47s
+```
+
+```text
+pytest -q -p no:cacheprovider tests/test_security_lifecycle_investigation.py
+30 passed in 3.90s
+```
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_listing_evidence.py \
+  tests/test_security_lifecycle_listing_migration.py \
+  tests/test_security_lifecycle_manual_evidence.py \
+  tests/test_security_lifecycle_migration.py \
+  tests/test_security_lifecycle_news_evidence.py \
+  tests/test_security_lifecycle_routes.py \
+  tests/test_security_lifecycle_schema.py \
+  tests/test_security_lifecycle_tools.py \
+  tests/test_security_lifecycle_translation.py
+158 passed in 15.30s
+```
+
+The four non-overlapping broader groups total `563 passed`, zero failures.
+
+### Reverse Mutations
+
+Every mutation was applied independently, run against public owners, restored,
+and rerun GREEN before the next mutation.
+
+#### 1. Reject duplicate same-target grammar
+
+Mutation: restored the reviewed behavior that marks
+`len(target_matches) > 1` ambiguous without semantic comparison.
+
+```text
+FAILED test_duplicate_same_target_grammar_matches_are_idempotent
+E       AssertionError: assert ('sec_evidence_insufficient',) == ()
+1 failed in 0.32s
+```
+
+Restored owner: `1 passed in 0.28s`.
+
+#### 2. Reject an already-proven explicit edge
+
+Mutation: changed the `edge in seen_edges` branch to `return None`.
+
+```text
+FAILED test_repeated_explicit_deadline_extension_is_idempotent_and_selects_latest_row
+FAILED test_deadline_extension_recap_before_next_extension_preserves_chain
+FAILED test_historical_deadline_edge_recap_after_next_extension_is_ignored
+FAILED test_real_sec_deadline_supersession_reaches_due_ibkr_check_with_new_citation[duplicate-extension]
+4 failed in 0.50s
+```
+
+The real seam again made zero IBKR calls. Restored owners:
+`4 passed in 0.40s`.
+
+#### 3. Reject a repeated bare active target
+
+Mutation: changed the bare `row.date == active.date` branch from replacing the
+active row to `return None`.
+
+```text
+FAILED test_repeated_bare_deadline_extension_is_idempotent_and_selects_latest_row
+E       AssertionError: assert ('sec_evidence_insufficient',) == ()
+1 failed in 0.32s
+```
+
+Restored owner: `1 passed in 0.28s`.
+
+#### 4. Accept an unclaimed conditional date
+
+Mutation: removed the sentence-wide unclaimed-date rejection block.
+
+```text
+FAILED test_conditional_alternate_deadline_target_fails_closed
+E       AssertionError: active deadline was 2026-08-30 instead of ()
+1 failed in 0.32s
+```
+
+Restored owner: `1 passed in 0.28s`.
+
+#### 5. Let invalid source dates escape
+
+Mutation: changed `except ValueError` around target/predecessor normalization to
+`except RuntimeError`.
+
+The preliminary combined owner failed with the expected escaped `ValueError`
+(`1 failed in 0.36s`). After the self-review split, both independent paths
+failed in the same mutation run:
+
+```text
+FAILED test_invalid_syntactic_deadline_dates_fail_closed
+  ValueError: day is out of range for month
+FAILED test_invalid_explicit_deadline_predecessor_fails_closed
+  ValueError: day is out of range for month
+2 failed in 0.42s
+```
+
+Restored owners: `2 passed in 0.28s`.
+
+After the behavioral mutation cycle the producer checksum returned exactly to
+`faa320207f7a66890c513657b70db67f9b0dc823e756da3fca8a42a371dc3b36`.
+A subsequent behavior-neutral readability rewrite of the selected-match branch
+produced final checksum
+`67663b1805ff27b1d3e90e1689a60b3bbbe895aa498b2170ac31eae59e1463e8`,
+after which every final gate above was rerun.
+
+### Static Verification
+
+```text
+python -m compileall -q src/security_lifecycle_sec_evidence.py \
+  src/service/security_lifecycle_automation_scheduler.py \
+  src/security_lifecycle_automation_worker.py
+# exit 0, no output
+
+git diff --check
+# exit 0, no output
+
+rg -n 'raise ValueError\("source_deadlines"\)' \
+  src/service/security_lifecycle_automation_scheduler.py
+745:        raise ValueError("source_deadlines")
+911:        raise ValueError("source_deadlines")
+
+rg -c 'raise ValueError\("source_deadlines"\)' \
+  src/service/security_lifecycle_automation_scheduler.py
+2
+```
+
+The active resolver contains no `max()` call. The scheduler source and worker
+source have no fix-round diff. Task 5's `ibkr_max_queries` and
+`ibkr_identity_blockers` interfaces are unchanged.
+
+### Files and Commits
+
+Implementation/test commit:
+
+```text
+35e1458b fix(lifecycle): make SEC deadline evidence idempotent
+```
+
+It changes exactly:
+
+- `src/security_lifecycle_sec_evidence.py`
+- `tests/test_security_lifecycle_sec_evidence.py`
+- `tests/test_security_lifecycle_automation_scheduler.py`
+
+This report is the only file in the separate report commit. Its own hash is
+necessarily recorded in the final task response rather than self-referenced in
+the committed file.
+
+### Self-Review
+
+- Re-read the complete reviewer verdict, Task 6 brief, and binding design
+  sections 2.1 and 8.1 against the final diff.
+- Confirmed equivalent target evidence is idempotent while unseen explicit
+  branches, contradictory current dates, orphan bare extensions, backward
+  dates, reversed chronology, and conditional alternate targets remain
+  fail-closed.
+- Confirmed the active result is always an original row and the latest active
+  duplicate's evidence ID, span, cited text, digest, rule ID, and rule version
+  cross the real producer-to-scheduler seam unchanged.
+- Confirmed `kind` and `supersedes_date` remain transient only; no persistence,
+  DDL, fact type, schema, or migration changed.
+- Confirmed both scheduler `ValueError("source_deadlines")` guards remain
+  unchanged and no scheduler product edit was needed.
+- Confirmed no provider, production database, App, merge, push, or subagent was
+  used.
+
+No Critical, Important, or Minor implementation issue remained after
+self-review.
+
+### Concerns
+
+No known product concern. Provider behavior remains hermetically tested as
+required by the task boundary. The environment does not have the Black module
+installed, so formatting verification used the repository's existing style,
+successful compilation, and `git diff --check`.
