@@ -1,7 +1,7 @@
 # Task 3 Report: Version Per-Case Outcomes and Repair Recovery Witnesses
 
 Date: 2026-08-30
-Implementation: `b369308b`
+Implementation: `b369308b`, review fix `0d8bd8f4`
 
 ## Result
 
@@ -34,9 +34,31 @@ Implementation: `b369308b`
 
 ## Verification
 
-- Task 1 through Task 3 focused suites: `216 passed in 10.27s`.
+- Initial Task 1 through Task 3 focused suites: `216 passed in 10.27s`.
+- Review-fix suites, including the production supervisor boundary:
+  `321 passed in 14.37s`.
 - Compileall: clean.
 - `git diff --check`: clean.
+
+## Review Fix Round
+
+The task reviewer identified four valid gaps and one interpretation that
+conflicted with the binding spec.
+
+- Production scheduler callers now use a run-and-record entry point that
+  persists incident state before releasing the shared execution lock. The
+  original unrecorded runner remains available to focused callers and tests.
+- A new failed attempt for an already-active case updates the recovery marker
+  without appending another semantically identical failure witness.
+- Scheduler-generated empty, unavailable, skipped, and not-installed results
+  now emit version 2; readers still accept version 1.
+- Version-2 case IDs reject leading or trailing whitespace instead of silently
+  normalizing it.
+- The proposed rule that only `status=succeeded` may recover a scheduler-level
+  incident was rejected. The spec defines recovery as a newer nonfailed
+  attempt and separately defines a blocked attempt as completed and
+  non-operational. Positive controls cover both failed-case-to-blocked and
+  scheduler-failure-to-blocked recovery while the case blocker remains.
 
 ## Reverse Mutations
 
@@ -53,6 +75,12 @@ Each mutation was applied independently and restored:
    idempotency owner failed.
 7. Revert v1 mixed-batch reconstruction to all selected IDs: the mixed
    failed/blocked owner failed.
+8. Remove version 2 from current empty producers: four producer owners failed.
+9. Remove exact version-2 case-ID validation: the whitespace drift owner
+   failed.
+10. Compare marker-bearing incidents instead of semantic incident identity:
+    the repeated-failure owner failed.
+11. Disable recording in the lock-owned runner: the lock-order owner failed.
 
 ## Boundaries
 
