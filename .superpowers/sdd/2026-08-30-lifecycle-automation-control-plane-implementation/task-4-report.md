@@ -329,3 +329,253 @@ unchanged.
 All tests used in-memory or temporary databases and monkeypatched transports.
 No provider call, production DB read/write, App restart, schema migration,
 merge, or push was performed.
+
+## Review Round 1 Fixes
+
+Implementation: `5c6f10dc` (`fix(lifecycle): make attended dispatch lock-owned`)
+
+This section supersedes two statements in the original Task 4 result without
+rewriting the historical report:
+
+- HTTP dispatch is no longer guarded by a route-local lock. The scheduler now
+  acquires the real lifecycle execution flock synchronously, transfers that
+  exact entered lease to one background owner, and releases it only after
+  startup reconciliation, worker execution, final owner cleanup, and result
+  recording.
+- A persisted `running` row is no longer sufficient for HTTP 409. Only a live
+  shared-flock collision returns `automation_case_running`; after successful
+  ownership acquisition, stale running rows are reconciled before exact-case
+  attended work begins.
+
+The predecessor-chain validator now requires every row to carry a valid input
+evidence digest and the canonical semantic run key derived from that digest.
+It compares the complete semantic identity across the chain while continuing
+to read a valid legacy `predecessor_failed_run_id` link.
+
+### Review RED Evidence
+
+#### Scheduler-owned dispatch authority
+
+Command before the scheduler dispatch primitive existed:
+
+```text
+pytest -q tests/test_security_lifecycle_automation_scheduler.py \
+  -k 'dispatch_acquires_ownership or dispatch_thread_start_failure'
+```
+
+Output:
+
+```text
+FF                                                                       [100%]
+2 failed, 55 deselected
+AttributeError: module ...security_lifecycle_automation_scheduler has no
+attribute 'dispatch_and_record_security_lifecycle_automation'
+```
+
+These owners require acquisition before `started`, retention through both
+reconciliation calls, worker execution and recording, exact owner-ID transfer,
+and explicit release if thread startup fails.
+
+#### Live collision and stale-orphan endpoint authority
+
+Command against the route-local-lock and persisted-row-precheck implementation:
+
+```text
+pytest -q tests/test_security_lifecycle_routes.py \
+  -k 'global_automation_run_dispatches or case_automation_run_dispatches or source_only or real_flock_collision or stale_running_row'
+```
+
+Output:
+
+```text
+FFFFFF                                                                   [100%]
+6 failed, 21 deselected
+```
+
+The failures covered the absent scheduler dispatch boundary, global and exact
+real-flock collisions, removal of the route-local lock, and a stale persisted
+`running` row that had to be reconciled after ownership acquisition instead of
+being rejected before it.
+
+#### Complete predecessor semantic identity
+
+Command against the four-field chain identity:
+
+```text
+pytest -q tests/test_security_lifecycle_fact_kernel.py \
+  -k 'different_input_evidence_snapshot or noncanonical_semantic_run_key or legacy_predecessor_missing_semantic_metadata or hard_traversal_limit'
+```
+
+Output:
+
+```text
+FFF.                                                                     [100%]
+3 failed, 1 passed, 72 deselected
+FAILED ...different_input_evidence_snapshot - Failed: DID NOT RAISE
+FAILED ...noncanonical_semantic_run_key - Failed: DID NOT RAISE
+FAILED ...legacy_predecessor_missing_semantic_metadata - Failed: DID NOT RAISE
+```
+
+The hard traversal guard already existed and passed as a characterization
+owner; its reverse control below proves the owner is effective. The malformed
+legacy-link owner likewise exercised an existing strict parser and was added
+without weakening valid legacy-row readability.
+
+### Review GREEN Evidence
+
+Scheduler ownership and release:
+
+```text
+pytest -q tests/test_security_lifecycle_automation_scheduler.py \
+  -k 'dispatch_acquires_ownership or dispatch_thread_start_failure or recorded_runner_persists_result_before_releasing_execution_lock'
+...                                                                      [100%]
+3 passed, 54 deselected in 0.52s
+```
+
+Live collisions, endpoint dispatch, and stale-orphan recovery:
+
+```text
+pytest -q tests/test_security_lifecycle_routes.py \
+  -k 'global_automation_run_dispatches or case_automation_run_dispatches or source_only or real_flock_collision or stale_running_row'
+......                                                                   [100%]
+6 passed, 21 deselected in 2.47s
+```
+
+Semantic identity, valid legacy readability, malformed legacy context, cycle,
+and traversal limit:
+
+```text
+pytest -q tests/test_security_lifecycle_fact_kernel.py \
+  -k 'different_input_evidence_snapshot or noncanonical_semantic_run_key or legacy_predecessor_missing_semantic_metadata or malformed_legacy_predecessor or hard_traversal_limit or legacy_failed_predecessor_field_remains_chain_readable or predecessor_cycle'
+.......                                                                  [100%]
+7 passed, 70 deselected in 0.18s
+```
+
+All directly changed test modules after restoring every mutation:
+
+```text
+pytest -q tests/test_security_lifecycle_fact_kernel.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_routes.py
+161 passed in 13.62s
+```
+
+### Review Reverse Controls
+
+Each mutation was applied independently and restored before the GREEN and
+full-suite runs.
+
+1. Probe and release the transferred lease immediately after acquisition:
+
+   ```text
+   FAILED test_dispatch_acquires_ownership_before_return_and_transfers_exact_lease
+   assert lock_held is True
+   1 failed in 0.45s
+   ```
+
+2. Remove explicit lease cleanup when `Thread.start()` raises:
+
+   ```text
+   FAILED test_dispatch_thread_start_failure_releases_transferred_ownership
+   assert ['lock_acquired'] == ['lock_acquired', 'lock_released']
+   1 failed in 0.43s
+   ```
+
+3. Disable exact-case mapping of a real flock collision to HTTP 409:
+
+   ```text
+   FAILED test_case_automation_run_returns_409_on_real_flock_collision
+   assert 200 == 409
+   1 failed in 2.14s
+   ```
+
+4. Skip startup reconciliation after acquiring the execution lease:
+
+   ```text
+   FAILED test_case_automation_run_reconciles_a_stale_running_row_after_lock_acquisition
+   assert 0 == 1
+   1 failed in 2.19s
+   ```
+
+5. Remove evidence digest and canonical semantic key from cross-row identity:
+
+   ```text
+   FAILED test_predecessor_chain_rejects_a_different_input_evidence_snapshot
+   Failed: DID NOT RAISE <class 'ValueError'>
+   1 failed in 0.17s
+   ```
+
+6. Disable the per-row canonical semantic-run-key check:
+
+   ```text
+   FAILED test_predecessor_chain_rejects_a_noncanonical_semantic_run_key
+   Failed: DID NOT RAISE <class 'ValueError'>
+   1 failed in 0.17s
+   ```
+
+7. Treat a non-string legacy predecessor field as an absent predecessor:
+
+   ```text
+   FAILED test_malformed_legacy_predecessor_field_fails_closed
+   Failed: DID NOT RAISE <class 'ValueError'>
+   1 failed in 0.16s
+   ```
+
+8. Disable the predecessor traversal hard bound:
+
+   ```text
+   FAILED test_predecessor_chain_enforces_the_hard_traversal_limit
+   Failed: DID NOT RAISE <class 'ValueError'>
+   1 failed in 0.20s
+   ```
+
+The original report's reverse controls for both default-false flags,
+caller-context counter-reset resistance, the cycle visited set, and
+policy/provenance isolation remain unchanged. Their current positive owners
+were rerun together:
+
+```text
+pytest -q tests/test_security_lifecycle_fact_kernel.py \
+  -k 'due_failed_retry_requires_explicit_authority or attended_new_attempt_preserves_each_terminal_predecessor or retry_count_comes_from_predecessor_chain_not_caller_context or predecessor_cycle_fails_closed or attended_attempt_does_not_change_policy_or_decision_provenance'
+.......                                                                  [100%]
+7 passed, 70 deselected in 0.15s
+```
+
+### Review Full Verification
+
+Task 4 focused files:
+
+```text
+209 passed in 14.97s
+```
+
+Task 4 plus automation runtime, investigation, tools, and listing evidence:
+
+```text
+327 passed in 18.86s
+```
+
+Lifecycle schema, automation migration, and production scheduler boundary:
+
+```text
+113 passed in 5.02s
+```
+
+The three binding no-same-revision-auto-replay tests were not edited and were
+rerun by exact node ID:
+
+```text
+...                                                                      [100%]
+3 passed in 0.13s
+```
+
+Additional checks:
+
+```text
+python -m compileall -q <three modified product modules>  # clean
+git diff --check                                          # clean
+```
+
+No lifecycle DDL/version, decision policy/version, decision provenance,
+automatic profile-mutation authority, provider, production database, App,
+merge, or push boundary changed or was exercised in this review fix.
