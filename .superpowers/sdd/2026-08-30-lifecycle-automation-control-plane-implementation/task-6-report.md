@@ -1139,3 +1139,251 @@ No known product concern. The semantic target grammar is intentionally closed
 and bounded; deadline phrasing outside the ruled forms remains unproved evidence
 rather than being inferred from proximity. This is the deliberate residual
 coverage limit required by the task.
+
+## Review Round 4 Fix
+
+Base: `a3b8ad0338ab89610127184fcf59691a1db20c5a`
+
+The complete `Round 4 Scoped Re-review` in `task-6-review.md` was read before
+editing. The remaining two Important findings had one mechanical root cause:
+the complete coordinated-target regex assigned different target forms to
+separate hard-coded coordinator branches.
+
+### Decisions
+
+- Give `and|or|but` one shared coordinator prefix followed by optional comma
+  spacing and exactly one closed target form: modality, direct `to|by`, further
+  extension, bounded conditional, or bare date.
+- Represent the bare-date alternative with a date lookahead so it participates
+  in the same closed alternation without making the other target forms optional.
+- Keep `_DEADLINE_TARGET_END` after the one captured target date. A coordinated
+  target is therefore classifiable only when its clause terminates at that date;
+  trailing shareholder-meeting and mailing predicates remain unrelated context.
+- Preserve the accepted bare `or`, `or|but may be`, `and further extended to`,
+  and `or if|provided ... to|by` forms through the same grammar rather than
+  retaining coordinator-specific branches.
+- Leave explicit target assertions, accepted evidence extraction, normalized
+  comparison, ordered deadline collapse, citation identity, scheduler/worker
+  behavior, and persistence untouched.
+
+### RED Evidence
+
+The two coordinator-specific owners were added before product code changed:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_sec_evidence.py::test_and_coordinated_deadline_targets_fail_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_but_conditional_deadline_targets_fail_closed
+FF                                                                       [100%]
+2 failed in 0.41s
+```
+
+The `and` owner failed first on terminal bare `and September 1, 2026`; the
+producer incorrectly retained the August 30 extension. It also owns the
+comma-before-`and` variant and `and may be September 1, 2026`.
+
+The independent `but` owner failed first on `but, if ... to September 1, 2026`;
+the producer again retained August 30. It also owns
+`but, provided that ... by September 1, 2026`.
+
+### GREEN Evidence
+
+The two new owners passed together after the unified grammar change:
+
+```text
+..                                                                       [100%]
+2 passed in 0.28s
+```
+
+The retained-branch and target-boundary control run included bare `or`,
+`or|but may be`, `and further extended to`, `or if|provided`, both new owners,
+and the shareholder-meeting and meeting-materials positive controls:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_sec_evidence.py::test_deadline_closed_grammar_emits_only_one_current_target_and_exact_citation \
+  tests/test_security_lifecycle_sec_evidence.py::test_deadline_extension_with_two_targets_fails_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_conditional_alternate_deadline_target_fails_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_or_may_be_alternate_deadline_target_fails_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_but_may_be_alternate_deadline_target_fails_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_and_coordinated_deadline_targets_fail_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_but_conditional_deadline_targets_fail_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_provided_that_alternate_deadline_target_fails_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_coordinated_date_with_unrelated_predicate_preserves_deadline \
+  tests/test_security_lifecycle_sec_evidence.py::test_coordinated_by_date_with_unrelated_predicate_preserves_deadline
+..........                                                               [100%]
+10 passed in 0.30s
+```
+
+Both scheduler tripwire owners passed directly:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_automation_scheduler.py::test_pending_event_monitoring_rejects_multiple_deadline_dates \
+  tests/test_security_lifecycle_automation_scheduler.py::test_acquisition_scheduling_rejects_multiple_deadline_dates_before_market_work
+..                                                                       [100%]
+2 passed in 0.46s
+```
+
+Final Task 6 focused gate:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_sec_evidence.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_automation_worker.py
+164 passed in 8.66s
+```
+
+Final broader lifecycle groups:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_ibkr_evidence.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_grounded_shadow.py \
+  tests/test_security_lifecycle_decision_policy.py \
+  tests/test_security_lifecycle_automation_worker.py \
+  tests/test_security_lifecycle_sec_evidence.py
+238 passed in 9.14s
+```
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle.py \
+  tests/test_security_lifecycle_automation_migration.py \
+  tests/test_security_lifecycle_automation_runtime.py \
+  tests/test_security_lifecycle_automation_schema.py \
+  tests/test_security_lifecycle_disposition.py \
+  tests/test_security_lifecycle_fact_kernel.py
+147 passed in 2.44s
+```
+
+```text
+pytest -q -p no:cacheprovider tests/test_security_lifecycle_investigation.py
+30 passed in 1.96s
+```
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_listing_evidence.py \
+  tests/test_security_lifecycle_listing_migration.py \
+  tests/test_security_lifecycle_manual_evidence.py \
+  tests/test_security_lifecycle_migration.py \
+  tests/test_security_lifecycle_news_evidence.py \
+  tests/test_security_lifecycle_routes.py \
+  tests/test_security_lifecycle_schema.py \
+  tests/test_security_lifecycle_tools.py \
+  tests/test_security_lifecycle_translation.py
+158 passed in 10.78s
+```
+
+The four non-overlapping broader groups total `573 passed`, zero failures.
+
+### Reverse Mutations
+
+Each coordinator mutation was applied independently to the unified grammar,
+run against its dedicated public owner, restored, and rerun GREEN.
+
+#### 1. Remove `and` from the shared coordinator prefix
+
+Mutation: changed `(?:and|or|but)` to `(?:or|but)`.
+
+```text
+FAILED test_and_coordinated_deadline_targets_fail_closed
+E       AssertionError: The outside date was extended from August 28, 2026
+E       to August 30, 2026 and September 1, 2026.
+1 failed in 0.32s
+```
+
+The mutation incorrectly retained August 30. Restored owner:
+`1 passed in 0.28s`.
+
+#### 2. Remove `but` from the shared coordinator prefix
+
+Mutation: changed `(?:and|or|but)` to `(?:and|or)`.
+
+```text
+FAILED test_but_conditional_deadline_targets_fail_closed
+E       AssertionError: The outside date was extended from August 28, 2026
+E       to August 30, 2026 but, if regulatory approval remained outstanding,
+E       to September 1, 2026.
+1 failed in 0.32s
+```
+
+The mutation incorrectly retained August 30. Restored owner:
+`1 passed in 0.28s`.
+
+The extractor checksum before mutations and after both restorations was
+identical:
+
+```text
+001932d8ef58df3d69a18b98126d7dfedd4df1a62c936938a441019c987ec696
+```
+
+### Static Verification
+
+```text
+python -m compileall -q src/security_lifecycle_sec_evidence.py \
+  src/service/security_lifecycle_automation_scheduler.py \
+  src/security_lifecycle_automation_worker.py
+# exit 0, no output
+
+git diff --check
+# exit 0, no output
+
+rg -n 'raise ValueError\("source_deadlines"\)' \
+  src/service/security_lifecycle_automation_scheduler.py
+745:        raise ValueError("source_deadlines")
+911:        raise ValueError("source_deadlines")
+
+rg -c 'raise ValueError\("source_deadlines"\)' \
+  src/service/security_lifecycle_automation_scheduler.py
+2
+
+git show --check --oneline 65b190f4
+65b190f4 fix(lifecycle): unify coordinated deadline targets
+```
+
+Scheduler and worker source/tests, persistence, DDL, facts, migrations,
+providers, production database, and App code have no Round 4 implementation
+diff. Task 5 interfaces and the ordered Task 6 resolver are unchanged.
+
+### Files and Commits
+
+Implementation/test commit:
+
+```text
+65b190f45a466a87cc46a28a1e7715493774d8bb fix(lifecycle): unify coordinated deadline targets
+```
+
+It changes exactly:
+
+- `src/security_lifecycle_sec_evidence.py`
+- `tests/test_security_lifecycle_sec_evidence.py`
+
+This report is the only file in the separate report commit. Its hash is recorded
+in the final task response rather than self-referenced in the committed file.
+
+### Self-Review
+
+- Re-read the Round 4 verdict and verified every requested `and` and `but`
+  sentence through the public producer.
+- Confirmed the target-form alternation contains no coordinator-specific branch;
+  `and|or|but` is selected once before all five closed forms.
+- Confirmed `_DEADLINE_TARGET_END` remains after the captured date and both
+  trailing-predicate positive controls preserve August 30 and exact citation.
+- Confirmed retained bare, modality, further-extension, and conditional forms,
+  prior duplicate/invalid-date behavior, the real scheduler seam, and both
+  scheduler tripwires remain GREEN in the focused and broader gates.
+- Confirmed no scheduler, worker, provider, production database, App, migration,
+  merge, push, or subagent operation occurred.
+
+No Critical, Important, or Minor implementation issue remained after
+self-review.
+
+### Concerns
+
+No known product concern. The grammar remains intentionally closed: unsupported
+target wording is not inferred, and coordinated dates followed by unrelated
+predicates remain excluded by `_DEADLINE_TARGET_END`.
