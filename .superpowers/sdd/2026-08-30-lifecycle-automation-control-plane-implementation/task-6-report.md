@@ -883,3 +883,259 @@ No known product concern. The deadline association grammar is intentionally
 closed and bounded; phrasing outside those accepted forms is not interpreted,
 which is a deliberate residual coverage limit rather than an open grammar.
 Provider behavior remains hermetically tested as required by the task boundary.
+
+## Review Round 3 Fix
+
+Base: `ebb095ec57a29816f44b71251f581fabdac00033`
+
+The Round 3 Important finding was reproduced before product changes. The three
+phrase-oriented association regexes admitted complete modal alternatives only
+in some word orders and also treated unrelated nearby dates as deadline
+targets. This round replaces those regexes with bounded classification of
+syntactically complete semantic deadline targets.
+
+### Decisions
+
+- Keep the existing accepted current, termination-condition, and extension
+  grammar as the source of accepted evidence rows.
+- Classify an additional candidate only when it is either an explicit
+  `outside date|termination date` assertion with a closed modality or a
+  syntactically complete coordinated deadline continuation.
+- Bound explicit assertions to `is|shall be|remains|may be|could be|would be|will
+  be DATE` and coordinated continuations to the ruled forms: modal `or|but`,
+  bare `or DATE`, `and further extended to DATE`, and bounded conditional
+  `or, if|unless|provided that|subject to ..., to|by DATE`.
+- Require a coordinated candidate to terminate at the date apart from
+  punctuation or closed coordination. A date followed by an unrelated subject
+  and predicate is therefore context, not a deadline target.
+- Compare normalized semantic values. A distinct candidate target fails closed;
+  an equivalent target mention is idempotent.
+- Continue claiming both explicit `from OLD` and `to NEW` spans so the
+  predecessor is not mistaken for an alternate target.
+- Preserve citation selection, ordered collapse, invalid-date handling, the
+  public producer-to-scheduler seam, both scheduler multi-date tripwires, and
+  Task 5 interfaces without scheduler or persistence changes.
+
+The removed patterns are `_DEADLINE_CLAUSE_DATE`,
+`_DIRECT_COORDINATED_DEADLINE_DATE`, and
+`_COORDINATED_DEADLINE_ACTION_DATE`. No generic nearby-date pattern was added.
+
+### RED Evidence
+
+The six Round 3 owners were added first and run before changing product code:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_sec_evidence.py::test_or_may_be_alternate_deadline_target_fails_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_but_may_be_alternate_deadline_target_fails_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_provided_that_alternate_deadline_target_fails_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_coordinated_date_with_unrelated_predicate_preserves_deadline \
+  tests/test_security_lifecycle_sec_evidence.py::test_coordinated_by_date_with_unrelated_predicate_preserves_deadline \
+  tests/test_security_lifecycle_sec_evidence.py::test_deadline_discussion_date_is_not_a_target
+FFFFFF                                                                   [100%]
+6 failed in 0.46s
+```
+
+The `or may be`, `but may be`, and `provided that` cases incorrectly retained
+August 30. The unrelated coordinated date, coordinated `by` date, and discussion
+date cases incorrectly emitted `sec_evidence_insufficient`. This established
+both under-classification and over-classification REDs against the Round 2
+product.
+
+### GREEN Evidence
+
+The six new owners passed together after the bounded classifier change:
+
+```text
+......                                                                   [100%]
+6 passed in 0.29s
+```
+
+The targeted control run contained the six new owners; the existing pre-target,
+suffix conditional, immediate `or DATE`, and scheduled-for controls; explicit
+OLD/NEW claiming; duplicate and recap chains; invalid dates; and the real
+producer-to-scheduler parameter owner:
+
+```text
+.....................                                                    [100%]
+21 passed in 0.50s
+```
+
+Final Task 6 focused gate:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_sec_evidence.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_automation_worker.py
+162 passed in 14.37s
+```
+
+Final broader lifecycle groups:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_ibkr_evidence.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_grounded_shadow.py \
+  tests/test_security_lifecycle_decision_policy.py \
+  tests/test_security_lifecycle_automation_worker.py \
+  tests/test_security_lifecycle_sec_evidence.py
+236 passed in 14.80s
+```
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle.py \
+  tests/test_security_lifecycle_automation_migration.py \
+  tests/test_security_lifecycle_automation_runtime.py \
+  tests/test_security_lifecycle_automation_schema.py \
+  tests/test_security_lifecycle_disposition.py \
+  tests/test_security_lifecycle_fact_kernel.py
+147 passed in 3.45s
+```
+
+```text
+pytest -q -p no:cacheprovider tests/test_security_lifecycle_investigation.py
+30 passed in 3.55s
+```
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_listing_evidence.py \
+  tests/test_security_lifecycle_listing_migration.py \
+  tests/test_security_lifecycle_manual_evidence.py \
+  tests/test_security_lifecycle_migration.py \
+  tests/test_security_lifecycle_news_evidence.py \
+  tests/test_security_lifecycle_routes.py \
+  tests/test_security_lifecycle_schema.py \
+  tests/test_security_lifecycle_tools.py \
+  tests/test_security_lifecycle_translation.py
+158 passed in 15.30s
+```
+
+The four non-overlapping broader groups total `571 passed`, zero failures.
+
+### Reverse Mutations
+
+All mutations were applied independently to the final implementation, proved by
+the named public owners, restored, and rerun GREEN.
+
+#### 1. Disable modal alternate classification
+
+Mutation: changed the coordinated modal branch from `(?:or|but)` to an
+unmatched token.
+
+```text
+FAILED test_or_may_be_alternate_deadline_target_fails_closed
+FAILED test_but_may_be_alternate_deadline_target_fails_closed
+2 failed in 0.34s
+```
+
+Both mutations incorrectly retained August 30. Restored owners:
+`2 passed in 0.28s`.
+
+#### 2. Disable `provided that` conditional classification
+
+Mutation: removed `provided that` from the bounded conditional keyword set.
+
+```text
+FAILED test_provided_that_alternate_deadline_target_fails_closed
+1 failed in 0.32s
+```
+
+The mutation incorrectly retained August 30. Restored owner:
+`1 passed in 0.28s`.
+
+#### 3. Reintroduce unrelated-date classification
+
+Mutation: temporarily added `_ANY_MONTH_DATE` and `_ANY_ISO_DATE` to the
+candidate-target pattern set.
+
+```text
+FAILED test_coordinated_date_with_unrelated_predicate_preserves_deadline
+FAILED test_coordinated_by_date_with_unrelated_predicate_preserves_deadline
+FAILED test_deadline_discussion_date_is_not_a_target
+FAILED test_unrelated_post_target_date_preserves_active_deadline
+4 failed in 0.37s
+```
+
+The mutation rejected all four unrelated-date positive controls. Restored
+owners: `4 passed in 0.28s`.
+
+The producer checksum before mutations and after all restorations was identical:
+
+```text
+3c97f1182007e9433352b4a3c3c835813108feeb8045f6cd11e53a97b99f9478
+```
+
+### Static Verification
+
+```text
+python -m compileall -q src/security_lifecycle_sec_evidence.py \
+  src/service/security_lifecycle_automation_scheduler.py \
+  src/security_lifecycle_automation_worker.py
+# exit 0, no output
+
+git diff --check
+# exit 0, no output
+
+rg -n 'raise ValueError\("source_deadlines"\)' \
+  src/service/security_lifecycle_automation_scheduler.py
+745:        raise ValueError("source_deadlines")
+911:        raise ValueError("source_deadlines")
+
+rg -c 'raise ValueError\("source_deadlines"\)' \
+  src/service/security_lifecycle_automation_scheduler.py
+2
+```
+
+The resolver still contains no `max()` date selection. The three replaced
+phrase-chasing pattern names are absent. Scheduler and worker product/tests,
+persistence, DDL, facts, migrations, providers, production database, and App
+code have no Round 3 diff. Task 5's `ibkr_max_queries` and identity-marker
+interfaces remain unchanged.
+
+### Files and Commits
+
+Implementation/test commit:
+
+```text
+7194d163730079da82fb800dac55c0f52f045d04 fix(lifecycle): classify complete deadline targets
+```
+
+It changes exactly:
+
+- `src/security_lifecycle_sec_evidence.py`
+- `tests/test_security_lifecycle_sec_evidence.py`
+
+This report is the only file in the separate report commit. Its hash is recorded
+in the final task response rather than self-referenced in the committed file.
+
+### Self-Review
+
+- Re-read the Round 3 verdict and checked each full month-date example against
+  the final public producer behavior.
+- Confirmed modal, conditional, pre-target, suffix, and immediate alternate
+  targets fail closed, while unrelated predicates, `by` context, discussion
+  context, and scheduled-for context preserve August 30.
+- Confirmed candidate continuations must end at their date except for punctuation
+  or closed coordination; no all-dates count or clause-order heuristic remains.
+- Confirmed explicit OLD and NEW spans remain claimed, and equivalent normalized
+  target mentions remain idempotent.
+- Confirmed duplicate/recap ordering, branches, chronology, invalid dates, exact
+  selected-row citation identity, and the real scheduler seam remain GREEN.
+- Confirmed both scheduler tripwires are unchanged and no scheduler product
+  change was required.
+- Confirmed no provider, production database, App, migration, merge, push, or
+  subagent was used.
+
+No Critical, Important, or Minor implementation issue remained after
+self-review.
+
+### Concerns
+
+No known product concern. The semantic target grammar is intentionally closed
+and bounded; deadline phrasing outside the ruled forms remains unproved evidence
+rather than being inferred from proximity. This is the deliberate residual
+coverage limit required by the task.
