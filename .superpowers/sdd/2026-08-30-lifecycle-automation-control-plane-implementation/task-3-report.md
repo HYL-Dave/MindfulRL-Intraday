@@ -1,7 +1,7 @@
 # Task 3 Report: Version Per-Case Outcomes and Repair Recovery Witnesses
 
 Date: 2026-08-30
-Implementation: `b369308b`, review fix `0d8bd8f4`
+Implementation: `b369308b`, review fixes `0d8bd8f4`, `5e8b4bba`
 
 ## Result
 
@@ -36,7 +36,7 @@ Implementation: `b369308b`, review fix `0d8bd8f4`
 
 - Initial Task 1 through Task 3 focused suites: `216 passed in 10.27s`.
 - Review-fix suites, including the production supervisor boundary:
-  `321 passed in 14.37s`.
+  `323 passed in 14.52s`.
 - Compileall: clean.
 - `git diff --check`: clean.
 
@@ -54,6 +54,9 @@ conflicted with the binding spec.
   now emit version 2; readers still accept version 1.
 - Version-2 case IDs reject leading or trailing whitespace instead of silently
   normalizing it.
+- Startup and final owner-reconciliation exceptions are converted and
+  recorded while the execution lock remains held; two REDs cover both sides
+  of the worker call.
 - The proposed rule that only `status=succeeded` may recover a scheduler-level
   incident was rejected. The spec defines recovery as a newer nonfailed
   attempt and separately defines a blocked attempt as completed and
@@ -81,6 +84,8 @@ Each mutation was applied independently and restored:
 10. Compare marker-bearing incidents instead of semantic incident identity:
     the repeated-failure owner failed.
 11. Disable recording in the lock-owned runner: the lock-order owner failed.
+12. Let startup/final reconciliation errors leave the lock before recording:
+    both reconciliation lock-order owners failed.
 
 ## Boundaries
 
