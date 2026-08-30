@@ -648,3 +648,238 @@ No known product concern. Provider behavior remains hermetically tested as
 required by the task boundary. The environment does not have the Black module
 installed, so formatting verification used the repository's existing style,
 successful compilation, and `git diff --check`.
+
+## Review Round 2 Fix
+
+Fix base: `10ccb9b1fa2190ab375d4b5d79d09522e10d42a2`.
+
+The complete `Round 2 Scoped Re-review` in `task-6-review.md` was read before
+editing. The only product change is the remaining Important finding: replace
+clause-order date counting with bounded semantic alternate-deadline detection.
+
+### Decisions
+
+- Add closed, sentence-level grammar for three deadline associations:
+  a date governed by an `outside date` or `termination date` clause, a direct
+  coordinated `or/and DATE`, and a bounded coordinated conditional or extension
+  ending in `to/by DATE`.
+- Stop deadline-clause scanning at `.` or `;` and cap each bounded scan at 160
+  characters. This recognizes the reviewer's pre-target clause without treating
+  arbitrary dates elsewhere in the sentence as deadline evidence.
+- Keep grammar-matched predecessor and target spans claimed. Normalize only
+  deadline-associated unclaimed dates, fail closed if one is invalid, and reject
+  only normalized values that differ from the accepted target. Equivalent target
+  evidence therefore remains idempotent.
+- Remove `first_target_end` and the all-date `_ANY_MONTH_DATE` /
+  `_ANY_ISO_DATE` scan from the ambiguity guard. Clause order and unrelated date
+  count no longer determine whether an active deadline survives.
+- Do not add a second large scheduler fixture for the invalid pre-target case.
+  The public producer owner controls rejection, while the existing real
+  producer-to-scheduler owner continues to control valid deadline/citation/IBKR
+  behavior in the targeted and full gates.
+
+### RED Evidence
+
+Both owners were added before the Round 2 product edit:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_sec_evidence.py::test_preceding_conditional_alternate_deadline_target_fails_closed \
+  tests/test_security_lifecycle_sec_evidence.py::test_unrelated_post_target_date_preserves_active_deadline
+FF                                                                       [100%]
+```
+
+The negative owner exposed false admission:
+
+```text
+FAILED test_preceding_conditional_alternate_deadline_target_fails_closed
+E       AssertionError: active deadline was 2026-08-30 instead of ()
+```
+
+The positive owner exposed unrelated-date over-rejection:
+
+```text
+FAILED test_unrelated_post_target_date_preserves_active_deadline
+E       AssertionError: assert ('sec_evidence_insufficient',) == ()
+2 failed in 0.40s
+```
+
+No product code had changed before this run.
+
+### GREEN Evidence
+
+The two direct owners first passed together:
+
+```text
+..                                                                       [100%]
+2 passed in 0.28s
+```
+
+The final targeted control run covered both new owners, the existing suffix
+conditional and immediate coordinate cases, explicit from/to claiming,
+duplicate grammar and filing rows, recap chains, invalid dates, and both real
+scheduler parameter cases:
+
+```text
+...............                                                          [100%]
+15 passed in 0.48s
+```
+
+Final Task 6 focused gate:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_sec_evidence.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_automation_worker.py
+156 passed in 14.46s
+```
+
+Final broader lifecycle groups:
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_ibkr_evidence.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_grounded_shadow.py \
+  tests/test_security_lifecycle_decision_policy.py \
+  tests/test_security_lifecycle_automation_worker.py \
+  tests/test_security_lifecycle_sec_evidence.py
+230 passed in 14.90s
+```
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle.py \
+  tests/test_security_lifecycle_automation_migration.py \
+  tests/test_security_lifecycle_automation_runtime.py \
+  tests/test_security_lifecycle_automation_schema.py \
+  tests/test_security_lifecycle_disposition.py \
+  tests/test_security_lifecycle_fact_kernel.py
+147 passed in 3.49s
+```
+
+```text
+pytest -q -p no:cacheprovider tests/test_security_lifecycle_investigation.py
+30 passed in 3.71s
+```
+
+```text
+pytest -q -p no:cacheprovider \
+  tests/test_security_lifecycle_listing_evidence.py \
+  tests/test_security_lifecycle_listing_migration.py \
+  tests/test_security_lifecycle_manual_evidence.py \
+  tests/test_security_lifecycle_migration.py \
+  tests/test_security_lifecycle_news_evidence.py \
+  tests/test_security_lifecycle_routes.py \
+  tests/test_security_lifecycle_schema.py \
+  tests/test_security_lifecycle_tools.py \
+  tests/test_security_lifecycle_translation.py
+158 passed in 15.29s
+```
+
+The four non-overlapping broader groups total `565 passed`, zero failures.
+
+### Reverse Mutations
+
+Both required mutations were applied independently to the final semantic
+implementation, restored, and rerun GREEN.
+
+#### 1. Admit the pre-target alternate
+
+Mutation: removed `_DEADLINE_CLAUSE_DATE` from the bounded association pattern
+set.
+
+```text
+FAILED test_preceding_conditional_alternate_deadline_target_fails_closed
+E       AssertionError: active deadline was 2026-08-30 instead of ()
+1 failed in 0.32s
+```
+
+Restored owner: `1 passed in 0.28s`.
+
+#### 2. Restore unrelated-date over-rejection
+
+Mutation: added `_ANY_MONTH_DATE` and `_ANY_ISO_DATE` to the association pattern
+set, recreating an all-dates guard.
+
+```text
+FAILED test_unrelated_post_target_date_preserves_active_deadline
+E       AssertionError: assert ('sec_evidence_insufficient',) == ()
+1 failed in 0.32s
+```
+
+Restored owner: `1 passed in 0.28s`.
+
+The producer checksum returned exactly to
+`3814e41097c57ecaa3dccb3e24c6b05079bd3e1436cc3a5d0d54319dbcd996a2`
+after the final mutation restoration.
+
+### Static Verification
+
+```text
+python -m compileall -q src/security_lifecycle_sec_evidence.py \
+  src/service/security_lifecycle_automation_scheduler.py \
+  src/security_lifecycle_automation_worker.py
+# exit 0, no output
+
+git diff --check
+# exit 0, no output
+
+rg -n 'raise ValueError\("source_deadlines"\)' \
+  src/service/security_lifecycle_automation_scheduler.py
+745:        raise ValueError("source_deadlines")
+911:        raise ValueError("source_deadlines")
+
+rg -c 'raise ValueError\("source_deadlines"\)' \
+  src/service/security_lifecycle_automation_scheduler.py
+2
+```
+
+The active resolver still contains no `max()` call. Scheduler and worker source,
+scheduler/worker tests, persistence, DDL, facts, migrations, providers, and App
+code have no Round 2 diff. Task 5's `ibkr_max_queries` and identity-marker
+interfaces are unchanged.
+
+### Files and Commits
+
+Implementation/test commit:
+
+```text
+9b7b41f9 fix(lifecycle): classify alternate deadline dates
+```
+
+It changes exactly:
+
+- `src/security_lifecycle_sec_evidence.py`
+- `tests/test_security_lifecycle_sec_evidence.py`
+
+This report is the only file in the separate report commit. Its hash is recorded
+in the final task response rather than self-referenced in the committed file.
+
+### Self-Review
+
+- Re-read the Round 2 verdict and binding Task 6 rulings against the final diff.
+- Confirmed the exact pre-target and suffix conditional alternates plus immediate
+  `or DATE` fail closed with `sec_evidence_insufficient` and no active deadline.
+- Confirmed the unrelated shareholder-meeting date preserves August 30 and its
+  original full-sentence citation.
+- Confirmed explicit OLD/NEW spans remain claimed, and normalized equivalent
+  deadline-associated dates do not become false alternate targets.
+- Confirmed duplicate idempotency, branches, chronology, invalid dates, exact
+  selected citation identity, the valid real scheduler seam, and
+  `ibkr_max_queries=3` remain covered and GREEN.
+- Confirmed both scheduler tripwires are unchanged and no scheduler product edit
+  was needed.
+- Confirmed no provider, production database, App, migration, merge, push, or
+  subagent was used.
+
+No Critical, Important, or Minor implementation issue remained after
+self-review.
+
+### Concerns
+
+No known product concern. The deadline association grammar is intentionally
+closed and bounded; phrasing outside those accepted forms is not interpreted,
+which is a deliberate residual coverage limit rather than an open grammar.
+Provider behavior remains hermetically tested as required by the task boundary.
