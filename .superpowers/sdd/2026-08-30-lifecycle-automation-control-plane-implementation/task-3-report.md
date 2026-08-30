@@ -87,6 +87,10 @@ Each mutation was applied independently and restored:
 12. Let startup/final reconciliation errors leave the lock before recording:
     both reconciliation lock-order owners failed.
 
+The final scoped reviewer returned `Task quality: Approved` with no remaining
+issues after verifying both reconciliation paths and unchanged
+`BaseException` propagation.
+
 ## Boundaries
 
 No schema migration, provider call, production database access, App start,
