@@ -360,3 +360,159 @@ rather than hidden or repaired outside this task.
   occurred.
 - Work was performed only in the isolated
   `/tmp/arkscope-lifecycle-automation-control-plane` worktree.
+
+## Review Round 1 Fix
+
+Date: 2026-08-30
+Test ownership commit: `2d93fa4b`
+
+The review findings were confirmed as coverage gaps, not product defects. The
+round added four SQLite-backed owners to
+`tests/test_security_lifecycle_automation_scheduler.py`; no product file was
+changed.
+
+### Added owners
+
+1. `test_alias_edge_row_overflow_is_a_per_case_ibkr_ambiguity` builds a
+   24-node component with 552 unique alias edges. Only that ticker becomes
+   ambiguous; a second ticker remains usable.
+2. `test_ibkr_position_row_overflow_is_a_per_case_ambiguity` supplies 513
+   matching IBKR rows. Only that ticker becomes ambiguous; a second ticker
+   retains its exact conId.
+3. `test_duplicate_local_conid_rows_deduplicate_but_distinct_conids_are_ambiguous`
+   proves repeated rows and alias rows carrying one conId resolve to that one
+   conId, while two distinct conIds remain ambiguous.
+4. `test_real_identity_hint_overflow_reaches_load_evidence_and_worker_continues`
+   uses SQLite alias/profile stores, real `_load_cases`, real `_load_evidence`,
+   and a real `LifecycleAutomationWorker` batch. The overflow marker is not
+   manually injected. SEC, listing, and IBKR are bounded fakes at their
+   provider boundaries. The first case persists `ibkr_contract_ambiguous`
+   with zero IBKR calls, and the later case is processed in the same batch.
+
+### RED reverse controls
+
+Each owner was written before its independent reverse control. Because the
+review concerned ownership of already-correct product behavior, RED was
+established by applying one mutation at a time and restoring it before the
+next run.
+
+#### Alias-edge overflow admission
+
+Mutation: `_MAX_ALIAS_EDGES = 512` to `1024`.
+
+```text
+pytest -q tests/test_security_lifecycle_automation_scheduler.py::test_alias_edge_row_overflow_is_a_per_case_ibkr_ambiguity
+FAILED test_alias_edge_row_overflow_is_a_per_case_ibkr_ambiguity
+Differing items:
+{'ibkr_identity_blockers': ()} != {'ibkr_identity_blockers': ('ibkr_contract_ambiguous',)}
+{'ticker_aliases': ('D00', ...)} != {'ticker_aliases': ('DENSE',)}
+1 failed in 0.53s
+```
+
+#### Position-row overflow admission
+
+Mutation: `_MAX_IBKR_POSITION_ROWS = 512` to `1024`.
+
+```text
+pytest -q tests/test_security_lifecycle_automation_scheduler.py::test_ibkr_position_row_overflow_is_a_per_case_ambiguity
+FAILED test_ibkr_position_row_overflow_is_a_per_case_ambiguity
+Differing items:
+{'ibkr_conids': (101,)} != {'ibkr_conids': ()}
+{'ibkr_identity_blockers': ()} != {'ibkr_identity_blockers': ('ibkr_contract_ambiguous',)}
+1 failed in 0.50s
+```
+
+#### Duplicate same-conId acceptance
+
+Mutation: the ambiguity decision used `len(seen_rows) > 1` instead of
+`len(result[ticker]) > 1`, incorrectly treating the same conId on two alias
+symbols as two identities.
+
+```text
+pytest -q tests/test_security_lifecycle_automation_scheduler.py::test_duplicate_local_conid_rows_deduplicate_but_distinct_conids_are_ambiguous
+FAILED test_duplicate_local_conid_rows_deduplicate_but_distinct_conids_are_ambiguous
+Differing items:
+{'ibkr_identity_blockers': ('ibkr_contract_ambiguous',)} != {'ibkr_identity_blockers': ()}
+{'ibkr_conids': ()} != {'ibkr_conids': (101,)}
+1 failed in 0.48s
+```
+
+#### Real producer/consumer marker handoff
+
+Mutation: `_load_evidence` changed `if identity_codes:` to
+`if False and identity_codes:`, forcing the overflow case through the IBKR
+provider seam.
+
+```text
+pytest -q tests/test_security_lifecycle_automation_scheduler.py::test_real_identity_hint_overflow_reaches_load_evidence_and_worker_continues
+FAILED test_real_identity_hint_overflow_reaches_load_evidence_and_worker_continues
+AssertionError: assert ['CASEB', 'CASEA'] == ['CASEA']
+Left contains one more item: 'CASEA'
+1 failed in 0.55s
+```
+
+The exact ticker order is derived from the durable case IDs: `CASEB` was the
+overflow case and `CASEA` the later normal case. The extra `CASEB` call proves
+the integrated owner crosses the real marker handoff.
+
+### GREEN verification
+
+All four new owners after restoring product code:
+
+```text
+pytest -q \
+  tests/test_security_lifecycle_automation_scheduler.py::test_alias_edge_row_overflow_is_a_per_case_ibkr_ambiguity \
+  tests/test_security_lifecycle_automation_scheduler.py::test_ibkr_position_row_overflow_is_a_per_case_ambiguity \
+  tests/test_security_lifecycle_automation_scheduler.py::test_duplicate_local_conid_rows_deduplicate_but_distinct_conids_are_ambiguous \
+  tests/test_security_lifecycle_automation_scheduler.py::test_real_identity_hint_overflow_reaches_load_evidence_and_worker_continues
+....                                                                     [100%]
+4 passed in 0.68s
+```
+
+The prior 85-node focused command now includes the four added owners:
+
+```text
+pytest -q tests/test_security_lifecycle_ibkr_evidence.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_grounded_shadow.py
+........................................................................ [ 80%]
+.................                                                        [100%]
+89 passed in 4.71s
+```
+
+The prior 184-node focused/adjacent command now includes the same owners:
+
+```text
+pytest -q tests/test_security_lifecycle_ibkr_evidence.py \
+  tests/test_security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_grounded_shadow.py \
+  tests/test_security_lifecycle_decision_policy.py \
+  tests/test_security_lifecycle_automation_worker.py
+........................................................................ [ 38%]
+........................................................................ [ 76%]
+............................................                             [100%]
+188 passed in 8.66s
+```
+
+Scheduler integration file:
+
+```text
+pytest -q tests/test_security_lifecycle_automation_scheduler.py
+..................................................................       [100%]
+66 passed in 4.62s
+```
+
+Static verification:
+
+```text
+python -m compileall -q src/security_lifecycle_ibkr_evidence.py \
+  src/service/security_lifecycle_automation_scheduler.py \
+  tests/test_security_lifecycle_automation_scheduler.py
+# exit 0, no output
+
+git diff --check
+# exit 0, no output
+```
+
+The wildcard ordering residual and deferred inert-marker owner were left
+unchanged, as required by review scope.
