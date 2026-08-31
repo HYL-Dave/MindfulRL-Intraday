@@ -1,0 +1,211 @@
+{
+  "app_url": "http://127.0.0.1:4210/",
+  "entries": [
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 1,
+      "latest_case_refresh_witness": true,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 1858,
+        "dynamic_channels": 3
+      },
+      "request_count": 27,
+      "screenshot": "1440x900-en-settings.png",
+      "screenshot_sha256": "ab55ab4d912087e213e2b23ad150e88266c68291d1de1ded686eb221de64e8eb",
+      "surface": "settings",
+      "viewport": [
+        1440,
+        900
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "f09b4dee37ac55cea394f0ad3e4fefc21894e8b3a9b1ffcf80c68976126a2b85"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 1,
+      "latest_case_refresh_witness": true,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 1997,
+        "dynamic_channels": 3
+      },
+      "request_count": 30,
+      "screenshot": "1440x900-en-lifecycle.png",
+      "screenshot_sha256": "168f400d42c348b0c35a693850a01295a9b0cb0c85e595ed77c5ce4ac60ddce5",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "3a712a951b7c4f3bd77565097240e94436803e2942cfa56e6dc342d151ad0ebf"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 1,
+      "latest_case_refresh_witness": true,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 1865,
+        "dynamic_channels": 3
+      },
+      "request_count": 27,
+      "screenshot": "1440x900-zh-Hant-settings.png",
+      "screenshot_sha256": "059fc5906da37fa86d15718e54838f10f780196432d9da36d3e89e516d86623d",
+      "surface": "settings",
+      "viewport": [
+        1440,
+        900
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "a284befa68f9416479ed8b220c3a464ecb50f46a46ddfc7a9e3f3ee5b3d520b6"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 1,
+      "latest_case_refresh_witness": true,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 2024,
+        "dynamic_channels": 3
+      },
+      "request_count": 30,
+      "screenshot": "1440x900-zh-Hant-lifecycle.png",
+      "screenshot_sha256": "9c6311e86ade00d022a9c7150fece033c6a5358a02dd7714f4e3684412506d58",
+      "surface": "lifecycle",
+      "viewport": [
+        1440,
+        900
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "08c8e285a8aa4bc8472abab5f7d67eed4108f2ef402032b8304badda082d9d16"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 1,
+      "latest_case_refresh_witness": true,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 1516,
+        "dynamic_channels": 3
+      },
+      "request_count": 27,
+      "screenshot": "390x844-en-settings.png",
+      "screenshot_sha256": "f800df33070161fcaa88d071e7fbdb22b7cf6d6455cd5770673dbee6f683d2fb",
+      "surface": "settings",
+      "viewport": [
+        390,
+        844
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "5024520c5f084b726d12c7832bb57b4879b741c97cd7c5a479d036eb98866c9d"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 1,
+      "latest_case_refresh_witness": true,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 978,
+        "dynamic_channels": 3
+      },
+      "request_count": 30,
+      "screenshot": "390x844-en-lifecycle.png",
+      "screenshot_sha256": "4ebaed331146a0ca0d4c9a5a25319bca892a85cb428311a628a40d94a4c1bfb4",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "801c079df39b3617fe3bbe60a87b5133a66fd09579f7eba45badec3d81027620"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 1,
+      "latest_case_refresh_witness": true,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 1532,
+        "dynamic_channels": 3
+      },
+      "request_count": 27,
+      "screenshot": "390x844-zh-Hant-settings.png",
+      "screenshot_sha256": "66ae47c7cdb63852d15832cc14fff4eed01d94e4f6a8623c046c892ddeb4ff02",
+      "surface": "settings",
+      "viewport": [
+        390,
+        844
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "e371dfa975c0fe4e725bcd12d8314ab2b3c9094fd32f70bb7ff1f879357cc519"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 1,
+      "latest_case_refresh_witness": true,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 959,
+        "dynamic_channels": 3
+      },
+      "request_count": 30,
+      "screenshot": "390x844-zh-Hant-lifecycle.png",
+      "screenshot_sha256": "a822bdeafb8dd2258fd22d57707098f62c9bf6b35d8f39c0b9c16f7f3a649c96",
+      "surface": "lifecycle",
+      "viewport": [
+        390,
+        844
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "07d8fd71e1445df0167e45334ef654ccd3bd64242d66914225bd67db137153b9"
+    }
+  ],
+  "fixture_only": true,
+  "geometry_positive_calibration": {
+    "known_clipped_text_count": 1,
+    "known_overlap_count": 1
+  },
+  "production_database_operations": {
+    "basis": "declared_not_authorized",
+    "value": 0
+  },
+  "provider_calls": {
+    "basis": "declared_not_authorized",
+    "value": 0
+  },
+  "schema_version": 1
+}

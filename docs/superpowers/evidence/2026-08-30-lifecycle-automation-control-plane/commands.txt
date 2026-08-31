@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export PYTHONDONTWRITEBYTECODE=1
+export ARKSCOPE_DISABLE_SCHEDULER=1
+ROOT="$(git rev-parse --show-toplevel)"
+PACKET="$ROOT/docs/superpowers/evidence/2026-08-30-lifecycle-automation-control-plane"
+VITE_PID=""
+
+cleanup() {
+  if [[ -n "$VITE_PID" ]] && kill -0 "$VITE_PID" 2>/dev/null; then
+    kill "$VITE_PID"
+    wait "$VITE_PID" 2>/dev/null || true
+  fi
+}
+trap cleanup EXIT
+
+cd "$ROOT"
+git merge-base --is-ancestor 947a51fca2f078e750bef64cad4817682141ea8f HEAD
+
+FOCUSED=(
+  tests/test_api.py
+  tests/test_data_scheduler.py
+  tests/test_listing_authority_transport.py
+  tests/test_profile_state.py
+  tests/test_scheduler_state.py
+  tests/test_security_lifecycle_automation_config.py
+  tests/test_security_lifecycle_automation_runtime.py
+  tests/test_security_lifecycle_automation_scheduler.py
+  tests/test_security_lifecycle_automation_worker.py
+  tests/test_security_lifecycle_disposition.py
+  tests/test_security_lifecycle_fact_kernel.py
+  tests/test_security_lifecycle_grounded_shadow.py
+  tests/test_security_lifecycle_ibkr_evidence.py
+  tests/test_security_lifecycle_investigation.py
+  tests/test_security_lifecycle_listing_evidence.py
+  tests/test_security_lifecycle_news_evidence.py
+  tests/test_security_lifecycle_routes.py
+  tests/test_security_lifecycle_sec_evidence.py
+  tests/test_security_lifecycle_tools.py
+  tests/test_ticker_identity_scheduler.py
+  tests/test_ticker_identity_transition.py
+)
+
+python "$PACKET/run_mutations.py" --output "$PACKET/mutation-ledger.json"
+pytest -q -p no:cacheprovider "${FOCUSED[@]}" > "$PACKET/backend-focused.txt" 2>&1
+pytest -q -p no:cacheprovider tests > "$PACKET/backend-full-a.txt" 2>&1
+pytest -q -p no:cacheprovider tests > "$PACKET/backend-full-b.txt" 2>&1
+python "$PACKET/collect_test_manifest.py" --output "$PACKET/full-nodes-a.txt" tests
+python "$PACKET/collect_test_manifest.py" --output "$PACKET/full-nodes-b.txt" tests
+cmp "$PACKET/full-nodes-a.txt" "$PACKET/full-nodes-b.txt"
+
+npm --prefix apps/arkscope-web test -- --reporter=dot > "$PACKET/frontend-test-a.txt" 2>&1
+npm --prefix apps/arkscope-web test -- --reporter=dot > "$PACKET/frontend-test-b.txt" 2>&1
+npm --prefix apps/arkscope-web run typecheck > "$PACKET/frontend-typecheck.txt" 2>&1
+npm --prefix apps/arkscope-web run build > "$PACKET/frontend-build.txt" 2>&1
+npm --prefix apps/arkscope-web run check:i18n-literals > "$PACKET/frontend-i18n-literals.txt" 2>&1
+
+node node_modules/vite/bin/vite.js apps/arkscope-web --host 127.0.0.1 --port 4210 --strictPort \
+  > "$PACKET/vite.txt" 2>&1 &
+VITE_PID=$!
+ready=0
+for _ in $(seq 1 100); do
+  if ! kill -0 "$VITE_PID" 2>/dev/null; then
+    break
+  fi
+  if python -c 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:4210/", timeout=.2).read(1)' 2>/dev/null; then
+    ready=1
+    break
+  fi
+  sleep .1
+done
+test "$ready" = 1
+ARKSCOPE_AUTOMATION_APP_URL=http://127.0.0.1:4210/ \
+  python "$PACKET/run_browser_matrix.py" > "$PACKET/browser-run.txt" 2>&1
+kill "$VITE_PID"
+wait "$VITE_PID" 2>/dev/null || true
+VITE_PID=""
+
+find "$PACKET" -type d -name __pycache__ -prune -exec rm -rf {} +
+python "$PACKET/capture_repository_binding.py"
+python "$PACKET/write_verification_summary.py"
+python "$PACKET/scan_packet_secrets.py"
+python "$PACKET/seal_packet.py"
+python "$PACKET/verify_packet.py"

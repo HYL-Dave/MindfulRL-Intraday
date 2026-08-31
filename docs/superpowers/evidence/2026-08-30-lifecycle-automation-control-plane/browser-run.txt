@@ -1,0 +1,1 @@
+{"clipped_text": 0, "entries": 8, "external_requests": 0, "overlaps": 0, "screenshots": 8}

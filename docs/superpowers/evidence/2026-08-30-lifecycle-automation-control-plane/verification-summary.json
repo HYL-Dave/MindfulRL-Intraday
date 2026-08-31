@@ -1,0 +1,134 @@
+{
+  "boundary": {
+    "declared_unexecuted_operations": {
+      "app_restarts": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "merges": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "production_database_operations": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "provider_calls": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      },
+      "pushes": {
+        "basis": "declared_not_authorized",
+        "value": 0
+      }
+    },
+    "implementation_modified_product_code": true,
+    "measured_fixture_browser_operations": {
+      "clipped_text": 0,
+      "console_errors": 0,
+      "entries": 8,
+      "external_requests": 0,
+      "fixture_write_requests": 8,
+      "latest_case_refresh_witnesses": 8,
+      "overlaps": 0,
+      "page_errors": 0,
+      "screenshot_hashes_valid": true,
+      "screenshots": 8,
+      "viewport_clipped_controls": 0
+    },
+    "packet_replay_scope": "offline_repository_and_fixture_only"
+  },
+  "browser": {
+    "fixture_only": true,
+    "measured": {
+      "clipped_text": 0,
+      "console_errors": 0,
+      "entries": 8,
+      "external_requests": 0,
+      "fixture_write_requests": 8,
+      "latest_case_refresh_witnesses": 8,
+      "overlaps": 0,
+      "page_errors": 0,
+      "screenshot_hashes_valid": true,
+      "screenshots": 8,
+      "viewport_clipped_controls": 0
+    },
+    "positive_geometry_calibration": {
+      "known_clipped_text_count": 1,
+      "known_overlap_count": 1
+    }
+  },
+  "gates": {
+    "backend_focused": {
+      "passed": 931,
+      "seconds": 45.06
+    },
+    "backend_full_a": {
+      "passed": 5223,
+      "seconds": 382.87,
+      "skipped": 12,
+      "warnings": 3
+    },
+    "backend_full_b": {
+      "passed": 5223,
+      "seconds": 381.75,
+      "skipped": 12,
+      "warnings": 3
+    },
+    "backend_full_result_counts_equal": true,
+    "frontend_a": {
+      "files": 108,
+      "tests": 1324
+    },
+    "frontend_b": {
+      "files": 108,
+      "tests": 1324
+    },
+    "full_node_manifest_a": {
+      "nodes": 5235,
+      "sha256": "22363e5d547a70181b7ed899e3e9d3bde93176682b3f143e2ab131babe866c70"
+    },
+    "full_node_manifest_b": {
+      "nodes": 5235,
+      "sha256": "22363e5d547a70181b7ed899e3e9d3bde93176682b3f143e2ab131babe866c70"
+    },
+    "full_node_manifests_byte_identical": true,
+    "i18n_scanner": {
+      "allowlistCount": 20,
+      "candidateCount": 37,
+      "debtSignatureCount": 0,
+      "migratedScopes": [
+        "src/**"
+      ],
+      "signatureCount": 20
+    },
+    "production_build_passed": true,
+    "typecheck_passed": true
+  },
+  "known_warnings": {
+    "backend_deprecation_warnings": 3,
+    "build_chunk_size_warning_present": true,
+    "frontend_react_act_warning_present": true
+  },
+  "limitations": [
+    "The browser matrix uses local fixture responses and does not claim live provider or production database coverage.",
+    "Runtime stage progress is intentionally process-memory state and does not survive an App restart; durable incident truth is separate.",
+    "The packet seals only files inside this packet; imported browser fixture helpers are instead bound to exact tested-head Git blobs and SHA-256 values.",
+    "The final production one-case canary remains separately authorized Task 13 work."
+  ],
+  "mutations": {
+    "all_files_restored_byte_identically": true,
+    "count": 32,
+    "killed": 32
+  },
+  "repository": {
+    "base_commit": "947a51fca2f078e750bef64cad4817682141ea8f",
+    "branch": "lifecycle-automation-control-plane",
+    "browser_fixture_authorities_match_tested_head": true,
+    "changed_paths": 64,
+    "merge_commits_since_base": [],
+    "schema_authorities_byte_identical": true,
+    "tested_product_head": "daa3a40857bf5f531d0612466cab779ac05edde5"
+  },
+  "schema_version": 1
+}

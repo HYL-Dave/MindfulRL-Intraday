@@ -1,0 +1,2256 @@
+{
+  "all_files_restored_byte_identically": true,
+  "all_mutations_killed": true,
+  "credential_environment_removed_from_children": true,
+  "killed_count": 32,
+  "mutation_count": 32,
+  "mutations": [
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "c91dad03511eb111dba9f317cdb7962c64ec389c7d259de488e167c78aac1b31",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.11s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_runtime.py::test_execution_lock_is_exclusive_and_issues_a_bounded_owner_id"
+      ],
+      "cwd": ".",
+      "description": "replace the exclusive process lock with a shared lock",
+      "id": "M01",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_runtime.py::test_execution_lock_is_exclusive_and_issues_a_bounded_owner_id"
+        ],
+        "output_sha256": "6a4f3da7ca1c536febb4a6046d7feb74c90f2dfc08d15338b7d4c4bf1bd4dbd6",
+        "output_tail": [
+          "    ):",
+          "        from src.service.security_lifecycle_automation_runtime import (",
+          "            LifecycleAutomationAlreadyRunning,",
+          "            lifecycle_automation_execution_lock,",
+          "        )",
+          "    ",
+          "        monkeypatch.setenv(\"ARKSCOPE_LOCK_DIR\", str(tmp_path / \"locks\"))",
+          "    ",
+          "        with lifecycle_automation_execution_lock() as first:",
+          "            assert first.execution_owner_id",
+          "            assert len(first.execution_owner_id.encode(\"utf-8\")) <= 64",
+          "            with pytest.raises(LifecycleAutomationAlreadyRunning) as busy:",
+          "                with lifecycle_automation_execution_lock():",
+          ">                   pytest.fail(\"a second execution acquired the lifecycle lock\")",
+          "E                   Failed: a second execution acquired the lifecycle lock",
+          "",
+          "tests/test_security_lifecycle_automation_runtime.py:24: Failed",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_runtime.py::test_execution_lock_is_exclusive_and_issues_a_bounded_owner_id",
+          "1 failed in 0.13s"
+        ]
+      },
+      "owner_needles": [
+        "test_execution_lock_is_exclusive_and_issues_a_bounded_owner_id"
+      ],
+      "owners_observed": {
+        "test_execution_lock_is_exclusive_and_issues_a_bounded_owner_id": true
+      },
+      "product_file": "src/service/security_lifecycle_automation_runtime.py",
+      "restore": {
+        "after_sha256": "3dba7d07c4da20c96018ee253bc151f4604677daa56bbf8abda5d87efbcb2f77",
+        "before_sha256": "3dba7d07c4da20c96018ee253bc151f4604677daa56bbf8abda5d87efbcb2f77",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 1
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "c91dad03511eb111dba9f317cdb7962c64ec389c7d259de488e167c78aac1b31",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.11s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_runtime.py::test_progress_registry_records_only_explicit_conditional_stage_skips"
+      ],
+      "cwd": ".",
+      "description": "reject the legitimate conditional IBKR-stage skip",
+      "id": "M02",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_runtime.py::test_progress_registry_records_only_explicit_conditional_stage_skips"
+        ],
+        "output_sha256": "3928231f59c81ee488d9a30cd7d4260a5276af3800ee8677c79d150a440a2824",
+        "output_tail": [
+          "                raise ValueError(\"automation_progress_stage_order\")",
+          "    ",
+          "            expected_skips = LIFECYCLE_AUTOMATION_STAGE_ORDER[",
+          "                current_index + 1 : target_index",
+          "            ]",
+          "            if requested_skips != expected_skips:",
+          "                if requested_skips:",
+          "                    raise ValueError(\"automation_progress_stage_skip\")",
+          "                raise ValueError(\"automation_progress_stage_order\")",
+          "            if any(",
+          "                stage_name not in _CONDITIONAL_STAGES",
+          "                for stage_name in expected_skips",
+          "            ):",
+          ">               raise ValueError(\"automation_progress_stage_skip\")",
+          "E               ValueError: automation_progress_stage_skip",
+          "",
+          "src/service/security_lifecycle_automation_runtime.py:182: ValueError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_runtime.py::test_progress_registry_records_only_explicit_conditional_stage_skips",
+          "1 failed in 0.13s"
+        ]
+      },
+      "owner_needles": [
+        "test_progress_registry_records_only_explicit_conditional_stage_skips"
+      ],
+      "owners_observed": {
+        "test_progress_registry_records_only_explicit_conditional_stage_skips": true
+      },
+      "product_file": "src/service/security_lifecycle_automation_runtime.py",
+      "restore": {
+        "after_sha256": "3dba7d07c4da20c96018ee253bc151f4604677daa56bbf8abda5d87efbcb2f77",
+        "before_sha256": "3dba7d07c4da20c96018ee253bc151f4604677daa56bbf8abda5d87efbcb2f77",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 1
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "f574bf83729b682055fea4742e2eec06cd32be9f8694d8319d5361875228ed00",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.28s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_worker.py::test_human_accepted_automation_assessment_completes_pending_finalization"
+      ],
+      "cwd": ".",
+      "description": "reject a valid human-accepted automation assessment",
+      "id": "M03",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_human_accepted_automation_assessment_completes_pending_finalization"
+        ],
+        "output_sha256": "16f7e2e792623c8f9b2d68573c2171bf1a211af157851e8032b39adbc77fa301",
+        "output_tail": [
+          "                at=\"2026-08-25T12:01:00Z\",",
+          "            )",
+          "            monkeypatch.setattr(",
+          "                worker_module,",
+          "                \"create_automation_assessment\",",
+          "                original,",
+          "            )",
+          "    ",
+          "            recovered = harness.worker_with_transition_approver().run()",
+          "            persisted = store.get_assessment(assessment[\"assessment_id\"])",
+          "            run = store.list_automation_runs(case[\"case_id\"])[0]",
+          "            context = json.loads(run[\"query_context_json\"])",
+          "    ",
+          ">           assert recovered[\"accepted\"] == 1",
+          "E           assert 0 == 1",
+          "",
+          "tests/test_security_lifecycle_automation_worker.py:1439: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_human_accepted_automation_assessment_completes_pending_finalization",
+          "1 failed in 0.28s"
+        ]
+      },
+      "owner_needles": [
+        "test_human_accepted_automation_assessment_completes_pending_finalization"
+      ],
+      "owners_observed": {
+        "test_human_accepted_automation_assessment_completes_pending_finalization": true
+      },
+      "product_file": "src/security_lifecycle_automation_worker.py",
+      "restore": {
+        "after_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
+        "before_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 2
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "d907fec0e0445cfe67a7272e864304e81194b234052d6bdfcb6ec87c0b123e62",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.24s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_worker.py::test_transition_approval_rereads_mutation_authority_at_boundary"
+      ],
+      "cwd": ".",
+      "description": "bypass the profile-mutation authority at approval",
+      "id": "M04",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_transition_approval_rereads_mutation_authority_at_boundary"
+        ],
+        "output_sha256": "6e63a62935ff27d2cb63baef73b828b949f19e37ca4997c4eb8eb9d5c089e167",
+        "output_tail": [
+          "            authority[\"allowed\"] = False",
+          "            return result",
+          "    ",
+          "        try:",
+          "            harness.evidence_loader = disable_during_acquisition",
+          "            result = harness.worker_with_transition_approver(",
+          "                transition_mutation_allowed=lambda: authority[\"allowed\"],",
+          "            ).run()",
+          "    ",
+          "            assert result[\"accepted\"] == 1",
+          ">           assert harness.approval_calls == []",
+          "E           AssertionError: assert [{'assessment...', ...}, ...}] == []",
+          "E             ",
+          "E             Left contains one more item: {'assessment_status': 'accepted', 'case_id': 'slc_9213b48ada30c9ccfe5034ef24e1b8bd20973dde2757adbbca81b6059cc6574d', '...8-25', 'outcomes': ('symbol_changed', 'venue_transfer'), 'source_ticker': 'OLD', 'successor_ticker': 'OLD2', ...}, ...}",
+          "E             Use -v to get more diff",
+          "",
+          "tests/test_security_lifecycle_automation_worker.py:1306: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_transition_approval_rereads_mutation_authority_at_boundary",
+          "1 failed in 0.28s"
+        ]
+      },
+      "owner_needles": [
+        "test_transition_approval_rereads_mutation_authority_at_boundary"
+      ],
+      "owners_observed": {
+        "test_transition_approval_rereads_mutation_authority_at_boundary": true
+      },
+      "product_file": "src/security_lifecycle_automation_worker.py",
+      "restore": {
+        "after_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
+        "before_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 2
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "a132c74d7b7c74739e7571fb00cd0a8be848d9686b936586ce31a93451c151b2",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.29s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_worker.py::test_terminal_finalization_failure_uses_bounded_backoff_without_hot_loop"
+      ],
+      "cwd": ".",
+      "description": "bypass terminal-finalization retry backoff",
+      "id": "M05",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_terminal_finalization_failure_uses_bounded_backoff_without_hot_loop"
+        ],
+        "output_sha256": "e33be55e23d757ab155090bdfd90aab78dafe4e27efb87f7e2eecb30b04109b0",
+        "output_tail": [
+          "                assert result[\"failed\"] == 1",
+          "                assert result[\"processed\"] == 1",
+          "                assert run[\"status\"] == \"succeeded\"",
+          "                assert run[\"failure_code\"] is None",
+          "                assert failure == {",
+          "                    \"attempt_count\": attempt_count,",
+          "                    \"code\": \"finalization_failed\",",
+          "                    \"failed_at\": harness.now,",
+          "                    \"retry_not_before\": expected_retry,",
+          "                }",
+          "                assert \"private fixture detail\" not in json.dumps(context)",
+          "    ",
+          "                immediate = harness.worker_with_transition_approver().run()",
+          ">               assert immediate[\"processed\"] == 0",
+          "E               assert 1 == 0",
+          "",
+          "tests/test_security_lifecycle_automation_worker.py:1503: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_terminal_finalization_failure_uses_bounded_backoff_without_hot_loop",
+          "1 failed in 0.29s"
+        ]
+      },
+      "owner_needles": [
+        "test_terminal_finalization_failure_uses_bounded_backoff_without_hot_loop"
+      ],
+      "owners_observed": {
+        "test_terminal_finalization_failure_uses_bounded_backoff_without_hot_loop": true
+      },
+      "product_file": "src/security_lifecycle_fact_kernel.py",
+      "restore": {
+        "after_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "before_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 2
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "d2d744b6b2df2bbb0d73cb7a43f6675bd03881bc2a2c2a74e54ecf18667789e2",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.25s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_worker.py::test_current_assessment_is_not_reprocessed"
+      ],
+      "cwd": ".",
+      "description": "downgrade worker case outcomes to result version one",
+      "id": "M06",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_current_assessment_is_not_reprocessed"
+        ],
+        "output_sha256": "f1bf9c5d7f17f77f5286f40b4aeed625299ddbc4bee68b5e323b1cf23a89d26d",
+        "output_tail": [
+          "__________________ test_current_assessment_is_not_reprocessed __________________",
+          "",
+          "tmp_path = PosixPath('/tmp/pytest-of-hyl/pytest-5774/test_current_assessment_is_not0')",
+          "",
+          "    def test_current_assessment_is_not_reprocessed(tmp_path):",
+          "        case = _case(1)",
+          "        harness = _Harness(tmp_path, [case])",
+          "        try:",
+          "            first = harness.worker().run()",
+          "            calls = list(harness.evidence_calls)",
+          "            second = harness.worker().run()",
+          "    ",
+          "            assert first[\"accepted\"] == 1",
+          ">           assert first[\"result_version\"] == 2",
+          "E           assert 1 == 2",
+          "",
+          "tests/test_security_lifecycle_automation_worker.py:2485: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_current_assessment_is_not_reprocessed",
+          "1 failed in 0.25s"
+        ]
+      },
+      "owner_needles": [
+        "test_current_assessment_is_not_reprocessed"
+      ],
+      "owners_observed": {
+        "test_current_assessment_is_not_reprocessed": true
+      },
+      "product_file": "src/security_lifecycle_automation_worker.py",
+      "restore": {
+        "after_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
+        "before_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 3
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "3cd577296ca882b24ffb03085dc4d942d129649786a2b8d9b0faa84025de03f4",
+        "output_tail": [
+          "......                                                                   [100%]",
+          "6 passed in 0.71s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_scheduler.py::test_bounded_v2_result_rejects_counter_and_outcome_drift"
+      ],
+      "cwd": ".",
+      "description": "accept counter and per-case outcome drift",
+      "id": "M07",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_bounded_v2_result_rejects_counter_and_outcome_drift[change4]",
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_bounded_v2_result_rejects_counter_and_outcome_drift[change5]"
+        ],
+        "output_sha256": "f4ce601de0a3f66698f48f71e4f2702b3ab94eda3ebd42b75bbad404b8d1acdd",
+        "output_tail": [
+          "    ",
+          "        value = _v2_summary(",
+          "            status=\"partial\",",
+          "            reason=\"case_processing_failed\",",
+          "            selected=1,",
+          "            processed=1,",
+          "            failed=1,",
+          "            case_ids=[\"slc_failed\"],",
+          "            case_outcomes={\"slc_failed\": \"failed\"},",
+          "        )",
+          "        value.update(change)",
+          "    ",
+          ">       with pytest.raises(ValueError):",
+          "E       Failed: DID NOT RAISE <class 'ValueError'>",
+          "",
+          "tests/test_security_lifecycle_automation_scheduler.py:1158: Failed",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_bounded_v2_result_rejects_counter_and_outcome_drift[change4]",
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_bounded_v2_result_rejects_counter_and_outcome_drift[change5]",
+          "2 failed, 4 passed in 0.84s"
+        ]
+      },
+      "owner_needles": [
+        "test_bounded_v2_result_rejects_counter_and_outcome_drift"
+      ],
+      "owners_observed": {
+        "test_bounded_v2_result_rejects_counter_and_outcome_drift": true
+      },
+      "product_file": "src/service/security_lifecycle_automation_scheduler.py",
+      "restore": {
+        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 3
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "85a7532b40196fb821e4b3dfb1231181e8e280a2da477abec65674576186c6c1",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.73s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_scheduler.py::test_failed_case_skipped_on_next_real_tick_does_not_record_recovery"
+      ],
+      "cwd": ".",
+      "description": "treat the unchanged failed run as recovered",
+      "id": "M08",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_failed_case_skipped_on_next_real_tick_does_not_record_recovery"
+        ],
+        "output_sha256": "412bfe8d3c8c050670c10e9d297b5fac81598658aad21b9a78a63518b4b390ea",
+        "output_tail": [
+          "            second,",
+          "            now=_NOW,",
+          "        )",
+          "    ",
+          "        runs = telemetry.list_runs(job_name=\"security_lifecycle.automation\", limit=10)",
+          "        assert first[\"case_outcomes\"] == {case_id: \"failed\"}",
+          "        assert second[\"case_outcomes\"] == {case_id: \"skipped_current\"}",
+          ">       assert [(row[\"status\"], row[\"message\"]) for row in runs] == [",
+          "            (\"failed\", \"security_lifecycle_automation_failure\")",
+          "        ]",
+          "E       AssertionError: assert [('succeeded'...ion_failure')] == [('failed', '...ion_failure')]",
+          "E         ",
+          "E         At index 0 diff: ('succeeded', 'security_lifecycle_automation_recovered') != ('failed', 'security_lifecycle_automation_failure')",
+          "E         Left contains one more item: ('failed', 'security_lifecycle_automation_failure')",
+          "E         Use -v to get more diff",
+          "",
+          "tests/test_security_lifecycle_automation_scheduler.py:954: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_failed_case_skipped_on_next_real_tick_does_not_record_recovery",
+          "1 failed in 0.81s"
+        ]
+      },
+      "owner_needles": [
+        "test_failed_case_skipped_on_next_real_tick_does_not_record_recovery"
+      ],
+      "owners_observed": {
+        "test_failed_case_skipped_on_next_real_tick_does_not_record_recovery": true
+      },
+      "product_file": "src/service/security_lifecycle_automation_scheduler.py",
+      "restore": {
+        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 3
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "e596cce97643441f2f2c7ef01ee068b6705ce1e028a07a32ba3bd3b3d35d7353",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.13s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_fact_kernel.py::test_due_failed_retry_requires_explicit_authority_and_preserves_predecessor"
+      ],
+      "cwd": ".",
+      "description": "enable due failed replay without explicit authority",
+      "id": "M09",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_fact_kernel.py::test_due_failed_retry_requires_explicit_authority_and_preserves_predecessor"
+        ],
+        "output_sha256": "599bee2fe53cb42151aad5de66d448ec5600fce86cb93bdfb93041c9d6e32450",
+        "output_tail": [
+          "        parked = _reserve(",
+          "            kernel,",
+          "            case_id,",
+          "            at=\"2026-08-25T02:15:00Z\",",
+          "        )",
+          "        retry = _reserve(",
+          "            kernel,",
+          "            case_id,",
+          "            at=\"2026-08-25T02:15:00Z\",",
+          "            allow_due_failed_retry=True,",
+          "        )",
+          "    ",
+          ">       assert parked.should_execute is False",
+          "E       AssertionError: assert True is False",
+          "E        +  where True = AutomationRunClaim(run_id='slar_a8c1042bc3d63ed86e9e94f800ee9dfe', run_key='lifecycle-automation-execution-v1:a8c1042bc3d63ed86e9e94f800ee9dfec27a0fb792c9ca13f9396daa2786a473', status='running', should_execute=True).should_execute",
+          "",
+          "tests/test_security_lifecycle_fact_kernel.py:1154: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_fact_kernel.py::test_due_failed_retry_requires_explicit_authority_and_preserves_predecessor",
+          "1 failed in 0.17s"
+        ]
+      },
+      "owner_needles": [
+        "test_due_failed_retry_requires_explicit_authority_and_preserves_predecessor"
+      ],
+      "owners_observed": {
+        "test_due_failed_retry_requires_explicit_authority_and_preserves_predecessor": true
+      },
+      "product_file": "src/security_lifecycle_fact_kernel.py",
+      "restore": {
+        "after_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "before_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 4
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "b6c51b401d65a9c69435f8b86cecab752d65ded7188228aab3de3eb010990b60",
+        "output_tail": [
+          "...                                                                      [100%]",
+          "3 passed in 0.14s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor"
+      ],
+      "cwd": ".",
+      "description": "enable attended attempts without explicit authority",
+      "id": "M10",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor[failed]",
+          "FAILED tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor[blocked]",
+          "FAILED tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor[succeeded]"
+        ],
+        "output_sha256": "830dcac2fb63f5e20ca187383b835b8fc975f942ab270b68b95608f76c793005",
+        "output_tail": [
+          "            case_id,",
+          "            at=\"2026-08-25T03:00:00Z\",",
+          "        )",
+          "        attended = _reserve(",
+          "            kernel,",
+          "            case_id,",
+          "            at=\"2026-08-25T03:00:00Z\",",
+          "            allow_new_attempt=True,",
+          "        )",
+          "    ",
+          ">       assert without_authority.should_execute is False",
+          "E       AssertionError: assert True is False",
+          "E        +  where True = AutomationRunClaim(run_id='slar_a8c1042bc3d63ed86e9e94f800ee9dfe', run_key='lifecycle-automation-execution-v1:a8c1042bc3d63ed86e9e94f800ee9dfec27a0fb792c9ca13f9396daa2786a473', status='running', should_execute=True).should_execute",
+          "",
+          "tests/test_security_lifecycle_fact_kernel.py:1218: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor[failed]",
+          "FAILED tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor[blocked]",
+          "FAILED tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor[succeeded]",
+          "3 failed in 0.23s"
+        ]
+      },
+      "owner_needles": [
+        "test_attended_new_attempt_preserves_each_terminal_predecessor"
+      ],
+      "owners_observed": {
+        "test_attended_new_attempt_preserves_each_terminal_predecessor": true
+      },
+      "product_file": "src/security_lifecycle_fact_kernel.py",
+      "restore": {
+        "after_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "before_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 4
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "e596cce97643441f2f2c7ef01ee068b6705ce1e028a07a32ba3bd3b3d35d7353",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.13s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_fact_kernel.py::test_predecessor_cycle_fails_closed_before_creating_attended_attempt"
+      ],
+      "cwd": ".",
+      "description": "remove predecessor-cycle detection",
+      "id": "M11",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_fact_kernel.py::test_predecessor_cycle_fails_closed_before_creating_attended_attempt"
+        ],
+        "output_sha256": "dd09e5a835d511eb40d43587f5ccf0f3c2c6cf46120cdf7ec33a85e43e9661a2",
+        "output_tail": [
+          "            store.get_automation_run(failed.run_id)[\"query_context_json\"]",
+          "        )",
+          "        context[\"predecessor_run_id\"] = failed.run_id",
+          "        store.conn.execute(",
+          "            \"UPDATE security_lifecycle_automation_runs SET query_context_json=? \"",
+          "            \"WHERE run_id=?\",",
+          "            (json.dumps(context, separators=(\",\", \":\"), sort_keys=True), failed.run_id),",
+          "        )",
+          "        store.conn.commit()",
+          "        corrupted_snapshot = store.get_automation_run(failed.run_id)",
+          "    ",
+          ">       with pytest.raises(ValueError, match=\"automation_predecessor_cycle\"):",
+          "E       AssertionError: Regex pattern did not match.",
+          "E        Regex: 'automation_predecessor_cycle'",
+          "E        Input: 'automation_predecessor_chain_limit'",
+          "",
+          "tests/test_security_lifecycle_fact_kernel.py:1669: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_fact_kernel.py::test_predecessor_cycle_fails_closed_before_creating_attended_attempt",
+          "1 failed in 0.22s"
+        ]
+      },
+      "owner_needles": [
+        "test_predecessor_cycle_fails_closed_before_creating_attended_attempt"
+      ],
+      "owners_observed": {
+        "test_predecessor_cycle_fails_closed_before_creating_attended_attempt": true
+      },
+      "product_file": "src/security_lifecycle_fact_kernel.py",
+      "restore": {
+        "after_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "before_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 4
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "f574bf83729b682055fea4742e2eec06cd32be9f8694d8319d5361875228ed00",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.28s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_ibkr_evidence.py::test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity"
+      ],
+      "cwd": ".",
+      "description": "truncate an over-budget IBKR identity plan",
+      "id": "M12",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_ibkr_evidence.py::test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity"
+        ],
+        "output_sha256": "47ce4843c06b88a8d675766bb499dbe61ddfcc27b6c387781c676925b52555d9",
+        "output_tail": [
+          "        overflow_gateway = _Gateway(lock_state=state)",
+          "        overflow = read_ibkr_contract_evidence(",
+          "            gateway=overflow_gateway,",
+          "            gateway_lock=lock,",
+          "            context=_identity_context(aliases=seven_aliases),",
+          "            candidate_tickers=(\"NEXT\",),",
+          "            retrieved_at=\"2026-08-25T01:02:03.123456Z\",",
+          "            max_queries=8,",
+          "        )",
+          "    ",
+          ">       assert overflow.contract_status == \"ambiguous\"",
+          "E       AssertionError: assert 'missing' == 'ambiguous'",
+          "E         ",
+          "E         - ambiguous",
+          "E         + missing",
+          "",
+          "tests/test_security_lifecycle_ibkr_evidence.py:433: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_ibkr_evidence.py::test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity",
+          "1 failed in 0.32s"
+        ]
+      },
+      "owner_needles": [
+        "test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity"
+      ],
+      "owners_observed": {
+        "test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity": true
+      },
+      "product_file": "src/security_lifecycle_ibkr_evidence.py",
+      "restore": {
+        "after_sha256": "206cde93783f63fca5d4dfb7d7e4737aaae0159f4493730bff73f32b56f997c4",
+        "before_sha256": "206cde93783f63fca5d4dfb7d7e4737aaae0159f4493730bff73f32b56f997c4",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 5
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "f574bf83729b682055fea4742e2eec06cd32be9f8694d8319d5361875228ed00",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.28s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_ibkr_evidence.py::test_ibkr_candidate_plan_prioritizes_exact_current_successor_then_aliases"
+      ],
+      "cwd": ".",
+      "description": "place aliases before the current ticker",
+      "id": "M13",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_ibkr_evidence.py::test_ibkr_candidate_plan_prioritizes_exact_current_successor_then_aliases"
+        ],
+        "output_sha256": "43ea1a526032fa3e5494302e95f2b8c7f4d676a3cda8d55a846eeca144c3c15b",
+        "output_tail": [
+          "    ",
+          ">       assert [",
+          "            (int(contract.conId or 0), str(contract.symbol or \"\"))",
+          "            for contract in gateway.requests",
+          "        ] == [",
+          "            (4242, \"\"),",
+          "            (0, \"CUR\"),",
+          "            (0, \"NEXT\"),",
+          "            (0, \"AAA\"),",
+          "            (0, \"ZZZ\"),",
+          "        ]",
+          "E       AssertionError: assert [(4242, ''), ..., (0, 'NEXT')] == [(4242, ''), ...), (0, 'ZZZ')]",
+          "E         ",
+          "E         At index 1 diff: (0, 'AAA') != (0, 'CUR')",
+          "E         Use -v to get more diff",
+          "",
+          "tests/test_security_lifecycle_ibkr_evidence.py:387: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_ibkr_evidence.py::test_ibkr_candidate_plan_prioritizes_exact_current_successor_then_aliases",
+          "1 failed in 0.32s"
+        ]
+      },
+      "owner_needles": [
+        "test_ibkr_candidate_plan_prioritizes_exact_current_successor_then_aliases"
+      ],
+      "owners_observed": {
+        "test_ibkr_candidate_plan_prioritizes_exact_current_successor_then_aliases": true
+      },
+      "product_file": "src/security_lifecycle_ibkr_evidence.py",
+      "restore": {
+        "after_sha256": "206cde93783f63fca5d4dfb7d7e4737aaae0159f4493730bff73f32b56f997c4",
+        "before_sha256": "206cde93783f63fca5d4dfb7d7e4737aaae0159f4493730bff73f32b56f997c4",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 5
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "718af798eb1450a812074f301573c1f498edd3575a2450f85ee649d7e03c3c72",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.45s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_scheduler.py::test_alias_closure_overflow_is_a_per_case_ibkr_ambiguity"
+      ],
+      "cwd": ".",
+      "description": "raise the scheduler alias bound without an owner-visible ambiguity",
+      "id": "M14",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_alias_closure_overflow_is_a_per_case_ibkr_ambiguity"
+        ],
+        "output_sha256": "587912cf68612aabbfd03b075e390dcc3961836b6d295f4aef9aae33be710b74",
+        "output_tail": [
+          "            tickers=(aliases[0], \"GOOD\"),",
+          "        )",
+          "    ",
+          ">       assert hints[aliases[0]] == {",
+          "            \"ticker_aliases\": (aliases[0],),",
+          "            \"ibkr_conids\": (),",
+          "            \"ibkr_identity_blockers\": (\"ibkr_contract_ambiguous\",),",
+          "        }",
+          "E       AssertionError: assert {'ibkr_conids... 'OV05', ...)} == {'ibkr_conids...s': ('OV00',)}",
+          "E         ",
+          "E         Omitting 1 identical items, use -vv to show",
+          "E         Differing items:",
+          "E         {'ibkr_identity_blockers': ()} != {'ibkr_identity_blockers': ('ibkr_contract_ambiguous',)}",
+          "E         {'ticker_aliases': ('OV00', 'OV01', 'OV02', 'OV03', 'OV04', 'OV05', ...)} != {'ticker_aliases': ('OV00',)}",
+          "E         Use -v to get more diff",
+          "",
+          "tests/test_security_lifecycle_automation_scheduler.py:1576: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_alias_closure_overflow_is_a_per_case_ibkr_ambiguity",
+          "1 failed in 0.55s"
+        ]
+      },
+      "owner_needles": [
+        "test_alias_closure_overflow_is_a_per_case_ibkr_ambiguity"
+      ],
+      "owners_observed": {
+        "test_alias_closure_overflow_is_a_per_case_ibkr_ambiguity": true
+      },
+      "product_file": "src/service/security_lifecycle_automation_scheduler.py",
+      "restore": {
+        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 5
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "a132c74d7b7c74739e7571fb00cd0a8be848d9686b936586ce31a93451c151b2",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.29s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_sec_evidence.py::test_repeated_explicit_deadline_extension_is_idempotent_and_selects_latest_row"
+      ],
+      "cwd": ".",
+      "description": "retain the first duplicate deadline row instead of its latest citation",
+      "id": "M15",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_sec_evidence.py::test_repeated_explicit_deadline_extension_is_idempotent_and_selects_latest_row"
+        ],
+        "output_sha256": "8983e2fca456dd0aac173c47c6a551197572a0af89cc8c9fd630e184811fa916",
+        "output_tail": [
+          "        deadline = result.source_deadlines[0]",
+          "        selected = next(",
+          "            row for row in result.evidence if row.evidence_id == deadline.evidence_id",
+          "        )",
+          "        assert (deadline.date, deadline.supersedes_date) == (",
+          "            \"2026-08-30\",",
+          "            \"2026-08-28\",",
+          "        )",
+          ">       assert selected.source_locator[\"accession\"] == \"0001589526-26-000003\"",
+          "E       AssertionError: assert '0001589526-26-000002' == '0001589526-26-000003'",
+          "E         ",
+          "E         - 0001589526-26-000003",
+          "E         ?                    ^",
+          "E         + 0001589526-26-000002",
+          "E         ?                    ^",
+          "",
+          "tests/test_security_lifecycle_sec_evidence.py:951: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_sec_evidence.py::test_repeated_explicit_deadline_extension_is_idempotent_and_selects_latest_row",
+          "1 failed in 0.33s"
+        ]
+      },
+      "owner_needles": [
+        "test_repeated_explicit_deadline_extension_is_idempotent_and_selects_latest_row"
+      ],
+      "owners_observed": {
+        "test_repeated_explicit_deadline_extension_is_idempotent_and_selects_latest_row": true
+      },
+      "product_file": "src/security_lifecycle_sec_evidence.py",
+      "restore": {
+        "after_sha256": "001932d8ef58df3d69a18b98126d7dfedd4df1a62c936938a441019c987ec696",
+        "before_sha256": "001932d8ef58df3d69a18b98126d7dfedd4df1a62c936938a441019c987ec696",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 6
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "a132c74d7b7c74739e7571fb00cd0a8be848d9686b936586ce31a93451c151b2",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.29s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_sec_evidence.py::test_deadline_extension_cannot_move_backward_in_time"
+      ],
+      "cwd": ".",
+      "description": "weaken forward deadline chronology",
+      "id": "M16",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_sec_evidence.py::test_deadline_extension_cannot_move_backward_in_time"
+        ],
+        "output_sha256": "ddcf1ecca6ed704d0064b331041ebe11d7130b165bf1e850a0bb1b0dc7828bc9",
+        "output_tail": [
+          "            (",
+          "                (\"2026-08-20\", \"The termination date remains August 30, 2026.\"),",
+          "                (",
+          "                    \"2026-08-25\",",
+          "                    \"The outside date was extended from August 30, 2026 to \"",
+          "                    \"August 28, 2026.\",",
+          "                ),",
+          "            )",
+          "        )",
+          "    ",
+          ">       assert result.source_deadlines == ()",
+          "E       AssertionError: assert (SecSourceDea...2026-08-30'),) == ()",
+          "E         ",
+          "E         Left contains one more item: SecSourceDeadline(date='2026-08-28', evidence_id='sle_76fda3b33091a81f9adde55721acd376', span_start_byte=0, span_end_b... rule_id='sec.explicit_transaction_termination_date', rule_version='4', kind='extension', supersedes_date='2026-08-30')",
+          "E         Use -v to get more diff",
+          "",
+          "tests/test_security_lifecycle_sec_evidence.py:1289: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_sec_evidence.py::test_deadline_extension_cannot_move_backward_in_time",
+          "1 failed in 0.34s"
+        ]
+      },
+      "owner_needles": [
+        "test_deadline_extension_cannot_move_backward_in_time"
+      ],
+      "owners_observed": {
+        "test_deadline_extension_cannot_move_backward_in_time": true
+      },
+      "product_file": "src/security_lifecycle_sec_evidence.py",
+      "restore": {
+        "after_sha256": "001932d8ef58df3d69a18b98126d7dfedd4df1a62c936938a441019c987ec696",
+        "before_sha256": "001932d8ef58df3d69a18b98126d7dfedd4df1a62c936938a441019c987ec696",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 6
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "3ebe5ac66218e34d1419f463e7afea5a3f3361eac40b592b94b44225769e2dab",
+        "output_tail": [
+          "........                                                                 [100%]",
+          "8 passed in 0.83s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_scheduler.py::test_each_closed_sec_reuse_predicate_independently_forces_refresh"
+      ],
+      "cwd": ".",
+      "description": "reuse SEC material across observation fingerprints",
+      "id": "M17",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_each_closed_sec_reuse_predicate_independently_forces_refresh[observation_fingerprint]"
+        ],
+        "output_sha256": "232dc9bf27870abe0f6561b0b46d82ee6897b5a687931fe33bd2ae20170aaee2",
+        "output_tail": [
+          "        if mutation != \"observation_fingerprint\":",
+          "            prior = replace(",
+          "                prior,",
+          "                evidence=(evidence,),",
+          "                facts=facts,",
+          "                blockers=blockers,",
+          "            )",
+          "    ",
+          "        sec_calls, bundle = _probe_sec_reuse(monkeypatch, case, prior)",
+          "    ",
+          ">       assert sec_calls == [\"2026-06-02T12:00:00Z\"]",
+          "E       AssertionError: assert [] == ['2026-06-02T12:00:00Z']",
+          "E         ",
+          "E         Right contains one more item: '2026-06-02T12:00:00Z'",
+          "E         Use -v to get more diff",
+          "",
+          "tests/test_security_lifecycle_automation_scheduler.py:3119: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_each_closed_sec_reuse_predicate_independently_forces_refresh[observation_fingerprint]",
+          "1 failed, 7 passed in 0.91s"
+        ]
+      },
+      "owner_needles": [
+        "test_each_closed_sec_reuse_predicate_independently_forces_refresh"
+      ],
+      "owners_observed": {
+        "test_each_closed_sec_reuse_predicate_independently_forces_refresh": true
+      },
+      "product_file": "src/service/security_lifecycle_automation_scheduler.py",
+      "restore": {
+        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 7
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "d2d744b6b2df2bbb0d73cb7a43f6675bd03881bc2a2c2a74e54ecf18667789e2",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.25s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_worker.py::test_source_payload_invalid_receives_exactly_one_automatic_retry"
+      ],
+      "cwd": ".",
+      "description": "allow a second source-payload automatic retry",
+      "id": "M18",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_source_payload_invalid_receives_exactly_one_automatic_retry"
+        ],
+        "output_sha256": "a14fd8de74b0c4d6d074a42a555f4ab5e96a312d5a19468419370c991d03fc42",
+        "output_tail": [
+          "    def test_source_payload_invalid_receives_exactly_one_automatic_retry(tmp_path):",
+          "        case = _case(1)",
+          "        harness = _Harness(tmp_path, [case])",
+          "        harness.bundles[case[\"case_id\"]] = ValueError(\"malformed provider content\")",
+          "        try:",
+          "            first = harness.worker().run()",
+          "            harness.now = \"2026-08-25T13:00:00Z\"",
+          "            retry = harness.worker(allow_due_failed_retry=True).run()",
+          "            harness.now = \"2027-08-25T13:00:00Z\"",
+          "            exhausted = harness.worker(allow_due_failed_retry=True).run()",
+          "            runs = _store(harness).list_automation_runs(case[\"case_id\"])",
+          "    ",
+          "            assert first[\"failed\"] == retry[\"failed\"] == 1",
+          ">           assert exhausted[\"skipped_current\"] == 1",
+          "E           assert 0 == 1",
+          "",
+          "tests/test_security_lifecycle_automation_worker.py:2567: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_source_payload_invalid_receives_exactly_one_automatic_retry",
+          "1 failed in 0.29s"
+        ]
+      },
+      "owner_needles": [
+        "test_source_payload_invalid_receives_exactly_one_automatic_retry"
+      ],
+      "owners_observed": {
+        "test_source_payload_invalid_receives_exactly_one_automatic_retry": true
+      },
+      "product_file": "src/security_lifecycle_fact_kernel.py",
+      "restore": {
+        "after_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "before_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 7
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "c91dad03511eb111dba9f317cdb7962c64ec389c7d259de488e167c78aac1b31",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.11s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_config.py::test_absent_settings_resolve_to_the_complete_safe_default"
+      ],
+      "cwd": ".",
+      "description": "enable profile transitions by default",
+      "id": "M19",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_config.py::test_absent_settings_resolve_to_the_complete_safe_default"
+        ],
+        "output_sha256": "6789d6a67b2cfc1ae3e643966eb34314e1049a777033e2d01acdeb6b20ab17cb",
+        "output_tail": [
+          "    ",
+          ">       assert state.config == SecurityLifecycleAutomationConfig(",
+          "            enabled=True,",
+          "            interval_minutes=5,",
+          "            batch_limit=2,",
+          "            apply_profile_transitions=False,",
+          "        )",
+          "E       AssertionError: assert SecurityLifec...nsitions=True) == SecurityLifec...sitions=False)",
+          "E         ",
+          "E         Omitting 3 identical items, use -vv to show",
+          "E         Differing attributes:",
+          "E         ['apply_profile_transitions']",
+          "E         ",
+          "E         Drill down into differing attribute apply_profile_transitions:",
+          "E           apply_profile_transitions: True != False",
+          "",
+          "tests/test_security_lifecycle_automation_config.py:54: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_config.py::test_absent_settings_resolve_to_the_complete_safe_default",
+          "1 failed in 0.13s"
+        ]
+      },
+      "owner_needles": [
+        "test_absent_settings_resolve_to_the_complete_safe_default"
+      ],
+      "owners_observed": {
+        "test_absent_settings_resolve_to_the_complete_safe_default": true
+      },
+      "product_file": "src/service/security_lifecycle_automation_config.py",
+      "restore": {
+        "after_sha256": "48729494b807bfbb5ed64da62cdd44f7806b0759e0b1745940b32c4c44e619f4",
+        "before_sha256": "48729494b807bfbb5ed64da62cdd44f7806b0759e0b1745940b32c4c44e619f4",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 8
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "1ab9905d8b0f34f6d791ff7da4efa2de0f7f3e282a078758cc0496cc0230c0f0",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.63s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_data_scheduler.py::test_malformed_lifecycle_config_disables_analysis_and_mutation"
+      ],
+      "cwd": ".",
+      "description": "grant the transition scheduler unconditional automation authority",
+      "id": "M20",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_data_scheduler.py::test_malformed_lifecycle_config_disables_analysis_and_mutation"
+        ],
+        "output_sha256": "b78337c89a65e92cfd433ce7d7ce2668cd313c8cb1e90d02ccc748c9c691bdaa",
+        "output_tail": [
+          "                \"transition_ids\": [],",
+          "                \"failed_transition_ids\": [],",
+          "            },",
+          "        )",
+          "    ",
+          "        ds.tick_once(_NOW, fire=lambda _source: None)",
+          "    ",
+          "        assert automation_calls == []",
+          "        mutation_allowed = transition_calls[0].pop(\"transition_mutation_allowed\")",
+          "        assert mutation_allowed() is False",
+          ">       assert transition_calls == [{\"now\": _NOW, \"allow_automation_approved\": False}]",
+          "E       AssertionError: assert [{'allow_auto...imezone.utc)}] == [{'allow_auto...imezone.utc)}]",
+          "E         ",
+          "E         At index 0 diff: {'now': datetime.datetime(2026, 6, 11, 12, 0, tzinfo=datetime.timezone.utc), 'allow_automation_approved': True} != {'now': datetime.datetime(2026, 6, 11, 12, 0, tzinfo=datetime.timezone.utc), 'allow_automation_approved': False}",
+          "E         Use -v to get more diff",
+          "",
+          "tests/test_data_scheduler.py:515: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_data_scheduler.py::test_malformed_lifecycle_config_disables_analysis_and_mutation",
+          "1 failed in 0.66s"
+        ]
+      },
+      "owner_needles": [
+        "test_malformed_lifecycle_config_disables_analysis_and_mutation"
+      ],
+      "owners_observed": {
+        "test_malformed_lifecycle_config_disables_analysis_and_mutation": true
+      },
+      "product_file": "src/service/data_scheduler.py",
+      "restore": {
+        "after_sha256": "71a442896002d4d7fb1204da0ce499d9cd9e78f8a86733600258e346cb5a7bc0",
+        "before_sha256": "71a442896002d4d7fb1204da0ce499d9cd9e78f8a86733600258e346cb5a7bc0",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 8
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "c91dad03511eb111dba9f317cdb7962c64ec389c7d259de488e167c78aac1b31",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.11s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_runtime.py::test_progress_registry_follows_the_exact_real_stage_order_and_finishes_cleanly"
+      ],
+      "cwd": ".",
+      "description": "swap the real listing and IBKR stage order",
+      "id": "M21",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_runtime.py::test_progress_registry_follows_the_exact_real_stage_order_and_finishes_cleanly"
+        ],
+        "output_sha256": "0b6e6b023b6d97e75faa5ad1d0704d2af04014d5f1dc348597172254c131e1f6",
+        "output_tail": [
+          "            if current is None or current.current_stage is None:",
+          "                raise ValueError(\"automation_progress_missing\")",
+          "            target_index = _STAGE_INDEX.get(stage)",
+          "            current_index = _STAGE_INDEX[current.current_stage]",
+          "            if target_index is None or target_index <= current_index:",
+          "                raise ValueError(\"automation_progress_stage_order\")",
+          "    ",
+          "            expected_skips = LIFECYCLE_AUTOMATION_STAGE_ORDER[",
+          "                current_index + 1 : target_index",
+          "            ]",
+          "            if requested_skips != expected_skips:",
+          "                if requested_skips:",
+          "                    raise ValueError(\"automation_progress_stage_skip\")",
+          ">               raise ValueError(\"automation_progress_stage_order\")",
+          "E               ValueError: automation_progress_stage_order",
+          "",
+          "src/service/security_lifecycle_automation_runtime.py:177: ValueError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_runtime.py::test_progress_registry_follows_the_exact_real_stage_order_and_finishes_cleanly",
+          "1 failed in 0.13s"
+        ]
+      },
+      "owner_needles": [
+        "test_progress_registry_follows_the_exact_real_stage_order_and_finishes_cleanly"
+      ],
+      "owners_observed": {
+        "test_progress_registry_follows_the_exact_real_stage_order_and_finishes_cleanly": true
+      },
+      "product_file": "src/service/security_lifecycle_automation_runtime.py",
+      "restore": {
+        "after_sha256": "3dba7d07c4da20c96018ee253bc151f4604677daa56bbf8abda5d87efbcb2f77",
+        "before_sha256": "3dba7d07c4da20c96018ee253bc151f4604677daa56bbf8abda5d87efbcb2f77",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 9
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "c91dad03511eb111dba9f317cdb7962c64ec389c7d259de488e167c78aac1b31",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.11s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_runtime.py::test_progress_registry_records_only_explicit_conditional_stage_skips"
+      ],
+      "cwd": ".",
+      "description": "persist a skipped IBKR stage as completed",
+      "id": "M22",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_runtime.py::test_progress_registry_records_only_explicit_conditional_stage_skips"
+        ],
+        "output_sha256": "9e3a50df23a41545a1b8e4544c22d98d938e490f4b5aa90c85c7fde56d103215",
+        "output_tail": [
+          "        registry.advance(request_id=\"request-2\", case_id=\"case-2\", stage=\"sec\")",
+          "        registry.advance(request_id=\"request-2\", case_id=\"case-2\", stage=\"listing\")",
+          "    ",
+          "        without_ibkr = registry.advance(",
+          "            request_id=\"request-2\",",
+          "            case_id=\"case-2\",",
+          "            stage=\"evaluate\",",
+          "            skipped_stages=(\"ibkr\",),",
+          "        )",
+          "        assert without_ibkr.completed_stages == (\"preparing\", \"sec\", \"listing\")",
+          ">       assert without_ibkr.skipped_stages == (\"ibkr\",)",
+          "E       AssertionError: assert () == ('ibkr',)",
+          "E         ",
+          "E         Right contains one more item: 'ibkr'",
+          "E         Use -v to get more diff",
+          "",
+          "tests/test_security_lifecycle_automation_runtime.py:103: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_runtime.py::test_progress_registry_records_only_explicit_conditional_stage_skips",
+          "1 failed in 0.13s"
+        ]
+      },
+      "owner_needles": [
+        "test_progress_registry_records_only_explicit_conditional_stage_skips"
+      ],
+      "owners_observed": {
+        "test_progress_registry_records_only_explicit_conditional_stage_skips": true
+      },
+      "product_file": "src/service/security_lifecycle_automation_runtime.py",
+      "restore": {
+        "after_sha256": "3dba7d07c4da20c96018ee253bc151f4604677daa56bbf8abda5d87efbcb2f77",
+        "before_sha256": "3dba7d07c4da20c96018ee253bc151f4604677daa56bbf8abda5d87efbcb2f77",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 9
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "b4c125af4b1543a46ad5d7304f809764d7a1d2ba46141aa7ff3c23f629f8c253",
+        "output_tail": [
+          "      explore: [Object],",
+          "      portfolio: [Object],",
+          "      system: [Object]",
+          "    }",
+          "  },",
+          "  lng: 'zh-Hant',",
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/LifecycleAutomationApi.test.ts > security lifecycle automation API > rejects an unknown progress stage before it reaches presentation code",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "----\u00b7--",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 6 skipped (7)",
+          "   Start at  21:42:46",
+          "   Duration  881ms (transform 211ms, setup 187ms, import 81ms, tests 13ms, environment 503ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/LifecycleAutomationApi.test.ts",
+        "--reporter=dot",
+        "-t",
+        "rejects an unknown progress stage"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "accept an unknown frontend progress stage",
+      "id": "M23",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/LifecycleAutomationApi.test.ts > security lifecycle automation API > rejects an unknown progress stage before it reaches presentation code",
+          "AssertionError: promise resolved \"{ config_status: 'valid', \u2026(8) }\" instead of rejecting"
+        ],
+        "output_sha256": "838efe28d1dfff953216f96ccd26b7f1caaae5f3ef262af227f39954326cd73b",
+        "output_tail": [
+          "+   },",
+          "+   \"telemetry_status\": \"valid\",",
+          "  }",
+          "",
+          " \u276f src/LifecycleAutomationApi.test.ts:177:5",
+          "    175|         getSecurityLifecycleAutomationStatus: () => Promise<unknown>;",
+          "    176|       }).getSecurityLifecycleAutomationStatus(),",
+          "    177|     ).rejects.toThrow(\"security_lifecycle_automation_contract\");",
+          "       |     ^",
+          "    178|   });",
+          "    179|",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 6 skipped (7)",
+          "   Start at  21:42:48",
+          "   Duration  887ms (transform 212ms, setup 189ms, import 79ms, tests 21ms, environment 496ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "rejects an unknown progress stage"
+      ],
+      "owners_observed": {
+        "rejects an unknown progress stage": true
+      },
+      "product_file": "apps/arkscope-web/src/api.ts",
+      "restore": {
+        "after_sha256": "1b69281c08ac6c696f21747b7bc4c38a66d6eb127511905c0047e45fa7a90237",
+        "before_sha256": "1b69281c08ac6c696f21747b7bc4c38a66d6eb127511905c0047e45fa7a90237",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "3672f3301debbbbe0a4b179b09c2ea9f89b617cdb005ba65af3c5f930c8e3285",
+        "output_tail": [
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps automation status bound to the newest request when responses resolve out of order",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps automation status bound to the newest request when responses resolve out of order",
+          "i18next: languageChanged en",
+          "",
+          "------------stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps automation status bound to the newest request when responses resolve out of order",
+          "i18next: languageChanged en",
+          "",
+          "\u00b7-------------------------------------",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 49 skipped (50)",
+          "   Start at  21:42:49",
+          "   Duration  1.34s (transform 408ms, setup 191ms, import 139ms, tests 419ms, environment 490ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/lifecycle/LifecycleView.test.tsx",
+        "--reporter=dot",
+        "-t",
+        "keeps automation status bound to the newest request"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "allow a stale automation-status response to commit",
+      "id": "M24",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps automation status bound to the newest request when responses resolve out of order",
+          "AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string"
+        ],
+        "output_sha256": "548a52976cdd76b8fc4a78be23ad98fdb45c3e05465c04f76cb282edc894a12f",
+        "output_tail": [
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+          "",
+          " FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps automation status bound to the newest request when responses resolve out of order",
+          "AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string",
+          " \u276f src/lifecycle/LifecycleView.test.tsx:1211:21",
+          "    1209|     expect(document.body.querySelector(",
+          "    1210|       '[data-testid=\"lifecycle-automation-progress\"]',",
+          "    1211|     )?.textContent).toContain(\"Evaluate\");",
+          "       |                     ^",
+          "    1212|   });",
+          "    1213|",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 49 skipped (50)",
+          "   Start at  21:42:50",
+          "   Duration  1.36s (transform 404ms, setup 197ms, import 130ms, tests 433ms, environment 503ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "keeps automation status bound to the newest request"
+      ],
+      "owners_observed": {
+        "keeps automation status bound to the newest request": true
+      },
+      "product_file": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx",
+      "restore": {
+        "after_sha256": "c3babd91c51cbb7ff101e3181b3e64bd920f4a6f93ccd084537d7c72e1ed4bd9",
+        "before_sha256": "c3babd91c51cbb7ff101e3181b3e64bd920f4a6f93ccd084537d7c72e1ed4bd9",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "0da552965f1cad232c7ac540fad900617ac2ccb0b447c0782a31aa706526e3fc",
+        "output_tail": [
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > refreshes only the latest selected case after an attended run completes",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > refreshes only the latest selected case after an attended run completes",
+          "i18next: languageChanged en",
+          "",
+          "-------------stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > refreshes only the latest selected case after an attended run completes",
+          "i18next: languageChanged en",
+          "",
+          "\u00b7------------------------------------",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 49 skipped (50)",
+          "   Start at  21:42:52",
+          "   Duration  1.37s (transform 412ms, setup 189ms, import 136ms, tests 465ms, environment 484ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/lifecycle/LifecycleView.test.tsx",
+        "--reporter=dot",
+        "-t",
+        "refreshes only the latest selected case after an attended run completes"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "refresh the original case after an attended run",
+      "id": "M25",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > refreshes only the latest selected case after an attended run completes",
+          "AssertionError: expected 2 to be 1 // Object.is equality"
+        ],
+        "output_sha256": "5df449514c5dc983f9074925ef70a2c35381ba7c5e1f9517202b5b5c98b2f522",
+        "output_tail": [
+          "",
+          "- 1",
+          "+ 2",
+          "",
+          " \u276f src/lifecycle/LifecycleView.test.tsx:1282:26",
+          "    1280|     const drawer = document.body.querySelector('[role=\"dialog\"]');",
+          "    1281|     expect(apiMocks.runSecurityLifecycleCaseAutomation).toHaveBeenCall\u2026",
+          "    1282|     expect(currentReads).toBe(1);",
+          "       |                          ^",
+          "    1283|     expect(nextReads).toBe(2);",
+          "    1284|     expect(drawer?.textContent).toContain(\"NEXT\");",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 49 skipped (50)",
+          "   Start at  21:42:54",
+          "   Duration  1.37s (transform 391ms, setup 193ms, import 129ms, tests 449ms, environment 500ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "refreshes only the latest selected case after an attended run completes"
+      ],
+      "owners_observed": {
+        "refreshes only the latest selected case after an attended run completes": true
+      },
+      "product_file": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx",
+      "restore": {
+        "after_sha256": "c3babd91c51cbb7ff101e3181b3e64bd920f4a6f93ccd084537d7c72e1ed4bd9",
+        "before_sha256": "c3babd91c51cbb7ff101e3181b3e64bd920f4a6f93ccd084537d7c72e1ed4bd9",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "8b9802636f3c6c66ac7830b34e132b6bf71b7f4efcc69b9606d3873124d0bc85",
+        "output_tail": [
+          "    }",
+          "  },",
+          "  lng: 'zh-Hant',",
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > prioritizes an active incident over a stale successful result",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "stdout | src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > prioritizes an active incident over a stale successful result",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "-\u00b7--",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 3 skipped (4)",
+          "   Start at  21:42:55",
+          "   Duration  1.10s (transform 281ms, setup 182ms, import 240ms, tests 77ms, environment 503ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/settings/DataStorageSection.test.tsx",
+        "--reporter=dot",
+        "-t",
+        "prioritizes an active incident over a stale successful result"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "let stale success outrank an active Settings incident",
+      "id": "M26",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > prioritizes an active incident over a stale successful result",
+          "AssertionError: expected <strong \u2026(1)></strong> to be null"
+        ],
+        "output_sha256": "e851a6359eee332e66286737186e596a53a57c25eac58baddf73f17e8b463bd0",
+        "output_tail": [
+          ">",
+          "  1 \u4ef6\u57f7\u884c\u5931\u6557\u5c1a\u672a\u6062\u5fa9",
+          "</strong>",
+          "",
+          " \u276f src/settings/DataStorageSection.test.tsx:276:70",
+          "    274|",
+          "    275|     expect(host!.textContent).toContain(\"1 \u4ef6\u57f7\u884c\u5931\u6557\u5c1a\u672a\u6062\u5fa9\");",
+          "    276|     expect(host!.querySelector('[data-automation-state=\"success\"]')).t\u2026",
+          "       |                                                                      ^",
+          "    277|   });",
+          "    278|",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 3 skipped (4)",
+          "   Start at  21:42:57",
+          "   Duration  1.10s (transform 268ms, setup 177ms, import 234ms, tests 82ms, environment 506ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "prioritizes an active incident over a stale successful result"
+      ],
+      "owners_observed": {
+        "prioritizes an active incident over a stale successful result": true
+      },
+      "product_file": "apps/arkscope-web/src/settings/DataStorageSection.tsx",
+      "restore": {
+        "after_sha256": "91dd3d14977d65902fac3ce4d1b9bc739020c5e47571c607a3ed49f75be4aa9b",
+        "before_sha256": "91dd3d14977d65902fac3ce4d1b9bc739020c5e47571c607a3ed49f75be4aa9b",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "d2d744b6b2df2bbb0d73cb7a43f6675bd03881bc2a2c2a74e54ecf18667789e2",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.25s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_listing_authority_transport.py::test_listing_budget_accepts_tighter_per_instance_request_limits"
+      ],
+      "cwd": ".",
+      "description": "ignore the per-instance Massive request maximum",
+      "id": "M27",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_listing_authority_transport.py::test_listing_budget_accepts_tighter_per_instance_request_limits"
+        ],
+        "output_sha256": "b3ab29b389778c244acd52120525f13008a02e43960f1e155714b6d43e728162",
+        "output_tail": [
+          "    payload = self._request(",
+          "data_sources/listing_authority_transport.py:239: in _request",
+          "    return self._request_inside_redaction(",
+          "data_sources/listing_authority_transport.py:267: in _request_inside_redaction",
+          "    response = self._session.get(",
+          "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ",
+          "",
+          "self = <tests.test_listing_authority_transport.FakeSession object at 0x7f107cbf0dc0>",
+          "url = 'https://api.massive.com/v3/reference/tickers'",
+          "kwargs = {'allow_redirects': False, 'headers': {'Accept': 'application/json'}, 'params': {'active': 'true', 'apiKey': 'secret-value', 'limit': 2, 'market': 'stocks', ...}, 'stream': True, ...}",
+          "",
+          "    def get(self, url: str, **kwargs: object) -> FakeResponse:",
+          "        self.calls.append({\"url\": url, **kwargs})",
+          ">       response = self.responses.pop(0)",
+          "E       IndexError: pop from empty list",
+          "",
+          "tests/test_listing_authority_transport.py:52: IndexError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_listing_authority_transport.py::test_listing_budget_accepts_tighter_per_instance_request_limits",
+          "1 failed in 0.31s"
+        ]
+      },
+      "owner_needles": [
+        "test_listing_budget_accepts_tighter_per_instance_request_limits"
+      ],
+      "owners_observed": {
+        "test_listing_budget_accepts_tighter_per_instance_request_limits": true
+      },
+      "product_file": "data_sources/listing_authority_transport.py",
+      "restore": {
+        "after_sha256": "80626143e6dfbdca25cbf4d06c71ac880d2d457eee6ce37fa779499c7ed05344",
+        "before_sha256": "80626143e6dfbdca25cbf4d06c71ac880d2d457eee6ce37fa779499c7ed05344",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 11
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "0dff5a7b4f7b627aa5d5ba9609862b0c83a9c34efeac8569b0ff66edb0c0e2d9",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.43s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_scheduler.py::test_canary_case_limit_is_enforced_before_execution"
+      ],
+      "cwd": ".",
+      "description": "expand the canary case limit to production size",
+      "id": "M28",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_canary_case_limit_is_enforced_before_execution"
+        ],
+        "output_sha256": "c9ccebb621f3b9515a2651788252bc4fa70807917345e4ba334f5c9624df7055",
+        "output_tail": [
+          "F                                                                        [100%]",
+          "=================================== FAILURES ===================================",
+          "_____________ test_canary_case_limit_is_enforced_before_execution ______________",
+          "",
+          "    def test_canary_case_limit_is_enforced_before_execution() -> None:",
+          "        from src.service import security_lifecycle_automation_scheduler as scheduler",
+          "    ",
+          ">       with pytest.raises(ValueError, match=\"limit\"):",
+          "E       Failed: DID NOT RAISE <class 'ValueError'>",
+          "",
+          "tests/test_security_lifecycle_automation_scheduler.py:6120: Failed",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_canary_case_limit_is_enforced_before_execution",
+          "1 failed in 0.53s"
+        ]
+      },
+      "owner_needles": [
+        "test_canary_case_limit_is_enforced_before_execution"
+      ],
+      "owners_observed": {
+        "test_canary_case_limit_is_enforced_before_execution": true
+      },
+      "product_file": "src/service/security_lifecycle_automation_scheduler.py",
+      "restore": {
+        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 11
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "ac03dc55bdc1ce87ab5a711fdf5a7d72d345e62c471c4cb4e9de283e03475f14",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.44s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_automation_scheduler.py::test_canary_limits_cross_real_sec_listing_and_ibkr_scheduler_boundaries"
+      ],
+      "cwd": ".",
+      "description": "use production SEC limits inside a canary run",
+      "id": "M29",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_canary_limits_cross_real_sec_listing_and_ibkr_scheduler_boundaries"
+        ],
+        "output_sha256": "85f3091a5d6e79e47dfb9f4f69c44207428c42fff86f1d79f70ad3cf9b4135bd",
+        "output_tail": [
+          "            if refreshed_families is not None:",
+          "                refreshed_families.add(source_family)",
+          "    ",
+          "        emit_stage(\"sec\")",
+          "        retained = _reusable_regulator_material(",
+          "            case,",
+          "            context=context,",
+          "            prior_material=prior_material,",
+          "            at=at,",
+          "        )",
+          "        if retained is None:",
+          "            retained_evidence: tuple[Mapping[str, object], ...] = ()",
+          "            retained_facts: tuple[Mapping[str, object], ...] = ()",
+          ">           budget = SecRequestBudget.lifecycle()",
+          "E           NameError: name 'SecRequestBudget' is not defined",
+          "",
+          "src/service/security_lifecycle_automation_scheduler.py:1308: NameError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_canary_limits_cross_real_sec_listing_and_ibkr_scheduler_boundaries",
+          "1 failed in 0.55s"
+        ]
+      },
+      "owner_needles": [
+        "test_canary_limits_cross_real_sec_listing_and_ibkr_scheduler_boundaries"
+      ],
+      "owners_observed": {
+        "test_canary_limits_cross_real_sec_listing_and_ibkr_scheduler_boundaries": true
+      },
+      "product_file": "src/service/security_lifecycle_automation_scheduler.py",
+      "restore": {
+        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 11
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "7d42ef5504b9f8dea803cd978f146b4a7a910815a154ed9e4e59883957d8862e",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.31s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_news_evidence.py::test_publisher_acquisition_adapter_is_retired_and_has_no_product_caller"
+      ],
+      "cwd": ".",
+      "description": "reactivate the retired publisher acquisition adapter",
+      "id": "M30",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_news_evidence.py::test_publisher_acquisition_adapter_is_retired_and_has_no_product_caller"
+        ],
+        "output_sha256": "4cea2033f0363d2f48d30e49a41a7fcca72011dd0e90d9e9b650d4ace9744073",
+        "output_tail": [
+          "F                                                                        [100%]",
+          "=================================== FAILURES ===================================",
+          "___ test_publisher_acquisition_adapter_is_retired_and_has_no_product_caller ____",
+          "",
+          "    def test_publisher_acquisition_adapter_is_retired_and_has_no_product_caller():",
+          "        import src.security_lifecycle_news_evidence as module",
+          "    ",
+          ">       assert module.ACQUISITION_ADAPTER_STATUS == \"retired\"",
+          "E       AssertionError: assert 'active' == 'retired'",
+          "E         ",
+          "E         - retired",
+          "E         + active",
+          "",
+          "tests/test_security_lifecycle_news_evidence.py:232: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_news_evidence.py::test_publisher_acquisition_adapter_is_retired_and_has_no_product_caller",
+          "1 failed in 0.33s"
+        ]
+      },
+      "owner_needles": [
+        "test_publisher_acquisition_adapter_is_retired_and_has_no_product_caller"
+      ],
+      "owners_observed": {
+        "test_publisher_acquisition_adapter_is_retired_and_has_no_product_caller": true
+      },
+      "product_file": "src/security_lifecycle_news_evidence.py",
+      "restore": {
+        "after_sha256": "149acebec94ad753a17c4a8464c3f161cfe905dd12b3053ac36b029cedf52bc1",
+        "before_sha256": "149acebec94ad753a17c4a8464c3f161cfe905dd12b3053ac36b029cedf52bc1",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 11
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "60c480687222f4071354713ce4275e475436b44a334a40eaa01f0d221712444f",
+        "output_tail": [
+          "      explore: [Object],",
+          "      portfolio: [Object],",
+          "      system: [Object]",
+          "    }",
+          "  },",
+          "  lng: 'zh-Hant',",
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/LifecycleCss.test.ts > lifecycle queue CSS contract > keeps closed manual evidence commands out of layout",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "-\u00b7-",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 2 skipped (3)",
+          "   Start at  21:43:03",
+          "   Duration  284ms (transform 135ms, setup 179ms, import 6ms, tests 3ms, environment 0ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/LifecycleCss.test.ts",
+        "--reporter=dot",
+        "-t",
+        "keeps closed manual evidence commands out of layout"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "render closed manual evidence commands",
+      "id": "M31",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/LifecycleCss.test.ts > lifecycle queue CSS contract > keeps closed manual evidence commands out of layout",
+          "AssertionError: expected '\\n  display: grid;\\n' to match /display:\\s*none/"
+        ],
+        "output_sha256": "5a76ad23fae64a42c6d5f86697c50de9db6978935401e8d557da419b48343e1e",
+        "output_tail": [
+          "\"",
+          "  display: grid;",
+          "\"",
+          "",
+          " \u276f src/LifecycleCss.test.ts:45:7",
+          "     43|     expect(",
+          "     44|       rule(\".lifecycle-manual-supplement:not([open]) > .lifecycle-comm\u2026",
+          "     45|     ).toMatch(/display:\\s*none/);",
+          "       |       ^",
+          "     46|   });",
+          "     47|",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 2 skipped (3)",
+          "   Start at  21:43:04",
+          "   Duration  303ms (transform 144ms, setup 194ms, import 6ms, tests 8ms, environment 0ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "keeps closed manual evidence commands out of layout"
+      ],
+      "owners_observed": {
+        "keeps closed manual evidence commands out of layout": true
+      },
+      "product_file": "apps/arkscope-web/src/styles.css",
+      "restore": {
+        "after_sha256": "61fd1c3cc1b5fed54b6fb18ed8fbbfc4c151caf7acd6e1dcb02b84767dea4efe",
+        "before_sha256": "61fd1c3cc1b5fed54b6fb18ed8fbbfc4c151caf7acd6e1dcb02b84767dea4efe",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 12
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "71006bf9eb6832f8cee9546179a3c10a6f69a1284f730fa14f27fa6d7ab31a2a",
+        "output_tail": [
+          "      explore: [Object],",
+          "      portfolio: [Object],",
+          "      system: [Object]",
+          "    }",
+          "  },",
+          "  lng: 'zh-Hant',",
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/LifecycleCss.test.ts > lifecycle queue CSS contract > keeps closed evidence bodies out of layout",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "--\u00b7",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 2 skipped (3)",
+          "   Start at  21:43:05",
+          "   Duration  301ms (transform 144ms, setup 195ms, import 7ms, tests 3ms, environment 0ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/LifecycleCss.test.ts",
+        "--reporter=dot",
+        "-t",
+        "keeps closed evidence bodies out of layout"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "render closed evidence bodies",
+      "id": "M32",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/LifecycleCss.test.ts > lifecycle queue CSS contract > keeps closed evidence bodies out of layout",
+          "AssertionError: expected '\\n  display: block;\\n' to match /display:\\s*none/"
+        ],
+        "output_sha256": "3a1050d533279fee7e56ae0d46bdd3d645f757c64e9ce2e06bfc901ad2713ede",
+        "output_tail": [
+          "\"",
+          "  display: block;",
+          "\"",
+          "",
+          " \u276f src/LifecycleCss.test.ts:51:7",
+          "     49|     expect(",
+          "     50|       rule(\".lifecycle-evidence-item:not([open]) > .lifecycle-evidence\u2026",
+          "     51|     ).toMatch(/display:\\s*none/);",
+          "       |       ^",
+          "     52|   });",
+          "     53| });",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 2 skipped (3)",
+          "   Start at  21:43:05",
+          "   Duration  309ms (transform 146ms, setup 197ms, import 7ms, tests 6ms, environment 0ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "keeps closed evidence bodies out of layout"
+      ],
+      "owners_observed": {
+        "keeps closed evidence bodies out of layout": true
+      },
+      "product_file": "apps/arkscope-web/src/styles.css",
+      "restore": {
+        "after_sha256": "61fd1c3cc1b5fed54b6fb18ed8fbbfc4c151caf7acd6e1dcb02b84767dea4efe",
+        "before_sha256": "61fd1c3cc1b5fed54b6fb18ed8fbbfc4c151caf7acd6e1dcb02b84767dea4efe",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 12
+    }
+  ],
+  "schema_version": 1
+}
