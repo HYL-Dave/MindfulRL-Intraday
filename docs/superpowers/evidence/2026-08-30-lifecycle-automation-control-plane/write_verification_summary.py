@@ -66,7 +66,36 @@ def _node_manifest(name: str) -> dict[str, object]:
     nodes = tuple(line for line in path.read_text(encoding="utf-8").splitlines() if line)
     if len(nodes) != len(set(nodes)) or nodes != tuple(sorted(nodes)):
         raise ValueError(f"node_manifest:{name}")
-    return {"nodes": len(nodes), "sha256": _sha256(path)}
+    return {
+        "nodes": len(nodes),
+        "sha256": _sha256(path),
+    }
+
+
+def _normalization() -> dict[str, object]:
+    payload = _json("text-normalization.json")
+    rows = payload["artifacts"]
+    if payload["semantic_content_rewritten"] is not False or not rows:
+        raise ValueError("text_normalization")
+    for row in rows:
+        path = PACKET / row["path"]
+        data = path.read_bytes()
+        if _sha256(path) != row["after_sha256"]:
+            raise ValueError(f"text_normalization_hash:{row['path']}")
+        if not data.endswith(b"\n") or data.endswith(b"\n\n"):
+            raise ValueError(f"text_normalization_eof:{row['path']}")
+        if any(line.endswith((b" ", b"\t")) for line in data.splitlines()):
+            raise ValueError(f"text_normalization_trailing:{row['path']}")
+    return {
+        "artifacts": len(rows),
+        "trailing_whitespace_lines_normalized": sum(
+            int(row["trailing_whitespace_lines_normalized"]) for row in rows
+        ),
+        "terminal_empty_lines_removed": sum(
+            int(row["terminal_empty_lines_removed"]) for row in rows
+        ),
+        "semantic_content_rewritten": False,
+    }
 
 
 def build_summary() -> dict[str, object]:
@@ -82,7 +111,12 @@ def build_summary() -> dict[str, object]:
     entries = browser["entries"]
     expected_entries = {
         (surface, locale, viewport)
-        for surface in ("settings", "lifecycle")
+        for surface in (
+            "settings",
+            "lifecycle",
+            "blocker-diagnostic",
+            "finalization-failure",
+        )
         for locale in ("en", "zh-Hant")
         for viewport in ((1440, 900), (390, 844))
     }
@@ -111,6 +145,15 @@ def build_summary() -> dict[str, object]:
         "screenshot_hashes_valid": screenshot_hashes_valid,
         "latest_case_refresh_witnesses": sum(
             bool(row["latest_case_refresh_witness"]) for row in entries
+        ),
+        "t3_operator_detail_witnesses": sum(
+            bool(row["t3_operator_detail_witness"]) for row in entries
+        ),
+        "t3_raw_context_hidden_witnesses": sum(
+            bool(row["t3_raw_context_hidden_witness"]) for row in entries
+        ),
+        "t5_finalization_label_witnesses": sum(
+            bool(row["t5_finalization_label_witness"]) for row in entries
         ),
     }
     typecheck = _read("frontend-typecheck.txt")
@@ -144,13 +187,24 @@ def build_summary() -> dict[str, object]:
         )
     ) or not screenshot_hashes_valid:
         raise ValueError("browser_measurements")
+    if (
+        measured_browser["t3_operator_detail_witnesses"] != 4
+        or measured_browser["t3_raw_context_hidden_witnesses"] != 4
+        or measured_browser["t5_finalization_label_witnesses"] != 4
+    ):
+        raise ValueError("browser_repair_witnesses")
     return {
         "schema_version": 1,
         "repository": {
             "base_commit": repository["base_commit"],
-            "tested_product_head": repository["head_commit"],
+            "tested_product_head": repository["product_head_commit"],
+            "replay_source_head": repository["head_commit"],
             "branch": repository["branch"],
             "changed_paths": len(repository["changed_paths"]),
+            "post_product_paths": repository["post_product_paths"],
+            "post_product_scope_only_packet": repository[
+                "post_product_scope_only_packet"
+            ],
             "merge_commits_since_base": repository["merge_commits_since_base"],
             "schema_authorities_byte_identical": repository[
                 "all_schema_authorities_byte_identical"
@@ -172,6 +226,7 @@ def build_summary() -> dict[str, object]:
             },
             "measured_fixture_browser_operations": measured_browser,
             "implementation_modified_product_code": True,
+            "packet_replay_modified_product_or_test_code": False,
             "packet_replay_scope": "offline_repository_and_fixture_only",
         },
         "gates": {
@@ -193,6 +248,7 @@ def build_summary() -> dict[str, object]:
             "typecheck_passed": "tsc --noEmit" in typecheck,
             "production_build_passed": "built in" in build,
             "i18n_scanner": i18n_payload,
+            "generated_text_normalization": _normalization(),
         },
         "mutations": {
             "count": mutations["mutation_count"],
@@ -218,7 +274,8 @@ def build_summary() -> dict[str, object]:
         "limitations": [
             "The browser matrix uses local fixture responses and does not claim live provider or production database coverage.",
             "Runtime stage progress is intentionally process-memory state and does not survive an App restart; durable incident truth is separate.",
-            "The packet seals only files inside this packet; imported browser fixture helpers are instead bound to exact tested-head Git blobs and SHA-256 values.",
+            "Historical sealed packets are immutable and outside this replay. Only three historical run_browser_matrix.py fixture helpers are imported read-only and bound to exact product-head Git blobs and SHA-256 values; historical run_shadow.py and test_packet_contracts.py are not executed.",
+            "T3 and T5 browser witnesses are local product-shaped fixtures; they prove rendering and closed DTO behavior, not live provider evidence.",
             "The final production one-case canary remains separately authorized Task 13 work.",
         ],
     }

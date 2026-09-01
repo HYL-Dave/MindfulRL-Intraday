@@ -11,13 +11,16 @@
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
-        "color_count": 1858,
+        "color_count": 2009,
         "dynamic_channels": 3
       },
       "request_count": 27,
       "screenshot": "1440x900-en-settings.png",
-      "screenshot_sha256": "ab55ab4d912087e213e2b23ad150e88266c68291d1de1ded686eb221de64e8eb",
+      "screenshot_sha256": "35eb6e7476b36443e8214e9e7e9788cd5d7fe3ed5823f810d843f10ee78b305e",
       "surface": "settings",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": false,
       "viewport": [
         1440,
         900
@@ -42,6 +45,9 @@
       "screenshot": "1440x900-en-lifecycle.png",
       "screenshot_sha256": "168f400d42c348b0c35a693850a01295a9b0cb0c85e595ed77c5ce4ac60ddce5",
       "surface": "lifecycle",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": false,
       "viewport": [
         1440,
         900
@@ -53,19 +59,76 @@
       "clipped_text_count": 0,
       "console_errors": [],
       "external_requests": [],
+      "fixture_write_count": 0,
+      "latest_case_refresh_witness": true,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 2172,
+        "dynamic_channels": 3
+      },
+      "request_count": 23,
+      "screenshot": "1440x900-en-blocker-diagnostic.png",
+      "screenshot_sha256": "9409599b044cd21103a030caf11c4c2de796e71a43025b18cb9f0ed2db43f460",
+      "surface": "blocker-diagnostic",
+      "t3_operator_detail_witness": true,
+      "t3_raw_context_hidden_witness": true,
+      "t5_finalization_label_witness": false,
+      "viewport": [
+        1440,
+        900
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "bfc64b74f3d05dc9b4cffaa5fd35340403460f093bfb6a7d8599fbf9d28d9312"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 0,
+      "latest_case_refresh_witness": true,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 2034,
+        "dynamic_channels": 3
+      },
+      "request_count": 23,
+      "screenshot": "1440x900-en-finalization-failure.png",
+      "screenshot_sha256": "17dc170e7dab61205120b4ad81e435a78b5d668e2d74a5561f183485924ff5c1",
+      "surface": "finalization-failure",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": true,
+      "viewport": [
+        1440,
+        900
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "fc2498ffe4fd0211bdc6c9316613f47c4800fce0f1301808d7a50403db6fc621"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
       "fixture_write_count": 1,
       "latest_case_refresh_witness": true,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
-        "color_count": 1865,
+        "color_count": 2021,
         "dynamic_channels": 3
       },
       "request_count": 27,
       "screenshot": "1440x900-zh-Hant-settings.png",
-      "screenshot_sha256": "059fc5906da37fa86d15718e54838f10f780196432d9da36d3e89e516d86623d",
+      "screenshot_sha256": "fa1fb6957cdf046d71bbc262275a48897a4449a72e307d7a2d4f4b76065a8c59",
       "surface": "settings",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": false,
       "viewport": [
         1440,
         900
@@ -88,8 +151,11 @@
       },
       "request_count": 30,
       "screenshot": "1440x900-zh-Hant-lifecycle.png",
-      "screenshot_sha256": "9c6311e86ade00d022a9c7150fece033c6a5358a02dd7714f4e3684412506d58",
+      "screenshot_sha256": "300ee664fbc3fe08b91ed30abf867f56fe573df0a751b13a1295358cb0592a09",
       "surface": "lifecycle",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": false,
       "viewport": [
         1440,
         900
@@ -101,19 +167,76 @@
       "clipped_text_count": 0,
       "console_errors": [],
       "external_requests": [],
+      "fixture_write_count": 0,
+      "latest_case_refresh_witness": true,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 2211,
+        "dynamic_channels": 3
+      },
+      "request_count": 23,
+      "screenshot": "1440x900-zh-Hant-blocker-diagnostic.png",
+      "screenshot_sha256": "23e094f19631491d319de9d0c0d0307f07a20754bed41631ab17e73869489767",
+      "surface": "blocker-diagnostic",
+      "t3_operator_detail_witness": true,
+      "t3_raw_context_hidden_witness": true,
+      "t5_finalization_label_witness": false,
+      "viewport": [
+        1440,
+        900
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "9e7f749f80b7db393e64843f5cf10031db0feb138610be712d4e76cbabb1c3a9"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 0,
+      "latest_case_refresh_witness": true,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 2056,
+        "dynamic_channels": 3
+      },
+      "request_count": 23,
+      "screenshot": "1440x900-zh-Hant-finalization-failure.png",
+      "screenshot_sha256": "a34d1bb0bf0a70c348d6aa854118b0e0c6440e993aa1d0cad03ec6cdd1b57105",
+      "surface": "finalization-failure",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": true,
+      "viewport": [
+        1440,
+        900
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "7e2d7e7213b2970746c2bcf06b3aa946acd68e39e09be639fb93a4dc908e1237"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
       "fixture_write_count": 1,
       "latest_case_refresh_witness": true,
       "locale": "en",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
-        "color_count": 1516,
+        "color_count": 1633,
         "dynamic_channels": 3
       },
       "request_count": 27,
       "screenshot": "390x844-en-settings.png",
-      "screenshot_sha256": "f800df33070161fcaa88d071e7fbdb22b7cf6d6455cd5770673dbee6f683d2fb",
+      "screenshot_sha256": "eb62c7203d7f60438d1657fdc65eef93e1a52ceac39f433d330b0f808560d5a9",
       "surface": "settings",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": false,
       "viewport": [
         390,
         844
@@ -138,6 +261,9 @@
       "screenshot": "390x844-en-lifecycle.png",
       "screenshot_sha256": "4ebaed331146a0ca0d4c9a5a25319bca892a85cb428311a628a40d94a4c1bfb4",
       "surface": "lifecycle",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": false,
       "viewport": [
         390,
         844
@@ -149,19 +275,76 @@
       "clipped_text_count": 0,
       "console_errors": [],
       "external_requests": [],
+      "fixture_write_count": 0,
+      "latest_case_refresh_witness": true,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 1216,
+        "dynamic_channels": 3
+      },
+      "request_count": 23,
+      "screenshot": "390x844-en-blocker-diagnostic.png",
+      "screenshot_sha256": "4f5f1986bab5924064e81eef4068131e7835020c5caeb526e581fa4c77d1b2f0",
+      "surface": "blocker-diagnostic",
+      "t3_operator_detail_witness": true,
+      "t3_raw_context_hidden_witness": true,
+      "t5_finalization_label_witness": false,
+      "viewport": [
+        390,
+        844
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "0f5911890062cfa59acbed55fc9758e40e7950d62a18e3a04a61ab5753bebb4c"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 0,
+      "latest_case_refresh_witness": true,
+      "locale": "en",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 889,
+        "dynamic_channels": 3
+      },
+      "request_count": 23,
+      "screenshot": "390x844-en-finalization-failure.png",
+      "screenshot_sha256": "92f622c1199957ded89f6aa2c20ef2fccc85b58eb468f06964f72a48e9863181",
+      "surface": "finalization-failure",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": true,
+      "viewport": [
+        390,
+        844
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "93d5496c5c4e243d392b9c6f5c5ef4ea175e02d7c305dda08939a865eb015789"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
       "fixture_write_count": 1,
       "latest_case_refresh_witness": true,
       "locale": "zh-Hant",
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
-        "color_count": 1532,
+        "color_count": 1652,
         "dynamic_channels": 3
       },
       "request_count": 27,
       "screenshot": "390x844-zh-Hant-settings.png",
-      "screenshot_sha256": "66ae47c7cdb63852d15832cc14fff4eed01d94e4f6a8623c046c892ddeb4ff02",
+      "screenshot_sha256": "3179cccecb136ebc967a560356d056683effa2d01395a42e162d4f321e539b65",
       "surface": "settings",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": false,
       "viewport": [
         390,
         844
@@ -186,12 +369,69 @@
       "screenshot": "390x844-zh-Hant-lifecycle.png",
       "screenshot_sha256": "a822bdeafb8dd2258fd22d57707098f62c9bf6b35d8f39c0b9c16f7f3a649c96",
       "surface": "lifecycle",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": false,
       "viewport": [
         390,
         844
       ],
       "viewport_clipped_control_count": 0,
       "visible_text_sha256": "07d8fd71e1445df0167e45334ef654ccd3bd64242d66914225bd67db137153b9"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 0,
+      "latest_case_refresh_witness": true,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 1242,
+        "dynamic_channels": 3
+      },
+      "request_count": 23,
+      "screenshot": "390x844-zh-Hant-blocker-diagnostic.png",
+      "screenshot_sha256": "3ec9899ac47740128d640b8cb28b98b2405ea888d21d5513798498c627d9c962",
+      "surface": "blocker-diagnostic",
+      "t3_operator_detail_witness": true,
+      "t3_raw_context_hidden_witness": true,
+      "t5_finalization_label_witness": false,
+      "viewport": [
+        390,
+        844
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "afb7c3d12024e425cafab866eeb530ad61e3a020659ecab18d736856512708a5"
+    },
+    {
+      "clipped_text_count": 0,
+      "console_errors": [],
+      "external_requests": [],
+      "fixture_write_count": 0,
+      "latest_case_refresh_witness": true,
+      "locale": "zh-Hant",
+      "overlap_count": 0,
+      "page_errors": [],
+      "pixels": {
+        "color_count": 897,
+        "dynamic_channels": 3
+      },
+      "request_count": 23,
+      "screenshot": "390x844-zh-Hant-finalization-failure.png",
+      "screenshot_sha256": "32ec5fc13b49081f9331bf87c7223d47ddc17752df01766c0a8ef071b85eecf0",
+      "surface": "finalization-failure",
+      "t3_operator_detail_witness": false,
+      "t3_raw_context_hidden_witness": false,
+      "t5_finalization_label_witness": true,
+      "viewport": [
+        390,
+        844
+      ],
+      "viewport_clipped_control_count": 0,
+      "visible_text_sha256": "7d5a6fc41c6fa86d87532a6b069b538b2a359ef0a1ce47b9411eacfe074f1f9a"
     }
   ],
   "fixture_only": true,

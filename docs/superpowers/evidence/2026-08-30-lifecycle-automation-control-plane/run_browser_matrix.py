@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 import hashlib
 import importlib.util
 import json
@@ -9,7 +10,7 @@ import os
 from pathlib import Path
 import re
 from types import ModuleType
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 from PIL import Image
 from playwright.sync_api import sync_playwright
@@ -45,6 +46,8 @@ LABELS = {
         "run_case": "Run this case",
         "close": "Close",
         "stage": "Listing directories",
+        "candidate_budget": "9 candidates exceed the IBKR query limit of 8. IBKR was not contacted.",
+        "finalization_failure": "Automatic check finalization failed",
     },
     "zh-Hant": {
         "settings_title": "確定性自動化",
@@ -52,8 +55,14 @@ LABELS = {
         "run_case": "執行此案件",
         "close": "關閉",
         "stage": "上市名錄",
+        "candidate_budget": "9 個候選標的超過 IBKR 查詢上限 8；未聯絡 IBKR。",
+        "finalization_failure": "自動查核最終處理失敗",
     },
 }
+
+DIAGNOSTIC_SURFACES = frozenset({"blocker-diagnostic", "finalization-failure"})
+DIAGNOSTIC_SCENARIO = "conflict-attention"
+RAW_CONTEXT_SENTINEL = "fixture-private-context-must-not-render"
 
 
 def response(route, value: object, status: int = 200) -> None:
@@ -122,6 +131,63 @@ def status_payload(state: dict[str, object]) -> dict[str, object]:
         "active_incident": None,
         "latest_failed_runs": [],
         "current_progress": progress,
+    }
+
+
+def diagnostic_summary(surface: str) -> dict[str, object]:
+    summary = deepcopy(BASE._summary(DIAGNOSTIC_SCENARIO))
+    if surface == "blocker-diagnostic":
+        summary["automation_run_count"] = 1
+    elif surface == "finalization-failure":
+        summary["disposition"] = "exception_required"
+        summary["disposition_reason"] = "automation_finalization_failure"
+        summary["queue_bucket"] = "attention"
+    else:
+        raise ValueError("diagnostic_surface")
+    return summary
+
+
+def diagnostic_detail(surface: str) -> dict[str, object]:
+    detail = deepcopy(BASE._detail(DIAGNOSTIC_SCENARIO))
+    detail.update(diagnostic_summary(surface))
+    if surface == "blocker-diagnostic":
+        detail["automation_runs"] = [{
+            "run_id": "automation-run-budget-fixture",
+            "case_id": detail["case_id"],
+            "mode": "historical",
+            "status": "blocked",
+            "policy_version": "lifecycle-automation-v1",
+            "decision_tier": None,
+            "action_readiness": None,
+            "failure_code": None,
+            "blockers": [{
+                "blocker_code": "market_confirmation_missing",
+                "retryable": True,
+                "operator_detail": {
+                    "code": "candidate_budget_exceeded",
+                    "candidate_count": 9,
+                    "query_limit": 8,
+                    "provider_contacted": False,
+                },
+                "context_json": json.dumps({"private": RAW_CONTEXT_SENTINEL}),
+            }],
+            "created_at": "2026-08-31T01:00:00Z",
+        }]
+    return detail
+
+
+def diagnostic_case_list(surface: str, query: str) -> dict[str, object]:
+    cases = BASE._case_list(parse_qs(query))
+    expected_id = BASE.SCENARIOS[DIAGNOSTIC_SCENARIO]["case_id"]
+    cases = [
+        diagnostic_summary(surface) if row["case_id"] == expected_id else row
+        for row in cases
+    ]
+    return {
+        "cases": cases,
+        "count": len(cases),
+        "queue_counts": {"attention": 1, "monitoring": 1, "history": 3},
+        "data_integrity": {"source_missing_count": 0},
     }
 
 
@@ -293,6 +359,16 @@ def run_entry(browser, *, surface: str, locale: str, width: int, height: int) ->
         if request.method != "GET":
             response(route, {"detail": {"code": "fixture_write_forbidden"}}, 405)
             return
+        if surface in DIAGNOSTIC_SURFACES:
+            if parsed.path == "/security-lifecycle/cases":
+                response(route, diagnostic_case_list(surface, parsed.query))
+                return
+            if parsed.path == (
+                "/security-lifecycle/cases/"
+                + BASE.SCENARIOS[DIAGNOSTIC_SCENARIO]["case_id"]
+            ):
+                response(route, diagnostic_detail(surface))
+                return
         BASE._api_response(route, parsed.path, parsed.query, locale)
 
     page.route("**/*", handler)
@@ -313,7 +389,7 @@ def run_entry(browser, *, surface: str, locale: str, width: int, height: int) ->
         page.get_by_role("button", name=labels["run_due"], exact=True).click()
         page.wait_for_timeout(250)
         assert any(row["path"] == "/security-lifecycle/automation/run" for row in state["writes"])
-    else:
+    elif surface == "lifecycle":
         BASE._navigate(page, "active", locale)
         drawer = page.locator(".ui-drawer")
         drawer.get_by_role("button", name=labels["run_case"], exact=True).click()
@@ -326,6 +402,20 @@ def run_entry(browser, *, surface: str, locale: str, width: int, height: int) ->
         assert "TERM" in drawer.inner_text()
         assert "HAPN" not in drawer.locator("h2,h3").first.inner_text()
         assert any(row["path"].endswith("/automation/run") for row in state["writes"])
+    else:
+        BASE._navigate(page, DIAGNOSTIC_SCENARIO, locale)
+        drawer = page.locator(".ui-drawer")
+        drawer.wait_for(state="visible")
+        expected = (
+            labels["candidate_budget"]
+            if surface == "blocker-diagnostic"
+            else labels["finalization_failure"]
+        )
+        target = drawer.get_by_text(expected, exact=False)
+        target.wait_for(state="attached")
+        if surface == "blocker-diagnostic":
+            drawer.locator("details.lifecycle-audit-details > summary").click()
+        target.wait_for(state="visible")
 
     page.wait_for_timeout(200)
     measured = geometry(page)
@@ -359,6 +449,16 @@ def run_entry(browser, *, surface: str, locale: str, width: int, height: int) ->
         "viewport_clipped_control_count": 0,
         "pixels": pixels,
         "latest_case_refresh_witness": surface != "lifecycle" or "TERM" in body,
+        "t3_operator_detail_witness": (
+            surface == "blocker-diagnostic" and labels["candidate_budget"] in body
+        ),
+        "t3_raw_context_hidden_witness": (
+            surface == "blocker-diagnostic" and RAW_CONTEXT_SENTINEL not in body
+        ),
+        "t5_finalization_label_witness": (
+            surface == "finalization-failure"
+            and labels["finalization_failure"] in body
+        ),
     }
     context.close()
     return result
@@ -375,7 +475,12 @@ def main() -> int:
             run_entry(browser, surface=surface, locale=locale, width=width, height=height)
             for width, height in VIEWPORTS
             for locale in LOCALES
-            for surface in ("settings", "lifecycle")
+            for surface in (
+                "settings",
+                "lifecycle",
+                "blocker-diagnostic",
+                "finalization-failure",
+            )
         ]
         browser.close()
     payload = {

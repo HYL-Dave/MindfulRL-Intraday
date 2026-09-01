@@ -5,6 +5,8 @@ export PYTHONDONTWRITEBYTECODE=1
 export ARKSCOPE_DISABLE_SCHEDULER=1
 ROOT="$(git rev-parse --show-toplevel)"
 PACKET="$ROOT/docs/superpowers/evidence/2026-08-30-lifecycle-automation-control-plane"
+BASE="947a51fca2f078e750bef64cad4817682141ea8f"
+PRODUCT_HEAD="6c20cd557715eab5f0abaafe2b923313ee38ed33"
 VITE_PID=""
 
 cleanup() {
@@ -16,7 +18,29 @@ cleanup() {
 trap cleanup EXIT
 
 cd "$ROOT"
-git merge-base --is-ancestor 947a51fca2f078e750bef64cad4817682141ea8f HEAD
+git merge-base --is-ancestor "$BASE" HEAD
+python "$PACKET/assert_packet_scope.py" --expected-head "$PRODUCT_HEAD"
+
+rm -f \
+  "$PACKET/backend-focused.txt" \
+  "$PACKET/backend-full-a.txt" \
+  "$PACKET/backend-full-b.txt" \
+  "$PACKET/browser-run.txt" \
+  "$PACKET/frontend-build.txt" \
+  "$PACKET/frontend-i18n-literals.txt" \
+  "$PACKET/frontend-test-a.txt" \
+  "$PACKET/frontend-test-b.txt" \
+  "$PACKET/frontend-typecheck.txt" \
+  "$PACKET/full-nodes-a.txt" \
+  "$PACKET/full-nodes-b.txt" \
+  "$PACKET/mutation-ledger.json" \
+  "$PACKET/repository-binding.json" \
+  "$PACKET/secret-scan.json" \
+  "$PACKET/text-normalization.json" \
+  "$PACKET/verification-summary.json" \
+  "$PACKET/vite.txt" \
+  "$PACKET/SHA256SUMS"
+rm -f "$PACKET"/browser/*.png "$PACKET/browser/matrix.json"
 
 FOCUSED=(
   tests/test_api.py
@@ -78,6 +102,9 @@ wait "$VITE_PID" 2>/dev/null || true
 VITE_PID=""
 
 find "$PACKET" -type d -name __pycache__ -prune -exec rm -rf {} +
+python "$PACKET/normalize_generated_text.py"
+git diff --check "$BASE" --
+python "$PACKET/assert_packet_scope.py" --expected-head "$PRODUCT_HEAD"
 python "$PACKET/capture_repository_binding.py"
 python "$PACKET/write_verification_summary.py"
 python "$PACKET/scan_packet_secrets.py"

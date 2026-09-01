@@ -2,8 +2,8 @@
   "all_files_restored_byte_identically": true,
   "all_mutations_killed": true,
   "credential_environment_removed_from_children": true,
-  "killed_count": 32,
-  "mutation_count": 32,
+  "killed_count": 50,
+  "mutation_count": 50,
   "mutations": [
     {
       "baseline": {
@@ -33,7 +33,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_runtime.py::test_execution_lock_is_exclusive_and_issues_a_bounded_owner_id"
         ],
-        "output_sha256": "6a4f3da7ca1c536febb4a6046d7feb74c90f2dfc08d15338b7d4c4bf1bd4dbd6",
+        "output_sha256": "74c3d7fb938e1a5ed5fae049c7f784020e4d5cbc93dc23feaca269590829a3f8",
         "output_tail": [
           "    ):",
           "        from src.service.security_lifecycle_automation_runtime import (",
@@ -100,7 +100,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_runtime.py::test_progress_registry_records_only_explicit_conditional_stage_skips"
         ],
-        "output_sha256": "3928231f59c81ee488d9a30cd7d4260a5276af3800ee8677c79d150a440a2824",
+        "output_sha256": "8529999ff7a58455e6601436cb06a0ce169557839a6e331850081def92f6055b",
         "output_tail": [
           "                raise ValueError(\"automation_progress_stage_order\")",
           "    ",
@@ -143,10 +143,10 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "f574bf83729b682055fea4742e2eec06cd32be9f8694d8319d5361875228ed00",
+        "output_sha256": "d907fec0e0445cfe67a7272e864304e81194b234052d6bdfcb6ec87c0b123e62",
         "output_tail": [
           ".                                                                        [100%]",
-          "1 passed in 0.28s"
+          "1 passed in 0.24s"
         ]
       },
       "command": [
@@ -167,7 +167,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_worker.py::test_human_accepted_automation_assessment_completes_pending_finalization"
         ],
-        "output_sha256": "16f7e2e792623c8f9b2d68573c2171bf1a211af157851e8032b39adbc77fa301",
+        "output_sha256": "afce0a6cf1ba0dcf65099b2e341f1f3475eec5616686cd287a16cea8c8775f62",
         "output_tail": [
           "                at=\"2026-08-25T12:01:00Z\",",
           "            )",
@@ -185,10 +185,10 @@
           ">           assert recovered[\"accepted\"] == 1",
           "E           assert 0 == 1",
           "",
-          "tests/test_security_lifecycle_automation_worker.py:1439: AssertionError",
+          "tests/test_security_lifecycle_automation_worker.py:1526: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_worker.py::test_human_accepted_automation_assessment_completes_pending_finalization",
-          "1 failed in 0.28s"
+          "1 failed in 0.29s"
         ]
       },
       "owner_needles": [
@@ -199,8 +199,8 @@
       },
       "product_file": "src/security_lifecycle_automation_worker.py",
       "restore": {
-        "after_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
-        "before_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
+        "after_sha256": "3eb199dbd7b74d2ad57210087220ef527bf927b8936e70245ccc3783f458e8cc",
+        "before_sha256": "3eb199dbd7b74d2ad57210087220ef527bf927b8936e70245ccc3783f458e8cc",
         "byte_identical": true
       },
       "runner_error": null,
@@ -234,7 +234,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_worker.py::test_transition_approval_rereads_mutation_authority_at_boundary"
         ],
-        "output_sha256": "6e63a62935ff27d2cb63baef73b828b949f19e37ca4997c4eb8eb9d5c089e167",
+        "output_sha256": "2ff8cfb9a023bce6b2f90ae38eb8cc353f880f1e6b07af9ff49333b8deb17755",
         "output_tail": [
           "            authority[\"allowed\"] = False",
           "            return result",
@@ -255,7 +255,7 @@
           "tests/test_security_lifecycle_automation_worker.py:1306: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_worker.py::test_transition_approval_rereads_mutation_authority_at_boundary",
-          "1 failed in 0.28s"
+          "1 failed in 0.29s"
         ]
       },
       "owner_needles": [
@@ -266,8 +266,8 @@
       },
       "product_file": "src/security_lifecycle_automation_worker.py",
       "restore": {
-        "after_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
-        "before_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
+        "after_sha256": "3eb199dbd7b74d2ad57210087220ef527bf927b8936e70245ccc3783f458e8cc",
+        "before_sha256": "3eb199dbd7b74d2ad57210087220ef527bf927b8936e70245ccc3783f458e8cc",
         "byte_identical": true
       },
       "runner_error": null,
@@ -301,7 +301,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_worker.py::test_terminal_finalization_failure_uses_bounded_backoff_without_hot_loop"
         ],
-        "output_sha256": "e33be55e23d757ab155090bdfd90aab78dafe4e27efb87f7e2eecb30b04109b0",
+        "output_sha256": "8278450be702a92cc9ae67223f3741f5538802ae648ddee6be7980333934e1b4",
         "output_tail": [
           "                assert result[\"failed\"] == 1",
           "                assert result[\"processed\"] == 1",
@@ -319,7 +319,7 @@
           ">               assert immediate[\"processed\"] == 0",
           "E               assert 1 == 0",
           "",
-          "tests/test_security_lifecycle_automation_worker.py:1503: AssertionError",
+          "tests/test_security_lifecycle_automation_worker.py:1590: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_worker.py::test_terminal_finalization_failure_uses_bounded_backoff_without_hot_loop",
           "1 failed in 0.29s"
@@ -333,8 +333,8 @@
       },
       "product_file": "src/security_lifecycle_fact_kernel.py",
       "restore": {
-        "after_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
-        "before_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "after_sha256": "c6038f9fcc18505d3d7f74aca9ef0d15d45bce6f26c496fdd06d3a54f1bad71d",
+        "before_sha256": "c6038f9fcc18505d3d7f74aca9ef0d15d45bce6f26c496fdd06d3a54f1bad71d",
         "byte_identical": true
       },
       "runner_error": null,
@@ -368,11 +368,11 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_worker.py::test_current_assessment_is_not_reprocessed"
         ],
-        "output_sha256": "f1bf9c5d7f17f77f5286f40b4aeed625299ddbc4bee68b5e323b1cf23a89d26d",
+        "output_sha256": "9f0a7717d0e7d0fe9488e222ca4ee1dbbe4461dd49168ba2add47b84014dbf34",
         "output_tail": [
           "__________________ test_current_assessment_is_not_reprocessed __________________",
           "",
-          "tmp_path = PosixPath('/tmp/pytest-of-hyl/pytest-5774/test_current_assessment_is_not0')",
+          "tmp_path = PosixPath('/tmp/pytest-of-hyl/pytest-6663/test_current_assessment_is_not0')",
           "",
           "    def test_current_assessment_is_not_reprocessed(tmp_path):",
           "        case = _case(1)",
@@ -386,10 +386,10 @@
           ">           assert first[\"result_version\"] == 2",
           "E           assert 1 == 2",
           "",
-          "tests/test_security_lifecycle_automation_worker.py:2485: AssertionError",
+          "tests/test_security_lifecycle_automation_worker.py:2990: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_worker.py::test_current_assessment_is_not_reprocessed",
-          "1 failed in 0.25s"
+          "1 failed in 0.30s"
         ]
       },
       "owner_needles": [
@@ -400,8 +400,8 @@
       },
       "product_file": "src/security_lifecycle_automation_worker.py",
       "restore": {
-        "after_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
-        "before_sha256": "3dae606335a4fcb7f30681d73d387373e03a7204ae7bc2d291cd02532b29b95e",
+        "after_sha256": "3eb199dbd7b74d2ad57210087220ef527bf927b8936e70245ccc3783f458e8cc",
+        "before_sha256": "3eb199dbd7b74d2ad57210087220ef527bf927b8936e70245ccc3783f458e8cc",
         "byte_identical": true
       },
       "runner_error": null,
@@ -436,7 +436,7 @@
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_bounded_v2_result_rejects_counter_and_outcome_drift[change4]",
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_bounded_v2_result_rejects_counter_and_outcome_drift[change5]"
         ],
-        "output_sha256": "f4ce601de0a3f66698f48f71e4f2702b3ab94eda3ebd42b75bbad404b8d1acdd",
+        "output_sha256": "39e832ff4591dc64714844a998b9a74632659e6cb970555290fd65f3129ad2fd",
         "output_tail": [
           "    ",
           "        value = _v2_summary(",
@@ -457,7 +457,7 @@
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_bounded_v2_result_rejects_counter_and_outcome_drift[change4]",
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_bounded_v2_result_rejects_counter_and_outcome_drift[change5]",
-          "2 failed, 4 passed in 0.84s"
+          "2 failed, 4 passed in 0.83s"
         ]
       },
       "owner_needles": [
@@ -468,8 +468,8 @@
       },
       "product_file": "src/service/security_lifecycle_automation_scheduler.py",
       "restore": {
-        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
-        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "after_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
+        "before_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
         "byte_identical": true
       },
       "runner_error": null,
@@ -479,10 +479,10 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "85a7532b40196fb821e4b3dfb1231181e8e280a2da477abec65674576186c6c1",
+        "output_sha256": "6262dd4ae1e1610248aa7a1d90c86e6b7861110a1a434aeede186690d3652770",
         "output_tail": [
           ".                                                                        [100%]",
-          "1 passed in 0.73s"
+          "1 passed in 0.72s"
         ]
       },
       "command": [
@@ -503,7 +503,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_failed_case_skipped_on_next_real_tick_does_not_record_recovery"
         ],
-        "output_sha256": "412bfe8d3c8c050670c10e9d297b5fac81598658aad21b9a78a63518b4b390ea",
+        "output_sha256": "e7b1dd3ec11aae24c5f7b981c08a437c5cf55049e170c6e05b0b316b5d58a3f2",
         "output_tail": [
           "            second,",
           "            now=_NOW,",
@@ -524,7 +524,7 @@
           "tests/test_security_lifecycle_automation_scheduler.py:954: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_failed_case_skipped_on_next_real_tick_does_not_record_recovery",
-          "1 failed in 0.81s"
+          "1 failed in 0.79s"
         ]
       },
       "owner_needles": [
@@ -535,8 +535,8 @@
       },
       "product_file": "src/service/security_lifecycle_automation_scheduler.py",
       "restore": {
-        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
-        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "after_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
+        "before_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
         "byte_identical": true
       },
       "runner_error": null,
@@ -602,8 +602,8 @@
       },
       "product_file": "src/security_lifecycle_fact_kernel.py",
       "restore": {
-        "after_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
-        "before_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "after_sha256": "c6038f9fcc18505d3d7f74aca9ef0d15d45bce6f26c496fdd06d3a54f1bad71d",
+        "before_sha256": "c6038f9fcc18505d3d7f74aca9ef0d15d45bce6f26c496fdd06d3a54f1bad71d",
         "byte_identical": true
       },
       "runner_error": null,
@@ -639,7 +639,7 @@
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor[blocked]",
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor[succeeded]"
         ],
-        "output_sha256": "830dcac2fb63f5e20ca187383b835b8fc975f942ab270b68b95608f76c793005",
+        "output_sha256": "7107ed5e05038cb1ed320b2a6628af5d93d205bacb1bdfad54e3aceceaf3f7a0",
         "output_tail": [
           "            case_id,",
           "            at=\"2026-08-25T03:00:00Z\",",
@@ -660,7 +660,7 @@
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor[failed]",
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor[blocked]",
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_attended_new_attempt_preserves_each_terminal_predecessor[succeeded]",
-          "3 failed in 0.23s"
+          "3 failed in 0.24s"
         ]
       },
       "owner_needles": [
@@ -671,8 +671,8 @@
       },
       "product_file": "src/security_lifecycle_fact_kernel.py",
       "restore": {
-        "after_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
-        "before_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "after_sha256": "c6038f9fcc18505d3d7f74aca9ef0d15d45bce6f26c496fdd06d3a54f1bad71d",
+        "before_sha256": "c6038f9fcc18505d3d7f74aca9ef0d15d45bce6f26c496fdd06d3a54f1bad71d",
         "byte_identical": true
       },
       "runner_error": null,
@@ -706,7 +706,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_predecessor_cycle_fails_closed_before_creating_attended_attempt"
         ],
-        "output_sha256": "dd09e5a835d511eb40d43587f5ccf0f3c2c6cf46120cdf7ec33a85e43e9661a2",
+        "output_sha256": "baab76ac2d3a0364a332c1a51afc99490ed381a2fad5db54ec68b0e2d7ad188c",
         "output_tail": [
           "            store.get_automation_run(failed.run_id)[\"query_context_json\"]",
           "        )",
@@ -724,7 +724,7 @@
           "E        Regex: 'automation_predecessor_cycle'",
           "E        Input: 'automation_predecessor_chain_limit'",
           "",
-          "tests/test_security_lifecycle_fact_kernel.py:1669: AssertionError",
+          "tests/test_security_lifecycle_fact_kernel.py:1997: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_fact_kernel.py::test_predecessor_cycle_fails_closed_before_creating_attended_attempt",
           "1 failed in 0.22s"
@@ -738,8 +738,8 @@
       },
       "product_file": "src/security_lifecycle_fact_kernel.py",
       "restore": {
-        "after_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
-        "before_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "after_sha256": "c6038f9fcc18505d3d7f74aca9ef0d15d45bce6f26c496fdd06d3a54f1bad71d",
+        "before_sha256": "c6038f9fcc18505d3d7f74aca9ef0d15d45bce6f26c496fdd06d3a54f1bad71d",
         "byte_identical": true
       },
       "runner_error": null,
@@ -762,7 +762,7 @@
         "-q",
         "-p",
         "no:cacheprovider",
-        "tests/test_security_lifecycle_ibkr_evidence.py::test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity"
+        "tests/test_security_lifecycle_ibkr_evidence.py::test_budget_overflow_records_candidate_budget_exceeded_context"
       ],
       "cwd": ".",
       "description": "truncate an over-budget IBKR identity plan",
@@ -771,9 +771,9 @@
       "mutant": {
         "exit_code": 1,
         "failure_lines": [
-          "FAILED tests/test_security_lifecycle_ibkr_evidence.py::test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity"
+          "FAILED tests/test_security_lifecycle_ibkr_evidence.py::test_budget_overflow_records_candidate_budget_exceeded_context"
         ],
-        "output_sha256": "47ce4843c06b88a8d675766bb499dbe61ddfcc27b6c387781c676925b52555d9",
+        "output_sha256": "b428fefe3d5162d0e3cd470bf986370c2c91840575db78c40836fffc62445da6",
         "output_tail": [
           "        overflow_gateway = _Gateway(lock_state=state)",
           "        overflow = read_ibkr_contract_evidence(",
@@ -785,28 +785,28 @@
           "            max_queries=8,",
           "        )",
           "    ",
-          ">       assert overflow.contract_status == \"ambiguous\"",
-          "E       AssertionError: assert 'missing' == 'ambiguous'",
+          ">       assert overflow.contract_status == \"unqueried\"",
+          "E       AssertionError: assert 'missing' == 'unqueried'",
           "E         ",
-          "E         - ambiguous",
+          "E         - unqueried",
           "E         + missing",
           "",
-          "tests/test_security_lifecycle_ibkr_evidence.py:433: AssertionError",
+          "tests/test_security_lifecycle_ibkr_evidence.py:437: AssertionError",
           "=========================== short test summary info ============================",
-          "FAILED tests/test_security_lifecycle_ibkr_evidence.py::test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity",
-          "1 failed in 0.32s"
+          "FAILED tests/test_security_lifecycle_ibkr_evidence.py::test_budget_overflow_records_candidate_budget_exceeded_context",
+          "1 failed in 0.31s"
         ]
       },
       "owner_needles": [
-        "test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity"
+        "test_budget_overflow_records_candidate_budget_exceeded_context"
       ],
       "owners_observed": {
-        "test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity": true
+        "test_budget_overflow_records_candidate_budget_exceeded_context": true
       },
       "product_file": "src/security_lifecycle_ibkr_evidence.py",
       "restore": {
-        "after_sha256": "206cde93783f63fca5d4dfb7d7e4737aaae0159f4493730bff73f32b56f997c4",
-        "before_sha256": "206cde93783f63fca5d4dfb7d7e4737aaae0159f4493730bff73f32b56f997c4",
+        "after_sha256": "dfeeb5e4a1445a1e9e02d913d39896cf6388ab5cbc6f10ae03a372ac2cf40cd2",
+        "before_sha256": "dfeeb5e4a1445a1e9e02d913d39896cf6388ab5cbc6f10ae03a372ac2cf40cd2",
         "byte_identical": true
       },
       "runner_error": null,
@@ -872,8 +872,8 @@
       },
       "product_file": "src/security_lifecycle_ibkr_evidence.py",
       "restore": {
-        "after_sha256": "206cde93783f63fca5d4dfb7d7e4737aaae0159f4493730bff73f32b56f997c4",
-        "before_sha256": "206cde93783f63fca5d4dfb7d7e4737aaae0159f4493730bff73f32b56f997c4",
+        "after_sha256": "dfeeb5e4a1445a1e9e02d913d39896cf6388ab5cbc6f10ae03a372ac2cf40cd2",
+        "before_sha256": "dfeeb5e4a1445a1e9e02d913d39896cf6388ab5cbc6f10ae03a372ac2cf40cd2",
         "byte_identical": true
       },
       "runner_error": null,
@@ -883,10 +883,10 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "718af798eb1450a812074f301573c1f498edd3575a2450f85ee649d7e03c3c72",
+        "output_sha256": "acb50bc88917f57929611d63c707e0ccd387dae970fefba6e9100a81f12eba7b",
         "output_tail": [
           ".                                                                        [100%]",
-          "1 passed in 0.45s"
+          "1 passed in 0.46s"
         ]
       },
       "command": [
@@ -907,7 +907,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_alias_closure_overflow_is_a_per_case_ibkr_ambiguity"
         ],
-        "output_sha256": "587912cf68612aabbfd03b075e390dcc3961836b6d295f4aef9aae33be710b74",
+        "output_sha256": "c78b254f82fbf88641f9841bdc7e968c58a7f13fd21f6264882a6fe781818fc7",
         "output_tail": [
           "            tickers=(aliases[0], \"GOOD\"),",
           "        )",
@@ -928,7 +928,7 @@
           "tests/test_security_lifecycle_automation_scheduler.py:1576: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_alias_closure_overflow_is_a_per_case_ibkr_ambiguity",
-          "1 failed in 0.55s"
+          "1 failed in 0.53s"
         ]
       },
       "owner_needles": [
@@ -939,8 +939,8 @@
       },
       "product_file": "src/service/security_lifecycle_automation_scheduler.py",
       "restore": {
-        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
-        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "after_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
+        "before_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
         "byte_identical": true
       },
       "runner_error": null,
@@ -1041,7 +1041,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_sec_evidence.py::test_deadline_extension_cannot_move_backward_in_time"
         ],
-        "output_sha256": "ddcf1ecca6ed704d0064b331041ebe11d7130b165bf1e850a0bb1b0dc7828bc9",
+        "output_sha256": "8b753d992eb9da23f15da69ff912c4b571f737ff1ec6747d54b22c3cff168b69",
         "output_tail": [
           "            (",
           "                (\"2026-08-20\", \"The termination date remains August 30, 2026.\"),",
@@ -1062,7 +1062,7 @@
           "tests/test_security_lifecycle_sec_evidence.py:1289: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_sec_evidence.py::test_deadline_extension_cannot_move_backward_in_time",
-          "1 failed in 0.34s"
+          "1 failed in 0.33s"
         ]
       },
       "owner_needles": [
@@ -1084,10 +1084,10 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "3ebe5ac66218e34d1419f463e7afea5a3f3361eac40b592b94b44225769e2dab",
+        "output_sha256": "0cf840cd50bac5448426365b1b72854164420482732f28c1e3a74dac44b1e0d9",
         "output_tail": [
           "........                                                                 [100%]",
-          "8 passed in 0.83s"
+          "8 passed in 0.84s"
         ]
       },
       "command": [
@@ -1108,7 +1108,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_each_closed_sec_reuse_predicate_independently_forces_refresh[observation_fingerprint]"
         ],
-        "output_sha256": "232dc9bf27870abe0f6561b0b46d82ee6897b5a687931fe33bd2ae20170aaee2",
+        "output_sha256": "ca3b21d65b6691ddd5418342a402578530594db0d358d4522c51d6d63f95b4d7",
         "output_tail": [
           "        if mutation != \"observation_fingerprint\":",
           "            prior = replace(",
@@ -1126,7 +1126,7 @@
           "E         Right contains one more item: '2026-06-02T12:00:00Z'",
           "E         Use -v to get more diff",
           "",
-          "tests/test_security_lifecycle_automation_scheduler.py:3119: AssertionError",
+          "tests/test_security_lifecycle_automation_scheduler.py:3459: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_each_closed_sec_reuse_predicate_independently_forces_refresh[observation_fingerprint]",
           "1 failed, 7 passed in 0.91s"
@@ -1140,8 +1140,8 @@
       },
       "product_file": "src/service/security_lifecycle_automation_scheduler.py",
       "restore": {
-        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
-        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "after_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
+        "before_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
         "byte_identical": true
       },
       "runner_error": null,
@@ -1151,10 +1151,10 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "d2d744b6b2df2bbb0d73cb7a43f6675bd03881bc2a2c2a74e54ecf18667789e2",
+        "output_sha256": "d907fec0e0445cfe67a7272e864304e81194b234052d6bdfcb6ec87c0b123e62",
         "output_tail": [
           ".                                                                        [100%]",
-          "1 passed in 0.25s"
+          "1 passed in 0.24s"
         ]
       },
       "command": [
@@ -1175,7 +1175,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_worker.py::test_source_payload_invalid_receives_exactly_one_automatic_retry"
         ],
-        "output_sha256": "a14fd8de74b0c4d6d074a42a555f4ab5e96a312d5a19468419370c991d03fc42",
+        "output_sha256": "b188e7a37937d9a0d08583f710dd857837f5f4631901190270c70a4201b3723c",
         "output_tail": [
           "    def test_source_payload_invalid_receives_exactly_one_automatic_retry(tmp_path):",
           "        case = _case(1)",
@@ -1193,7 +1193,7 @@
           ">           assert exhausted[\"skipped_current\"] == 1",
           "E           assert 0 == 1",
           "",
-          "tests/test_security_lifecycle_automation_worker.py:2567: AssertionError",
+          "tests/test_security_lifecycle_automation_worker.py:3072: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_worker.py::test_source_payload_invalid_receives_exactly_one_automatic_retry",
           "1 failed in 0.29s"
@@ -1207,8 +1207,8 @@
       },
       "product_file": "src/security_lifecycle_fact_kernel.py",
       "restore": {
-        "after_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
-        "before_sha256": "f7b6c7e480a5b6a337533ddb7af9b58798add4df528d60399788666b90ab749d",
+        "after_sha256": "c6038f9fcc18505d3d7f74aca9ef0d15d45bce6f26c496fdd06d3a54f1bad71d",
+        "before_sha256": "c6038f9fcc18505d3d7f74aca9ef0d15d45bce6f26c496fdd06d3a54f1bad71d",
         "byte_identical": true
       },
       "runner_error": null,
@@ -1242,11 +1242,11 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_config.py::test_absent_settings_resolve_to_the_complete_safe_default"
         ],
-        "output_sha256": "6789d6a67b2cfc1ae3e643966eb34314e1049a777033e2d01acdeb6b20ab17cb",
+        "output_sha256": "d0b8edeb33d4c07c7572c1f42279893fe1642fe18ec350392c58644b76dca81d",
         "output_tail": [
           "    ",
           ">       assert state.config == SecurityLifecycleAutomationConfig(",
-          "            enabled=True,",
+          "            enabled=False,",
           "            interval_minutes=5,",
           "            batch_limit=2,",
           "            apply_profile_transitions=False,",
@@ -1274,8 +1274,8 @@
       },
       "product_file": "src/service/security_lifecycle_automation_config.py",
       "restore": {
-        "after_sha256": "48729494b807bfbb5ed64da62cdd44f7806b0759e0b1745940b32c4c44e619f4",
-        "before_sha256": "48729494b807bfbb5ed64da62cdd44f7806b0759e0b1745940b32c4c44e619f4",
+        "after_sha256": "378fa3da3bb17addd5b36cac9e2524f75358d1ba1153dbf72c48908cf374d735",
+        "before_sha256": "378fa3da3bb17addd5b36cac9e2524f75358d1ba1153dbf72c48908cf374d735",
         "byte_identical": true
       },
       "runner_error": null,
@@ -1285,10 +1285,10 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "1ab9905d8b0f34f6d791ff7da4efa2de0f7f3e282a078758cc0496cc0230c0f0",
+        "output_sha256": "8a5d3f8c1b452931de963c4bdff9775f7404361fdf3f79b4d740fb5a4f7e6e92",
         "output_tail": [
           ".                                                                        [100%]",
-          "1 passed in 0.63s"
+          "1 passed in 0.61s"
         ]
       },
       "command": [
@@ -1309,7 +1309,7 @@
         "failure_lines": [
           "FAILED tests/test_data_scheduler.py::test_malformed_lifecycle_config_disables_analysis_and_mutation"
         ],
-        "output_sha256": "b78337c89a65e92cfd433ce7d7ce2668cd313c8cb1e90d02ccc748c9c691bdaa",
+        "output_sha256": "76463a6f809b372ab658004c85d197ee67424d0d89d689e90e0b39282950afa5",
         "output_tail": [
           "                \"transition_ids\": [],",
           "                \"failed_transition_ids\": [],",
@@ -1327,10 +1327,10 @@
           "E         At index 0 diff: {'now': datetime.datetime(2026, 6, 11, 12, 0, tzinfo=datetime.timezone.utc), 'allow_automation_approved': True} != {'now': datetime.datetime(2026, 6, 11, 12, 0, tzinfo=datetime.timezone.utc), 'allow_automation_approved': False}",
           "E         Use -v to get more diff",
           "",
-          "tests/test_data_scheduler.py:515: AssertionError",
+          "tests/test_data_scheduler.py:535: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_data_scheduler.py::test_malformed_lifecycle_config_disables_analysis_and_mutation",
-          "1 failed in 0.66s"
+          "1 failed in 0.69s"
         ]
       },
       "owner_needles": [
@@ -1341,8 +1341,8 @@
       },
       "product_file": "src/service/data_scheduler.py",
       "restore": {
-        "after_sha256": "71a442896002d4d7fb1204da0ce499d9cd9e78f8a86733600258e346cb5a7bc0",
-        "before_sha256": "71a442896002d4d7fb1204da0ce499d9cd9e78f8a86733600258e346cb5a7bc0",
+        "after_sha256": "04f58fd729c855eb2bd25cfedf3d39ac5ba116bab492596e73fada52697e6c35",
+        "before_sha256": "04f58fd729c855eb2bd25cfedf3d39ac5ba116bab492596e73fada52697e6c35",
         "byte_identical": true
       },
       "runner_error": null,
@@ -1376,7 +1376,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_runtime.py::test_progress_registry_follows_the_exact_real_stage_order_and_finishes_cleanly"
         ],
-        "output_sha256": "0b6e6b023b6d97e75faa5ad1d0704d2af04014d5f1dc348597172254c131e1f6",
+        "output_sha256": "816250faec9e98bf43a1a32db2727ebb0cce2e5155b19237f252899d6d5b5f23",
         "output_tail": [
           "            if current is None or current.current_stage is None:",
           "                raise ValueError(\"automation_progress_missing\")",
@@ -1419,10 +1419,10 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "c91dad03511eb111dba9f317cdb7962c64ec389c7d259de488e167c78aac1b31",
+        "output_sha256": "4e8b6c5a89da44bf05d17100903172be04033067c113a6831bdfafbd42b7da52",
         "output_tail": [
           ".                                                                        [100%]",
-          "1 passed in 0.11s"
+          "1 passed in 0.10s"
         ]
       },
       "command": [
@@ -1486,7 +1486,7 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "b4c125af4b1543a46ad5d7304f809764d7a1d2ba46141aa7ff3c23f629f8c253",
+        "output_sha256": "3ee30ce7824c0ac52fda106f1db4b87d45952427e1b8a98824dba67469ae3503",
         "output_tail": [
           "      explore: [Object],",
           "      portfolio: [Object],",
@@ -1505,8 +1505,8 @@
           "",
           " Test Files  1 passed (1)",
           "      Tests  1 passed | 6 skipped (7)",
-          "   Start at  21:42:46",
-          "   Duration  881ms (transform 211ms, setup 187ms, import 81ms, tests 13ms, environment 503ms)",
+          "   Start at  11:31:59",
+          "   Duration  878ms (transform 214ms, setup 190ms, import 81ms, tests 10ms, environment 498ms)",
           ""
         ]
       },
@@ -1528,7 +1528,7 @@
           "FAIL  src/LifecycleAutomationApi.test.ts > security lifecycle automation API > rejects an unknown progress stage before it reaches presentation code",
           "AssertionError: promise resolved \"{ config_status: 'valid', \u2026(8) }\" instead of rejecting"
         ],
-        "output_sha256": "838efe28d1dfff953216f96ccd26b7f1caaae5f3ef262af227f39954326cd73b",
+        "output_sha256": "1d2af2e304c9c335387fe3616d51def77b493918a7a1847d3c42aa358b17f0d1",
         "output_tail": [
           "+   },",
           "+   \"telemetry_status\": \"valid\",",
@@ -1547,8 +1547,8 @@
           "",
           " Test Files  1 failed (1)",
           "      Tests  1 failed | 6 skipped (7)",
-          "   Start at  21:42:48",
-          "   Duration  887ms (transform 212ms, setup 189ms, import 79ms, tests 21ms, environment 496ms)",
+          "   Start at  11:32:00",
+          "   Duration  870ms (transform 209ms, setup 184ms, import 79ms, tests 13ms, environment 493ms)",
           ""
         ]
       },
@@ -1560,8 +1560,8 @@
       },
       "product_file": "apps/arkscope-web/src/api.ts",
       "restore": {
-        "after_sha256": "1b69281c08ac6c696f21747b7bc4c38a66d6eb127511905c0047e45fa7a90237",
-        "before_sha256": "1b69281c08ac6c696f21747b7bc4c38a66d6eb127511905c0047e45fa7a90237",
+        "after_sha256": "6beef2f651d87cee5a01423c541a189a977ef5a1881a50d81ea6e49ed52d97ff",
+        "before_sha256": "6beef2f651d87cee5a01423c541a189a977ef5a1881a50d81ea6e49ed52d97ff",
         "byte_identical": true
       },
       "runner_error": null,
@@ -1571,7 +1571,7 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "3672f3301debbbbe0a4b179b09c2ea9f89b617cdb005ba65af3c5f930c8e3285",
+        "output_sha256": "95b26124390f995e0873d935d4a984ea48ade0118d2229fcacd6aa1a66960631",
         "output_tail": [
           "  react: { useSuspense: false },",
           "  ignoreJSONStructure: true",
@@ -1586,12 +1586,12 @@
           "------------stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps automation status bound to the newest request when responses resolve out of order",
           "i18next: languageChanged en",
           "",
-          "\u00b7-------------------------------------",
+          "\u00b7-----------------------------------------",
           "",
           " Test Files  1 passed (1)",
-          "      Tests  1 passed | 49 skipped (50)",
-          "   Start at  21:42:49",
-          "   Duration  1.34s (transform 408ms, setup 191ms, import 139ms, tests 419ms, environment 490ms)",
+          "      Tests  1 passed | 53 skipped (54)",
+          "   Start at  11:32:01",
+          "   Duration  1.34s (transform 424ms, setup 203ms, import 133ms, tests 424ms, environment 485ms)",
           ""
         ]
       },
@@ -1613,27 +1613,27 @@
           "FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps automation status bound to the newest request when responses resolve out of order",
           "AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string"
         ],
-        "output_sha256": "548a52976cdd76b8fc4a78be23ad98fdb45c3e05465c04f76cb282edc894a12f",
+        "output_sha256": "680fcf32cb04511a978e6c6c8239590a98d4ecae62e8c009e1bc96a00d7e0032",
         "output_tail": [
           "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
           "",
           " FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps automation status bound to the newest request when responses resolve out of order",
           "AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string",
-          " \u276f src/lifecycle/LifecycleView.test.tsx:1211:21",
-          "    1209|     expect(document.body.querySelector(",
-          "    1210|       '[data-testid=\"lifecycle-automation-progress\"]',",
-          "    1211|     )?.textContent).toContain(\"Evaluate\");",
+          " \u276f src/lifecycle/LifecycleView.test.tsx:1212:21",
+          "    1210|     expect(document.body.querySelector(",
+          "    1211|       '[data-testid=\"lifecycle-automation-progress\"]',",
+          "    1212|     )?.textContent).toContain(\"Evaluate\");",
           "       |                     ^",
-          "    1212|   });",
-          "    1213|",
+          "    1213|   });",
+          "    1214|",
           "",
           "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
           "",
           "",
           " Test Files  1 failed (1)",
-          "      Tests  1 failed | 49 skipped (50)",
-          "   Start at  21:42:50",
-          "   Duration  1.36s (transform 404ms, setup 197ms, import 130ms, tests 433ms, environment 503ms)",
+          "      Tests  1 failed | 53 skipped (54)",
+          "   Start at  11:32:03",
+          "   Duration  1.37s (transform 420ms, setup 188ms, import 146ms, tests 438ms, environment 496ms)",
           ""
         ]
       },
@@ -1645,8 +1645,8 @@
       },
       "product_file": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx",
       "restore": {
-        "after_sha256": "c3babd91c51cbb7ff101e3181b3e64bd920f4a6f93ccd084537d7c72e1ed4bd9",
-        "before_sha256": "c3babd91c51cbb7ff101e3181b3e64bd920f4a6f93ccd084537d7c72e1ed4bd9",
+        "after_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "before_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
         "byte_identical": true
       },
       "runner_error": null,
@@ -1656,7 +1656,7 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "0da552965f1cad232c7ac540fad900617ac2ccb0b447c0782a31aa706526e3fc",
+        "output_sha256": "12d2ae98f2863e22649fb5fae3e646c1272eda8ffcc831b81addbfdb4a0e57c5",
         "output_tail": [
           "  react: { useSuspense: false },",
           "  ignoreJSONStructure: true",
@@ -1668,15 +1668,15 @@
           "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > refreshes only the latest selected case after an attended run completes",
           "i18next: languageChanged en",
           "",
-          "-------------stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > refreshes only the latest selected case after an attended run completes",
+          "----------------stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > refreshes only the latest selected case after an attended run completes",
           "i18next: languageChanged en",
           "",
-          "\u00b7------------------------------------",
+          "\u00b7-------------------------------------",
           "",
           " Test Files  1 passed (1)",
-          "      Tests  1 passed | 49 skipped (50)",
-          "   Start at  21:42:52",
-          "   Duration  1.37s (transform 412ms, setup 189ms, import 136ms, tests 465ms, environment 484ms)",
+          "      Tests  1 passed | 53 skipped (54)",
+          "   Start at  11:32:05",
+          "   Duration  1.39s (transform 410ms, setup 195ms, import 121ms, tests 463ms, environment 513ms)",
           ""
         ]
       },
@@ -1698,27 +1698,27 @@
           "FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > refreshes only the latest selected case after an attended run completes",
           "AssertionError: expected 2 to be 1 // Object.is equality"
         ],
-        "output_sha256": "5df449514c5dc983f9074925ef70a2c35381ba7c5e1f9517202b5b5c98b2f522",
+        "output_sha256": "cc8a6a8ddbcd4a761ed59848a2e76523a699fdc10473829bb72313dafe225706",
         "output_tail": [
           "",
           "- 1",
           "+ 2",
           "",
-          " \u276f src/lifecycle/LifecycleView.test.tsx:1282:26",
-          "    1280|     const drawer = document.body.querySelector('[role=\"dialog\"]');",
-          "    1281|     expect(apiMocks.runSecurityLifecycleCaseAutomation).toHaveBeenCall\u2026",
-          "    1282|     expect(currentReads).toBe(1);",
+          " \u276f src/lifecycle/LifecycleView.test.tsx:1392:26",
+          "    1390|     const drawer = document.body.querySelector('[role=\"dialog\"]');",
+          "    1391|     expect(apiMocks.runSecurityLifecycleCaseAutomation).toHaveBeenCall\u2026",
+          "    1392|     expect(currentReads).toBe(1);",
           "       |                          ^",
-          "    1283|     expect(nextReads).toBe(2);",
-          "    1284|     expect(drawer?.textContent).toContain(\"NEXT\");",
+          "    1393|     expect(nextReads).toBe(2);",
+          "    1394|     expect(drawer?.textContent).toContain(\"NEXT\");",
           "",
           "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
           "",
           "",
           " Test Files  1 failed (1)",
-          "      Tests  1 failed | 49 skipped (50)",
-          "   Start at  21:42:54",
-          "   Duration  1.37s (transform 391ms, setup 193ms, import 129ms, tests 449ms, environment 500ms)",
+          "      Tests  1 failed | 53 skipped (54)",
+          "   Start at  11:32:06",
+          "   Duration  1.37s (transform 393ms, setup 189ms, import 133ms, tests 450ms, environment 502ms)",
           ""
         ]
       },
@@ -1730,8 +1730,8 @@
       },
       "product_file": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx",
       "restore": {
-        "after_sha256": "c3babd91c51cbb7ff101e3181b3e64bd920f4a6f93ccd084537d7c72e1ed4bd9",
-        "before_sha256": "c3babd91c51cbb7ff101e3181b3e64bd920f4a6f93ccd084537d7c72e1ed4bd9",
+        "after_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "before_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
         "byte_identical": true
       },
       "runner_error": null,
@@ -1741,7 +1741,7 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "8b9802636f3c6c66ac7830b34e132b6bf71b7f4efcc69b9606d3873124d0bc85",
+        "output_sha256": "12b857a1eb399cd5989e46bce5b2b100101edbd0219a1070565a46c4611c057d",
         "output_tail": [
           "    }",
           "  },",
@@ -1756,12 +1756,12 @@
           "stdout | src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > prioritizes an active incident over a stale successful result",
           "i18next: languageChanged zh-Hant",
           "",
-          "-\u00b7--",
+          "-\u00b7-----",
           "",
           " Test Files  1 passed (1)",
-          "      Tests  1 passed | 3 skipped (4)",
-          "   Start at  21:42:55",
-          "   Duration  1.10s (transform 281ms, setup 182ms, import 240ms, tests 77ms, environment 503ms)",
+          "      Tests  1 passed | 6 skipped (7)",
+          "   Start at  11:32:08",
+          "   Duration  1.06s (transform 278ms, setup 173ms, import 224ms, tests 72ms, environment 489ms)",
           ""
         ]
       },
@@ -1783,27 +1783,27 @@
           "FAIL  src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > prioritizes an active incident over a stale successful result",
           "AssertionError: expected <strong \u2026(1)></strong> to be null"
         ],
-        "output_sha256": "e851a6359eee332e66286737186e596a53a57c25eac58baddf73f17e8b463bd0",
+        "output_sha256": "7918e0d54f9ce6ca4cdb40698195ee48699a87f53954830b9520a8220b139033",
         "output_tail": [
           ">",
           "  1 \u4ef6\u57f7\u884c\u5931\u6557\u5c1a\u672a\u6062\u5fa9",
           "</strong>",
           "",
-          " \u276f src/settings/DataStorageSection.test.tsx:276:70",
-          "    274|",
-          "    275|     expect(host!.textContent).toContain(\"1 \u4ef6\u57f7\u884c\u5931\u6557\u5c1a\u672a\u6062\u5fa9\");",
-          "    276|     expect(host!.querySelector('[data-automation-state=\"success\"]')).t\u2026",
+          " \u276f src/settings/DataStorageSection.test.tsx:291:70",
+          "    289|",
+          "    290|     expect(host!.textContent).toContain(\"1 \u4ef6\u57f7\u884c\u5931\u6557\u5c1a\u672a\u6062\u5fa9\");",
+          "    291|     expect(host!.querySelector('[data-automation-state=\"success\"]')).t\u2026",
           "       |                                                                      ^",
-          "    277|   });",
-          "    278|",
+          "    292|   });",
+          "    293|",
           "",
           "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
           "",
           "",
           " Test Files  1 failed (1)",
-          "      Tests  1 failed | 3 skipped (4)",
-          "   Start at  21:42:57",
-          "   Duration  1.10s (transform 268ms, setup 177ms, import 234ms, tests 82ms, environment 506ms)",
+          "      Tests  1 failed | 6 skipped (7)",
+          "   Start at  11:32:10",
+          "   Duration  1.08s (transform 290ms, setup 172ms, import 236ms, tests 73ms, environment 493ms)",
           ""
         ]
       },
@@ -1815,8 +1815,8 @@
       },
       "product_file": "apps/arkscope-web/src/settings/DataStorageSection.tsx",
       "restore": {
-        "after_sha256": "91dd3d14977d65902fac3ce4d1b9bc739020c5e47571c607a3ed49f75be4aa9b",
-        "before_sha256": "91dd3d14977d65902fac3ce4d1b9bc739020c5e47571c607a3ed49f75be4aa9b",
+        "after_sha256": "c552ebd331005b1f0e46007240c530c5ae38177c9f47be94164ce3bd23b1452f",
+        "before_sha256": "c552ebd331005b1f0e46007240c530c5ae38177c9f47be94164ce3bd23b1452f",
         "byte_identical": true
       },
       "runner_error": null,
@@ -1826,10 +1826,10 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "d2d744b6b2df2bbb0d73cb7a43f6675bd03881bc2a2c2a74e54ecf18667789e2",
+        "output_sha256": "364fae48cbe8f4ef8e995f8fb3224d43792e784eb9919ceefea2fe0106918edf",
         "output_tail": [
           ".                                                                        [100%]",
-          "1 passed in 0.25s"
+          "1 passed in 0.26s"
         ]
       },
       "command": [
@@ -1850,7 +1850,7 @@
         "failure_lines": [
           "FAILED tests/test_listing_authority_transport.py::test_listing_budget_accepts_tighter_per_instance_request_limits"
         ],
-        "output_sha256": "b3ab29b389778c244acd52120525f13008a02e43960f1e155714b6d43e728162",
+        "output_sha256": "f49710115a2668be0a15ebde34f663f6a70a8549784698f06565d1c3c415ea99",
         "output_tail": [
           "    payload = self._request(",
           "data_sources/listing_authority_transport.py:239: in _request",
@@ -1859,7 +1859,7 @@
           "    response = self._session.get(",
           "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ",
           "",
-          "self = <tests.test_listing_authority_transport.FakeSession object at 0x7f107cbf0dc0>",
+          "self = <tests.test_listing_authority_transport.FakeSession object at 0x7419e3bf8dc0>",
           "url = 'https://api.massive.com/v3/reference/tickers'",
           "kwargs = {'allow_redirects': False, 'headers': {'Accept': 'application/json'}, 'params': {'active': 'true', 'apiKey': 'secret-value', 'limit': 2, 'market': 'stocks', ...}, 'stream': True, ...}",
           "",
@@ -1917,7 +1917,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_canary_case_limit_is_enforced_before_execution"
         ],
-        "output_sha256": "c9ccebb621f3b9515a2651788252bc4fa70807917345e4ba334f5c9624df7055",
+        "output_sha256": "b16487cbf870b19134ead41c8ef7db140eb13a558f73672979e6b58dc6ebb8c4",
         "output_tail": [
           "F                                                                        [100%]",
           "=================================== FAILURES ===================================",
@@ -1929,10 +1929,10 @@
           ">       with pytest.raises(ValueError, match=\"limit\"):",
           "E       Failed: DID NOT RAISE <class 'ValueError'>",
           "",
-          "tests/test_security_lifecycle_automation_scheduler.py:6120: Failed",
+          "tests/test_security_lifecycle_automation_scheduler.py:6460: Failed",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_canary_case_limit_is_enforced_before_execution",
-          "1 failed in 0.53s"
+          "1 failed in 0.52s"
         ]
       },
       "owner_needles": [
@@ -1943,8 +1943,8 @@
       },
       "product_file": "src/service/security_lifecycle_automation_scheduler.py",
       "restore": {
-        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
-        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "after_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
+        "before_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
         "byte_identical": true
       },
       "runner_error": null,
@@ -1978,7 +1978,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_canary_limits_cross_real_sec_listing_and_ibkr_scheduler_boundaries"
         ],
-        "output_sha256": "85f3091a5d6e79e47dfb9f4f69c44207428c42fff86f1d79f70ad3cf9b4135bd",
+        "output_sha256": "922aea84ee09897ae39e538c4428293c650036b4e527080f5f1de832a1a8ca84",
         "output_tail": [
           "            if refreshed_families is not None:",
           "                refreshed_families.add(source_family)",
@@ -1996,10 +1996,10 @@
           ">           budget = SecRequestBudget.lifecycle()",
           "E           NameError: name 'SecRequestBudget' is not defined",
           "",
-          "src/service/security_lifecycle_automation_scheduler.py:1308: NameError",
+          "src/service/security_lifecycle_automation_scheduler.py:1311: NameError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_automation_scheduler.py::test_canary_limits_cross_real_sec_listing_and_ibkr_scheduler_boundaries",
-          "1 failed in 0.55s"
+          "1 failed in 0.56s"
         ]
       },
       "owner_needles": [
@@ -2010,8 +2010,8 @@
       },
       "product_file": "src/service/security_lifecycle_automation_scheduler.py",
       "restore": {
-        "after_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
-        "before_sha256": "5f23253f342dc34dbb8b0a3f7f3d909be07ba1a52df391c368d770a16eb3cdae",
+        "after_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
+        "before_sha256": "57aa9a707f409f2ed1186ef530480e288904ce7b0aef914ebfdcb3deb839d0dc",
         "byte_identical": true
       },
       "runner_error": null,
@@ -2045,7 +2045,7 @@
         "failure_lines": [
           "FAILED tests/test_security_lifecycle_news_evidence.py::test_publisher_acquisition_adapter_is_retired_and_has_no_product_caller"
         ],
-        "output_sha256": "4cea2033f0363d2f48d30e49a41a7fcca72011dd0e90d9e9b650d4ace9744073",
+        "output_sha256": "3dfadad254ddc17dfec1061813bcf2dde80b4210c9864bfa8eeec769946208c8",
         "output_tail": [
           "F                                                                        [100%]",
           "=================================== FAILURES ===================================",
@@ -2063,7 +2063,7 @@
           "tests/test_security_lifecycle_news_evidence.py:232: AssertionError",
           "=========================== short test summary info ============================",
           "FAILED tests/test_security_lifecycle_news_evidence.py::test_publisher_acquisition_adapter_is_retired_and_has_no_product_caller",
-          "1 failed in 0.33s"
+          "1 failed in 0.32s"
         ]
       },
       "owner_needles": [
@@ -2085,7 +2085,7 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "60c480687222f4071354713ce4275e475436b44a334a40eaa01f0d221712444f",
+        "output_sha256": "42a907323b43fff3864c03a93afe2a93e8e01fbcf5a2553478c821ebfd9b275c",
         "output_tail": [
           "      explore: [Object],",
           "      portfolio: [Object],",
@@ -2104,8 +2104,8 @@
           "",
           " Test Files  1 passed (1)",
           "      Tests  1 passed | 2 skipped (3)",
-          "   Start at  21:43:03",
-          "   Duration  284ms (transform 135ms, setup 179ms, import 6ms, tests 3ms, environment 0ms)",
+          "   Start at  11:32:16",
+          "   Duration  279ms (transform 129ms, setup 177ms, import 5ms, tests 3ms, environment 0ms)",
           ""
         ]
       },
@@ -2127,7 +2127,7 @@
           "FAIL  src/LifecycleCss.test.ts > lifecycle queue CSS contract > keeps closed manual evidence commands out of layout",
           "AssertionError: expected '\\n  display: grid;\\n' to match /display:\\s*none/"
         ],
-        "output_sha256": "5a76ad23fae64a42c6d5f86697c50de9db6978935401e8d557da419b48343e1e",
+        "output_sha256": "2bd602defd3dbb89852ba6008f9c22b37d6054bada07c826cde5f351ac8dcf25",
         "output_tail": [
           "\"",
           "  display: grid;",
@@ -2146,8 +2146,8 @@
           "",
           " Test Files  1 failed (1)",
           "      Tests  1 failed | 2 skipped (3)",
-          "   Start at  21:43:04",
-          "   Duration  303ms (transform 144ms, setup 194ms, import 6ms, tests 8ms, environment 0ms)",
+          "   Start at  11:32:17",
+          "   Duration  266ms (transform 117ms, setup 161ms, import 6ms, tests 5ms, environment 0ms)",
           ""
         ]
       },
@@ -2170,7 +2170,7 @@
       "baseline": {
         "exit_code": 0,
         "failure_lines": [],
-        "output_sha256": "71006bf9eb6832f8cee9546179a3c10a6f69a1284f730fa14f27fa6d7ab31a2a",
+        "output_sha256": "e6df5c271d4c27e687d52055de4d927e720dc163367eaafb25480d171ff8769f",
         "output_tail": [
           "      explore: [Object],",
           "      portfolio: [Object],",
@@ -2189,8 +2189,8 @@
           "",
           " Test Files  1 passed (1)",
           "      Tests  1 passed | 2 skipped (3)",
-          "   Start at  21:43:05",
-          "   Duration  301ms (transform 144ms, setup 195ms, import 7ms, tests 3ms, environment 0ms)",
+          "   Start at  11:32:17",
+          "   Duration  297ms (transform 145ms, setup 193ms, import 6ms, tests 3ms, environment 0ms)",
           ""
         ]
       },
@@ -2212,7 +2212,7 @@
           "FAIL  src/LifecycleCss.test.ts > lifecycle queue CSS contract > keeps closed evidence bodies out of layout",
           "AssertionError: expected '\\n  display: block;\\n' to match /display:\\s*none/"
         ],
-        "output_sha256": "3a1050d533279fee7e56ae0d46bdd3d645f757c64e9ce2e06bfc901ad2713ede",
+        "output_sha256": "6528296d4700e2780a10cd4f11e10f9ab42ba2843e02ca2359787ccf342c5f5f",
         "output_tail": [
           "\"",
           "  display: block;",
@@ -2231,8 +2231,8 @@
           "",
           " Test Files  1 failed (1)",
           "      Tests  1 failed | 2 skipped (3)",
-          "   Start at  21:43:05",
-          "   Duration  309ms (transform 146ms, setup 197ms, import 7ms, tests 6ms, environment 0ms)",
+          "   Start at  11:32:18",
+          "   Duration  289ms (transform 132ms, setup 182ms, import 6ms, tests 6ms, environment 0ms)",
           ""
         ]
       },
@@ -2250,6 +2250,1360 @@
       },
       "runner_error": null,
       "task": 12
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "0cddb2f9522c5fc98e9503738cea759bed811b3ad3b391083a46a5d5f403e174",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.52s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_ticker_identity_scheduler.py::test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[absent-version]"
+      ],
+      "cwd": ".",
+      "description": "trust an unversioned legacy recovery as an incident boundary",
+      "id": "M33",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_ticker_identity_scheduler.py::test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[absent-version]"
+        ],
+        "output_sha256": "3e078fe1b270692db9deda738b64c106820164149f15bde959b25e8177b823e2",
+        "output_tail": [
+          "    ",
+          "        with sqlite3.connect(profile_path) as conn:",
+          "            rows = conn.execute(",
+          "                \"SELECT status,message,result FROM job_runs WHERE job_name=? ORDER BY id\",",
+          "                (\"ticker_identity.transitions\",),",
+          "            ).fetchall()",
+          ">       assert [(row[0], row[1]) for row in rows] == [",
+          "            (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "            (\"succeeded\", \"ticker_identity_scheduler_recovered\"),",
+          "            (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "        ]",
+          "E       AssertionError: assert [('failed', '...r_recovered')] == [('failed', '...ler_failure')]",
+          "E         ",
+          "E         Right contains one more item: ('failed', 'ticker_identity_scheduler_failure')",
+          "E         Use -v to get more diff",
+          "",
+          "tests/test_ticker_identity_scheduler.py:2109: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_ticker_identity_scheduler.py::test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[absent-version]",
+          "1 failed in 0.59s"
+        ]
+      },
+      "owner_needles": [
+        "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[absent-version]"
+      ],
+      "owners_observed": {
+        "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[absent-version]": true
+      },
+      "product_file": "src/service/ticker_identity_scheduler.py",
+      "restore": {
+        "after_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "before_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 7
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "91ac28e87543203edb8fac4612b815f59bf36ac9a72ab315b86b2e36637fba30",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.53s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_ticker_identity_scheduler.py::test_missing_failed_transition_row_never_proves_recovery"
+      ],
+      "cwd": ".",
+      "description": "treat a missing failed transition row as settled",
+      "id": "M34",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_ticker_identity_scheduler.py::test_missing_failed_transition_row_never_proves_recovery"
+        ],
+        "output_sha256": "c3685d916625027f2a0e69d552605fa2c85c7200424ceb0f8a87c1b4269022d5",
+        "output_tail": [
+          "            now=now,",
+          "        )",
+          "        assert healthy[\"status\"] == \"succeeded\"",
+          "        assert healthy[\"due\"] == 0",
+          "        assert scheduler.record_ticker_identity_scheduler_result(healthy, now=now)",
+          "    ",
+          "        with sqlite3.connect(profile_path) as conn:",
+          ">           assert conn.execute(",
+          "                \"SELECT status,message FROM job_runs WHERE job_name=? ORDER BY id\",",
+          "                (\"ticker_identity.transitions\",),",
+          "            ).fetchall() == [(\"failed\", \"ticker_identity_scheduler_failure\")]",
+          "E           AssertionError: assert [('failed', '...r_recovered')] == [('failed', '...ler_failure')]",
+          "E             ",
+          "E             Left contains one more item: ('succeeded', 'ticker_identity_scheduler_recovered')",
+          "E             Use -v to get more diff",
+          "",
+          "tests/test_ticker_identity_scheduler.py:2153: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_ticker_identity_scheduler.py::test_missing_failed_transition_row_never_proves_recovery",
+          "1 failed in 0.57s"
+        ]
+      },
+      "owner_needles": [
+        "test_missing_failed_transition_row_never_proves_recovery"
+      ],
+      "owners_observed": {
+        "test_missing_failed_transition_row_never_proves_recovery": true
+      },
+      "product_file": "src/service/ticker_identity_scheduler.py",
+      "restore": {
+        "after_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "before_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 7
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "212504876166ec78d6893ba7cb632e14878599d119e4df02390a6a5464c97ea0",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.68s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_data_scheduler.py::test_tick_deduplicates_ticker_transition_failure_and_records_recovery"
+      ],
+      "cwd": ".",
+      "description": "drop the incident reconciliation version marker",
+      "id": "M35",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_data_scheduler.py::test_tick_deduplicates_ticker_transition_failure_and_records_recovery"
+        ],
+        "output_sha256": "ab200e3e05f6e0608b59f8068d98eab98e497ee2b777e7c92661721ca1f62b03",
+        "output_tail": [
+          "        )",
+          "    ",
+          "        for offset in range(4):",
+          "            ds.tick_once(_NOW + timedelta(seconds=offset), fire=lambda _source: None)",
+          "    ",
+          "        runs = telemetry.list_runs(job_name=\"ticker_identity.transitions\", limit=10)",
+          ">       assert [(row[\"status\"], row[\"error\"]) for row in runs] == [",
+          "            (\"succeeded\", None),",
+          "            (\"failed\", \"transition_execution_failed\"),",
+          "        ]",
+          "E       AssertionError: assert [('succeeded'...tion_failed')] == [('succeeded'...tion_failed')]",
+          "E         ",
+          "E         At index 1 diff: ('succeeded', None) != ('failed', 'transition_execution_failed')",
+          "E         Left contains one more item: ('failed', 'transition_execution_failed')",
+          "E         Use -v to get more diff",
+          "",
+          "tests/test_data_scheduler.py:792: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_data_scheduler.py::test_tick_deduplicates_ticker_transition_failure_and_records_recovery",
+          "1 failed in 0.76s"
+        ]
+      },
+      "owner_needles": [
+        "test_tick_deduplicates_ticker_transition_failure_and_records_recovery"
+      ],
+      "owners_observed": {
+        "test_tick_deduplicates_ticker_transition_failure_and_records_recovery": true
+      },
+      "product_file": "src/service/ticker_identity_scheduler.py",
+      "restore": {
+        "after_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "before_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 7
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "06254aecdf245cc6f8784e134e36703bcc595ac0578b8c5f7f3591bcb399781b",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.54s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_ticker_identity_scheduler.py::test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[absent-version]"
+      ],
+      "cwd": ".",
+      "description": "drop unresolved legacy-incident restatement",
+      "id": "M36",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_ticker_identity_scheduler.py::test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[absent-version]"
+        ],
+        "output_sha256": "7b599dfa5c1485fde3e5015a3e9247b234955c4de16e4f9817d0318bc44ba239",
+        "output_tail": [
+          "    ",
+          "        with sqlite3.connect(profile_path) as conn:",
+          "            rows = conn.execute(",
+          "                \"SELECT status,message,result FROM job_runs WHERE job_name=? ORDER BY id\",",
+          "                (\"ticker_identity.transitions\",),",
+          "            ).fetchall()",
+          ">       assert [(row[0], row[1]) for row in rows] == [",
+          "            (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "            (\"succeeded\", \"ticker_identity_scheduler_recovered\"),",
+          "            (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "        ]",
+          "E       AssertionError: assert [('failed', '...r_recovered')] == [('failed', '...ler_failure')]",
+          "E         ",
+          "E         Right contains one more item: ('failed', 'ticker_identity_scheduler_failure')",
+          "E         Use -v to get more diff",
+          "",
+          "tests/test_ticker_identity_scheduler.py:2109: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_ticker_identity_scheduler.py::test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[absent-version]",
+          "1 failed in 0.59s"
+        ]
+      },
+      "owner_needles": [
+        "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[absent-version]"
+      ],
+      "owners_observed": {
+        "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[absent-version]": true
+      },
+      "product_file": "src/service/ticker_identity_scheduler.py",
+      "restore": {
+        "after_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "before_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 7
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "91ac28e87543203edb8fac4612b815f59bf36ac9a72ab315b86b2e36637fba30",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.53s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_ticker_identity_scheduler.py::test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn"
+      ],
+      "cwd": ".",
+      "description": "reconcile only the latest failure witness",
+      "id": "M37",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_ticker_identity_scheduler.py::test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn"
+        ],
+        "output_sha256": "a4ebcd502fad36bbc93d29556cc2d6514a46267eab323b59b3de547883de3eb8",
+        "output_tail": [
+          "        assert filtered[\"due\"] == 0",
+          "        assert scheduler.record_ticker_identity_scheduler_result(filtered, now=now)",
+          "        with sqlite3.connect(profile_path) as conn:",
+          ">           assert conn.execute(",
+          "                \"SELECT status,message FROM job_runs WHERE job_name=? ORDER BY id\",",
+          "                (\"ticker_identity.transitions\",),",
+          "            ).fetchall() == [",
+          "                (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "                (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "                (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "            ]",
+          "E           AssertionError: assert [('failed', '...r_recovered')] == [('failed', '...ler_failure')]",
+          "E             ",
+          "E             At index 2 diff: ('succeeded', 'ticker_identity_scheduler_recovered') != ('failed', 'ticker_identity_scheduler_failure')",
+          "E             Use -v to get more diff",
+          "",
+          "tests/test_ticker_identity_scheduler.py:2005: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_ticker_identity_scheduler.py::test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn",
+          "1 failed in 0.60s"
+        ]
+      },
+      "owner_needles": [
+        "test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn"
+      ],
+      "owners_observed": {
+        "test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn": true
+      },
+      "product_file": "src/service/ticker_identity_scheduler.py",
+      "restore": {
+        "after_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "before_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 7
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "63203b4ec2b29e7ab8c45616e4d500960794bb60488784fb13fb7fe05b0386bf",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.56s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_ticker_identity_scheduler.py::test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn"
+      ],
+      "cwd": ".",
+      "description": "treat an approved failed transition as settled",
+      "id": "M38",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_ticker_identity_scheduler.py::test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn"
+        ],
+        "output_sha256": "5d48f22549beb13ba435e4cbd0f04e47a1335cda2ff6f9ccbc9291ae3356dcea",
+        "output_tail": [
+          "        assert filtered[\"due\"] == 0",
+          "        assert scheduler.record_ticker_identity_scheduler_result(filtered, now=now)",
+          "        with sqlite3.connect(profile_path) as conn:",
+          ">           assert conn.execute(",
+          "                \"SELECT status,message FROM job_runs WHERE job_name=? ORDER BY id\",",
+          "                (\"ticker_identity.transitions\",),",
+          "            ).fetchall() == [",
+          "                (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "                (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "                (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "            ]",
+          "E           AssertionError: assert [('failed', '...r_recovered')] == [('failed', '...ler_failure')]",
+          "E             ",
+          "E             At index 2 diff: ('succeeded', 'ticker_identity_scheduler_recovered') != ('failed', 'ticker_identity_scheduler_failure')",
+          "E             Use -v to get more diff",
+          "",
+          "tests/test_ticker_identity_scheduler.py:2005: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_ticker_identity_scheduler.py::test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn",
+          "1 failed in 0.59s"
+        ]
+      },
+      "owner_needles": [
+        "test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn"
+      ],
+      "owners_observed": {
+        "test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn": true
+      },
+      "product_file": "src/service/ticker_identity_scheduler.py",
+      "restore": {
+        "after_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "before_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 7
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "0dff5a7b4f7b627aa5d5ba9609862b0c83a9c34efeac8569b0ff66edb0c0e2d9",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.43s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_ticker_identity_scheduler.py::test_scheduler_wide_recovery_is_independent_of_automation_policy_filter"
+      ],
+      "cwd": ".",
+      "description": "restore the global recovery-eligible gate",
+      "id": "M39",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_ticker_identity_scheduler.py::test_scheduler_wide_recovery_is_independent_of_automation_policy_filter"
+        ],
+        "output_sha256": "98c06a4c03a8ce8bb0aabf9cd9b460ae0e95c30faaf68368ddc60e4947ad82b4",
+        "output_tail": [
+          ">           assert conn.execute(",
+          "                \"SELECT status,message,error FROM job_runs WHERE job_name=? ORDER BY id\",",
+          "                (\"ticker_identity.transitions\",),",
+          "            ).fetchall() == [",
+          "                (",
+          "                    \"failed\",",
+          "                    \"ticker_identity_scheduler_failure\",",
+          "                    \"profile_store_unavailable\",",
+          "                ),",
+          "                (\"succeeded\", \"ticker_identity_scheduler_recovered\", None),",
+          "            ]",
+          "E           AssertionError: assert [('failed', '...unavailable')] == [('failed', '...vered', None)]",
+          "E             ",
+          "E             Right contains one more item: ('succeeded', 'ticker_identity_scheduler_recovered', None)",
+          "E             Use -v to get more diff",
+          "",
+          "tests/test_ticker_identity_scheduler.py:1847: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_ticker_identity_scheduler.py::test_scheduler_wide_recovery_is_independent_of_automation_policy_filter",
+          "1 failed in 0.49s"
+        ]
+      },
+      "owner_needles": [
+        "test_scheduler_wide_recovery_is_independent_of_automation_policy_filter"
+      ],
+      "owners_observed": {
+        "test_scheduler_wide_recovery_is_independent_of_automation_policy_filter": true
+      },
+      "product_file": "src/service/ticker_identity_scheduler.py",
+      "restore": {
+        "after_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "before_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 7
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "0dff5a7b4f7b627aa5d5ba9609862b0c83a9c34efeac8569b0ff66edb0c0e2d9",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.43s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_ticker_identity_scheduler.py::test_policy_deferral_and_schema_absence_never_clear_named_failure"
+      ],
+      "cwd": ".",
+      "description": "reintroduce the no-table success recovery fallback",
+      "id": "M40",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_ticker_identity_scheduler.py::test_policy_deferral_and_schema_absence_never_clear_named_failure"
+        ],
+        "output_sha256": "fdd1052634acb15064831d2dc2ea5e8e5dc8ba5eadfd7d4cf655d2defa77835b",
+        "output_tail": [
+          "        with sqlite3.connect(profile_path) as conn:",
+          ">           assert conn.execute(",
+          "                \"SELECT status,message,error FROM job_runs WHERE job_name=? ORDER BY id\",",
+          "                (\"ticker_identity.transitions\",),",
+          "            ).fetchall() == [",
+          "                (",
+          "                    \"failed\",",
+          "                    \"ticker_identity_scheduler_failure\",",
+          "                    \"transition_execution_failed\",",
+          "                )",
+          "            ]",
+          "E           AssertionError: assert [('failed', '...vered', None)] == [('failed', '...tion_failed')]",
+          "E             ",
+          "E             Left contains one more item: ('succeeded', 'ticker_identity_scheduler_recovered', None)",
+          "E             Use -v to get more diff",
+          "",
+          "tests/test_ticker_identity_scheduler.py:1652: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_ticker_identity_scheduler.py::test_policy_deferral_and_schema_absence_never_clear_named_failure",
+          "1 failed in 0.50s"
+        ]
+      },
+      "owner_needles": [
+        "test_policy_deferral_and_schema_absence_never_clear_named_failure"
+      ],
+      "owners_observed": {
+        "test_policy_deferral_and_schema_absence_never_clear_named_failure": true
+      },
+      "product_file": "src/service/ticker_identity_scheduler.py",
+      "restore": {
+        "after_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "before_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 7
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "82c201bb904df7561785e93b567cf9f67336470fb20ba42c9846547bf1029aea",
+        "output_tail": [
+          ".                                                                        [100%]",
+          "1 passed in 0.55s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_ticker_identity_scheduler.py::test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[unknown-version]"
+      ],
+      "cwd": ".",
+      "description": "trust any integer incident reconciliation version",
+      "id": "M41",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_ticker_identity_scheduler.py::test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[unknown-version]"
+        ],
+        "output_sha256": "f44baf129bc0aa2ee8afdf187bbad781a7da16b848e4b71bacb5a7086346afb2",
+        "output_tail": [
+          "    ",
+          "        with sqlite3.connect(profile_path) as conn:",
+          "            rows = conn.execute(",
+          "                \"SELECT status,message,result FROM job_runs WHERE job_name=? ORDER BY id\",",
+          "                (\"ticker_identity.transitions\",),",
+          "            ).fetchall()",
+          ">       assert [(row[0], row[1]) for row in rows] == [",
+          "            (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "            (\"succeeded\", \"ticker_identity_scheduler_recovered\"),",
+          "            (\"failed\", \"ticker_identity_scheduler_failure\"),",
+          "        ]",
+          "E       AssertionError: assert [('failed', '...r_recovered')] == [('failed', '...ler_failure')]",
+          "E         ",
+          "E         Right contains one more item: ('failed', 'ticker_identity_scheduler_failure')",
+          "E         Use -v to get more diff",
+          "",
+          "tests/test_ticker_identity_scheduler.py:2109: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_ticker_identity_scheduler.py::test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[unknown-version]",
+          "1 failed in 0.57s"
+        ]
+      },
+      "owner_needles": [
+        "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[unknown-version]"
+      ],
+      "owners_observed": {
+        "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary[unknown-version]": true
+      },
+      "product_file": "src/service/ticker_identity_scheduler.py",
+      "restore": {
+        "after_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "before_sha256": "3e93eb61e3853ab62b6a1065594120730e7dd62276dc73e8f497437c7e4476af",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 7
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "c5c6b9cfc50a2575821aba84c9ae9f628be903aa892e61bc6b29b5c846c456d6",
+        "output_tail": [
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps an attended run pending while durable status is running without progress",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps an attended run pending while durable status is running without progress",
+          "i18next: languageChanged en",
+          "",
+          "-------------stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps an attended run pending while durable status is running without progress",
+          "i18next: languageChanged en",
+          "",
+          "\u00b7----------------------------------------",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 53 skipped (54)",
+          "   Start at  11:32:34",
+          "   Duration  1.37s (transform 434ms, setup 188ms, import 128ms, tests 457ms, environment 499ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/lifecycle/LifecycleView.test.tsx",
+        "--reporter=dot",
+        "-t",
+        "keeps an attended run pending while durable status is running without progress"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "complete an attended run while durable status is still running",
+      "id": "M42",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps an attended run pending while durable status is running without progress",
+          "AssertionError: expected \"vi.fn()\" to be called 1 times, but got 2 times"
+        ],
+        "output_sha256": "9d0efb39091b2f38dadf86cdc72831beca91eacae7c6adb8b674e569f52972c1",
+        "output_tail": [
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+          "",
+          " FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > keeps an attended run pending while durable status is running without progress",
+          "AssertionError: expected \"vi.fn()\" to be called 1 times, but got 2 times",
+          " \u276f src/lifecycle/LifecycleView.test.tsx:1239:49",
+          "    1237|     expect(apiMocks.getSecurityLifecycleAutomationStatus).toHaveBeenCa\u2026",
+          "    1238|     expect(buttonIn(document.body, \"Run this case\").disabled).toBe(tru\u2026",
+          "    1239|     expect(apiMocks.listSecurityLifecycleCases).toHaveBeenCalledTimes(\u2026",
+          "       |                                                 ^",
+          "    1240|     expect(apiMocks.getSecurityLifecycleCase).toHaveBeenCalledTimes(in\u2026",
+          "    1241|",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 53 skipped (54)",
+          "   Start at  11:32:36",
+          "   Duration  1.29s (transform 378ms, setup 158ms, import 127ms, tests 415ms, environment 490ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "keeps an attended run pending while durable status is running without progress"
+      ],
+      "owners_observed": {
+        "keeps an attended run pending while durable status is running without progress": true
+      },
+      "product_file": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx",
+      "restore": {
+        "after_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "before_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "b84599fbc253c78c00023573eeaaf119cae43cd63ca345ac9970407d3f813baa",
+        "output_tail": [
+          "    }",
+          "  },",
+          "  lng: 'zh-Hant',",
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > keeps write controls disabled while a started run has durable running status",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "stdout | src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > keeps write controls disabled while a started run has durable running status",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "--\u00b7----",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 6 skipped (7)",
+          "   Start at  11:32:38",
+          "   Duration  1.12s (transform 280ms, setup 173ms, import 252ms, tests 91ms, environment 500ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/settings/DataStorageSection.test.tsx",
+        "--reporter=dot",
+        "-t",
+        "keeps write controls disabled while a started run has durable running status"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "ignore durable running status in Settings controls",
+      "id": "M43",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > keeps write controls disabled while a started run has durable running status",
+          "AssertionError: expected false to be true // Object.is equality"
+        ],
+        "output_sha256": "630ff6931718d04a79d21896376f876eb7c4a4e38d914dcf0dfd1eb025c86e73",
+        "output_tail": [
+          "",
+          "- true",
+          "+ false",
+          "",
+          " \u276f src/settings/DataStorageSection.test.tsx:318:9",
+          "    316|     expect(Array.from(runningControls).every((control) => (",
+          "    317|       (control as HTMLInputElement | HTMLSelectElement | HTMLButtonEle\u2026",
+          "    318|     ))).toBe(true);",
+          "       |         ^",
+          "    319|",
+          "    320|     controls.automationStatus = status({",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 6 skipped (7)",
+          "   Start at  11:32:39",
+          "   Duration  1.12s (transform 292ms, setup 184ms, import 249ms, tests 93ms, environment 494ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "keeps write controls disabled while a started run has durable running status"
+      ],
+      "owners_observed": {
+        "keeps write controls disabled while a started run has durable running status": true
+      },
+      "product_file": "apps/arkscope-web/src/settings/DataStorageSection.tsx",
+      "restore": {
+        "after_sha256": "c552ebd331005b1f0e46007240c530c5ae38177c9f47be94164ce3bd23b1452f",
+        "before_sha256": "c552ebd331005b1f0e46007240c530c5ae38177c9f47be94164ce3bd23b1452f",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "2cafee716964d9ccf0fea68c4a81d88fa1ccc4879d02c8865b10e93a1d34c281",
+        "output_tail": [
+          "..                                                                       [100%]",
+          "2 passed in 2.09s"
+        ]
+      },
+      "command": [
+        "/home/hyl/.virtualenvs/llm_app/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_security_lifecycle_routes.py::test_manual_run_live_mutation_gate_raises_typed_store_unavailable",
+        "tests/test_security_lifecycle_automation_worker.py::test_route_mutation_authority_failure_is_retryable_before_finalization"
+      ],
+      "cwd": ".",
+      "description": "collapse a live mutation-authority read error to disabled",
+      "id": "M44",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAILED tests/test_security_lifecycle_routes.py::test_manual_run_live_mutation_gate_raises_typed_store_unavailable",
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_route_mutation_authority_failure_is_retryable_before_finalization"
+        ],
+        "output_sha256": "e4b66c83234326e5b27ecd48eb8b75b4554a8706b056d3e945ce15c472623c9a",
+        "output_tail": [
+          "    ",
+          "        settings_store = SimpleNamespace(get_settings_snapshot=unavailable)",
+          "        mutation_allowed = _live_transition_mutation_authority(settings_store)",
+          "        try:",
+          "            result = harness.worker_with_transition_approver(",
+          "                transition_mutation_allowed=mutation_allowed,",
+          "            ).run()",
+          "    ",
+          "            store = _store(harness)",
+          "            run = store.list_automation_runs(case[\"case_id\"])[0]",
+          "            context = json.loads(run[\"query_context_json\"])",
+          "    ",
+          ">           assert result[\"failed\"] == 1",
+          "E           assert 0 == 1",
+          "",
+          "tests/test_security_lifecycle_automation_worker.py:1335: AssertionError",
+          "=========================== short test summary info ============================",
+          "FAILED tests/test_security_lifecycle_routes.py::test_manual_run_live_mutation_gate_raises_typed_store_unavailable",
+          "FAILED tests/test_security_lifecycle_automation_worker.py::test_route_mutation_authority_failure_is_retryable_before_finalization",
+          "2 failed in 2.43s"
+        ]
+      },
+      "owner_needles": [
+        "test_manual_run_live_mutation_gate_raises_typed_store_unavailable",
+        "test_route_mutation_authority_failure_is_retryable_before_finalization"
+      ],
+      "owners_observed": {
+        "test_manual_run_live_mutation_gate_raises_typed_store_unavailable": true,
+        "test_route_mutation_authority_failure_is_retryable_before_finalization": true
+      },
+      "product_file": "src/api/routes/security_lifecycle.py",
+      "restore": {
+        "after_sha256": "1e2ef4d252fe7af09b8354a8b08709812c6808ae9c6158cbb74e5f5932edbf72",
+        "before_sha256": "1e2ef4d252fe7af09b8354a8b08709812c6808ae9c6158cbb74e5f5932edbf72",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 2
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "9e15c0a42fe656e7e54c97618b82f9b89ad95980a9af63e48746d472adb2ca78",
+        "output_tail": [
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > continues polling an attended run after one status request fails",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > continues polling an attended run after one status request fails",
+          "i18next: languageChanged en",
+          "",
+          "---------------stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > continues polling an attended run after one status request fails",
+          "i18next: languageChanged en",
+          "",
+          "\u00b7--------------------------------------",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 53 skipped (54)",
+          "   Start at  11:32:47",
+          "   Duration  1.42s (transform 429ms, setup 196ms, import 149ms, tests 469ms, environment 505ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/lifecycle/LifecycleView.test.tsx",
+        "--reporter=dot",
+        "-t",
+        "continues polling an attended run after one status request fails"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "stop attended-run polling after one status request failure",
+      "id": "M45",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > continues polling an attended run after one status request fails",
+          "AssertionError: expected \"vi.fn()\" to be called 3 times, but got 2 times"
+        ],
+        "output_sha256": "37fdf3c810d7b3823031f1577a5e9178163f01e42761f0ca77427a33d5b9d4c6",
+        "output_tail": [
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+          "",
+          " FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > continues polling an attended run after one status request fails",
+          "AssertionError: expected \"vi.fn()\" to be called 3 times, but got 2 times",
+          " \u276f src/lifecycle/LifecycleView.test.tsx:1320:59",
+          "    1318|       await vi.advanceTimersByTimeAsync(1_000);",
+          "    1319|     });",
+          "    1320|     expect(apiMocks.getSecurityLifecycleAutomationStatus).toHaveBeenCa\u2026",
+          "       |                                                           ^",
+          "    1321|     expect(buttonIn(document.body, \"Run this case\").disabled).toBe(fal\u2026",
+          "    1322|   });",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 53 skipped (54)",
+          "   Start at  11:32:48",
+          "   Duration  1.36s (transform 407ms, setup 198ms, import 144ms, tests 420ms, environment 498ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "continues polling an attended run after one status request fails"
+      ],
+      "owners_observed": {
+        "continues polling an attended run after one status request fails": true
+      },
+      "product_file": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx",
+      "restore": {
+        "after_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "before_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "9416e6fd26d467b8ff7c0cf730ec0e8e634a4eab2eef2ff0c4f0d5d30a37d362",
+        "output_tail": [
+          "    }",
+          "  },",
+          "  lng: 'zh-Hant',",
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > continues polling a durable running status after one request fails",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "stdout | src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > continues polling a durable running status after one request fails",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "---\u00b7---",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 6 skipped (7)",
+          "   Start at  11:32:50",
+          "   Duration  1.15s (transform 311ms, setup 199ms, import 265ms, tests 92ms, environment 499ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/settings/DataStorageSection.test.tsx",
+        "--reporter=dot",
+        "-t",
+        "continues polling a durable running status after one request fails"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "stop Settings polling after one durable-status request failure",
+      "id": "M46",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > continues polling a durable running status after one request fails",
+          "AssertionError: expected \"vi.fn()\" to be called 4 times, but got 3 times"
+        ],
+        "output_sha256": "b3018a6deb9501e57c20e4496cf5375bb1ed14c3d285b96373310a77f0677fcf",
+        "output_tail": [
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+          "",
+          " FAIL  src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > continues polling a durable running status after one request fails",
+          "AssertionError: expected \"vi.fn()\" to be called 4 times, but got 3 times",
+          " \u276f src/settings/DataStorageSection.test.tsx:362:50",
+          "    360|     });",
+          "    361|",
+          "    362|     expect(getSecurityLifecycleAutomationStatus).toHaveBeenCalledTimes\u2026",
+          "       |                                                  ^",
+          "    363|     expect(button(\"\u7acb\u5373\u6aa2\u67e5\u5230\u671f\u6848\u4ef6\").disabled).toBe(false);",
+          "    364|   });",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 6 skipped (7)",
+          "   Start at  11:32:51",
+          "   Duration  1.14s (transform 308ms, setup 199ms, import 256ms, tests 89ms, environment 498ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "continues polling a durable running status after one request fails"
+      ],
+      "owners_observed": {
+        "continues polling a durable running status after one request fails": true
+      },
+      "product_file": "apps/arkscope-web/src/settings/DataStorageSection.tsx",
+      "restore": {
+        "after_sha256": "c552ebd331005b1f0e46007240c530c5ae38177c9f47be94164ce3bd23b1452f",
+        "before_sha256": "c552ebd331005b1f0e46007240c530c5ae38177c9f47be94164ce3bd23b1452f",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "d5b0c9e28af2693a8e74d8fe12c6a5e36ea36caf51787007b1c85bb12cbe9324",
+        "output_tail": [
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "i18next: languageChanged en",
+          "",
+          "--------------stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "i18next: languageChanged en",
+          "",
+          "\u00b7---------------------------------------",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 53 skipped (54)",
+          "   Start at  11:32:53",
+          "   Duration  1.35s (transform 394ms, setup 186ms, import 141ms, tests 427ms, environment 498ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/lifecycle/LifecycleView.test.tsx",
+        "--reporter=dot",
+        "-t",
+        "polls and exposes a durable run before in-memory progress arrives"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "stop Lifecycle polling for durable-only running state",
+      "id": "M47",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "AssertionError: expected \"vi.fn()\" to be called 2 times, but got 1 times"
+        ],
+        "output_sha256": "236a9c7e71082de7f180556e0f85878a1d5aa8eb9a921cfe103dfeb78437db91",
+        "output_tail": [
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+          "",
+          " FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "AssertionError: expected \"vi.fn()\" to be called 2 times, but got 1 times",
+          " \u276f src/lifecycle/LifecycleView.test.tsx:1283:59",
+          "    1281|     });",
+          "    1282|",
+          "    1283|     expect(apiMocks.getSecurityLifecycleAutomationStatus).toHaveBeenCa\u2026",
+          "       |                                                           ^",
+          "    1284|     expect(document.body.querySelector(",
+          "    1285|       '.lifecycle-automation-band[data-automation-state=\"running\"]',",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 53 skipped (54)",
+          "   Start at  11:32:55",
+          "   Duration  1.37s (transform 406ms, setup 189ms, import 151ms, tests 417ms, environment 504ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "polls and exposes a durable run before in-memory progress arrives"
+      ],
+      "owners_observed": {
+        "polls and exposes a durable run before in-memory progress arrives": true
+      },
+      "product_file": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx",
+      "restore": {
+        "after_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "before_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "07fdfaffc5ee035c9ea942dc453fc73c8d0a88580b5ece77ec4c8cfbdbf9dc49",
+        "output_tail": [
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "i18next: languageChanged en",
+          "",
+          "--------------stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "i18next: languageChanged en",
+          "",
+          "\u00b7---------------------------------------",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 53 skipped (54)",
+          "   Start at  11:32:56",
+          "   Duration  1.34s (transform 399ms, setup 187ms, import 129ms, tests 429ms, environment 497ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/lifecycle/LifecycleView.test.tsx",
+        "--reporter=dot",
+        "-t",
+        "polls and exposes a durable run before in-memory progress arrives"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "hide the durable-only global running banner",
+      "id": "M48",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string"
+        ],
+        "output_sha256": "5887907f34bb64e78beefd3ca751fdd6c9a54ed0c6924dca7338c46d1ba2c5b8",
+        "output_tail": [
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+          "",
+          " FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string",
+          " \u276f src/lifecycle/LifecycleView.test.tsx:1276:21",
+          "    1274|     expect(document.body.querySelector(",
+          "    1275|       '.lifecycle-automation-band[data-automation-state=\"running\"]',",
+          "    1276|     )?.textContent).toContain(\"Automatic check in progress\");",
+          "       |                     ^",
+          "    1277|     expect(buttonIn(document.body, \"Run this case\").disabled).toBe(tru\u2026",
+          "    1278|",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 53 skipped (54)",
+          "   Start at  11:32:58",
+          "   Duration  1.32s (transform 384ms, setup 174ms, import 140ms, tests 411ms, environment 491ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "polls and exposes a durable run before in-memory progress arrives"
+      ],
+      "owners_observed": {
+        "polls and exposes a durable run before in-memory progress arrives": true
+      },
+      "product_file": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx",
+      "restore": {
+        "after_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "before_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "44387faedfd337296e5b35d7b47de4f0f60a2342e898bfef482886d46cc66b00",
+        "output_tail": [
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "i18next: languageChanged en",
+          "",
+          "--------------stdout | src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "i18next: languageChanged en",
+          "",
+          "\u00b7---------------------------------------",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 53 skipped (54)",
+          "   Start at  11:32:59",
+          "   Duration  1.37s (transform 406ms, setup 182ms, import 144ms, tests 443ms, environment 501ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/lifecycle/LifecycleView.test.tsx",
+        "--reporter=dot",
+        "-t",
+        "polls and exposes a durable run before in-memory progress arrives"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "enable the case Run button during durable-only running state",
+      "id": "M49",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/lifecycle/LifecycleView.test.tsx > Lifecycle workflow > polls and exposes a durable run before in-memory progress arrives",
+          "AssertionError: expected false to be true // Object.is equality"
+        ],
+        "output_sha256": "9231c40c5183fc2e80567594fddc730fd72960d6b3eaee01472bba914d662b56",
+        "output_tail": [
+          "",
+          "- true",
+          "+ false",
+          "",
+          " \u276f src/lifecycle/LifecycleView.test.tsx:1277:63",
+          "    1275|       '.lifecycle-automation-band[data-automation-state=\"running\"]',",
+          "    1276|     )?.textContent).toContain(\"Automatic check in progress\");",
+          "    1277|     expect(buttonIn(document.body, \"Run this case\").disabled).toBe(tru\u2026",
+          "       |                                                               ^",
+          "    1278|",
+          "    1279|     await act(async () => {",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 53 skipped (54)",
+          "   Start at  11:33:01",
+          "   Duration  1.35s (transform 391ms, setup 183ms, import 133ms, tests 431ms, environment 504ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "polls and exposes a durable run before in-memory progress arrives"
+      ],
+      "owners_observed": {
+        "polls and exposes a durable run before in-memory progress arrives": true
+      },
+      "product_file": "apps/arkscope-web/src/lifecycle/LifecycleView.tsx",
+      "restore": {
+        "after_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "before_sha256": "ed5858ba1ad5f09ea162083a31910e231d77b64f6433d0184ccb36c7d6e67ee2",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
+    },
+    {
+      "baseline": {
+        "exit_code": 0,
+        "failure_lines": [],
+        "output_sha256": "c15159b348c55429ed6ddfaf1a88ae79cd1bd3b9f79bf55600808808a3385d22",
+        "output_tail": [
+          "    }",
+          "  },",
+          "  lng: 'zh-Hant',",
+          "  react: { useSuspense: false },",
+          "  ignoreJSONStructure: true",
+          "}",
+          "",
+          "stdout | src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > shows durable running ahead of stale invalid telemetry",
+          "i18next: languageChanged zh-Hant",
+          "",
+          "stdout | src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > shows durable running ahead of stale invalid telemetry",
+          "i18next: languageChanged en",
+          "",
+          "----\u00b7--",
+          "",
+          " Test Files  1 passed (1)",
+          "      Tests  1 passed | 6 skipped (7)",
+          "   Start at  11:33:03",
+          "   Duration  1.13s (transform 299ms, setup 189ms, import 253ms, tests 77ms, environment 507ms)",
+          ""
+        ]
+      },
+      "command": [
+        "/tmp/arkscope-lifecycle-automation-control-plane/node_modules/.bin/vitest",
+        "run",
+        "src/settings/DataStorageSection.test.tsx",
+        "--reporter=dot",
+        "-t",
+        "shows durable running ahead of stale invalid telemetry"
+      ],
+      "cwd": "apps/arkscope-web",
+      "description": "prefer stale invalid telemetry over durable running state",
+      "id": "M50",
+      "killed": true,
+      "mutant": {
+        "exit_code": 1,
+        "failure_lines": [
+          "FAIL  src/settings/DataStorageSection.test.tsx > DataStorageSection lifecycle automation controls > shows durable running ahead of stale invalid telemetry",
+          "AssertionError: expected undefined to be 'Running' // Object.is equality"
+        ],
+        "output_sha256": "4de25227c2b5886c5f15b826cdde6211ff10f06ff6aaddcc1bbb0f181f3f6c3f",
+        "output_tail": [
+          "",
+          "+ Received:",
+          "undefined",
+          "",
+          " \u276f src/settings/DataStorageSection.test.tsx:376:8",
+          "    374|",
+          "    375|     expect(host!.querySelector('[data-automation-state=\"running\"]')?.t\u2026",
+          "    376|       .toBe(\"Running\");",
+          "       |        ^",
+          "    377|     expect(host!.querySelector('[data-automation-state=\"invalid\"]')).t\u2026",
+          "    378|     expect(button(\"Run due cases now\").disabled).toBe(true);",
+          "",
+          "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af",
+          "",
+          "",
+          " Test Files  1 failed (1)",
+          "      Tests  1 failed | 6 skipped (7)",
+          "   Start at  11:33:04",
+          "   Duration  1.11s (transform 295ms, setup 187ms, import 254ms, tests 76ms, environment 496ms)",
+          ""
+        ]
+      },
+      "owner_needles": [
+        "shows durable running ahead of stale invalid telemetry"
+      ],
+      "owners_observed": {
+        "shows durable running ahead of stale invalid telemetry": true
+      },
+      "product_file": "apps/arkscope-web/src/settings/DataStorageSection.tsx",
+      "restore": {
+        "after_sha256": "c552ebd331005b1f0e46007240c530c5ae38177c9f47be94164ce3bd23b1452f",
+        "before_sha256": "c552ebd331005b1f0e46007240c530c5ae38177c9f47be94164ce3bd23b1452f",
+        "byte_identical": true
+      },
+      "runner_error": null,
+      "task": 10
     }
   ],
   "schema_version": 1

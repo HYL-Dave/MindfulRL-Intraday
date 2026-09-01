@@ -26,16 +26,20 @@
     "measured_fixture_browser_operations": {
       "clipped_text": 0,
       "console_errors": 0,
-      "entries": 8,
+      "entries": 16,
       "external_requests": 0,
       "fixture_write_requests": 8,
-      "latest_case_refresh_witnesses": 8,
+      "latest_case_refresh_witnesses": 16,
       "overlaps": 0,
       "page_errors": 0,
       "screenshot_hashes_valid": true,
-      "screenshots": 8,
+      "screenshots": 16,
+      "t3_operator_detail_witnesses": 4,
+      "t3_raw_context_hidden_witnesses": 4,
+      "t5_finalization_label_witnesses": 4,
       "viewport_clipped_controls": 0
     },
+    "packet_replay_modified_product_or_test_code": false,
     "packet_replay_scope": "offline_repository_and_fixture_only"
   },
   "browser": {
@@ -43,14 +47,17 @@
     "measured": {
       "clipped_text": 0,
       "console_errors": 0,
-      "entries": 8,
+      "entries": 16,
       "external_requests": 0,
       "fixture_write_requests": 8,
-      "latest_case_refresh_witnesses": 8,
+      "latest_case_refresh_witnesses": 16,
       "overlaps": 0,
       "page_errors": 0,
       "screenshot_hashes_valid": true,
-      "screenshots": 8,
+      "screenshots": 16,
+      "t3_operator_detail_witnesses": 4,
+      "t3_raw_context_hidden_witnesses": 4,
+      "t5_finalization_label_witnesses": 4,
       "viewport_clipped_controls": 0
     },
     "positive_geometry_calibration": {
@@ -60,39 +67,45 @@
   },
   "gates": {
     "backend_focused": {
-      "passed": 931,
-      "seconds": 45.06
+      "passed": 1012,
+      "seconds": 50.04
     },
     "backend_full_a": {
-      "passed": 5223,
-      "seconds": 382.87,
+      "passed": 5304,
+      "seconds": 393.26,
       "skipped": 12,
       "warnings": 3
     },
     "backend_full_b": {
-      "passed": 5223,
-      "seconds": 381.75,
+      "passed": 5304,
+      "seconds": 394.46,
       "skipped": 12,
       "warnings": 3
     },
     "backend_full_result_counts_equal": true,
     "frontend_a": {
       "files": 108,
-      "tests": 1324
+      "tests": 1332
     },
     "frontend_b": {
       "files": 108,
-      "tests": 1324
+      "tests": 1332
     },
     "full_node_manifest_a": {
-      "nodes": 5235,
-      "sha256": "22363e5d547a70181b7ed899e3e9d3bde93176682b3f143e2ab131babe866c70"
+      "nodes": 5316,
+      "sha256": "d007dca0158a7d8361c22cd8946a63d954a88d362f78827ad172247737f27d3c"
     },
     "full_node_manifest_b": {
-      "nodes": 5235,
-      "sha256": "22363e5d547a70181b7ed899e3e9d3bde93176682b3f143e2ab131babe866c70"
+      "nodes": 5316,
+      "sha256": "d007dca0158a7d8361c22cd8946a63d954a88d362f78827ad172247737f27d3c"
     },
     "full_node_manifests_byte_identical": true,
+    "generated_text_normalization": {
+      "artifacts": 12,
+      "semantic_content_rewritten": false,
+      "terminal_empty_lines_removed": 3,
+      "trailing_whitespace_lines_normalized": 6
+    },
     "i18n_scanner": {
       "allowlistCount": 20,
       "candidateCount": 37,
@@ -113,22 +126,26 @@
   "limitations": [
     "The browser matrix uses local fixture responses and does not claim live provider or production database coverage.",
     "Runtime stage progress is intentionally process-memory state and does not survive an App restart; durable incident truth is separate.",
-    "The packet seals only files inside this packet; imported browser fixture helpers are instead bound to exact tested-head Git blobs and SHA-256 values.",
+    "Historical sealed packets are immutable and outside this replay. Only three historical run_browser_matrix.py fixture helpers are imported read-only and bound to exact product-head Git blobs and SHA-256 values; historical run_shadow.py and test_packet_contracts.py are not executed.",
+    "T3 and T5 browser witnesses are local product-shaped fixtures; they prove rendering and closed DTO behavior, not live provider evidence.",
     "The final production one-case canary remains separately authorized Task 13 work."
   ],
   "mutations": {
     "all_files_restored_byte_identically": true,
-    "count": 32,
-    "killed": 32
+    "count": 50,
+    "killed": 50
   },
   "repository": {
     "base_commit": "947a51fca2f078e750bef64cad4817682141ea8f",
     "branch": "lifecycle-automation-control-plane",
     "browser_fixture_authorities_match_tested_head": true,
-    "changed_paths": 64,
+    "changed_paths": 106,
     "merge_commits_since_base": [],
+    "post_product_paths": [],
+    "post_product_scope_only_packet": true,
+    "replay_source_head": "6c20cd557715eab5f0abaafe2b923313ee38ed33",
     "schema_authorities_byte_identical": true,
-    "tested_product_head": "daa3a40857bf5f531d0612466cab779ac05edde5"
+    "tested_product_head": "6c20cd557715eab5f0abaafe2b923313ee38ed33"
   },
   "schema_version": 1
 }

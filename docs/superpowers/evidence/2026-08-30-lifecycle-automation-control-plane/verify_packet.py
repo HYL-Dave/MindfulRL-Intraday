@@ -13,6 +13,11 @@ import sys
 PACKET = Path(__file__).resolve().parent
 ROOT = PACKET.parents[3]
 MANIFEST = PACKET / "SHA256SUMS"
+BASE_COMMIT = "947a51fca2f078e750bef64cad4817682141ea8f"
+PRODUCT_HEAD = "6c20cd557715eab5f0abaafe2b923313ee38ed33"
+REQUIRED_REPAIR_MUTATIONS = frozenset(
+    {f"M{index}" for index in range(33, 51)}
+)
 
 
 def _load(name: str):
@@ -71,6 +76,13 @@ def main() -> int:
         stdout=subprocess.PIPE,
     ).stdout.strip()
     tested_head = str(repository["head_commit"])
+    if (
+        repository["product_head_commit"] != PRODUCT_HEAD
+        or repository["base_commit"] != BASE_COMMIT
+        or not repository["product_head_is_ancestor"]
+        or not repository["post_product_scope_only_packet"]
+    ):
+        raise AssertionError("repository_authority")
     ancestor = subprocess.run(
         ("git", "merge-base", "--is-ancestor", tested_head, current_head),
         cwd=ROOT,
@@ -85,13 +97,8 @@ def main() -> int:
         text=True,
         stdout=subprocess.PIPE,
     ).stdout.splitlines()
-    allowed_post_binding_paths = {
-        "docs/design/PROJECT_PRIORITY_MAP.md",
-        "docs/superpowers/plans/2026-08-30-lifecycle-automation-control-plane-implementation.md",
-    }
     if any(
-        path not in allowed_post_binding_paths
-        and not path.startswith(
+        not path.startswith(
             "docs/superpowers/evidence/2026-08-30-lifecycle-automation-control-plane/"
         )
         for path in post_binding_paths
@@ -105,6 +112,9 @@ def main() -> int:
     mutations = _load("run_mutations")
     if ledger["mutation_count"] != len(mutations.MUTATIONS):
         raise AssertionError("mutation_definition_drift")
+    mutation_ids = {row["id"] for row in ledger["mutations"]}
+    if not REQUIRED_REPAIR_MUTATIONS.issubset(mutation_ids):
+        raise AssertionError("repair_mutation_coverage")
     if not ledger["all_mutations_killed"] or not ledger[
         "all_files_restored_byte_identically"
     ]:

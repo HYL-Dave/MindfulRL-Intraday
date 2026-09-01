@@ -54,6 +54,8 @@ IBKR = "src/security_lifecycle_ibkr_evidence.py"
 SEC = "src/security_lifecycle_sec_evidence.py"
 CONFIG = "src/service/security_lifecycle_automation_config.py"
 DATA_SCHEDULER = "src/service/data_scheduler.py"
+TICKER_SCHEDULER = "src/service/ticker_identity_scheduler.py"
+LIFECYCLE_ROUTES = "src/api/routes/security_lifecycle.py"
 API = "apps/arkscope-web/src/api.ts"
 LIFECYCLE_VIEW = "apps/arkscope-web/src/lifecycle/LifecycleView.tsx"
 SETTINGS = "apps/arkscope-web/src/settings/DataStorageSection.tsx"
@@ -150,18 +152,36 @@ MUTATIONS = (
     Mutation(
         "M11", 4, "remove predecessor-cycle detection",
         KERNEL,
-        "        if current_id in visited:\n            raise ValueError(\"automation_predecessor_cycle\")",
-        "        if False and current_id in visited:\n            raise ValueError(\"automation_predecessor_cycle\")",
+        "        if predecessor_run_id is not None and predecessor_run_id in visited:\n"
+        "            raise _AttemptChainDataError(\"automation_predecessor_cycle\")",
+        "        if False and predecessor_run_id is not None and predecessor_run_id in visited:\n"
+        "            raise _AttemptChainDataError(\"automation_predecessor_cycle\")",
         py_test("tests/test_security_lifecycle_fact_kernel.py::test_predecessor_cycle_fails_closed_before_creating_attended_attempt"),
         ("test_predecessor_cycle_fails_closed_before_creating_attended_attempt",),
+        extra_replacements=((
+            "        if current_id in visited:\n"
+            "            raise _AttemptChainDataError(\"automation_predecessor_cycle\")",
+            "        if False and current_id in visited:\n"
+            "            raise _AttemptChainDataError(\"automation_predecessor_cycle\")",
+        ),),
     ),
     Mutation(
         "M12", 5, "truncate an over-budget IBKR identity plan",
         IBKR,
-        "    if len(queries) > max_queries:\n        return None\n    return queries",
-        "    if len(queries) > max_queries:\n        return queries[:max_queries]\n    return queries",
-        py_test("tests/test_security_lifecycle_ibkr_evidence.py::test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity"),
-        ("test_ibkr_candidate_budget_distinguishes_complete_missing_from_ambiguity",),
+        "    if len(queries) > max_queries:\n"
+        "        return _blocked(\n"
+        "            \"market_confirmation_missing\",\n"
+        "            requests_made=0,\n"
+        "            context={\n"
+        "                \"code\": \"candidate_budget_exceeded\",\n"
+        "                \"candidate_count\": len(queries),\n"
+        "                \"query_limit\": max_queries,\n"
+        "            },\n"
+        "        )",
+        "    if len(queries) > max_queries:\n"
+        "        queries = queries[:max_queries]",
+        py_test("tests/test_security_lifecycle_ibkr_evidence.py::test_budget_overflow_records_candidate_budget_exceeded_context"),
+        ("test_budget_overflow_records_candidate_budget_exceeded_context",),
     ),
     Mutation(
         "M13", 5, "place aliases before the current ticker",
@@ -327,6 +347,280 @@ MUTATIONS = (
         ".lifecycle-evidence-item:not([open]) > .lifecycle-evidence-body {\n  display: block;\n}",
         web_test("src/LifecycleCss.test.ts", "keeps closed evidence bodies out of layout"),
         ("keeps closed evidence bodies out of layout",),
+        cwd="apps/arkscope-web",
+    ),
+    Mutation(
+        "M33", 7, "trust an unversioned legacy recovery as an incident boundary",
+        TICKER_SCHEDULER,
+        "    for row in rows:\n"
+        "        if (\n"
+        "            _stored_incident_reconciliation_version(row[\"result\"])\n"
+        "            == _INCIDENT_RECONCILIATION_VERSION\n"
+        "        ):\n"
+        "            return int(row[\"id\"])",
+        "    for row in rows:\n"
+        "        if True:\n"
+        "            return int(row[\"id\"])",
+        py_test(
+            "tests/test_ticker_identity_scheduler.py::"
+            "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary"
+            "[absent-version]"
+        ),
+        (
+            "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary"
+            "[absent-version]",
+        ),
+    ),
+    Mutation(
+        "M34", 7, "treat a missing failed transition row as settled",
+        TICKER_SCHEDULER,
+        '        if statuses.get(transition_id) in {None, "approved"}',
+        '        if statuses.get(transition_id) == "approved"',
+        py_test(
+            "tests/test_ticker_identity_scheduler.py::"
+            "test_missing_failed_transition_row_never_proves_recovery"
+        ),
+        ("test_missing_failed_transition_row_never_proves_recovery",),
+    ),
+    Mutation(
+        "M35", 7, "drop the incident reconciliation version marker",
+        TICKER_SCHEDULER,
+        "    if not failed:\n"
+        "        stored[\"incident_reconciliation_version\"] = (\n"
+        "            _INCIDENT_RECONCILIATION_VERSION\n"
+        "        )",
+        "    if False and not failed:\n"
+        "        stored[\"incident_reconciliation_version\"] = (\n"
+        "            _INCIDENT_RECONCILIATION_VERSION\n"
+        "        )",
+        py_test(
+            "tests/test_data_scheduler.py::"
+            "test_tick_deduplicates_ticker_transition_failure_and_records_recovery"
+        ),
+        ("test_tick_deduplicates_ticker_transition_failure_and_records_recovery",),
+    ),
+    Mutation(
+        "M36", 7, "drop unresolved legacy-incident restatement",
+        TICKER_SCHEDULER,
+        "            if latest_failed_ids.isdisjoint(unresolved_ids):",
+        "            if False and latest_failed_ids.isdisjoint(unresolved_ids):",
+        py_test(
+            "tests/test_ticker_identity_scheduler.py::"
+            "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary"
+            "[absent-version]"
+        ),
+        (
+            "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary"
+            "[absent-version]",
+        ),
+    ),
+    Mutation(
+        "M37", 7, "reconcile only the latest failure witness",
+        TICKER_SCHEDULER,
+        "    failed_ids = {\n"
+        "        str(transition_id)\n"
+        "        for incident in incidents\n"
+        "        for transition_id in incident[\"failed_transition_ids\"]\n"
+        "    }",
+        "    failed_ids = {\n"
+        "        str(transition_id)\n"
+        "        for incident in incidents[-1:]\n"
+        "        for transition_id in incident[\"failed_transition_ids\"]\n"
+        "    }",
+        py_test(
+            "tests/test_ticker_identity_scheduler.py::"
+            "test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn"
+        ),
+        ("test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn",),
+    ),
+    Mutation(
+        "M38", 7, "treat an approved failed transition as settled",
+        TICKER_SCHEDULER,
+        '        if statuses.get(transition_id) in {None, "approved"}',
+        "        if statuses.get(transition_id) is None",
+        py_test(
+            "tests/test_ticker_identity_scheduler.py::"
+            "test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn"
+        ),
+        ("test_recovery_tracks_all_unresolved_transition_ids_across_failure_churn",),
+    ),
+    Mutation(
+        "M39", 7, "restore the global recovery-eligible gate",
+        TICKER_SCHEDULER,
+        '        if status != "succeeded":\n            conn.commit()',
+        '        if status != "succeeded" or not bounded["recovery_eligible"]:\n'
+        "            conn.commit()",
+        py_test(
+            "tests/test_ticker_identity_scheduler.py::"
+            "test_scheduler_wide_recovery_is_independent_of_automation_policy_filter"
+        ),
+        ("test_scheduler_wide_recovery_is_independent_of_automation_policy_filter",),
+    ),
+    Mutation(
+        "M40", 7, "reintroduce the no-table success recovery fallback",
+        TICKER_SCHEDULER,
+        "        return tuple(sorted(failed_ids))",
+        '        return () if result["recovery_eligible"] is True else tuple(sorted(failed_ids))',
+        py_test(
+            "tests/test_ticker_identity_scheduler.py::"
+            "test_policy_deferral_and_schema_absence_never_clear_named_failure"
+        ),
+        ("test_policy_deferral_and_schema_absence_never_clear_named_failure",),
+    ),
+    Mutation(
+        "M41", 7, "trust any integer incident reconciliation version",
+        TICKER_SCHEDULER,
+        "        if (\n"
+        "            _stored_incident_reconciliation_version(row[\"result\"])\n"
+        "            == _INCIDENT_RECONCILIATION_VERSION\n"
+        "        ):",
+        "        if (\n"
+        "            _stored_incident_reconciliation_version(row[\"result\"])\n"
+        "            is not None\n"
+        "        ):",
+        py_test(
+            "tests/test_ticker_identity_scheduler.py::"
+            "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary"
+            "[unknown-version]"
+        ),
+        (
+            "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary"
+            "[unknown-version]",
+        ),
+    ),
+    Mutation(
+        "M42", 10, "complete an attended run while durable status is still running",
+        LIFECYCLE_VIEW,
+        '      || automationStatusSnapshot.response.last_status === "running"\n',
+        "",
+        web_test(
+            "src/lifecycle/LifecycleView.test.tsx",
+            "keeps an attended run pending while durable status is running without progress",
+        ),
+        ("keeps an attended run pending while durable status is running without progress",),
+        cwd="apps/arkscope-web",
+    ),
+    Mutation(
+        "M43", 10, "ignore durable running status in Settings controls",
+        SETTINGS,
+        '  const automationRunning = automation?.last_status === "running"\n'
+        "    || Boolean(automation?.current_progress.length);",
+        "  const automationRunning = Boolean(automation?.current_progress.length);",
+        web_test(
+            "src/settings/DataStorageSection.test.tsx",
+            "keeps write controls disabled while a started run has durable running status",
+        ),
+        ("keeps write controls disabled while a started run has durable running status",),
+        cwd="apps/arkscope-web",
+    ),
+    Mutation(
+        "M44", 2, "collapse a live mutation-authority read error to disabled",
+        LIFECYCLE_ROUTES,
+        "        except AutomationTransitionMutationAuthorityUnavailable:\n"
+        "            raise\n"
+        "        except Exception as exc:\n"
+        "            raise AutomationTransitionMutationAuthorityUnavailable() from exc",
+        "        except Exception:\n"
+        "            return False",
+        (
+            sys.executable,
+            "-m",
+            "pytest",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+            "tests/test_security_lifecycle_routes.py::"
+            "test_manual_run_live_mutation_gate_raises_typed_store_unavailable",
+            "tests/test_security_lifecycle_automation_worker.py::"
+            "test_route_mutation_authority_failure_is_retryable_before_finalization",
+        ),
+        (
+            "test_manual_run_live_mutation_gate_raises_typed_store_unavailable",
+            "test_route_mutation_authority_failure_is_retryable_before_finalization",
+        ),
+    ),
+    Mutation(
+        "M45", 10, "stop attended-run polling after one status request failure",
+        LIFECYCLE_VIEW,
+        "    automationStatusPollRevision,\n",
+        "",
+        web_test(
+            "src/lifecycle/LifecycleView.test.tsx",
+            "continues polling an attended run after one status request fails",
+        ),
+        ("continues polling an attended run after one status request fails",),
+        cwd="apps/arkscope-web",
+    ),
+    Mutation(
+        "M46", 10, "stop Settings polling after one durable-status request failure",
+        SETTINGS,
+        "  }, [automationRunning, automation, automationPollRevision, loadAutomation]);",
+        "  }, [automationRunning, automation, loadAutomation]);",
+        web_test(
+            "src/settings/DataStorageSection.test.tsx",
+            "continues polling a durable running status after one request fails",
+        ),
+        ("continues polling a durable running status after one request fails",),
+        cwd="apps/arkscope-web",
+    ),
+    Mutation(
+        "M47", 10, "stop Lifecycle polling for durable-only running state",
+        LIFECYCLE_VIEW,
+        '      && automationStatusSnapshot?.response.last_status !== "running"\n',
+        "",
+        web_test(
+            "src/lifecycle/LifecycleView.test.tsx",
+            "polls and exposes a durable run before in-memory progress arrives",
+        ),
+        ("polls and exposes a durable run before in-memory progress arrives",),
+        cwd="apps/arkscope-web",
+    ),
+    Mutation(
+        "M48", 10, "hide the durable-only global running banner",
+        LIFECYCLE_VIEW,
+        ') : automationStatus?.last_status === "running" ? (',
+        ") : false ? (",
+        web_test(
+            "src/lifecycle/LifecycleView.test.tsx",
+            "polls and exposes a durable run before in-memory progress arrives",
+        ),
+        ("polls and exposes a durable run before in-memory progress arrives",),
+        cwd="apps/arkscope-web",
+    ),
+    Mutation(
+        "M49", 10, "enable the case Run button during durable-only running state",
+        LIFECYCLE_VIEW,
+        '                      || automationStatus?.last_status === "running"\n',
+        "",
+        web_test(
+            "src/lifecycle/LifecycleView.test.tsx",
+            "polls and exposes a durable run before in-memory progress arrives",
+        ),
+        ("polls and exposes a durable run before in-memory progress arrives",),
+        cwd="apps/arkscope-web",
+    ),
+    Mutation(
+        "M50", 10, "prefer stale invalid telemetry over durable running state",
+        SETTINGS,
+        "  const stateKey: SecurityLifecycleAutomationSchedulerStatus | \"absent\" | \"invalid\" = (\n"
+        "    currentProgress || automation?.last_status === \"running\"\n"
+        "      ? \"running\"\n"
+        "      : automation?.telemetry_status === \"invalid\"\n"
+        "        ? \"invalid\"\n"
+        "        : automation?.last_status ?? \"absent\"\n"
+        "  );",
+        "  const stateKey: SecurityLifecycleAutomationSchedulerStatus | \"absent\" | \"invalid\" = (\n"
+        "    automation?.telemetry_status === \"invalid\"\n"
+        "      ? \"invalid\"\n"
+        "      : currentProgress || automation?.last_status === \"running\"\n"
+        "        ? \"running\"\n"
+        "        : automation?.last_status ?? \"absent\"\n"
+        "  );",
+        web_test(
+            "src/settings/DataStorageSection.test.tsx",
+            "shows durable running ahead of stale invalid telemetry",
+        ),
+        ("shows durable running ahead of stale invalid telemetry",),
         cwd="apps/arkscope-web",
     ),
 )

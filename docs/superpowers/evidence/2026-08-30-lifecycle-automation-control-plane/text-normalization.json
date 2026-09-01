@@ -1,0 +1,139 @@
+{
+  "artifacts": [
+    {
+      "after_sha256": "c9c431e6c20b3839c0262897d61b2f136ab0f9e1af018b44afcb6e6df703bc32",
+      "before_sha256": "c9c431e6c20b3839c0262897d61b2f136ab0f9e1af018b44afcb6e6df703bc32",
+      "byte_count_after": 1222,
+      "byte_count_before": 1222,
+      "line_count": 16,
+      "path": "backend-focused.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 0,
+      "trailing_whitespace_lines_normalized": 0
+    },
+    {
+      "after_sha256": "2650ca2bd131663221789a0352832f8f380a89e38892dbd9349b9b34e041b90c",
+      "before_sha256": "2650ca2bd131663221789a0352832f8f380a89e38892dbd9349b9b34e041b90c",
+      "byte_count_after": 7464,
+      "byte_count_before": 7464,
+      "line_count": 89,
+      "path": "backend-full-a.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 0,
+      "trailing_whitespace_lines_normalized": 0
+    },
+    {
+      "after_sha256": "279ebfa56269ba319aba8429c39001bd7af55156c2737365b20395c9fbcc4fd4",
+      "before_sha256": "279ebfa56269ba319aba8429c39001bd7af55156c2737365b20395c9fbcc4fd4",
+      "byte_count_after": 7464,
+      "byte_count_before": 7464,
+      "line_count": 89,
+      "path": "backend-full-b.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 0,
+      "trailing_whitespace_lines_normalized": 0
+    },
+    {
+      "after_sha256": "6ee0aaead02a7de8eb6edfe446183be62870bb359dccfab101cf5d280925ef4d",
+      "before_sha256": "6ee0aaead02a7de8eb6edfe446183be62870bb359dccfab101cf5d280925ef4d",
+      "byte_count_after": 93,
+      "byte_count_before": 93,
+      "line_count": 1,
+      "path": "browser-run.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 0,
+      "trailing_whitespace_lines_normalized": 0
+    },
+    {
+      "after_sha256": "a814fa0bbbbbc7c9d01189898a0f8acf86473d43c448148ff85373e1491e6407",
+      "before_sha256": "a814fa0bbbbbc7c9d01189898a0f8acf86473d43c448148ff85373e1491e6407",
+      "byte_count_after": 730,
+      "byte_count_before": 730,
+      "line_count": 18,
+      "path": "frontend-build.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 0,
+      "trailing_whitespace_lines_normalized": 0
+    },
+    {
+      "after_sha256": "f3ff49dfdae1cbb61ff75d18c2a37b6dcf17abe70a175f97b5d46febdc06d0a2",
+      "before_sha256": "f3ff49dfdae1cbb61ff75d18c2a37b6dcf17abe70a175f97b5d46febdc06d0a2",
+      "byte_count_after": 210,
+      "byte_count_before": 210,
+      "line_count": 5,
+      "path": "frontend-i18n-literals.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 0,
+      "trailing_whitespace_lines_normalized": 0
+    },
+    {
+      "after_sha256": "745b7f20fd67a870783fadf63ad6d5c36e2f83e43ccc4b4e23c1875a4e9e8ec7",
+      "before_sha256": "1b5cadee7c2717bdbb51fecc6928c6b0f32e9ebe041486f89b8ff37a22ab36b0",
+      "byte_count_after": 1431942,
+      "byte_count_before": 1431946,
+      "line_count": 44527,
+      "path": "frontend-test-a.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 1,
+      "trailing_whitespace_lines_normalized": 3
+    },
+    {
+      "after_sha256": "006a93ad7fc9f3eb79655fad8e47fa6b70849cc3f1a33ecbcc0276075493e90c",
+      "before_sha256": "0b07bfd1b1ad3ec69f114a6099f97bcb64c8713451c504ed1300ff7c2affcc5e",
+      "byte_count_after": 1431942,
+      "byte_count_before": 1431946,
+      "line_count": 44527,
+      "path": "frontend-test-b.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 1,
+      "trailing_whitespace_lines_normalized": 3
+    },
+    {
+      "after_sha256": "b4877f3b73e45c13b35c1b98056a2c34c883422fc71818600a9cb57f345ed89b",
+      "before_sha256": "f11cc6b081b601fbfb3d906dd86e989fdf90f9d1b527808504811363f1303fad",
+      "byte_count_after": 47,
+      "byte_count_before": 48,
+      "line_count": 3,
+      "path": "frontend-typecheck.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 1,
+      "trailing_whitespace_lines_normalized": 0
+    },
+    {
+      "after_sha256": "d007dca0158a7d8361c22cd8946a63d954a88d362f78827ad172247737f27d3c",
+      "before_sha256": "d007dca0158a7d8361c22cd8946a63d954a88d362f78827ad172247737f27d3c",
+      "byte_count_after": 505085,
+      "byte_count_before": 505085,
+      "line_count": 5316,
+      "path": "full-nodes-a.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 0,
+      "trailing_whitespace_lines_normalized": 0
+    },
+    {
+      "after_sha256": "d007dca0158a7d8361c22cd8946a63d954a88d362f78827ad172247737f27d3c",
+      "before_sha256": "d007dca0158a7d8361c22cd8946a63d954a88d362f78827ad172247737f27d3c",
+      "byte_count_after": 505085,
+      "byte_count_before": 505085,
+      "line_count": 5316,
+      "path": "full-nodes-b.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 0,
+      "trailing_whitespace_lines_normalized": 0
+    },
+    {
+      "after_sha256": "88291fa5f9e7b2aa8b563810f648f746b9fedc954f36eb1eea836e08d00b49e4",
+      "before_sha256": "88291fa5f9e7b2aa8b563810f648f746b9fedc954f36eb1eea836e08d00b49e4",
+      "byte_count_after": 73,
+      "byte_count_before": 73,
+      "line_count": 4,
+      "path": "vite.txt",
+      "semantic_line_order_preserved": true,
+      "terminal_empty_lines_removed": 0,
+      "trailing_whitespace_lines_normalized": 0
+    }
+  ],
+  "normalization": "strip_trailing_horizontal_whitespace_and_surplus_terminal_blank_lines",
+  "schema_version": 1,
+  "semantic_content_rewritten": false
+}

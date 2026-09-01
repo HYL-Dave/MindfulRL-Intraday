@@ -10,6 +10,9 @@ import subprocess
 
 PACKET = Path(__file__).resolve().parent
 ROOT = PACKET.parents[3]
+BASE_COMMIT = "947a51fca2f078e750bef64cad4817682141ea8f"
+PRODUCT_HEAD = "6c20cd557715eab5f0abaafe2b923313ee38ed33"
+PACKET_PREFIX = str(PACKET.relative_to(ROOT)) + "/"
 SCHEMA_AUTHORITIES = (
     "src/security_lifecycle_schema.py",
     "src/ticker_identity_schema.py",
@@ -38,10 +41,19 @@ def sha256(value: bytes) -> str:
 
 def main() -> int:
     head = git("rev-parse", "HEAD").strip()
-    base = git("merge-base", "master", "HEAD").strip()
+    base = BASE_COMMIT
+    post_product_paths = tuple(
+        line
+        for line in git(
+            "diff", "--name-only", f"{PRODUCT_HEAD}..{head}"
+        ).splitlines()
+        if line
+    )
     changed = tuple(
         line
-        for line in git("diff", "--name-only", f"{base}..{head}").splitlines()
+        for line in git(
+            "diff", "--name-only", f"{base}..{PRODUCT_HEAD}"
+        ).splitlines()
         if line
     )
     current_hashes = {
@@ -60,7 +72,7 @@ def main() -> int:
         }
     browser_fixtures = {}
     for path in BROWSER_FIXTURE_AUTHORITIES:
-        head_bytes = git("show", f"{head}:{path}", text=False)
+        head_bytes = git("show", f"{PRODUCT_HEAD}:{path}", text=False)
         current_bytes = (ROOT / path).read_bytes()
         browser_fixtures[path] = {
             "git_blob": git("rev-parse", f"{head}:{path}").strip(),
@@ -71,12 +83,22 @@ def main() -> int:
         "schema_version": 1,
         "base_commit": base,
         "head_commit": head,
+        "product_head_commit": PRODUCT_HEAD,
         "branch": git("branch", "--show-current").strip(),
-        "master_is_ancestor": subprocess.run(
-            ("git", "merge-base", "--is-ancestor", "master", "HEAD"),
+        "base_is_ancestor": subprocess.run(
+            ("git", "merge-base", "--is-ancestor", base, "HEAD"),
             cwd=ROOT,
             check=False,
         ).returncode == 0,
+        "product_head_is_ancestor": subprocess.run(
+            ("git", "merge-base", "--is-ancestor", PRODUCT_HEAD, "HEAD"),
+            cwd=ROOT,
+            check=False,
+        ).returncode == 0,
+        "post_product_paths": list(post_product_paths),
+        "post_product_scope_only_packet": all(
+            path.startswith(PACKET_PREFIX) for path in post_product_paths
+        ),
         "merge_commits_since_base": git(
             "rev-list", "--merges", f"{base}..{head}"
         ).splitlines(),
@@ -98,11 +120,14 @@ def main() -> int:
     print(json.dumps({
         "base": base,
         "head": head,
+        "product_head": PRODUCT_HEAD,
         "changed_paths": len(changed),
         "schema_unchanged": payload["all_schema_authorities_byte_identical"],
     }, sort_keys=True))
     return 0 if (
-        payload["master_is_ancestor"]
+        payload["base_is_ancestor"]
+        and payload["product_head_is_ancestor"]
+        and payload["post_product_scope_only_packet"]
         and not payload["merge_commits_since_base"]
         and payload["all_schema_authorities_byte_identical"]
         and payload["all_browser_fixture_authorities_match_tested_head"]
