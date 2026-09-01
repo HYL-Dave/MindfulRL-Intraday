@@ -65,12 +65,12 @@
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
-        "color_count": 2172,
+        "color_count": 2171,
         "dynamic_channels": 3
       },
       "request_count": 23,
       "screenshot": "1440x900-en-blocker-diagnostic.png",
-      "screenshot_sha256": "9409599b044cd21103a030caf11c4c2de796e71a43025b18cb9f0ed2db43f460",
+      "screenshot_sha256": "887759596f6d953046cf5f390d1040f93da96edba81ec4b8cfb5e97ae315c144",
       "surface": "blocker-diagnostic",
       "t3_operator_detail_witness": true,
       "t3_raw_context_hidden_witness": true,
@@ -151,7 +151,7 @@
       },
       "request_count": 30,
       "screenshot": "1440x900-zh-Hant-lifecycle.png",
-      "screenshot_sha256": "300ee664fbc3fe08b91ed30abf867f56fe573df0a751b13a1295358cb0592a09",
+      "screenshot_sha256": "9c6311e86ade00d022a9c7150fece033c6a5358a02dd7714f4e3684412506d58",
       "surface": "lifecycle",
       "t3_operator_detail_witness": false,
       "t3_raw_context_hidden_witness": false,
@@ -173,12 +173,12 @@
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
-        "color_count": 2211,
+        "color_count": 2213,
         "dynamic_channels": 3
       },
       "request_count": 23,
       "screenshot": "1440x900-zh-Hant-blocker-diagnostic.png",
-      "screenshot_sha256": "23e094f19631491d319de9d0c0d0307f07a20754bed41631ab17e73869489767",
+      "screenshot_sha256": "af03ecc3f02348dd6b7a2f67af788d53b8fccdbc880a270b5aa396a55b098148",
       "surface": "blocker-diagnostic",
       "t3_operator_detail_witness": true,
       "t3_raw_context_hidden_witness": true,
@@ -335,12 +335,12 @@
       "overlap_count": 0,
       "page_errors": [],
       "pixels": {
-        "color_count": 1652,
+        "color_count": 1651,
         "dynamic_channels": 3
       },
       "request_count": 27,
       "screenshot": "390x844-zh-Hant-settings.png",
-      "screenshot_sha256": "3179cccecb136ebc967a560356d056683effa2d01395a42e162d4f321e539b65",
+      "screenshot_sha256": "fa249bf711ff60f327d1dfe20a349de1d4232a58d034a6508f1b4c7da91ab3bc",
       "surface": "settings",
       "t3_operator_detail_witness": false,
       "t3_raw_context_hidden_witness": false,

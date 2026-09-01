@@ -86,4 +86,4 @@ tests/test_sec_user_agent.py::test_sec_clients_use_canonical_user_agent
     from edgar.files.htmltools import html_sections
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-5304 passed, 12 skipped, 3 warnings in 393.26s (0:06:33)
+5304 passed, 12 skipped, 3 warnings in 395.91s (0:06:35)

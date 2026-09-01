@@ -2,7 +2,7 @@
 
 This packet admits the deterministic lifecycle automation reliability and
 control-plane slice at product/test authority
-`6c20cd557715eab5f0abaafe2b923313ee38ed33`. It covers orphan reconciliation,
+`65c5fa65bb34857e945437a15bf3660d56741232`. It covers orphan reconciliation,
 terminal-finalization recovery, per-case incident truth, bounded automatic and
 attended retry authority, IBKR candidate admission, SEC deadline supersession,
 closed SEC evidence reuse, default-off profile mutation authority, runtime
@@ -55,8 +55,11 @@ Massive, or IBKR behavior has completed the separately gated canary.
   fixture value.
 - Frontend A/B: each `108 files / 1332 passed`.
 - TypeScript, production build, and i18n literal scanner pass; i18n debt is zero.
-- Reverse mutations: `50/50` independently owner-killed, with every mutated
+- Reverse mutations: `53/53` independently owner-killed, with every mutated
   product file restored byte-identically.
+- T8 guard triage records all 24 bounded census candidates. The two confirmed
+  unowned guards are now covered by exact M51/M52 reverse mutations, and the
+  verifier binds each semantic guard to its product file and named owner.
 - Browser: 16 EN/zh-Hant desktop/mobile Settings, lifecycle, blocker-diagnostic,
   and finalization-failure entries with 16 screenshots; zero measured external
   requests, overlap, clipped text, viewport-clipped controls, console errors,
@@ -100,8 +103,10 @@ while this packet records the final admitted state.
 - `repository-binding.json`: base/product/replay-source identity, changed-path
   hashes, post-product packet-only scope, no-DDL-drift evidence, and imported
   browser fixture bindings.
-- `mutation-ledger.json`: M01-M50 baseline/mutant results, named owners, output
+- `mutation-ledger.json`: M01-M53 baseline/mutant results, named owners, output
   hashes, and byte-identical restoration receipts.
+- `guard-triage.json`: the complete T8 candidate set, ownership or defensive
+  classification, named evidence, and retention rationale.
 - `backend-focused.txt`, `backend-full-{a,b}.txt`, and `full-nodes-{a,b}.txt`:
   focused/full backend gates and exact full node identities.
 - `frontend-test-{a,b}.txt`, `frontend-typecheck.txt`, `frontend-build.txt`, and

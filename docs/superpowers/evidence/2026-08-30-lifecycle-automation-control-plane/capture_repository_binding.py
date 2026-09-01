@@ -11,7 +11,7 @@ import subprocess
 PACKET = Path(__file__).resolve().parent
 ROOT = PACKET.parents[3]
 BASE_COMMIT = "947a51fca2f078e750bef64cad4817682141ea8f"
-PRODUCT_HEAD = "6c20cd557715eab5f0abaafe2b923313ee38ed33"
+PRODUCT_HEAD = "65c5fa65bb34857e945437a15bf3660d56741232"
 PACKET_PREFIX = str(PACKET.relative_to(ROOT)) + "/"
 SCHEMA_AUTHORITIES = (
     "src/security_lifecycle_schema.py",

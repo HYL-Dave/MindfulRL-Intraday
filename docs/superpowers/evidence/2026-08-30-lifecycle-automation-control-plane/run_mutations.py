@@ -623,6 +623,51 @@ MUTATIONS = (
         ("shows durable running ahead of stale invalid telemetry",),
         cwd="apps/arkscope-web",
     ),
+    Mutation(
+        "M51", 8, "admit a transition with an unknown approval authority",
+        TICKER_SCHEDULER,
+        '            if approval_authority not in {"attended_user", "automation_policy"}:\n'
+        '                raise ValueError("transition_approval_authority")',
+        '            if False and approval_authority not in {"attended_user", "automation_policy"}:\n'
+        '                raise ValueError("transition_approval_authority")',
+        py_test(
+            "tests/test_ticker_identity_scheduler.py::"
+            "test_due_runner_never_executes_transition_with_unknown_approval_authority"
+        ),
+        (
+            "test_due_runner_never_executes_transition_with_unknown_approval_authority",
+        ),
+    ),
+    Mutation(
+        "M52", 8, "record retry state after terminal finalization completed",
+        KERNEL,
+        "            if not _terminal_finalization_pending(context):\n"
+        '                raise ValueError("terminal_finalization_not_pending")',
+        "            if False and not _terminal_finalization_pending(context):\n"
+        '                raise ValueError("terminal_finalization_not_pending")',
+        py_test(
+            "tests/test_security_lifecycle_fact_kernel.py::"
+            "test_finalized_run_never_acquires_terminal_failure_retry_state"
+        ),
+        (
+            "test_finalized_run_never_acquires_terminal_failure_retry_state",
+        ),
+    ),
+    Mutation(
+        "M53", 10, "keep stale scheduling data after an automation config save",
+        SETTINGS,
+        "      const response = await updateSecurityLifecycleAutomationConfig(next);\n"
+        "      setAutomation((current) => current ? { ...current, ...response } : current);\n"
+        "      await loadAutomation();",
+        "      const response = await updateSecurityLifecycleAutomationConfig(next);\n"
+        "      setAutomation((current) => current ? { ...current, ...response } : current);",
+        web_test(
+            "src/settings/DataStorageSection.test.tsx",
+            "reloads the complete schedule after each config save",
+        ),
+        ("reloads the complete schedule after each config save",),
+        cwd="apps/arkscope-web",
+    ),
 )
 
 

@@ -14,10 +14,58 @@ PACKET = Path(__file__).resolve().parent
 ROOT = PACKET.parents[3]
 MANIFEST = PACKET / "SHA256SUMS"
 BASE_COMMIT = "947a51fca2f078e750bef64cad4817682141ea8f"
-PRODUCT_HEAD = "6c20cd557715eab5f0abaafe2b923313ee38ed33"
+PRODUCT_HEAD = "65c5fa65bb34857e945437a15bf3660d56741232"
 REQUIRED_REPAIR_MUTATIONS = frozenset(
-    {f"M{index}" for index in range(33, 51)}
+    {f"M{index}" for index in range(33, 54)}
 )
+REQUIRED_SEMANTIC_MUTATIONS = {
+    "transition_approval_authority": {
+        "id": "M51",
+        "owner": "test_due_runner_never_executes_transition_with_unknown_approval_authority",
+        "path": "src/service/ticker_identity_scheduler.py",
+    },
+    "terminal_finalization_not_pending": {
+        "id": "M52",
+        "owner": "test_finalized_run_never_acquires_terminal_failure_retry_state",
+        "path": "src/security_lifecycle_fact_kernel.py",
+    },
+    "automation_schedule_refresh": {
+        "id": "M53",
+        "owner": "reloads the complete schedule after each config save",
+        "path": "apps/arkscope-web/src/settings/DataStorageSection.tsx",
+    },
+}
+REQUIRED_GUARD_TRIAGE = frozenset({
+    "automation_active_incident",
+    "automation_legacy_witness",
+    "automation_progress_context",
+    "automation_progress_initial_stage",
+    "automation_progress_missing",
+    "automation_query_context",
+    "automation_run_evidence_missing",
+    "automation_run_not_found",
+    "automation_run_not_running",
+    "automation_run_not_succeeded",
+    "automation_run_reconciliation_lost",
+    "automation_status_timestamp",
+    "automation_transition_approval_changed",
+    "duplicate_case_outcome",
+    "ibkr_blocker_context",
+    "ibkr_position_symbol",
+    "interval_minutes_invalid",
+    "retained_source_family_refreshed",
+    "terminal_finalization_assessment_missing",
+    "terminal_finalization_failure_code",
+    "terminal_finalization_not_pending",
+    "ticker_identity_scheduler_incident",
+    "ticker_identity_transition_status",
+    "transition_approval_authority",
+})
+TRIAGE_CLASSIFICATIONS = frozenset({
+    "defensive_redundancy",
+    "owned_by_effect",
+    "owned_by_reverse_mutation",
+})
 
 
 def _load(name: str):
@@ -115,10 +163,61 @@ def main() -> int:
     mutation_ids = {row["id"] for row in ledger["mutations"]}
     if not REQUIRED_REPAIR_MUTATIONS.issubset(mutation_ids):
         raise AssertionError("repair_mutation_coverage")
+    mutation_definitions = {
+        mutation.mutation_id: mutation for mutation in mutations.MUTATIONS
+    }
+    ledger_by_id = {row["id"]: row for row in ledger["mutations"]}
+    for semantic_name, requirement in REQUIRED_SEMANTIC_MUTATIONS.items():
+        mutation = mutation_definitions.get(requirement["id"])
+        row = ledger_by_id.get(requirement["id"])
+        if (
+            mutation is None
+            or row is None
+            or mutation.path != requirement["path"]
+            or tuple(mutation.owner_needles) != (requirement["owner"],)
+            or mutation.old == mutation.new
+            or not row["killed"]
+            or row["product_file"] != requirement["path"]
+            or row["owners_observed"] != {requirement["owner"]: True}
+        ):
+            raise AssertionError(f"semantic_mutation:{semantic_name}")
+        if semantic_name != "automation_schedule_refresh" and (
+            semantic_name not in mutation.old or semantic_name not in mutation.new
+        ):
+            raise AssertionError(f"semantic_guard_mutation:{semantic_name}")
     if not ledger["all_mutations_killed"] or not ledger[
         "all_files_restored_byte_identically"
     ]:
         raise AssertionError("mutation_result")
+    triage = _json("guard-triage.json")
+    entries = triage.get("entries")
+    if (
+        triage.get("schema_version") != 1
+        or triage.get("base_commit") != BASE_COMMIT
+        or triage.get("product_head_commit") != PRODUCT_HEAD
+        or triage.get("candidate_count") != len(REQUIRED_GUARD_TRIAGE)
+        or not isinstance(entries, list)
+    ):
+        raise AssertionError("guard_triage_authority")
+    triage_by_guard = {
+        entry.get("guard"): entry
+        for entry in entries
+        if isinstance(entry, dict) and isinstance(entry.get("guard"), str)
+    }
+    if (
+        len(triage_by_guard) != len(entries)
+        or set(triage_by_guard) != REQUIRED_GUARD_TRIAGE
+    ):
+        raise AssertionError("guard_triage_coverage")
+    for guard, entry in triage_by_guard.items():
+        if (
+            entry.get("classification") not in TRIAGE_CLASSIFICATIONS
+            or not isinstance(entry.get("evidence"), str)
+            or not entry["evidence"].strip()
+            or not isinstance(entry.get("reason"), str)
+            or not entry["reason"].strip()
+        ):
+            raise AssertionError(f"guard_triage_entry:{guard}")
     scanner = _json("secret-scan.json")
     if not scanner["passed"] or scanner["findings"]:
         raise AssertionError("secret_scan")

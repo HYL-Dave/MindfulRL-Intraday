@@ -6,7 +6,7 @@ export ARKSCOPE_DISABLE_SCHEDULER=1
 ROOT="$(git rev-parse --show-toplevel)"
 PACKET="$ROOT/docs/superpowers/evidence/2026-08-30-lifecycle-automation-control-plane"
 BASE="947a51fca2f078e750bef64cad4817682141ea8f"
-PRODUCT_HEAD="6c20cd557715eab5f0abaafe2b923313ee38ed33"
+PRODUCT_HEAD="65c5fa65bb34857e945437a15bf3660d56741232"
 VITE_PID=""
 
 cleanup() {

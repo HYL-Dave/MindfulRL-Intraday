@@ -68,28 +68,28 @@
   "gates": {
     "backend_focused": {
       "passed": 1012,
-      "seconds": 50.04
+      "seconds": 50.19
     },
     "backend_full_a": {
       "passed": 5304,
-      "seconds": 393.26,
+      "seconds": 395.91,
       "skipped": 12,
       "warnings": 3
     },
     "backend_full_b": {
       "passed": 5304,
-      "seconds": 394.46,
+      "seconds": 393.72,
       "skipped": 12,
       "warnings": 3
     },
     "backend_full_result_counts_equal": true,
     "frontend_a": {
       "files": 108,
-      "tests": 1332
+      "tests": 1333
     },
     "frontend_b": {
       "files": 108,
-      "tests": 1332
+      "tests": 1333
     },
     "full_node_manifest_a": {
       "nodes": 5316,
@@ -132,20 +132,20 @@
   ],
   "mutations": {
     "all_files_restored_byte_identically": true,
-    "count": 50,
-    "killed": 50
+    "count": 53,
+    "killed": 53
   },
   "repository": {
     "base_commit": "947a51fca2f078e750bef64cad4817682141ea8f",
     "branch": "lifecycle-automation-control-plane",
     "browser_fixture_authorities_match_tested_head": true,
-    "changed_paths": 106,
+    "changed_paths": 118,
     "merge_commits_since_base": [],
     "post_product_paths": [],
     "post_product_scope_only_packet": true,
-    "replay_source_head": "6c20cd557715eab5f0abaafe2b923313ee38ed33",
+    "replay_source_head": "65c5fa65bb34857e945437a15bf3660d56741232",
     "schema_authorities_byte_identical": true,
-    "tested_product_head": "6c20cd557715eab5f0abaafe2b923313ee38ed33"
+    "tested_product_head": "65c5fa65bb34857e945437a15bf3660d56741232"
   },
   "schema_version": 1
 }

@@ -1,0 +1,153 @@
+{
+  "base_commit": "947a51fca2f078e750bef64cad4817682141ea8f",
+  "candidate_count": 24,
+  "census": "new ValueError, KeyError, and RuntimeError string guards whose added call sites are not named literally by tests",
+  "entries": [
+    {
+      "classification": "owned_by_effect",
+      "evidence": "test_durable_status_reader_validates_envelope_and_returns_latest_failed_case; test_durable_status_marks_malformed_telemetry_invalid_without_raw_detail",
+      "guard": "automation_active_incident",
+      "reason": "The durable status surface admits only the closed incident envelope and degrades malformed telemetry without raw detail."
+    },
+    {
+      "classification": "owned_by_effect",
+      "evidence": "test_version_one_mixed_batch_reconstructs_only_the_failed_case_incident",
+      "guard": "automation_legacy_witness",
+      "reason": "Legacy witness reconstruction is exercised through the per-case incident projection; an unreadable witness cannot become recovery authority."
+    },
+    {
+      "classification": "defensive_redundancy",
+      "evidence": "LifecycleAutomationWorker construction sites pass progress_registry, request_id, and trigger as one tuple",
+      "guard": "automation_progress_context",
+      "reason": "The guard remains to reject partial future call-site wiring before an unowned progress row can be created."
+    },
+    {
+      "classification": "owned_by_effect",
+      "evidence": "test_progress_registry_follows_the_exact_real_stage_order_and_finishes_cleanly; test_progress_registry_can_start_at_a_real_recovery_boundary",
+      "guard": "automation_progress_initial_stage",
+      "reason": "The owners pin the only ordinary and recovery initial stages and complete them through the real registry."
+    },
+    {
+      "classification": "owned_by_effect",
+      "evidence": "test_progress_registry_keys_snapshots_and_clear_by_request_and_case; test_progress_registry_rejects_stage_jumps_and_nonconditional_skips_without_drift",
+      "guard": "automation_progress_missing",
+      "reason": "The registry owners pin identity membership and prove rejected transitions do not fabricate or drift progress."
+    },
+    {
+      "classification": "owned_by_effect",
+      "evidence": "test_durable_status_marks_malformed_telemetry_invalid_without_raw_detail; test_finalized_run_never_acquires_terminal_failure_retry_state",
+      "guard": "automation_query_context",
+      "reason": "Malformed durable state is projected as invalid, while terminal state tests preserve the canonical query context byte for byte."
+    },
+    {
+      "classification": "defensive_redundancy",
+      "evidence": "complete_run persists the evidence set before create_automation_assessment receives its run_id",
+      "guard": "automation_run_evidence_missing",
+      "reason": "Current callers cannot create an automation assessment before run evidence; the guard stays for corrupted or future direct callers."
+    },
+    {
+      "classification": "defensive_redundancy",
+      "evidence": "worker and kernel callers obtain run_id from the same store transaction",
+      "guard": "automation_run_not_found",
+      "reason": "The repeated guard protects private kernel entry points from stale future callers without widening not-found behavior."
+    },
+    {
+      "classification": "owned_by_effect",
+      "evidence": "test_reconciliation_is_owner_scoped_and_only_terminalizes_running_rows; test_fail_run_rejects_succeeded_run_with_current_automation_assessment",
+      "guard": "automation_run_not_running",
+      "reason": "State-transition owners prove only running rows can be terminalized and succeeded assessment history cannot be rewritten as failure."
+    },
+    {
+      "classification": "owned_by_effect",
+      "evidence": "test_finalized_run_never_acquires_terminal_failure_retry_state; test_terminal_finalization_rejects_changed_query_context_provenance",
+      "guard": "automation_run_not_succeeded",
+      "reason": "Terminal-finalization owners require the succeeded state and preserve finalized state when admission fails."
+    },
+    {
+      "classification": "defensive_redundancy",
+      "evidence": "reconcile_running_runs holds BEGIN IMMEDIATE and updates rows with status='running' compare-and-set predicates",
+      "guard": "automation_run_reconciliation_lost",
+      "reason": "The row-count guard is unreachable under the current single-writer transaction but must remain loud if transaction ownership changes."
+    },
+    {
+      "classification": "owned_by_effect",
+      "evidence": "test_durable_status_marks_malformed_telemetry_invalid_without_raw_detail; test_automation_status_after_restart_uses_reconciled_failure_not_fake_stage",
+      "guard": "automation_status_timestamp",
+      "reason": "The durable surface keeps malformed timestamps out of operator status and restart recovery uses canonical UTC timestamps."
+    },
+    {
+      "classification": "owned_by_effect",
+      "evidence": "test_transition_approval_drift_fails_closed_without_profile_mutation",
+      "guard": "automation_transition_approval_changed",
+      "reason": "The owner proves approval drift produces a review blocker and no profile mutation."
+    },
+    {
+      "classification": "defensive_redundancy",
+      "evidence": "the production case loader emits one row per stable case_id and the worker iterates that closed list once",
+      "guard": "duplicate_case_outcome",
+      "reason": "The guard prevents a future loader regression from silently overwriting a per-case outcome."
+    },
+    {
+      "classification": "defensive_redundancy",
+      "evidence": "read_ibkr_contract_evidence constructs blocker_context as a Mapping for market_confirmation_missing",
+      "guard": "ibkr_blocker_context",
+      "reason": "The scheduler retains a cross-module shape check so an incomplete producer cannot publish an opaque operator blocker."
+    },
+    {
+      "classification": "defensive_redundancy",
+      "evidence": "the SQL query constrains UPPER(symbol) to the exact alias placeholder set before validating each returned row",
+      "guard": "ibkr_position_symbol",
+      "reason": "The condition is redundant with the query today and remains as a defense against query or collation drift."
+    },
+    {
+      "classification": "owned_by_effect",
+      "evidence": "test_interval_rejects_out_of_bounds_and_noncanonical_forms",
+      "guard": "interval_minutes_invalid",
+      "reason": "The schedule owner rejects every noncanonical and out-of-range interval before projecting due work."
+    },
+    {
+      "classification": "defensive_redundancy",
+      "evidence": "the acquisition bundle builds refreshed and retained source-family sets as disjoint outputs before complete_run",
+      "guard": "retained_source_family_refreshed",
+      "reason": "The kernel guard prevents a future producer from claiming the same family was both reused and freshly acquired."
+    },
+    {
+      "classification": "defensive_redundancy",
+      "evidence": "the worker creates or reuses the automation assessment before recording terminal-finalization retry state",
+      "guard": "terminal_finalization_assessment_missing",
+      "reason": "The guard prevents retry metadata from authorizing finalization when the durable assessment authority is absent."
+    },
+    {
+      "classification": "defensive_redundancy",
+      "evidence": "worker finalization calls use the closed _TERMINAL_FINALIZATION_FAILURE_CODES set",
+      "guard": "terminal_finalization_failure_code",
+      "reason": "The public kernel boundary remains closed even though every current caller uses a declared code."
+    },
+    {
+      "classification": "owned_by_reverse_mutation",
+      "evidence": "M52; test_finalized_run_never_acquires_terminal_failure_retry_state",
+      "guard": "terminal_finalization_not_pending",
+      "reason": "Removing the guard lets a finalized run acquire retry state and kills the named owner."
+    },
+    {
+      "classification": "owned_by_effect",
+      "evidence": "test_legacy_recovery_is_revalidated_before_becoming_an_incident_boundary; test_scheduler_malformed_summary_records_failure_instead_of_recovery",
+      "guard": "ticker_identity_scheduler_incident",
+      "reason": "Historical incident rows are revalidated and malformed summaries cannot become a recovery witness."
+    },
+    {
+      "classification": "defensive_redundancy",
+      "evidence": "ticker_identity_transitions.status is constrained by the schema TRANSITION_STATUSES CHECK",
+      "guard": "ticker_identity_transition_status",
+      "reason": "The reader duplicates the database CHECK so schema drift or corruption fails closed."
+    },
+    {
+      "classification": "owned_by_reverse_mutation",
+      "evidence": "M51; test_due_runner_never_executes_transition_with_unknown_approval_authority",
+      "guard": "transition_approval_authority",
+      "reason": "Removing the authority guard executes a foreign transition and kills the named owner."
+    }
+  ],
+  "product_head_commit": "65c5fa65bb34857e945437a15bf3660d56741232",
+  "schema_version": 1
+}
