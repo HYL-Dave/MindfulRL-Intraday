@@ -109,12 +109,35 @@ def _verify_manifest() -> int:
     return len(entries)
 
 
+def _verify_readme(summary: dict[str, object]) -> None:
+    readme = (PACKET / "README.md").read_text(encoding="utf-8")
+    gates = summary["gates"]
+    mutations = summary["mutations"]
+    browser = summary["browser"]["measured"]
+    required = (
+        f"- Focused backend owners: `{gates['backend_focused']['passed']} passed`.",
+        "- Backend full A/B: each `"
+        f"{gates['backend_full_a']['passed']} passed / "
+        f"{gates['backend_full_a']['skipped']} skipped / "
+        f"{gates['backend_full_a']['warnings']} warnings`;",
+        "- Frontend A/B: each `"
+        f"{gates['frontend_a']['files']} files / "
+        f"{gates['frontend_a']['tests']} passed`.",
+        f"- Reverse mutations: `{mutations['killed']}/{mutations['count']}` ",
+        f"- Browser: {browser['entries']} EN/zh-Hant desktop/mobile Settings,",
+    )
+    for fragment in required:
+        if fragment not in readme:
+            raise AssertionError(f"readme_summary:{fragment}")
+
+
 def main() -> int:
     writer = _load("write_verification_summary")
     expected_summary = writer.build_summary()
     summary = _json("verification-summary.json")
     if summary != expected_summary:
         raise AssertionError("verification_summary_drift")
+    _verify_readme(summary)
     repository = _json("repository-binding.json")
     current_head = subprocess.run(
         ("git", "rev-parse", "HEAD"),

@@ -53,7 +53,7 @@ Massive, or IBKR behavior has completed the separately gated canary.
   Token-shaped fixture parameters are replaced by a deterministic truncated
   SHA-256 marker, preserving distinct node identity without serializing the
   fixture value.
-- Frontend A/B: each `108 files / 1332 passed`.
+- Frontend A/B: each `108 files / 1333 passed`.
 - TypeScript, production build, and i18n literal scanner pass; i18n debt is zero.
 - Reverse mutations: `53/53` independently owner-killed, with every mutated
   product file restored byte-identically.
