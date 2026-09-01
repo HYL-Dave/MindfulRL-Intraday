@@ -422,17 +422,12 @@ def _persist_listing(item: dict, root: Path) -> tuple[tuple[dict, ...], tuple[di
             policy_version="trusted-lifecycle-automation-v4",
             mode="historical",
             execution_revision="trusted-lifecycle-execution-r1",
-            execution_owner_id=f"listing-shadow:{name}",
             query_context={"case_id": case_id, "cik": cik, "aliases": [source_ticker]},
             diagnostics={"listing_records": len(listing_rows)},
             at=AT,
         )
         blockers = tuple(
-            AutomationBlocker(
-                code=code,
-                retryable=code != "massive_credential_missing",
-                context={},
-            )
+            AutomationBlocker(code=code, retryable=True, context={})
             for code in blocker_codes
         )
         completed = kernel.complete_run(
@@ -442,11 +437,7 @@ def _persist_listing(item: dict, root: Path) -> tuple[tuple[dict, ...], tuple[di
             blockers=blockers,
             decision_tier=None if blockers else "verified_automatic",
             action_readiness=None if blockers else "not_applicable",
-            retry_at=(
-                "2026-08-29T22:00:00Z"
-                if blockers and all(blocker.retryable for blocker in blockers)
-                else None
-            ),
+            retry_at="2026-08-29T22:00:00Z" if blockers else None,
             diagnostics={"listing_records": len(listing_rows)},
             at=AT,
         )
